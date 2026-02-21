@@ -1017,109 +1017,147 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 <p class="text-zinc-400 text-lg mt-4">Capturas reales de diseñadores </br>que aplicaron el sistema.</p>
             </div>
 
-            <!-- Carousel Container -->
-            <div class="relative group">
+            <div class="relative group mt-8">
                 
-                <!-- Botones Navegación -->
-                <button id="prevBtn" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-20 w-12 h-12 bg-brand-surface border border-white/10 rounded-full flex items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-lg group-hover:translate-x-0 opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed">
+                <!-- Botones Navegación (Visibles siempre, más grandes en desktop, adaptados a la marca) -->
+                <button id="prevBtn" class="flex absolute left-2 md:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/90 backdrop-blur border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-100 disabled:opacity-30 disabled:cursor-not-allowed">
                     <i class="ph-bold ph-caret-left text-xl"></i>
                 </button>
-                <button id="nextBtn" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-20 w-12 h-12 bg-brand-surface border border-white/10 rounded-full flex items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-lg group-hover:translate-x-0 opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:cursor-not-allowed">
+                <button id="nextBtn" class="flex absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/90 backdrop-blur border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-100 disabled:opacity-30 disabled:cursor-not-allowed">
                     <i class="ph-bold ph-caret-right text-xl"></i>
                 </button>
 
-                <!-- Slider Wrapper -->
-                <div class="overflow-hidden rounded-2xl">
-                    <div id="sliderTrack" class="flex transition-transform duration-500 ease-out gap-6">
+                <!-- Slider Wrapper con Scroll Nativo (Soporta swipe en móvil) -->
+                <div class="w-full -mx-4 px-4 md:mx-0 md:px-0">
+                    <div id="sliderTrack" class="flex overflow-x-auto snap-x snap-mandatory gap-4 md:gap-6 pb-6 pt-2 scrollbar-hide scroll-smooth w-full">
                         
                         <!-- Card 1 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
-                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
-                                <p class="text-white text-base font-bold leading-snug text-center">
-                                    Un lunes cualquiera: <span class="text-brand-orange">$4,1M</span> + <span class="text-brand-orange">66 pedidos</span>
-                                </p>
-                            </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                            
-                            <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <!-- Cambio: aspect ratio iPhone 15 (aprox 9/19.5) y object-top para priorizar la parte superior del chat -->
-                                <img src="https://mateoduhalde.com/assets/delfina-B7CNAgo_.jpg" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
                             <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
                                 <p class="text-white text-base font-bold leading-snug text-center">
                                     <span class="text-brand-orange">$1,5M</span> en una semana + ticket promedio de <span class="text-brand-orange">$90K</span>
                                 </p>
                             </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
                             <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
+                                <img src="/assets/augusto-B25umfAx.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
+                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
+                                <p class="text-white text-base font-bold leading-snug text-center">
+                                    <span class="text-brand-orange">$1,5M</span> en una semana + ticket promedio de <span class="text-brand-orange">$90K</span>
+                                </p>
+                            </div>
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
+                            <div class="p-5 relative flex-grow bg-zinc-900/50">
+                                <img src="/assets/augusto-B25umfAx.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
                             </div>
                         </div>
 
                         <!-- Card 3 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
                             <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
                                 <p class="text-white text-base font-bold leading-snug text-center">
                                     Primera campaña de tráfico → SOLD OUT + <span class="text-brand-orange">$1,38M</span>
                                 </p>
                             </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
                             <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
+                                <img src="/assets/fer-B3Bix-8E.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
                             </div>
                         </div>
 
                         <!-- Card 4 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
                             <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
                                 <p class="text-white text-base font-bold leading-snug text-center">
                                     Primeros <span class="text-brand-orange">$10M</span> facturados + <span class="text-brand-orange">204 ventas</span>
                                 </p>
                             </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
                             <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
+                                <img src="/assets/nicolas--dLwkM3G.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
                             </div>
                         </div>
 
                         <!-- Card 5 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
                             <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
                                 <p class="text-white text-base font-bold leading-snug text-center">
                                     10 palos en el mes: <span class="text-brand-orange">$10,4M</span> + <span class="text-brand-orange">178 ventas</span>
                                 </p>
                             </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
                             <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
+                                <img src="/assets/cintia-D4okyku0.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
                             </div>
                         </div>
 
                         <!-- Card 6 -->
-                        <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg">
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
                             <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
                                 <p class="text-white text-base font-bold leading-snug text-center">
                                     Arrancó hace 2 meses y ya superó <span class="text-brand-orange">$1,5M</span>
                                 </p>
                             </div>
-                            <!-- Separador Minimalista -->
-                            <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
                             <div class="p-5 relative flex-grow bg-zinc-900/50">
-                                <img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop" alt="Resultado" class="w-full aspect-[9/19.5] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity">
+                                <img src="/assets/nico-torres-fwQ7brTf.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
+                            </div>
+                        </div>
+
+                        <!-- Card 7 -->
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
+                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
+                                <p class="text-white text-base font-bold leading-snug text-center">
+                                    Cumplió el objetivo inicial: <span class="text-brand-orange">$1,85M</span> + <span class="text-brand-orange">33 ventas</span>
+                                </p>
+                            </div>
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
+                            <div class="p-5 relative flex-grow bg-zinc-900/50">
+                                <img src="/assets/delfina-B7CNAgo_.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
+                            </div>
+                        </div>
+
+                        <!-- Card 8 -->
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
+                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
+                                <p class="text-white text-base font-bold leading-snug text-center">
+                                    De idea a <span class="text-brand-orange">$116M</span> en 5 meses (<span class="text-brand-orange">25%</span> rentabilidad)
+                                </p>
+                            </div>
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
+                            <div class="p-5 relative flex-grow bg-zinc-900/50">
+                                <img src="/assets/nachito-CLSGqAcl.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
+                            </div>
+                        </div>
+
+                        <!-- Card 9 -->
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
+                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
+                                <p class="text-white text-base font-bold leading-snug text-center">
+                                    <span class="text-brand-orange">82 ventas</span> en un día: <span class="text-brand-orange">$5M</span> facturados
+                                </p>
+                            </div>
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
+                            <div class="p-5 relative flex-grow bg-zinc-900/50">
+                                <img src="/assets/agustina-ventas-CU3WVILX.png" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
+                            </div>
+                        </div>
+
+                        <!-- Card 10 -->
+                        <div class="min-w-[85vw] sm:min-w-[60vw] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-center bg-brand-surface border border-white/5 rounded-2xl overflow-hidden hover:border-brand-orange/30 transition-colors flex flex-col shadow-lg shrink-0">
+                            <div class="p-5 bg-gradient-to-b from-white/5 to-transparent">
+                                <p class="text-white text-base font-bold leading-snug text-center">
+                                    <span class="text-brand-orange">101 ventas</span> en <span class="text-brand-orange">24h</span> + <span class="text-brand-orange">$3,45M</span>
+                                </p>
+                            </div>
+                            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent"></div>
+                            <div class="p-5 relative flex-grow bg-zinc-900/50">
+                                <img src="/assets/agustina-1-D_Vva_F6.jpg" alt="Resultado" class="w-full aspect-[9/16] object-cover object-top rounded-xl shadow-md opacity-90 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
                             </div>
                         </div>
 
@@ -1127,10 +1165,11 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </div>
 
                 <!-- Pagination Dots (Nuevo) -->
-                <div id="paginationDots" class="flex justify-center gap-1.5 mt-6">
+                <div id="paginationDots" class="flex justify-center gap-2 mt-4 md:mt-8">
                     <!-- Dots generados por JS -->
                 </div>
             </div>
+            
     <!-- 4. RESULTADOS (Social Proof) -->
     <br></br>
         <div class="container mx-auto px-4 text-center">
@@ -1558,74 +1597,84 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             }
         });
 
-        // --- TESTIMONIAL SLIDER LOGIC ---
+             // --- LÓGICA DE CARRUSEL ACTUALIZADA PARA SCROLL NATIVO (MOBILE FRIENDLY) ---
         const track = document.getElementById('sliderTrack');
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
         const dotsContainer = document.getElementById('paginationDots');
 
         if (track && nextBtn && prevBtn && dotsContainer) {
-            let currentIndex = 0;
-            const cards = track.children;
-            const totalCards = cards.length;
+            const cards = Array.from(track.children);
             
-            // Config: 1 card on mobile, 2 on tablet, 3 on desktop
-            const getCardsPerView = () => {
-                if (window.innerWidth >= 1024) return 3;
-                if (window.innerWidth >= 768) return 2;
-                return 1;
+            // Generar puntos dinámicos basados en la cantidad de tarjetas
+            dotsContainer.innerHTML = '';
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600 hover:bg-zinc-500`;
+                dot.setAttribute('aria-label', `Ir al testimonio ${i + 1}`);
+                
+                // Evento click del punto para scrollear hacia esa tarjeta
+                dot.addEventListener('click', () => {
+                    const cardWidth = cards[0].offsetWidth;
+                    const gap = window.innerWidth >= 768 ? 24 : 16; // md:gap-6 = 24px, gap-4 = 16px
+                    track.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
+                });
+                
+                dotsContainer.appendChild(dot);
+            });
+
+            const dots = Array.from(dotsContainer.children);
+
+            // Función para sincronizar botones y puntos con la posición actual del scroll
+            const updateSliderState = () => {
+                const scrollLeft = track.scrollLeft;
+                // Calculamos el scroll máximo posible
+                const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                
+                // Deshabilitar/Habilitar botones
+                prevBtn.disabled = scrollLeft <= 0;
+                nextBtn.disabled = scrollLeft >= maxScrollLeft - 5; // -5 por posible margen de error decimal
+                prevBtn.style.opacity = scrollLeft <= 0 ? '0.3' : '1';
+                nextBtn.style.opacity = scrollLeft >= maxScrollLeft - 5 ? '0.3' : '1';
+
+                // Calcular índice activo para los puntos
+                const cardWidth = cards[0].offsetWidth;
+                const gap = window.innerWidth >= 768 ? 24 : 16;
+                let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+                if (activeIndex >= dots.length) activeIndex = dots.length - 1;
+
+                // Actualizar estilos de los puntos
+                dots.forEach((dot, i) => {
+                    if (i === activeIndex) {
+                        dot.classList.remove('w-2', 'bg-zinc-600');
+                        dot.classList.add('w-4', 'bg-brand-orange');
+                    } else {
+                        dot.classList.remove('w-4', 'bg-brand-orange');
+                        dot.classList.add('w-2', 'bg-zinc-600');
+                    }
+                });
             };
-            
-            function renderDots(maxIndex) {
-                dotsContainer.innerHTML = '';
-                for (let i = 0; i <= maxIndex; i++) {
-                    const dot = document.createElement('button');
-                    dot.className = `h-2 rounded-full transition-all duration-300 ${i === currentIndex ? 'bg-brand-orange w-4' : 'w-2 bg-zinc-600 hover:bg-zinc-500'}`;
-                    dot.setAttribute('aria-label', `Ir al testimonio ${i + 1}`);
-                    dot.addEventListener('click', () => {
-                        currentIndex = i;
-                        updateSlider();
-                    });
-                    dotsContainer.appendChild(dot);
-                }
-            }
 
-            function updateSlider() {
-                const cardsPerView = getCardsPerView();
-                const maxIndex = Math.ceil(totalCards / cardsPerView) - 1;
-                
-                if (currentIndex < 0) currentIndex = 0;
-                if (currentIndex > maxIndex) currentIndex = maxIndex;
-
-                prevBtn.disabled = currentIndex === 0;
-                nextBtn.disabled = currentIndex === maxIndex;
-                prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
-                nextBtn.style.opacity = currentIndex === maxIndex ? '0.3' : '1';
-
-                const movePercentage = currentIndex * 100;
-                track.style.transform = `translateX(-${movePercentage}%)`;
-                
-                renderDots(maxIndex);
-            }
-
+            // Scroll manual con botones (Desktop)
             nextBtn.addEventListener('click', () => {
-                currentIndex++;
-                updateSlider();
+                const cardWidth = cards[0].offsetWidth;
+                const gap = window.innerWidth >= 768 ? 24 : 16;
+                track.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
             });
 
             prevBtn.addEventListener('click', () => {
-                currentIndex--;
-                updateSlider();
+                const cardWidth = cards[0].offsetWidth;
+                const gap = window.innerWidth >= 768 ? 24 : 16;
+                track.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
             });
-            
-            window.addEventListener('resize', () => {
-                currentIndex = 0;
-                updateSlider();
-            });
-            
-            updateSlider(); 
-        }
 
+            // Escuchar el evento scroll nativo (disparado al deslizar en móvil o click en botones)
+            track.addEventListener('scroll', updateSliderState);
+            window.addEventListener('resize', updateSliderState);
+            
+            // Estado inicial
+            setTimeout(updateSliderState, 100); // Pequeño delay para asegurar que el DOM calculó anchos
+        }
         // --- STICKY BAR LOGIC (ACTIVATED AFTER CHECKOUT SECTION) ---
         document.addEventListener('DOMContentLoaded', () => {
             const stickyBar = document.getElementById('sticky-offer-bar');
