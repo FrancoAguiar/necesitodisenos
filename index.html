@@ -72,21 +72,21 @@
             background: rgba(255, 69, 0, 0.3);
             color: white;
         }
-        /* Scrollbar minimalista general */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+
+        /* Patrón de Grid SaaS Sutil */
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Scrollbar minimalista */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-        /* Ocultar scrollbar para carrusel horizontal en movil */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none !important;
-            height: 0 !important;
-            width: 0 !important;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none !important;
-            scrollbar-width: none !important;
-        }
 
         /* Estilo para la imagen del mockup */
         .mockup-img {
@@ -765,7 +765,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                         </div>
 
                         <!-- Thumbnails -->
-                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
                             <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-brand-orange bg-zinc-900">
                                 <img src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" class="w-full h-full object-cover">
                             </button>
@@ -1029,7 +1029,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
                 <!-- Slider Wrapper con Scroll Nativo (Soporta swipe en móvil) -->
                 <div class="w-full">
-                    <div id="sliderTrack" class="flex overflow-x-auto snap-x snap-mandatory gap-4 md:gap-6 pb-8 pt-4 px-4 md:px-8 scrollbar-hide scroll-smooth w-full">
+                    <div id="sliderTrack" class="flex overflow-hidden snap-x snap-mandatory gap-4 md:gap-6 pb-8 pt-4 px-4 md:px-8 scroll-smooth w-full">
                         
                         <!-- Card 1 -->
                         <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
@@ -1041,7 +1041,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
                                 <!-- aspect-[9/16] fuerza proporción de WhatsApp -->
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/santiago-D5B2U5Zi.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena1.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
                                 </div>
                             </div>
                         </div>
@@ -1055,7 +1055,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             </div>
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/augusto-B25umfAx.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena2.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
                                 </div>
                             </div>
                         </div>
@@ -1069,7 +1069,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             </div>
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/fer-B3Bix-8E.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena3.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
                                 </div>
                             </div>
                         </div>
@@ -1083,7 +1083,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             </div>
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/nicolas--dLwkM3G.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena4.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
                                 </div>
                             </div>
                         </div>
@@ -1097,77 +1097,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             </div>
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/cintia-D4okyku0.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 6 -->
-                        <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
-                            <div class="p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
-                                <p class="text-white text-sm md:text-base font-bold leading-snug text-center">
-                                    Arrancó hace 2 meses y ya superó <span class="text-brand-orange">$1,5M</span>
-                                </p>
-                            </div>
-                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/nico-torres-fwQ7brTf.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 7 -->
-                        <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
-                            <div class="p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
-                                <p class="text-white text-sm md:text-base font-bold leading-snug text-center">
-                                    Cumplió el objetivo inicial: <span class="text-brand-orange">$1,85M</span> + <span class="text-brand-orange">33 ventas</span>
-                                </p>
-                            </div>
-                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/delfina-B7CNAgo_.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 8 -->
-                        <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
-                            <div class="p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
-                                <p class="text-white text-sm md:text-base font-bold leading-snug text-center">
-                                    De idea a <span class="text-brand-orange">$116M</span> en 5 meses (<span class="text-brand-orange">25%</span> rentabilidad)
-                                </p>
-                            </div>
-                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/nachito-CLSGqAcl.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 9 -->
-                        <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
-                            <div class="p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
-                                <p class="text-white text-sm md:text-base font-bold leading-snug text-center">
-                                    <span class="text-brand-orange">82 ventas</span> en un día: <span class="text-brand-orange">$5M</span> facturados
-                                </p>
-                            </div>
-                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/agustina-ventas-CU3WVILX.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 10 -->
-                        <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
-                            <div class="p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
-                                <p class="text-white text-sm md:text-base font-bold leading-snug text-center">
-                                    <span class="text-brand-orange">101 ventas</span> en <span class="text-brand-orange">24h</span> + <span class="text-brand-orange">$3,45M</span>
-                                </p>
-                            </div>
-                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
-                                    <img src="/assets/agustina-1-D_Vva_F6.jpg" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena5.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
                                 </div>
                             </div>
                         </div>
