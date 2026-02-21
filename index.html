@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
     
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -118,9 +121,20 @@
             background-size: 200% 100%;
             animation: shimmer 2s infinite linear;
         }
+        
+        /* Ocultar scrollbar para carrusel horizontal en movil */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
-<body class="pt-14 relative">
+<body class="pt-14 relative overflow-x-hidden">
 
     <!-- Fondo Técnico -->
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
@@ -137,7 +151,6 @@
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
                 </div>
                 <div class="flex flex-col">
-                    <!-- ID Agregado para el script -->
                     <span id="dynamic-offer-title" class="font-display font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] text-white">⚡ OFERTA RELÁMPAGO ⚡</span>
                 </div>
             </div>
@@ -176,16 +189,16 @@
     <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 pb-20">
         <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mt-10">
             
-            <div class="text-center lg:text-left space-y-8">
+            <div class="text-center lg:text-left space-y-8" data-aos="fade-right">
                 <!-- Eyebrow -->
                 <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md border border-brand-orange/20 bg-brand-orange/5 text-brand-orange text-xs font-medium tracking-wide mx-auto lg:mx-0">
                     <i class="ph-fill ph-book-bookmark"></i> +130 Páginas de Estrategia Pura
                 </div>
                 
-                <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">APRENDE A </br>
+                <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">APRENDE A <br>
                     CONSEGUIR CLIENTES <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-red-500">SIENDO DISEÑADOR</span> <br>
-                    USANDO<span class="text-white font-medium"> INSTAGRAM</span></br>(PASO A PASO)
+                    USANDO<span class="text-white font-medium"> INSTAGRAM</span><br>(PASO A PASO)
                 </h1>
                 
                 <p class="text-lg text-zinc-400 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
@@ -203,41 +216,43 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
             </div>
 
             <!-- Mockup & Social Proof -->
-            <div class="relative flex flex-col justify-center items-center group gap-8 animate-float">
-                <div class="relative">
-                    <img 
-                        src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" 
-                        alt="Ebook Mockup" 
-                        class="mockup-img w-full max-w-[280px] md:max-w-[320px] h-auto object-contain z-10 relative rounded-lg"
-                        onerror="this.src='https://via.placeholder.com/300x400/121212/FF4500?text=Ebook+Cover'; this.style.transform='none';"
-                    >
-                    <div class="absolute inset-0 bg-brand-orange/20 blur-[60px] rounded-full z-0 transform translate-y-4 opacity-50"></div>
-                    
-                    <!-- Floating Card Decoration -->
-                    <div class="absolute -right-8 bottom-12 bg-brand-surface border border-white/10 p-3 rounded-lg shadow-card animate-bounce duration-[4000ms] z-20 backdrop-blur-sm hidden sm:block">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded bg-brand-orange/10 flex items-center justify-center text-brand-orange">
-                                <i class="ph-fill ph-trend-up"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-zinc-500 uppercase font-semibold">Atrae</p>
-                                <p class="text-xs font-bold text-white">Clientes</p>
+            <div data-aos="fade-left" data-aos-delay="200">
+                <div class="relative flex flex-col justify-center items-center group gap-8 animate-float">
+                    <div class="relative">
+                        <img 
+                            src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" 
+                            alt="Ebook Mockup" 
+                            class="mockup-img w-full max-w-[280px] md:max-w-[320px] h-auto object-contain z-10 relative rounded-lg"
+                            onerror="this.src='https://via.placeholder.com/300x400/121212/FF4500?text=Ebook+Cover'; this.style.transform='none';"
+                        >
+                        <div class="absolute inset-0 bg-brand-orange/20 blur-[60px] rounded-full z-0 transform translate-y-4 opacity-50"></div>
+                        
+                        <!-- Floating Card Decoration -->
+                        <div class="absolute -right-8 bottom-12 bg-brand-surface border border-white/10 p-3 rounded-lg shadow-card animate-bounce duration-[4000ms] z-20 backdrop-blur-sm hidden sm:block">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                                    <i class="ph-fill ph-trend-up"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-semibold">Atrae</p>
+                                    <p class="text-xs font-bold text-white">Clientes</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Social Proof Badge -->
-                <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg animate-fade-in-up" style="animation-delay: 0.5s;">
-                    <div class="flex -space-x-3">
-                        <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=33" alt="User">
-                        <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=47" alt="User">
-                        <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=12" alt="User">
-                        <div class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] bg-brand-orange flex items-center justify-center text-[10px] font-bold text-white">
-                            +500
+                    <!-- Social Proof Badge -->
+                    <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg">
+                        <div class="flex -space-x-3">
+                            <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=33" alt="User">
+                            <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=47" alt="User">
+                            <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=12" alt="User">
+                            <div class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] bg-brand-orange flex items-center justify-center text-[10px] font-bold text-white">
+                                +500
+                            </div>
                         </div>
+                        <p class="text-xs text-white font-semibold">+537 diseñadores<strong class="text-zinc-300"> ya aplicaron.</strong></p>
                     </div>
-                    <p class="text-xs text-white font-semibold">+537 diseñadores<strong class="text-zinc-300"> ya aplicaron.</strong></p>
                 </div>
             </div>
         </div>
@@ -246,7 +261,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
     <!-- 1.5 DISCLAIMER IMPORTANTE -->
     <section class="py-12 relative z-20 border-t border-white/5 bg-brand-bg/0">
         <div class="container mx-auto px-4 max-w-4xl">
-            <div class="text-center mb-8">
+            <div class="text-center mb-8" data-aos="fade-up">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs font-bold uppercase tracking-wider mb-2">
                     <i class="ph-fill ph-warning"></i> Antes de seguir
                 </div>
@@ -254,7 +269,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- NO ES -->
-                <div class="p-6 rounded-xl bg-red-500/5 border border-red-500/10 backdrop-blur-sm">
+                <div class="p-6 rounded-xl bg-red-500/5 border border-red-500/10 backdrop-blur-sm" data-aos="fade-right" data-aos-delay="100">
                     <h3 class="text-red-400 font-bold text-sm mb-4 flex items-center gap-2 uppercase tracking-wide">
                         <i class="ph-fill ph-x-circle"></i> Esto NO es
                     </h3>
@@ -266,7 +281,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                     </ul>
                 </div>
                 <!-- SÍ ES -->
-                <div class="p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm">
+                <div class="p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm" data-aos="fade-left" data-aos-delay="200">
                     <h3 class="text-emerald-400 font-bold text-sm mb-4 flex items-center gap-2 uppercase tracking-wide">
                         <i class="ph-fill ph-check-circle"></i> Esto SÍ es
                     </h3>
@@ -284,14 +299,14 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
     <!-- 2. ¿PARA QUIÉN ES? -->
     <section class="py-24 bg-brand-bg relative z-10 border-t border-white/5">
         <div class="container mx-auto px-4 max-w-5xl">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-aos="zoom-in">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">¿Para quién es este sistema?</h2>
                 <p class="text-zinc-500">Un filtro honesto para saber si esto te servirá.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Para vos -->
-                <div class="bg-brand-surface border border-brand-orange/20 rounded-2xl p-8 hover:shadow-glow transition-all">
+                <div class="bg-brand-surface border border-brand-orange/20 rounded-2xl p-8 hover:shadow-glow transition-all" data-aos="fade-up" data-aos-delay="100">
                     <h3 class="text-white font-bold text-lg mb-6 flex items-center gap-2">
                         <span class="w-2 h-6 bg-brand-orange rounded-full"></span>
                         Este sistema ES para vos si:
@@ -313,7 +328,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                 </div>
 
                 <!-- No es para vos -->
-                <div class="bg-brand-surface border border-white/5 rounded-2xl p-8 opacity-70 hover:opacity-100 transition-opacity">
+                <div class="bg-brand-surface border border-white/5 rounded-2xl p-8 opacity-70 hover:opacity-100 transition-opacity" data-aos="fade-up" data-aos-delay="200">
                     <h3 class="text-zinc-400 font-bold text-lg mb-6 flex items-center gap-2">
                         <span class="w-2 h-6 bg-zinc-700 rounded-full"></span>
                         NO es para vos si:
@@ -340,11 +355,11 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
     <!-- 3. AGENDA / SISTEMA -->
     <section class="py-24 border-t border-white/5 bg-brand-bg relative z-10">
         <div class="container mx-auto px-4 max-w-6xl">
-            <h2 class="font-display text-3xl font-bold mb-12 text-center text-white">¿Qué vas a aprender?</h2>
+            <h2 class="font-display text-3xl font-bold mb-12 text-center text-white" data-aos="fade-up">¿Qué vas a aprender?</h2>
             
             <div class="flex flex-wrap justify-center gap-6">
-                <!-- Card 1: EL MAPA REAL -->
-                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500">
+                <!-- Card 1 -->
+                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
                     <div class="bg-brand-surface rounded-xl p-6 h-full relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">01</div>
                         <div class="text-3xl mb-4">🧭</div>
@@ -359,8 +374,8 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                     </div>
                 </div>
 
-                <!-- Card 2: EL SISTEMA -->
-                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500">
+                <!-- Card 2 -->
+                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
                     <div class="bg-brand-surface rounded-xl p-6 h-full relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">02</div>
                         <div class="text-3xl mb-4">⚙️</div>
@@ -375,8 +390,8 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                     </div>
                 </div>
 
-                <!-- Card 3: VENDER Y COBRAR BIEN -->
-                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500">
+                <!-- Card 3 -->
+                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="300">
                     <div class="bg-brand-surface rounded-xl p-6 h-full relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">03</div>
                         <div class="text-3xl mb-4">💰</div>
@@ -392,8 +407,8 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                     </div>
                 </div>
 
-                <!-- Card 4: ESCALAR Y SOSTENER -->
-                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500">
+                <!-- Card 4 -->
+                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="400">
                     <div class="bg-brand-surface rounded-xl p-6 h-full relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">04</div>
                         <div class="text-3xl mb-4">🚀</div>
@@ -409,8 +424,8 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                     </div>
                 </div>
 
-                <!-- Card 5: MENTE & LARGO PLAZO -->
-                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500">
+                <!-- Card 5 -->
+                <div class="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="500">
                     <div class="bg-brand-surface rounded-xl p-6 h-full relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">05</div>
                         <div class="text-3xl mb-4">🧠</div>
@@ -436,7 +451,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
         <div class="container mx-auto px-4 max-w-5xl relative z-10">
             
             <!-- Encabezado -->
-            <div class="text-center mb-16 space-y-6">
+            <div class="text-center mb-16 space-y-6" data-aos="fade-up">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">
                     Pero espera un minuto… <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">eso no es todo.</span>
@@ -452,7 +467,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
             <div class="flex flex-col gap-6">
                 
                 <!-- BONUS 1 -->
-                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden">
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
                     <div class="bg-brand-surface/80 h-full w-full rounded-xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                         <!-- Etiqueta de Regalo Absoluta -->
                         <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
@@ -491,7 +506,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                                 <h3 class="text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">Estrategia PASO a PASO para conseguir clientes desde INSTAGRAM</h3>
                                 
                                 <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
-                                  Aprende cómo convertir tu Instagram en un embudo de ventas real para atraer clientes sin parecer un vendedor. </br> Deja de postear por postear.
+                                  Aprende cómo convertir tu Instagram en un embudo de ventas real para atraer clientes sin parecer un vendedor. <br> Deja de postear por postear.
                                 </p>
                                 
                                 <div class="flex justify-center md:justify-start">
@@ -506,7 +521,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                 </div>
 
                 <!-- BONUS 2 -->
-                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden">
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="200">
                     <div class="bg-brand-surface/80 h-full w-full rounded-xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                         <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
                             100% Gratis
@@ -557,7 +572,7 @@ Aprendé el sistema que usamos para pasar de <span class="text-white font-medium
                 </div>
 
                 <!-- BONUS 3 -->
-                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden">
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="300">
                     <div class="bg-brand-surface/80 h-full w-full rounded-xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                         <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
                             100% Gratis
@@ -609,7 +624,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </div>
 
                 <!-- BONUS 4 -->
-                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden">
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="400">
                     <div class="bg-brand-surface/80 h-full w-full rounded-xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                         <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
                             100% Gratis
@@ -660,7 +675,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </div>
 
                 <!-- BONUS 5 -->
-                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden">
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="500">
                     <div class="bg-brand-surface/80 h-full w-full rounded-xl p-6 md:p-8 backdrop-blur-sm relative z-10">
                         <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
                             100% Gratis
@@ -713,7 +728,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             </div>
 
             <!-- Aviso de Urgencia -->
-            <div class="mt-16 max-w-2xl mx-auto">
+            <div class="mt-16 max-w-2xl mx-auto" data-aos="zoom-in">
                 <div class="bg-yellow-500/5 border border-yellow-500/20 rounded-xl p-4 flex items-center justify-center gap-3 animate-pulse">
                     <i class="ph-fill ph-warning-circle text-yellow-500 text-xl shrink-0"></i>
                     <p class="text-yellow-500/90 text-sm font-medium text-center">
@@ -731,7 +746,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             <div class="grid lg:grid-cols-2 gap-12 items-start">
                 
                 <!-- Columna Izquierda: Galería -->
-                <div class="lg:sticky lg:top-24">
+                <div class="lg:sticky lg:top-24" data-aos="fade-right">
                     <div class="space-y-4">
                         
                         <!-- TITULO DINÁMICO & FLECHA (Updated) -->
@@ -783,7 +798,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </div>
 
                 <!-- Columna Derecha: Info del Producto -->
-                <div class="space-y-6">
+                <div class="space-y-6" data-aos="fade-left" data-aos-delay="200">
                     <div>
                         <h1 class="font-display text-2xl md:text-4xl font-bold text-white mb-2">Sistema Completo + BONUS</h1>
                         <p class="text-sm text-zinc-400">El sistema paso a paso para conseguir clientes.</p>
@@ -791,7 +806,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
                     <!-- Reviews -->
                     <div class="flex flex-wrap items-center gap-1 text-sm">
-                        <div class="flex text-brand-orange gap-0.5">
+                        <div class="flex text-brand-orange gap-0">
                             <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
                         </div>
                         <span class="font-bold text-white">4.9/5</span>
@@ -870,7 +885,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                                     <div class="mt-10 flex justify-center">
                 <img src="https://sandiprojects.com/wp-content/uploads/2026/02/upscalemedia-transformed-2.png" 
                      alt="Satisfacción Garantizada" 
-                     class="h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-15 transition-transform duration-300">
+                     class="h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-105 transition-transform duration-300">
             </div>
                     </div>
 
@@ -886,7 +901,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                             </summary>
                             
                             <!-- Contenido Detallado Nuevo -->
-                            <div class="pb-4 pl-2 md:pl-8 text-sm text-zinc-400 leading-relaxed animate-fade-in-down">
+                            <div class="pb-4 pl-2 md:pl-8 text-sm text-zinc-400 leading-relaxed">
                                 <div class="space-y-6 pt-2">
                                     
                                     <!-- Programa -->
@@ -1009,7 +1024,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         <div class="container mx-auto px-4 max-w-6xl relative">
             
             <!-- Título -->
-            <div class="text-center mb-16">
+            <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">
                     RESULTADOS <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">REALES</span> DE NUESTROS ALUMNOS
                 </h2>
@@ -1017,9 +1032,9 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 <p class="text-zinc-400 text-lg mt-4">Capturas reales de diseñadores </br>que aplicaron el sistema.</p>
             </div>
 
-            <div class="relative group mt-8 px-0 md:px-4">
+            <div class="relative group mt-8 px-0 md:px-4" data-aos="zoom-in" data-aos-delay="200">
                 
-                <!-- Botones Navegación (Visibles siempre, más grandes en desktop, adaptados a la marca) -->
+                <!-- Botones Navegación -->
                 <button id="prevBtn" class="flex absolute left-2 md:-left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-100 disabled:opacity-0 disabled:pointer-events-none">
                     <i class="ph-bold ph-caret-left text-xl"></i>
                 </button>
@@ -1027,9 +1042,9 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                     <i class="ph-bold ph-caret-right text-xl"></i>
                 </button>
 
-                <!-- Slider Wrapper con Scroll Nativo (Soporta swipe en móvil) -->
+                <!-- Slider Wrapper con Scroll Nativo -->
                 <div class="w-full">
-                    <div id="sliderTrack" class="flex overflow-hidden snap-x snap-mandatory gap-4 md:gap-6 pb-8 pt-4 px-4 md:px-8 scroll-smooth w-full">
+                    <div id="sliderTrack" class="flex overflow-x-auto snap-x snap-mandatory gap-4 md:gap-6 pb-8 pt-4 px-4 md:px-8 scrollbar-hide scroll-smooth w-full">
                         
                         <!-- Card 1 -->
                         <div class="snap-center shrink-0 w-[80vw] max-w-[300px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
@@ -1039,7 +1054,6 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                                 </p>
                             </div>
                             <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
-                                <!-- aspect-[9/16] fuerza proporción de WhatsApp -->
                                 <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
                                     <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena1.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
                                 </div>
@@ -1111,11 +1125,11 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </div>
             </div>
     <!-- 4. RESULTADOS (Social Proof) -->
-    <br></br>
-        <div class="container mx-auto px-4 text-center">
+    <br><br>
+        <div class="container mx-auto px-4 text-center" data-aos="fade-up">
             <p class="text-brand-orange text-xs font-bold uppercase tracking-widest mb-4">FACTURACION DE ALUMNOS</p>
-            <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-12">+$197.463 USD</h2>
-            <p class="text-zinc-400 mb-8 max-w-2xl mx-auto">+180 diseñadores ya aplicaron este sistema.</br>No es teoría: son resultados reales de personas comunes que decidieron ejecutar.</p>
+            <h2 id="revenue-counter" class="font-display text-4xl md:text-5xl font-bold text-white mb-12">+$0 USD</h2>
+            <p class="text-zinc-400 mb-8 max-w-2xl mx-auto">+180 diseñadores ya aplicaron este sistema.<br>No es teoría: son resultados reales de personas comunes que decidieron ejecutar.</p>
 
         </div>
     </section>
@@ -1128,13 +1142,13 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
         <div class="container mx-auto px-6">
             <div class="max-w-6xl mx-auto">
-                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl text-center mb-16 text-white font-bold tracking-tight" style="opacity: 1; transform: none;">
+                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl text-center mb-16 text-white font-bold tracking-tight" data-aos="fade-up">
                     ¿QUIÉN ESTA <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">DETRAS?</span>
                 </h2>
                 
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     <!-- Image Column -->
-                    <div class="relative group" style="opacity: 1; transform: none;">
+                    <div class="relative group" data-aos="fade-right" data-aos-delay="100">
                         <div class="relative aspect-square max-w-md mx-auto lg:mx-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_50px_-10px_rgba(255,69,0,0.15)]">
                             <img src="https://sandiprojects.com/wp-content/uploads/2026/02/fwfwfwf-1-scaled.png" alt="Franco - Fundador" class="w-full h-full object-cover">
                             <!-- Overlay Gradient -->
@@ -1143,7 +1157,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                     </div>
 
                     <!-- Text Column -->
-                    <div class="space-y-6 text-center lg:text-left" style="opacity: 1; transform: none;">
+                    <div class="space-y-6 text-center lg:text-left" data-aos="fade-left" data-aos-delay="200">
                         <p class="text-xl text-white/90 leading-relaxed">
                             Soy <span class="font-semibold text-brand-orange">Fran</span>.
                         </p>
@@ -1180,7 +1194,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
         <div class="container mx-auto px-4 max-w-4xl relative z-10">
             
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-aos="fade-up">
                 <span class="text-brand-orange text-xs font-bold uppercase tracking-[0.2em] mb-3 block">Oferta Limitada</span>
                 <h2 class="font-display text-3xl md:text-5xl text-white font-bold mb-4">ACCESO COMPLETO</h2>
                 <p class="text-zinc-500 font-light">Acceso inmediato a todo el sistema.</p>
@@ -1206,7 +1220,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5">
                     
                     <!-- Left: Items Detail -->
-                    <div class="p-8 md:p-10 space-y-8">
+                    <div class="p-8 md:p-10 space-y-8" data-aos="fade-right">
                         <h3 class="text-white font-bold text-lg mb-6 flex items-center gap-2">
                             <i class="ph-duotone ph-package text-brand-orange"></i>ESTO ES LO QUE OBTIENES
                         </h3>
@@ -1279,7 +1293,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                     </div>
 
                     <!-- Right: Summary & CTA -->
-                    <div class="p-8 md:p-10 bg-brand-surface/30 flex flex-col justify-between relative overflow-hidden">
+                    <div class="p-8 md:p-10 bg-brand-surface/30 flex flex-col justify-between relative overflow-hidden" data-aos="fade-left">
                         <!-- Decor element -->
                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-orange/10 blur-[50px] rounded-full"></div>
 
@@ -1329,26 +1343,27 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             </div>
             
             <!-- Bottom note -->
-            <p class="text-center text-zinc-600 text-xs mt-8 max-w-lg mx-auto">
-                Al hacer clic, serás redirigido a la pasarela de pago segura de Hotmart. El acceso al material llega a tu correo inmediatamente después de la compra.
-            </p>
-                        <div class="mt-5 flex justify-center">
-                <img src="https://sandiprojects.com/wp-content/uploads/2026/02/upscalemedia-transformed-2.png" 
-                     alt="Satisfacción Garantizada" 
-                     class="h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-15 transition-transform duration-300">
+            <div data-aos="fade-up" data-aos-delay="150">
+                <p class="text-center text-zinc-600 text-xs mt-8 max-w-lg mx-auto">
+                    Al hacer clic, serás redirigido a la pasarela de pago segura de Hotmart. El acceso al material llega a tu correo inmediatamente después de la compra.
+                </p>
+                <div class="mt-5 flex justify-center">
+                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/upscalemedia-transformed-2.png" 
+                         alt="Satisfacción Garantizada" 
+                         class="h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-105 transition-transform duration-300">
+                </div>
             </div>
 
         </div>
     </section>
 
-
-        <!-- 8. FAQ REIMAGINED -->
+    <!-- 8. FAQ REIMAGINED -->
     <section class="py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
         <!-- Subtle Glow -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
 
         <div class="container mx-auto px-4 max-w-3xl relative z-10">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-brand-orange text-xs font-bold uppercase tracking-widest mb-3 block">Dudas Comunes</span>
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">PREGUNTAS FRECUENTES</h2>
                 <div class="w-16 h-1 bg-brand-orange mx-auto rounded-full"></div>
@@ -1356,7 +1371,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             
             <div class="space-y-4">
                 <!-- FAQ Item 1 -->
-                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface">
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="100">
                     <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
                         <div class="flex items-center gap-4">
                             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
@@ -1374,7 +1389,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </details>
 
                 <!-- FAQ Item 2 -->
-                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface">
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="150">
                     <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
                         <div class="flex items-center gap-4">
                             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
@@ -1392,7 +1407,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </details>
 
                 <!-- FAQ Item 3 -->
-                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface">
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="200">
                     <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
                         <div class="flex items-center gap-4">
                             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
@@ -1410,7 +1425,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </details>
 
                 <!-- FAQ Item 4 -->
-                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface">
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="250">
                     <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
                         <div class="flex items-center gap-4">
                             <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
@@ -1429,20 +1444,21 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             </div>
         </div>
         <!-- Guarantee Seal & CTA -->
-                <div class="text-center">
-                    <a href="#offer" class="group inline-flex items-center gap-3 px-8 py-4 bg-brand-orange mt-10 hover:bg-brand-hover text-white rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_-5px_rgba(255,69,0,0.4)] hover:shadow-[0_0_50px_-10px_rgba(255,69,0,0.6)] hover:-translate-y-1">
-                        <span>ACCEDER AHORA</span>
-                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                    <p class="text-zinc-600 text-[10px] mt-3 uppercase tracking-widest font-medium">Sin Riesgos • Garantía Total</p>
-                </div>
+        <div class="text-center" data-aos="zoom-in" data-aos-delay="300">
+            <a href="#offer" class="group inline-flex items-center gap-3 px-8 py-4 bg-brand-orange mt-10 hover:bg-brand-hover text-white rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_-5px_rgba(255,69,0,0.4)] hover:shadow-[0_0_50px_-10px_rgba(255,69,0,0.6)] hover:-translate-y-1">
+                <span>ACCEDER AHORA</span>
+                <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <p class="text-zinc-600 text-[10px] mt-3 uppercase tracking-widest font-medium">Sin Riesgos • Garantía Total</p>
+        </div>
     </section>
+
     <!-- 9. TRANSPARENCIA & GARANTÍA -->
     <section class="py-16 bg-brand-surface border-t border-white/5 text-center">
         <div class="container mx-auto px-4 max-w-3xl">
             
             <!-- Bloque de Transparencia -->
-            <div class="bg-brand-bg/50 border border-white/5 p-6 rounded-xl mb-12 backdrop-blur-sm">
+            <div class="bg-brand-bg/50 border border-white/5 p-6 rounded-xl mb-12 backdrop-blur-sm" data-aos="fade-up">
                 <div class="flex items-center justify-center gap-2 mb-3 text-zinc-300 font-bold uppercase text-xs tracking-widest">
                     <i class="ph-fill ph-lock-key-open"></i> Transparencia Total
                 </div>
@@ -1451,7 +1467,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 </p>
             </div>
 
-            <div class="mb-12">
+            <div class="mb-12" data-aos="fade-up" data-aos-delay="150">
                 <i class="ph-duotone ph-shield-check text-4xl text-brand-orange mb-4"></i>
                 <h3 class="text-xl font-bold text-white mb-2">Garantía de Satisfacción de 7 Días</h3>
                 <p class="text-sm text-zinc-400 mb-8">Si en los primeros 7 días no cumple con tus expectativas, te reembolsaremos el 100% de tu dinero sin preguntas.</p>
@@ -1466,7 +1482,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </section>
 
-<!-- Sticky Bottom Offer Bar (Initially Hidden) -->
+    <!-- Sticky Bottom Offer Bar (Initially Hidden) -->
     <div id="sticky-offer-bar" class="fixed bottom-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-t border-brand-orange/20 z-50 transform translate-y-full transition-transform duration-500 shadow-[0_-4px_30px_-10px_rgba(255,69,0,0.15)]">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between gap-4 max-w-6xl mx-auto">
@@ -1495,8 +1511,17 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </div>
 
-    <!-- Script Timer & AI -->
+    <!-- Script Timer, Carousel & AOS Init -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // --- INICIALIZAR ANIMACIONES AOS ---
+        AOS.init({
+            once: true, // Que la animación suceda solo la primera vez (evita mareos al hacer scroll hacia arriba)
+            duration: 800, // Duración suave
+            easing: 'ease-out-cubic',
+            offset: 50 // Para que se active ligeramente antes
+        });
+
         // --- TIMER ---
         function updateTimer() {
             const now = new Date();
@@ -1519,26 +1544,22 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         setInterval(updateTimer, 1000);
         updateTimer();
 
-
-        // --- NEW: DYNAMIC DISCOUNT SCRIPT ---
+        // --- DYNAMIC DISCOUNT SCRIPT ---
         document.addEventListener('DOMContentLoaded', () => {
             const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
             const today = new Date().getDay();
             const dayName = days[today];
             
-            // Update Header Title
             const headerTitle = document.getElementById('dynamic-offer-title');
             if (headerTitle) headerTitle.innerText = `OFERTA RELÁMPAGO ⚡`;
 
-            // Update Product Banner with styled span for "87% OFF"
             const productBanner = document.getElementById('product-discount-banner');
             if (productBanner) {
                 productBanner.innerHTML = `HOY ${dayName} <span class="text-green-500">87% OFF</span>`;
             }
         });
 
-
-        // --- LÓGICA DE CARRUSEL ACTUALIZADA PARA SCROLL NATIVO (MOBILE FRIENDLY) ---
+        // --- LÓGICA DE CARRUSEL ---
         const track = document.getElementById('sliderTrack');
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -1547,17 +1568,15 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         if (track && nextBtn && prevBtn && dotsContainer) {
             const cards = Array.from(track.children);
             
-            // Generar puntos dinámicos basados en la cantidad de tarjetas
             dotsContainer.innerHTML = '';
             cards.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600 hover:bg-zinc-500`;
                 dot.setAttribute('aria-label', `Ir al testimonio ${i + 1}`);
                 
-                // Evento click del punto para scrollear hacia esa tarjeta
                 dot.addEventListener('click', () => {
                     const cardWidth = cards[0].offsetWidth;
-                    const gap = window.innerWidth >= 768 ? 24 : 16; // md:gap-6 = 24px, gap-4 = 16px
+                    const gap = window.innerWidth >= 768 ? 24 : 16;
                     track.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
                 });
                 
@@ -1566,25 +1585,20 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
             const dots = Array.from(dotsContainer.children);
 
-            // Función para sincronizar botones y puntos con la posición actual del scroll
             const updateSliderState = () => {
                 const scrollLeft = track.scrollLeft;
-                // Calculamos el scroll máximo posible
                 const maxScrollLeft = track.scrollWidth - track.clientWidth;
                 
-                // Deshabilitar/Habilitar botones
                 prevBtn.disabled = scrollLeft <= 0;
-                nextBtn.disabled = scrollLeft >= maxScrollLeft - 5; // -5 por posible margen de error decimal
+                nextBtn.disabled = scrollLeft >= maxScrollLeft - 5;
                 prevBtn.style.opacity = scrollLeft <= 0 ? '0.3' : '1';
                 nextBtn.style.opacity = scrollLeft >= maxScrollLeft - 5 ? '0.3' : '1';
 
-                // Calcular índice activo para los puntos
                 const cardWidth = cards[0].offsetWidth;
                 const gap = window.innerWidth >= 768 ? 24 : 16;
                 let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
                 if (activeIndex >= dots.length) activeIndex = dots.length - 1;
 
-                // Actualizar estilos de los puntos
                 dots.forEach((dot, i) => {
                     if (i === activeIndex) {
                         dot.classList.remove('w-2', 'bg-zinc-600');
@@ -1596,7 +1610,6 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 });
             };
 
-            // Scroll manual con botones (Desktop)
             nextBtn.addEventListener('click', () => {
                 const cardWidth = cards[0].offsetWidth;
                 const gap = window.innerWidth >= 768 ? 24 : 16;
@@ -1609,23 +1622,19 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 track.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
             });
 
-            // Escuchar el evento scroll nativo (disparado al deslizar en móvil o click en botones)
             track.addEventListener('scroll', updateSliderState);
             window.addEventListener('resize', updateSliderState);
-            
-            // Estado inicial
-            setTimeout(updateSliderState, 100); // Pequeño delay para asegurar que el DOM calculó anchos
+            setTimeout(updateSliderState, 100);
         }
 
-        // --- STICKY BAR LOGIC (ACTIVATED AFTER CHECKOUT SECTION) ---
+        // --- STICKY BAR LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const stickyBar = document.getElementById('sticky-offer-bar');
-            const triggerSection = document.getElementById('checkout-product'); // Trigger: Sección de Pagar
+            const triggerSection = document.getElementById('checkout-product');
             
             if (stickyBar && triggerSection) {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        // Lógica: Mostrar barra SOLO si ya pasamos la sección de pagar (no es visible y está por encima del viewport)
                         if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
                              stickyBar.classList.remove('translate-y-full');
                         } else {
@@ -1636,6 +1645,51 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
                 observer.observe(triggerSection);
             }
+        });// --- ANIMACIÓN DE CONTADOR (REVENUE COUNTER) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const counterElement = document.getElementById('revenue-counter');
+            if (!counterElement) return;
+
+            const target = 197463; // El número final a alcanzar
+            const duration = 2000; // Duración de la animación en ms (2 segundos)
+            const frameRate = 1000 / 60; // 60 FPS
+            const totalFrames = Math.round(duration / frameRate);
+            
+            // Formateador para añadir el separador de miles
+            const formatter = new Intl.NumberFormat('es-AR', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+
+            const countUp = () => {
+                let frame = 0;
+                const counterInterval = setInterval(() => {
+                    frame++;
+                    const progress = frame / totalFrames;
+                    // Easing "ease-out" para que se frene suavemente al final
+                    const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+                    
+                    counterElement.innerText = `+$${formatter.format(currentCount)} USD`;
+
+                    if (frame === totalFrames) {
+                        clearInterval(counterInterval);
+                        counterElement.innerText = `+$197.463 USD`; // Asegurar el valor exacto al final
+                    }
+                }, frameRate);
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Cuando el elemento entra en la pantalla, dispara la animación
+                    if (entry.isIntersecting) {
+                        countUp();
+                        observer.unobserve(entry.target); // Solo ejecutar una vez
+                    }
+                });
+            }, { threshold: 0.5 }); // Se activa cuando al menos el 50% es visible
+
+            observer.observe(counterElement);
         });
     </script>
 </body>
