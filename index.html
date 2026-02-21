@@ -72,21 +72,21 @@
             background: rgba(255, 69, 0, 0.3);
             color: white;
         }
-
-        /* Patrón de Grid SaaS Sutil */
-        .bg-grid-pattern {
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-        }
-
-        /* Scrollbar minimalista */
-        ::-webkit-scrollbar { width: 6px; }
+        /* Scrollbar minimalista general */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* Ocultar scrollbar para carrusel horizontal en movil */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
 
         /* Estilo para la imagen del mockup */
         .mockup-img {
@@ -765,7 +765,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                         </div>
 
                         <!-- Thumbnails -->
-                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                             <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-brand-orange bg-zinc-900">
                                 <img src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" class="w-full h-full object-cover">
                             </button>
