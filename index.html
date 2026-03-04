@@ -132,6 +132,16 @@
             -ms-overflow-style: none !important;
             scrollbar-width: none !important;
         }
+
+        /* Galería activa */
+        .thumb-active {
+            border-color: #FF4500 !important;
+            opacity: 1 !important;
+        }
+        .thumb-inactive {
+            border-color: transparent;
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body class="pt-14 relative overflow-x-hidden">
@@ -746,53 +756,59 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid lg:grid-cols-2 gap-12 items-start">
                 
-                <!-- Columna Izquierda: Galería -->
+                <!-- Columna Izquierda: Galería Carrusel -->
                 <div class="lg:sticky lg:top-24" data-aos="fade-right">
                     <div class="space-y-4">
                         
-                        <!-- TITULO DINÁMICO & FLECHA (Updated) -->
+                        <!-- TITULO DINÁMICO & FLECHA -->
                         <div class="text-center mb-6">
                             <h3 id="product-discount-banner" class="font-display font-bold text-2xl md:text-3xl text-white tracking-wide uppercase drop-shadow-lg">
                                 Cargando oferta...
                             </h3>
-                            <div class="mt-3 animate-float"> <!-- Animación de flotación suave -->
+                            <div class="mt-3 animate-float"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 mx-auto text-zinc-500 opacity-80">
                                     <path d="m6 9 6 6 6-6"></path>
                                 </svg>
                             </div>
                         </div>
 
-                        <!-- Main Image -->
-                        <div class="relative bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group">
-                            <div class="absolute top-4 right-4 z-10 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white border border-white/10 flex items-center gap-2">
+                        <!-- Main Image Container -->
+                        <div class="relative bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group shadow-2xl">
+                            <!-- Badge Disponibilidad -->
+                            <div class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold text-white border border-white/10 flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Disponible
                             </div>
-                            <img src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" 
-                                 alt="Ebook Pack Completo" 
-                                 class="w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-700">
                             
-                            <!-- Navigation Arrows (Visual) -->
-                            <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-brand-orange transition-colors text-white border border-white/10">
+                            <!-- Img Principal con ID para JS -->
+                            <div class="relative aspect-square md:aspect-auto">
+                                <img id="product-main-img" 
+                                     src="https://cdn.shopify.com/s/files/1/0811/8924/1051/files/Generated_Image_February_03_2026_-_10_06AM.jpg?v=1770124330" 
+                                     alt="Ebook Pack Completo" 
+                                     class="w-full h-full object-contain transition-all duration-500 ease-in-out">
+                            </div>
+
+                            <!-- Navigation Arrows -->
+                            <button id="galleryPrev" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand-orange transition-all text-white border border-white/10 z-30">
                                 <i class="ph-bold ph-caret-left"></i>
                             </button>
-                            <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-brand-orange transition-colors text-white border border-white/10">
+                            <button id="galleryNext" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand-orange transition-all text-white border border-white/10 z-30">
                                 <i class="ph-bold ph-caret-right"></i>
                             </button>
                         </div>
 
-                        <!-- Thumbnails -->
-                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
-                            <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-brand-orange bg-zinc-900">
-                                <img src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" class="w-full h-full object-cover">
+                        <!-- Thumbnails con Lógica de Selección -->
+                        <div id="product-thumbs" class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+                            <button class="gallery-thumb flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 thumb-active bg-zinc-900 transition-all" data-img="https://cdn.shopify.com/s/files/1/0811/8924/1051/files/Generated_Image_February_03_2026_-_10_06AM.jpg?v=1770124330">
+                                <img src="https://cdn.shopify.com/s/files/1/0811/8924/1051/files/Generated_Image_February_03_2026_-_10_06AM.jpg?v=1770124330" class="w-full h-full object-cover">
                             </button>
-                            <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-brand-orange/50 bg-zinc-800 flex items-center justify-center text-zinc-600 transition-all">
-                                <i class="ph-duotone ph-book-open-text text-2xl"></i>
+                            <button class="gallery-thumb flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
                             </button>
-                            <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-brand-orange/50 bg-zinc-800 flex items-center justify-center text-zinc-600 transition-all">
-                                <i class="ph-duotone ph-file-text text-2xl"></i>
+                            <button class="gallery-thumb flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?q=80&w=800&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
                             </button>
-                            <button class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-brand-orange/50 bg-zinc-800 flex items-center justify-center text-zinc-600 transition-all">
-                                <i class="ph-duotone ph-gift text-2xl"></i>
+                            <button class="gallery-thumb flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=800&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
                             </button>
                         </div>
                     </div>
@@ -901,7 +917,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                                 <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
                             </summary>
                             
-                            <!-- Contenido Detallado Nuevo -->
+                            <!-- Contenido Detallado -->
                             <div class="pb-4 pl-2 md:pl-8 text-sm text-zinc-400 leading-relaxed">
                                 <div class="space-y-6 pt-2">
                                     
@@ -1019,7 +1035,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </section>
     
-        <!-- SECCIÓN NUEVA: RESULTADOS REALES (CARRUSEL) -->
+        <!-- SECCIÓN: RESULTADOS REALES (CARRUSEL) -->
     <section class="py-24 relative z-10 border-t border-white/5 overflow-hidden">
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,69,0,0.03)_0%,transparent_70%)] pointer-events-none"></div>
         <div class="container mx-auto px-4 max-w-6xl relative">
@@ -1120,9 +1136,8 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                     </div>
                 </div>
 
-                <!-- Pagination Dots (Nuevo) -->
+                <!-- Pagination Dots -->
                 <div id="paginationDots" class="flex justify-center gap-2 mt-4 md:mt-8">
-                    <!-- Dots generados por JS -->
                 </div>
             </div>
     <!-- 4. RESULTADOS (Social Proof) -->
@@ -1191,7 +1206,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </section>
 
-    <!-- 5. RESUMEN DE LA OFERTA (REDSEÑADO: STACK CARD) -->
+    <!-- 5. RESUMEN DE LA OFERTA -->
     <section id="offer" class="py-24 bg-black relative border-t border-white/5 overflow-hidden">
         <!-- Ambient Light -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
@@ -1361,7 +1376,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </section>
 
-    <!-- 8. FAQ REIMAGINED -->
+    <!-- 8. FAQ -->
     <section class="py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
         <!-- Subtle Glow -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
@@ -1486,7 +1501,7 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </section>
 
-    <!-- Sticky Bottom Offer Bar (Initially Hidden) -->
+    <!-- Sticky Bottom Offer Bar -->
     <div id="sticky-offer-bar" class="fixed bottom-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-t border-brand-orange/20 z-50 transform translate-y-full transition-transform duration-500 shadow-[0_-4px_30px_-10px_rgba(255,69,0,0.15)]">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between gap-4 max-w-6xl mx-auto">
@@ -1515,16 +1530,11 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
         </div>
     </div>
 
-    <!-- Script Timer, Carousel & AOS Init -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- INICIALIZAR ANIMACIONES AOS ---
-        AOS.init({
-            once: true, // Que la animación suceda solo la primera vez (evita mareos al hacer scroll hacia arriba)
-            duration: 800, // Duración suave
-            easing: 'ease-out-cubic',
-            offset: 50 // Para que se active ligeramente antes
-        });
+        // --- INICIALIZAR AOS ---
+        AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic', offset: 50 });
 
         // --- TIMER ---
         function updateTimer() {
@@ -1532,38 +1542,71 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
             const tomorrow = new Date(now);
             tomorrow.setHours(24, 0, 0, 0);
             let diff = tomorrow - now;
-            
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
             const seconds = Math.floor((diff / 1000) % 60);
-            
-            const hoursEl = document.getElementById('hours');
-            const minutesEl = document.getElementById('minutes');
-            const secondsEl = document.getElementById('seconds');
-
-            if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
-            if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
-            if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
         }
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- DYNAMIC DISCOUNT SCRIPT ---
+        // --- DISCOUNT SCRIPT ---
         document.addEventListener('DOMContentLoaded', () => {
             const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
             const today = new Date().getDay();
             const dayName = days[today];
-            
-            const headerTitle = document.getElementById('dynamic-offer-title');
-            if (headerTitle) headerTitle.innerText = `OFERTA RELÁMPAGO ⚡`;
-
-            const productBanner = document.getElementById('product-discount-banner');
-            if (productBanner) {
-                productBanner.innerHTML = `HOY ${dayName} <span class="text-green-500">87% OFF</span>`;
-            }
+            document.getElementById('product-discount-banner').innerHTML = `HOY ${dayName} <span class="text-green-500">87% OFF</span>`;
         });
 
-        // --- LÓGICA DE CARRUSEL ---
+        // --- LÓGICA DE CARRUSEL DE PRODUCTO ---
+        const productMainImg = document.getElementById('product-main-img');
+        const thumbs = document.querySelectorAll('.gallery-thumb');
+        const galleryPrev = document.getElementById('galleryPrev');
+        const galleryNext = document.getElementById('galleryNext');
+        
+        let currentImgIndex = 0;
+        const imgUrls = Array.from(thumbs).map(t => t.dataset.img);
+
+        function updateGallery(index) {
+            currentImgIndex = index;
+            // Efecto de fade suave
+            productMainImg.style.opacity = '0';
+            setTimeout(() => {
+                productMainImg.src = imgUrls[currentImgIndex];
+                productMainImg.style.opacity = '1';
+            }, 200);
+
+            thumbs.forEach((t, i) => {
+                if (i === currentImgIndex) {
+                    t.classList.add('thumb-active');
+                    t.classList.remove('thumb-inactive');
+                } else {
+                    t.classList.remove('thumb-active');
+                    t.classList.add('thumb-inactive');
+                }
+            });
+            
+            // Auto-scroll miniaturas si es necesario
+            thumbs[currentImgIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', () => updateGallery(i));
+        });
+
+        galleryNext.addEventListener('click', () => {
+            let next = (currentImgIndex + 1) % imgUrls.length;
+            updateGallery(next);
+        });
+
+        galleryPrev.addEventListener('click', () => {
+            let prev = (currentImgIndex - 1 + imgUrls.length) % imgUrls.length;
+            updateGallery(prev);
+        });
+
+        // --- LÓGICA DE CARRUSEL DE TESTIMONIOS ---
         const track = document.getElementById('sliderTrack');
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -1571,42 +1614,27 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
 
         if (track && nextBtn && prevBtn && dotsContainer) {
             const cards = Array.from(track.children);
-            
-            dotsContainer.innerHTML = '';
             cards.forEach((_, i) => {
                 const dot = document.createElement('button');
-                dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600 hover:bg-zinc-500`;
-                dot.setAttribute('aria-label', `Ir al testimonio ${i + 1}`);
-                
+                dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600`;
                 dot.addEventListener('click', () => {
                     const cardWidth = cards[0].offsetWidth;
-                    const gap = window.innerWidth >= 768 ? 24 : 16;
+                    const gap = 24;
                     track.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
                 });
-                
                 dotsContainer.appendChild(dot);
             });
-
             const dots = Array.from(dotsContainer.children);
 
             const updateSliderState = () => {
                 const scrollLeft = track.scrollLeft;
-                const maxScrollLeft = track.scrollWidth - track.clientWidth;
-                
-                prevBtn.disabled = scrollLeft <= 0;
-                nextBtn.disabled = scrollLeft >= maxScrollLeft - 5;
-                prevBtn.style.opacity = scrollLeft <= 0 ? '0.3' : '1';
-                nextBtn.style.opacity = scrollLeft >= maxScrollLeft - 5 ? '0.3' : '1';
-
                 const cardWidth = cards[0].offsetWidth;
-                const gap = window.innerWidth >= 768 ? 24 : 16;
+                const gap = 24;
                 let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
-                if (activeIndex >= dots.length) activeIndex = dots.length - 1;
-
                 dots.forEach((dot, i) => {
                     if (i === activeIndex) {
-                        dot.classList.remove('w-2', 'bg-zinc-600');
                         dot.classList.add('w-4', 'bg-brand-orange');
+                        dot.classList.remove('w-2', 'bg-zinc-600');
                     } else {
                         dot.classList.remove('w-4', 'bg-brand-orange');
                         dot.classList.add('w-2', 'bg-zinc-600');
@@ -1614,87 +1642,43 @@ Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autorida
                 });
             };
 
-            nextBtn.addEventListener('click', () => {
-                const cardWidth = cards[0].offsetWidth;
-                const gap = window.innerWidth >= 768 ? 24 : 16;
-                track.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
-            });
-
-            prevBtn.addEventListener('click', () => {
-                const cardWidth = cards[0].offsetWidth;
-                const gap = window.innerWidth >= 768 ? 24 : 16;
-                track.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
-            });
-
+            nextBtn.addEventListener('click', () => track.scrollBy({ left: cards[0].offsetWidth + 24, behavior: 'smooth' }));
+            prevBtn.addEventListener('click', () => track.scrollBy({ left: -(cards[0].offsetWidth + 24), behavior: 'smooth' }));
             track.addEventListener('scroll', updateSliderState);
-            window.addEventListener('resize', updateSliderState);
             setTimeout(updateSliderState, 100);
         }
 
-        // --- STICKY BAR LOGIC ---
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- STICKY BAR & REVENUE COUNTER ---
+        window.addEventListener('scroll', () => {
             const stickyBar = document.getElementById('sticky-offer-bar');
-            const triggerSection = document.getElementById('checkout-product');
-            
-            if (stickyBar && triggerSection) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-                             stickyBar.classList.remove('translate-y-full');
-                        } else {
-                             stickyBar.classList.add('translate-y-full');
-                        }
-                    });
-                }, { threshold: 0 }); 
-
-                observer.observe(triggerSection);
+            const checkoutSec = document.getElementById('checkout-product');
+            if (window.scrollY > checkoutSec.offsetTop + 200) {
+                stickyBar.classList.remove('translate-y-full');
+            } else {
+                stickyBar.classList.add('translate-y-full');
             }
-        });// --- ANIMACIÓN DE CONTADOR (REVENUE COUNTER) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const counterElement = document.getElementById('revenue-counter');
-            if (!counterElement) return;
-
-            const target = 197463; // El número final a alcanzar
-            const duration = 2000; // Duración de la animación en ms (2 segundos)
-            const frameRate = 1000 / 60; // 60 FPS
-            const totalFrames = Math.round(duration / frameRate);
-            
-            // Formateador para añadir el separador de miles
-            const formatter = new Intl.NumberFormat('es-AR', {
-                style: 'decimal',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            });
-
-            const countUp = () => {
-                let frame = 0;
-                const counterInterval = setInterval(() => {
-                    frame++;
-                    const progress = frame / totalFrames;
-                    // Easing "ease-out" para que se frene suavemente al final
-                    const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 3)));
-                    
-                    counterElement.innerText = `+$${formatter.format(currentCount)} USD`;
-
-                    if (frame === totalFrames) {
-                        clearInterval(counterInterval);
-                        counterElement.innerText = `+$197.463 USD`; // Asegurar el valor exacto al final
-                    }
-                }, frameRate);
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // Cuando el elemento entra en la pantalla, dispara la animación
-                    if (entry.isIntersecting) {
-                        countUp();
-                        observer.unobserve(entry.target); // Solo ejecutar una vez
-                    }
-                });
-            }, { threshold: 0.5 }); // Se activa cuando al menos el 50% es visible
-
-            observer.observe(counterElement);
         });
+
+        // --- CONTADOR REVENUE ---
+        const counterElement = document.getElementById('revenue-counter');
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                let start = 0;
+                const end = 197463;
+                const duration = 2000;
+                const step = (timestamp) => {
+                    if (!start) start = timestamp;
+                    const progress = timestamp - start;
+                    const val = Math.min(Math.floor((progress / duration) * end), end);
+                    counterElement.innerText = `+$${val.toLocaleString('es-AR')} USD`;
+                    if (progress < duration) window.requestAnimationFrame(step);
+                    else counterElement.innerText = `+$197.463 USD`;
+                };
+                window.requestAnimationFrame(step);
+                observer.unobserve(counterElement);
+            }
+        });
+        observer.observe(counterElement);
     </script>
 </body>
 </html>
