@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Te perdiste | Experiencia Unificada</title>
+    <style>
+        /* === CSS BASE (NO MODIFICAR) === */
+        body {
+            background-color: #0A0A0A;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden; /* Evitar scroll innecesario para el efecto 404 */
+        }
+
+        ::selection {
+            background: rgba(255, 69, 0, 0.3);
+            color: white;
+        }
+
+        /* Patrón de Grid SaaS Sutil */
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Scrollbar minimalista */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* Estilo para la imagen del mockup */
+        .mockup-img {
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+        }
+
+        .mockup-img:hover {
+            transform: perspective(1000px) rotateY(0deg) translateY(-10px) scale(1.02);
+        }
+
+        /* Detalles minimalistas */
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        /* Animación para el header de urgencia */
+        @keyframes urgent-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .animate-urgent-icon {
+            animation: urgent-pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Shimmer para IA */
+        .ai-shimmer {
+            background: linear-gradient(90deg, rgba(255,69,0,0) 0%, rgba(255,69,0,0.1) 50%, rgba(255,69,0,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+
+        /* Ocultar scrollbar para carrusel horizontal en movil */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+        /* === FIN CSS BASE === */
+
+        /* --- EXTENSIÓN CSS PREMIUM --- */
+
+        :root {
+            --accent: #FF4500;
+            --accent-glow: rgba(255, 69, 0, 0.4);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fondo Animado Sutil */
+        .bg-gradient-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 50%, #121212 0%, #0A0A0A 100%);
+        }
+
+        .bg-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* Ruido (Noise) */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3BaseFilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* Layout */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 650px;
+            width: 90%;
+            text-align: center;
+            perspective: 1200px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #666;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* Pill / Etiqueta */
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            border-radius: 100px;
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* Hero Card */
+        .hero-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            margin: 0 0 1rem 0;
+            background: linear-gradient(to bottom, #FFF 40%, #999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .description {
+            color: #A3A3A3;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Botones */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .btn-primary {
+            position: relative;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            box-shadow: 0 0 0 0 rgba(255, 69, 0, 0);
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px var(--accent-glow);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Highlight de brillo en botón */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover::after {
+            transform: scale(1);
+        }
+
+        .btn-secondary {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .btn-secondary:hover {
+            color: #EEE;
+        }
+
+        .btn-secondary::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .btn-secondary:hover::after {
+            width: 100%;
+        }
+
+        /* Tooltip Easter Egg */
+        #easter-egg {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1A1A1A;
+            border: 1px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+
+        #easter-egg.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .key-hint {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #BBB;
+            border-bottom: 2px solid #000;
+        }
+
+        /* Accesibilidad: Focus */
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern">
+
+    <div class="bg-gradient-fixed"></div>
+    <div class="bg-orb" id="orb"></div>
+    <div class="noise"></div>
+
+    <main class="container">
+        <nav class="breadcrumb" id="bc">Inicio / 404</nav>
+        
+        <div class="pill" id="pill">Error 404</div>
+
+        <div class="hero-card" id="card">
+            <h1 id="title">Te perdiste</h1>
+            <p class="description" id="desc">
+                Seguramente entraste por uno de nuestros productos… pero lo unificamos en uno gigante. 
+                Es hora de descubrir el nuevo estándar.
+            </p>
+
+            <div class="actions" id="btns">
+                <button class="btn-primary" onclick="redirectToProducts()" aria-label="Ir a sección de productos">
+                    Quiero ver
+                </button>
+                <a href="/" class="btn-secondary">Volver al inicio</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Easter Egg Tooltip -->
+    <div id="easter-egg">
+        <span style="color: #EEE; font-size: 0.9rem;">Comando detectado: <strong>Productos</strong></span>
+        <div style="display: flex; gap: 8px;">
+            <span><span class="key-hint">Enter</span> Ir</span>
+            <span><span class="key-hint">Esc</span> Cerrar</span>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const orb = document.getElementById('orb');
+        const easterEgg = document.getElementById('easter-egg');
+        let inputBuffer = "";
+        let eggVisible = false;
+
+        // 1. Animación de entrada Staggered
+        window.addEventListener('DOMContentLoaded', () => {
+            const elements = [
+                { el: document.getElementById('bc'), delay: 100 },
+                { el: document.getElementById('pill'), delay: 250 },
+                { el: card, delay: 400 },
+                { el: document.getElementById('title'), delay: 550 },
+                { el: document.getElementById('desc'), delay: 650 },
+                { el: document.getElementById('btns'), delay: 800 }
+            ];
+
+            elements.forEach(item => {
+                setTimeout(() => {
+                    item.el.style.opacity = '1';
+                    if (item.el.id === 'card') {
+                        item.el.style.transform = 'scale(1) translateY(0)';
+                    } else {
+                        item.el.style.transform = 'translateY(0)';
+                    }
+                }, item.delay);
+            });
+        });
+
+        // 2. Parallax con el Mouse
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            // Mover el ORB de luz
+            const moveX = (clientX - centerX) / 15;
+            const moveY = (clientY - centerY) / 15;
+            orb.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+
+            // Tilt del Card
+            const rotateX = (clientY - centerY) / 50;
+            const rotateY = (clientX - centerX) / 50;
+            
+            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                card.style.transform = `perspective(1200px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+            }
+        });
+
+        // 3. Redirección
+        function redirectToProducts() {
+            // Simulación de navegación premium con pequeño delay para el feedback visual
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.9) translateY(-20px)';
+            card.style.transition = 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            
+            setTimeout(() => {
+                window.location.href = "/productos";
+            }, 400);
+        }
+
+        // 4. Easter Egg Logic
+        document.addEventListener('keydown', (e) => {
+            // Cerrar con Escape
+            if (e.key === "Escape" && eggVisible) {
+                hideEgg();
+                return;
+            }
+
+            // Enter si está activo
+            if (e.key === "Enter" && eggVisible) {
+                redirectToProducts();
+                return;
+            }
+
+            // Buffering para palabras clave
+            inputBuffer += e.key.toLowerCase();
+            if (inputBuffer.length > 20) inputBuffer = inputBuffer.substring(1);
+
+            if (inputBuffer.includes("help") || inputBuffer.includes("productos")) {
+                showEgg();
+                inputBuffer = ""; // Limpiar buffer
+            }
+        });
+
+        function showEgg() {
+            easterEgg.classList.add('show');
+            eggVisible = true;
+        }
+
+        function hideEgg() {
+            easterEgg.classList.remove('show');
+            eggVisible = false;
+        }
+
+        // Microinteracción del botón (feedback de click)
+        const mainBtn = document.querySelector('.btn-primary');
+        mainBtn.addEventListener('mousedown', () => {
+            mainBtn.style.transform = "scale(0.95) translateY(0)";
+        });
+        mainBtn.addEventListener('mouseup', () => {
+            mainBtn.style.transform = "scale(1) translateY(-2px)";
+        });
+
+    </script>
+</body>
+</html>
