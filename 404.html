@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Te perdiste | Experiencia Unificada</title>
+    <title>Te perdiste? | @necesitodisenos</title>
     <style>
         /* === CSS BASE (NO MODIFICAR) === */
         body {
@@ -334,29 +334,27 @@
     <div class="noise"></div>
 
     <main class="container">
-        <nav class="breadcrumb" id="bc">Inicio / 404</nav>
+        <nav class="breadcrumb" id="bc">Actualización</nav>
         
-        <div class="pill" id="pill">Error 404</div>
+        <div class="pill" id="pill">CREAMOS ALGO NUEVO</div>
 
         <div class="hero-card" id="card">
-            <h1 id="title">Te perdiste</h1>
+            <h1 id="title">Hicimos algunos cambios...</h1>
             <p class="description" id="desc">
-                Seguramente entraste por uno de nuestros productos… pero lo unificamos en uno gigante. 
-                Es hora de descubrir el nuevo estándar.
+                Seguramente entraste buscando uno de nuestros productos... pero decidimos evolucionar. Unificamos todas las herramientas en un único sistema, mucho más simple y potente.
             </p>
 
             <div class="actions" id="btns">
-                <button class="btn-primary" onclick="redirectToProducts()" aria-label="Ir a sección de productos">
-                    Quiero ver
+                <button class="btn-primary" onclick="redirectToProducts()" aria-label="Ir a necesitodisenos.com">
+                    Quiero ver lo nuevo
                 </button>
-                <a href="/" class="btn-secondary">Volver al inicio</a>
             </div>
         </div>
     </main>
 
     <!-- Easter Egg Tooltip -->
     <div id="easter-egg">
-        <span style="color: #EEE; font-size: 0.9rem;">Comando detectado: <strong>Productos</strong></span>
+        <span style="color: #EEE; font-size: 0.9rem;">Comando detectado: <strong>Redirección mágica</strong></span>
         <div style="display: flex; gap: 8px;">
             <span><span class="key-hint">Enter</span> Ir</span>
             <span><span class="key-hint">Esc</span> Cerrar</span>
@@ -413,7 +411,7 @@
             }
         });
 
-        // 3. Redirección
+        // 3. Redirección a necesitodisenos.com
         function redirectToProducts() {
             // Simulación de navegación premium con pequeño delay para el feedback visual
             card.style.opacity = '0';
@@ -421,7 +419,7 @@
             card.style.transition = 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
             
             setTimeout(() => {
-                window.location.href = "/productos";
+                window.location.href = "https://necesitodisenos.com";
             }, 400);
         }
 
@@ -443,7 +441,7 @@
             inputBuffer += e.key.toLowerCase();
             if (inputBuffer.length > 20) inputBuffer = inputBuffer.substring(1);
 
-            if (inputBuffer.includes("help") || inputBuffer.includes("productos")) {
+            if (inputBuffer.includes("magia") || inputBuffer.includes("diseño")) {
                 showEgg();
                 inputBuffer = ""; // Limpiar buffer
             }
