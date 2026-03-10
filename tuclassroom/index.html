@@ -30,11 +30,6 @@
             scroll-padding-top: 120px;
         }
 
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-        }
-
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
@@ -43,6 +38,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             position: relative;
             width: 100%;
+            overflow-x: hidden; /* Solo en body para evitar bugs en iOS */
+        }
+
+        /* Clase segura para bloquear scroll en modales */
+        body.no-scroll {
+            overflow: hidden !important;
         }
         
         ::selection { background: var(--primary-glow); color: white; }
@@ -1357,7 +1358,7 @@ Vas a empezar a verlo en acción.</p>
             const savedName = localStorage.getItem('classroomUserName');
             if (!savedName) {
                 welcomeModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-scroll'); // Bloqueo seguro para iOS
             } else {
                 applyPersonalization(savedName);
             }
@@ -1376,8 +1377,7 @@ Vas a empezar a verlo en acción.</p>
                 applyPersonalization(name);
                 welcomeModal.classList.remove('active');
                 
-                // FIX CRÍTICO MOBILE: No usar 'auto', sino remover la propiedad.
-                document.body.style.removeProperty('overflow');
+                document.body.classList.remove('no-scroll'); // Desbloqueo seguro para iOS
             }
         };
 
@@ -1427,7 +1427,7 @@ Vas a empezar a verlo en acción.</p>
             updateCompleteButton(lesson.completed);
 
             modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
             
             setTimeout(() => document.getElementById('btnCloseTop').focus(), 100);
         }
@@ -1435,8 +1435,7 @@ Vas a empezar a verlo en acción.</p>
         function closeModal() {
             modalOverlay.classList.remove('active');
             
-            // FIX CRÍTICO MOBILE
-            document.body.style.removeProperty('overflow');
+            document.body.classList.remove('no-scroll');
             
             modalVideo.src = '';
             activeLessonId = null;
@@ -1445,14 +1444,13 @@ Vas a empezar a verlo en acción.</p>
         // CONTROL DE MODAL EBOOK
         function openEbookModal() {
             ebookModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
         }
 
         function closeEbookModal() {
             ebookModalOverlay.classList.remove('active');
             
-            // FIX CRÍTICO MOBILE
-            document.body.style.removeProperty('overflow');
+            document.body.classList.remove('no-scroll');
         }
 
         // COMPLETAR LECCIÓN
@@ -1493,7 +1491,7 @@ Vas a empezar a verlo en acción.</p>
         // --- LÓGICA DE DIBUJO DEL CERTIFICADO EN CANVAS ---
         function openCertificateModal() {
             certModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
             
             document.getElementById('certFormStep').classList.add('active');
             document.getElementById('certPreviewStep').classList.remove('active');
@@ -1505,8 +1503,7 @@ Vas a empezar a verlo en acción.</p>
         function closeCertificateModal() {
             certModalOverlay.classList.remove('active');
             
-            // FIX CRÍTICO MOBILE
-            document.body.style.removeProperty('overflow');
+            document.body.classList.remove('no-scroll');
         }
 
         function generateCanvasCertificate() {
