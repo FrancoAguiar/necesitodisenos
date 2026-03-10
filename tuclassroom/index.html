@@ -30,6 +30,18 @@
             scroll-padding-top: 120px;
         }
 
+        html, body {
+            width: 100%;
+            /* FIX: Usamos clip en navegadores modernos para evitar el bug de scroll en iOS */
+            overflow-x: hidden;
+        }
+        
+        @supports (overflow-x: clip) {
+            html, body {
+                overflow-x: clip;
+            }
+        }
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
@@ -37,8 +49,12 @@
             margin: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             position: relative;
-            width: 100%;
-            overflow-x: hidden;
+        }
+
+        /* FIX: Clase para bloquear el scroll del fondo cuando un modal está abierto */
+        body.no-scroll {
+            overflow: hidden !important;
+            touch-action: none;
         }
 
         ::selection { background: var(--primary-glow); color: white; }
@@ -708,13 +724,17 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            
+            /* FIX: Usamos visibility en lugar de solo opacity para evitar que capture toques fantasma */
             opacity: 0;
+            visibility: hidden; 
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
         .modal-overlay.active {
             opacity: 1;
+            visibility: visible;
             pointer-events: auto;
         }
 
@@ -722,7 +742,11 @@
             background: #050505;
             width: 100%;
             max-width: 850px;
-            max-height: 90vh;
+            
+            /* FIX: Altura dinámica de viewport para que no se esconda abajo en iOS/Android */
+            max-height: 90vh; 
+            max-height: 90dvh; 
+            
             border-radius: 24px;
             border: 1px solid var(--border-subtle);
             overflow-y: auto;
@@ -794,6 +818,12 @@
             box-sizing: border-box;
             appearance: none;
             font-family: inherit;
+        }
+        
+        /* Modificador para campos con error */
+        .input-minimal.error {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
         }
 
         select.input-minimal {
@@ -1015,6 +1045,9 @@
             border-radius: 0 0 24px 24px;
             overflow: hidden;
             position: relative;
+            /* FIX: scroll del iframe en iOS Safari */
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
         }
 
         .ebook-pdf-container iframe {
@@ -1333,6 +1366,15 @@ Vas a empezar a verlo en acción.</p>
         const certCanvas = document.getElementById('certCanvas');
         const ebookModalOverlay = document.getElementById('ebookModalOverlay');
 
+        // --- MANEJO DEL SCROLL DEL CUERPO (FIX MOBILE) ---
+        function lockBodyScroll() {
+            document.body.classList.add('no-scroll');
+        }
+
+        function unlockBodyScroll() {
+            document.body.classList.remove('no-scroll');
+        }
+
         // --- SISTEMA REVEAL AL HACER SCROLL ---
         function revealElements() {
             const reveals = document.querySelectorAll('.reveal');
@@ -1353,6 +1395,7 @@ Vas a empezar a verlo en acción.</p>
             const savedName = localStorage.getItem('classroomUserName');
             if (!savedName) {
                 welcomeModal.classList.add('active');
+                lockBodyScroll(); // Bloqueamos el fondo
             } else {
                 applyPersonalization(savedName);
             }
@@ -1370,6 +1413,7 @@ Vas a empezar a verlo en acción.</p>
                 localStorage.setItem('classroomUserName', name);
                 applyPersonalization(name);
                 welcomeModal.classList.remove('active');
+                unlockBodyScroll(); // Desbloqueamos el fondo
             }
         };
 
@@ -1419,12 +1463,14 @@ Vas a empezar a verlo en acción.</p>
             updateCompleteButton(lesson.completed);
 
             modalOverlay.classList.add('active');
+            lockBodyScroll();
             
             setTimeout(() => document.getElementById('btnCloseTop').focus(), 100);
         }
 
         function closeModal() {
             modalOverlay.classList.remove('active');
+            unlockBodyScroll();
             
             modalVideo.src = '';
             activeLessonId = null;
@@ -1433,10 +1479,12 @@ Vas a empezar a verlo en acción.</p>
         // CONTROL DE MODAL EBOOK
         function openEbookModal() {
             ebookModalOverlay.classList.add('active');
+            lockBodyScroll();
         }
 
         function closeEbookModal() {
             ebookModalOverlay.classList.remove('active');
+            unlockBodyScroll();
         }
 
         // COMPLETAR LECCIÓN
@@ -1477,26 +1525,36 @@ Vas a empezar a verlo en acción.</p>
         // --- LÓGICA DE DIBUJO DEL CERTIFICADO EN CANVAS ---
         function openCertificateModal() {
             certModalOverlay.classList.add('active');
+            lockBodyScroll();
             
             document.getElementById('certFormStep').classList.add('active');
             document.getElementById('certPreviewStep').classList.remove('active');
             
             const savedName = localStorage.getItem('classroomUserName') || '';
-            document.getElementById('certInputName').value = savedName;
+            const inputName = document.getElementById('certInputName');
+            inputName.value = savedName;
+            inputName.classList.remove('error');
+            inputName.placeholder = "Tu Nombre y Apellido";
         }
 
         function closeCertificateModal() {
             certModalOverlay.classList.remove('active');
+            unlockBodyScroll();
         }
 
         function generateCanvasCertificate() {
-            const name = document.getElementById('certInputName').value.trim();
+            const inputName = document.getElementById('certInputName');
+            const name = inputName.value.trim();
             const title = document.getElementById('certInputTitle').value;
             
             if (!name) {
-                alert("Por favor ingresa tu nombre para el certificado.");
+                // Validación visual sin usar el restrictivo alert()
+                inputName.classList.add('error');
+                inputName.placeholder = "¡Necesitamos tu nombre!";
+                inputName.value = '';
                 return;
             }
+            inputName.classList.remove('error');
 
             const today = new Date();
             const dateStr = today.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -1627,6 +1685,10 @@ Vas a empezar a verlo en acción.</p>
         
         ebookModalOverlay.onclick = (e) => {
             if (e.target === ebookModalOverlay) closeEbookModal();
+        }
+
+        certModalOverlay.onclick = (e) => {
+            if (e.target === certModalOverlay) closeCertificateModal();
         }
 
         window.onkeydown = (e) => {
