@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CÓMO ATRAER CLIENTES | @necesitodisenos</title>
+    <meta name="description" content="El mapa paso a paso para vivir del diseño sin depender de nadie.">
+    <meta property="og:title" content="CÓMO ATRAER CLIENTES | @necesitodisenos">
+    <meta property="og:description" content="Aprendé a pasar de $350 a +$4.000 USD como diseñador freelance (Paso a paso).">
+    <meta property="og:image" content="https://i.ibb.co/spPczB3P/12313.png">
+    <meta property="og:url" content="https://www.necesitodisenos.com/">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.ibb.co/spPczB3P/12313.png">
+    
+    <!-- Google Fonts: Inter Tight & Inter (SaaS Style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/TDvfPmMk/LOGO-WHITE-1.png">
+    
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF4500', 
+                            hover: '#FF571A',
+                            bg: '#0A0A0A',
+                            surface: '#121212',
+                            border: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Inter Tight', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(255, 69, 0, 0.2)',
+                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    },
+                    animation: {
+                        shimmer: 'shimmer 3s linear infinite',
+                        float: 'float 6s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        body {
+            background-color: #0A0A0A;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::selection {
+            background: rgba(255, 69, 0, 0.3);
+            color: white;
+        }
+
+        /* Patrón de Grid SaaS Sutil */
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Scrollbar minimalista */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* Estilo para la imagen del mockup */
+        .mockup-img {
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+        }
+        
+        .mockup-img:hover {
+            transform: perspective(1000px) rotateY(0deg) translateY(-10px) scale(1.02);
+        }
+        
+        /* Detalles minimalistas */
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        /* Animación para el header de urgencia */
+        @keyframes urgent-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .animate-urgent-icon {
+            animation: urgent-pulse 1.5s ease-in-out infinite;
+        }
+        
+        /* Shimmer para IA */
+        .ai-shimmer {
+            background: linear-gradient(90deg, rgba(255,69,0,0) 0%, rgba(255,69,0,0.1) 50%, rgba(255,69,0,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        /* Ocultar scrollbar para carrusel horizontal en movil */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+
+        /* Galería activa */
+        .thumb-active {
+            border-color: #FF4500 !important;
+            opacity: 1 !important;
+        }
+        .thumb-inactive {
+            border-color: transparent;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="pt-14 relative overflow-x-hidden w-full max-w-[100vw]">
+
+    <!-- Fondo Técnico -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <!-- FIX: Agregado max-w-[100vw] a las luces de fondo para que no rompan el ancho -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] max-w-[100vw] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+    <!-- Sticky Header DE URGENCIA (DINÁMICO) -->
+    <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-brand-orange/30 z-50 h-14 flex items-center shadow-[0_4px_30px_-10px_rgba(255,69,0,0.15)]">
+        <div class="container mx-auto px-2 md:px-4 flex justify-between items-center overflow-hidden">
+            
+            <!-- Izquierda -->
+            <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                <div class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
+                </div>
+                <div class="flex flex-col">
+                    <span id="dynamic-offer-title" class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest md:tracking-[0.2em] text-white whitespace-nowrap">⚡ OFERTA RELÁMPAGO ⚡</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2 md:gap-6 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="hidden lg:inline text-[10px] font-medium text-white/70 uppercase tracking-wider mr-2">Termina en:</span>
+                    
+                    <!-- Timer Estilizado -->
+                    <div class="flex items-start gap-1 md:gap-2 text-center">
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="hours" class="font-mono text-white font-bold text-xs md:text-sm leading-none">08</span>
+                            <span class="text-[7px] md:text-[8px] text-zinc-500 uppercase leading-none mt-1">Horas</span>
+                        </div>
+                        <span class="text-brand-orange font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="minutes" class="font-mono text-white font-bold text-xs md:text-sm leading-none">37</span>
+                            <span class="text-[7px] md:text-[8px] text-zinc-500 uppercase leading-none mt-1">Min</span>
+                        </div>
+                        <span class="text-brand-orange font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="seconds" class="font-mono text-white font-bold text-xs md:text-sm leading-none">38</span>
+                            <span class="text-[7px] md:text-[8px] text-zinc-500 uppercase leading-none mt-1">Seg</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#offer" class="hidden md:flex items-center gap-2 bg-brand-orange hover:bg-brand-hover text-white px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all shadow-glow hover:scale-105 hover:shadow-orange-500/30">
+                    LO QUIERO AHORA
+                    <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 pb-12 lg:pb-20">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mt-4 lg:mt-10">
+            
+            <div class="text-center lg:text-left space-y-6 md:space-y-8" data-aos="fade-right">
+                <!-- Eyebrow -->
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md border border-brand-orange/20 bg-brand-orange/5 text-brand-orange text-xs font-medium tracking-wide mx-auto lg:mx-0">
+                    <i class="ph-fill ph-book-bookmark"></i> +130 Páginas de Estrategia Pura
+                </div>
+                
+                <h1 class="font-display text-[32px] sm:text-[40px] md:text-[59px] font-bold tracking-tight text-white leading-[1.1]">
+                    APRENDE A <br>
+                    CONSEGUIR CLIENTES <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-red-500">SIENDO DISEÑADOR</span> <br>
+                    USANDO<span class="text-white font-medium"> INSTAGRAM</span><br>(PASO A PASO)
+                </h1>
+                
+                <p class="text-base md:text-lg text-zinc-400 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Aprendé el sistema que usamos para pasar de <span class="text-white font-medium">$350 a +$4.000 USD</span> como <span class="text-white font-medium">diseñadores</span> (explicado paso a paso)
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                    <a href="#offer" class="inline-flex items-center justify-center px-8 py-3.5 bg-brand-orange hover:bg-brand-hover text-white rounded-lg font-bold text-sm transition-all shadow-glow hover:shadow-orange-500/20 hover:-translate-y-0.5">
+                        QUIERO EL SISTEMA
+                    </a>
+                    <div class="flex items-center justify-center lg:justify-start gap-2 text-zinc-500 text-xs px-4">
+                        <i class="ph-fill ph-check-circle text-base text-brand-orange"></i>Si no te sirve, te devolvemos el dinero
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mockup & Social Proof -->
+            <div data-aos="fade-left" data-aos-delay="200" class="mt-8 lg:mt-0">
+                <div class="relative flex flex-col justify-center items-center group gap-6 md:gap-8 animate-float">
+                    <div class="relative">
+                        <img 
+                            src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" 
+                            alt="Ebook Mockup" 
+                            class="mockup-img w-full max-w-[260px] md:max-w-[320px] h-auto object-contain z-10 relative rounded-lg mx-auto"
+                            onerror="this.src='https://via.placeholder.com/300x400/121212/FF4500?text=Ebook+Cover'; this.style.transform='none';"
+                        >
+                        <div class="absolute inset-0 bg-brand-orange/20 blur-[60px] rounded-full z-0 transform translate-y-4 opacity-50"></div>
+                        
+                        <!-- Floating Card Decoration -->
+                        <div class="absolute -right-4 md:-right-8 bottom-12 bg-brand-surface border border-white/10 p-2 md:p-3 rounded-lg shadow-card animate-bounce duration-[4000ms] z-20 backdrop-blur-sm hidden sm:block">
+                            <div class="flex items-center gap-2 md:gap-3">
+                                <div class="w-6 h-6 md:w-8 md:h-8 rounded bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                                    <i class="ph-bold ph-star text-sm md:text-base"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[8px] md:text-[10px] text-zinc-500 uppercase font-semibold">Valoración</p>
+                                    <p class="text-[10px] md:text-xs font-bold text-white">4.9/5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Proof Badge -->
+                    <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-4 md:px-5 py-2 md:py-2.5 rounded-full backdrop-blur-md shadow-lg">
+                        <div class="flex -space-x-3">
+                            <img class="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=33" alt="User">
+                            <img class="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=47" alt="User">
+                            <img class="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-[#0A0A0A]" src="https://i.pravatar.cc/100?img=12" alt="User">
+                            <div class="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-[#0A0A0A] bg-brand-orange flex items-center justify-center text-[8px] md:text-[10px] font-bold text-white">
+                                +500
+                            </div>
+                        </div>
+                        <p class="text-[10px] md:text-xs text-white font-semibold">537 diseñadores<strong class="text-zinc-300"> ya lo aplicaron.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1.5 DISCLAIMER IMPORTANTE -->
+    <section class="py-10 lg:py-16 relative z-20 border-t border-white/5 bg-brand-bg/0 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-6 lg:mb-8" data-aos="fade-up">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="ph-fill ph-warning"></i> Antes de seguir
+                </div>
+                <h2 class="font-display text-2xl font-bold text-white">Aclaremos algo importante...</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                <!-- NO ES -->
+                <div class="p-5 lg:p-6 rounded-xl bg-red-500/5 border border-red-500/10 backdrop-blur-sm" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-red-400 font-bold text-sm mb-4 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-x-circle"></i> Esto NO es
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> “Hacerse rico rápido”</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Dinero fácil con Canva</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Subir diseños y esperar clientes</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Promesas mágicas</li>
+                    </ul>
+                </div>
+                <!-- SÍ ES -->
+                <div class="p-5 lg:p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-emerald-400 font-bold text-sm mb-4 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-check-circle"></i> Esto SÍ es
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Crear un negocio con diseño</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Construir una marca que atrae clientes</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Un sistema para facturar 1-5k/mes</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Validado por cientos en el mundo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ¿PARA QUIÉN ES? -->
+    <section class="py-12 lg:py-24 bg-brand-bg relative z-10 border-t border-white/5 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-8 lg:mb-12" data-aos="zoom-in">
+                <h2 class="font-display text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">¿Para quién es este sistema?</h2>
+                <p class="text-sm md:text-base text-zinc-500">Un filtro honesto para saber si esto te servirá.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-8">
+                <!-- Para vos -->
+                <div class="bg-brand-surface border border-brand-orange/20 rounded-2xl p-6 lg:p-8 hover:shadow-glow transition-all" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-white font-bold text-base md:text-lg mb-5 md:mb-6 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-brand-orange rounded-full"></span>
+                        Este sistema ES para vos si:
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-orange mt-0.5 text-lg"></i>
+                            <span>Querés vivir del diseño como negocio, no como hobby</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-orange mt-0.5 text-lg"></i>
+                            <span>Estás cansado de trabajar para otros o de clientes que pagan mal.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-orange mt-0.5 text-lg"></i>
+                            <span>Sabés diseñar, pero te falta estructura para vender y cobrar mejor.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- No es para vos -->
+                <div class="bg-brand-surface border border-white/5 rounded-2xl p-6 lg:p-8 opacity-70 hover:opacity-100 transition-opacity" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-zinc-400 font-bold text-base md:text-lg mb-5 md:mb-6 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-zinc-700 rounded-full"></span>
+                        NO es para vos si:
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>Buscás resultados sin esfuerzo o dinero mágico.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>No estás dispuesto a comprometerte con tu propio crecimiento.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>Si todavía no ofrecés ningún servicio</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. AGENDA / SISTEMA -->
+    <section class="py-12 lg:py-24 border-t border-white/5 bg-brand-bg relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h2 class="font-display text-2xl md:text-3xl font-bold mb-8 lg:mb-12 text-center text-white" data-aos="fade-up">¿Qué vas a aprender?</h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 lg:gap-6">
+                <!-- Card 1 -->
+                <div class="w-full md:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-brand-surface rounded-xl p-5 lg:p-6 h-full relative overflow-hidden flex flex-col">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">01</div>
+                        <div class="text-3xl mb-4">🧭</div>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">EL MAPA REAL</h3>
+                        <p class="text-xs text-zinc-500 mb-6 font-mono uppercase tracking-wider">Fase Inicial</p>
+                        <ul class="space-y-3 flex-grow">
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Cómo pasar de diseñador a PROFESIONAL rentable.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Qué errores te están frenando hoy</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Piensa como NEGOCIO, no como diseñador </li>
+                        </ul>
+                        <p class="text-[10px] text-zinc-600 mt-4 pt-4 border-t border-white/5">(Capítulos 1 · 2 · 3 · 4)</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="w-full md:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-brand-surface rounded-xl p-5 lg:p-6 h-full relative overflow-hidden flex flex-col">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">02</div>
+                        <div class="text-3xl mb-4">⚙️</div>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">EL SISTEMA</h3>
+                        <p class="text-xs text-zinc-500 mb-6 font-mono uppercase tracking-wider">Ejecución</p>
+                        <ul class="space-y-3 flex-grow">
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Cómo usar INSTAGRAM como máquina de CLIENTES</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Crea un portafolio estratégico que vende (PASO A PASO).</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Mensajes que generan interés y AGENDA LLENA.</li>
+                        </ul>
+                        <p class="text-[10px] text-zinc-600 mt-4 pt-4 border-t border-white/5">(Capítulos 5 · 6 · 7 · 8)</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="w-full md:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bg-brand-surface rounded-xl p-5 lg:p-6 h-full relative overflow-hidden flex flex-col">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">03</div>
+                        <div class="text-3xl mb-4">💰</div>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">VENDER Y COBRAR</h3>
+                        <p class="text-xs text-zinc-500 mb-6 font-mono uppercase tracking-wider">Autoridad & Conversión</p>
+                        <ul class="space-y-3 flex-grow">
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Cómo cobrar sin miedo ni regateo + TARIFAS</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Estructuras de precio que te dicen que sí.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Qué hacer cuando el precio asusta.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Contrato, límites y respeto profesional.</li>
+                        </ul>
+                        <p class="text-[10px] text-zinc-600 mt-4 pt-4 border-t border-white/5">(Capítulos 9 · 10 · 11 · 12 · 13 · 14 · 15)</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="w-full md:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bg-brand-surface rounded-xl p-5 lg:p-6 h-full relative overflow-hidden flex flex-col">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">04</div>
+                        <div class="text-3xl mb-4">🚀</div>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">ESCALAR Y SOSTENER</h3>
+                        <p class="text-xs text-zinc-500 mb-6 font-mono uppercase tracking-wider">Crecimiento Real</p>
+                        <ul class="space-y-3 flex-grow">
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> El método C.A.S.A. (ESTRATEGIA para conseguir CLIENTES).</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Cómo organizar tu trabajo para no depender del azar</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Como pasar de FREELANCE a AGENCIA.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> El plan de 7 días para facturar $1097 USD.</li>
+                        </ul>
+                        <p class="text-[10px] text-zinc-600 mt-4 pt-4 border-t border-white/5">(Capítulos 16 · 17 · 18 · 19 · 20 · 21 + BONUS)</p>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="w-full md:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] group p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-brand-orange/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="500">
+                    <div class="bg-brand-surface rounded-xl p-5 lg:p-6 h-full relative overflow-hidden flex flex-col">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 font-display text-6xl font-bold text-white group-hover:opacity-20 transition-opacity">05</div>
+                        <div class="text-3xl mb-4">🧠</div>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">MENTE & LARGO PLAZO</h3>
+                        <p class="text-xs text-zinc-500 mb-6 font-mono uppercase tracking-wider">No quemarte</p>
+                        <ul class="space-y-3 flex-grow">
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Ingresos pasivos para diseñadores.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> Cómo destacar entre la competencia.</li>
+                            <li class="text-sm text-zinc-400 flex gap-2"><i class="ph-fill ph-caret-right text-brand-orange mt-1 shrink-0"></i> El diseño como medio, no como destino.</li>
+                        </ul>
+                        <p class="text-[10px] text-zinc-600 mt-4 pt-4 border-t border-white/5">(Capítulos 22 · 23)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: BONUS EXCLUSIVOS -->
+    <section id="bonus-section" class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
+        <!-- Decoración de fondo sutil -->
+        <!-- FIX: Agregado max-w-[100vw] para evitar scroll -->
+        <div class="absolute left-1/2 top-0 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-5xl relative z-10">
+            
+            <!-- Encabezado -->
+            <div class="text-center mb-8 md:mb-16 space-y-3 md:space-y-6" data-aos="fade-up">
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 md:mb-4">
+                    Pero espera un minuto… <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">no es solo un ebook.</span>
+                </h2>
+                <div class="w-16 h-1 bg-brand-orange mx-auto rounded-full"></div>
+                <p class="text-base md:text-lg lg:text-xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
+                    SI ACCEDES AHORA MISMO… <br>
+                    Desbloqueás <strong class="text-white font-medium">5 BONUS</strong> (Valorados en $215 USD) totalmente <strong class="text-green-500 font-bold">GRATIS</strong> ⬇
+                </p>
+            </div>
+
+            <!-- Lista de Bonus -->
+            <div class="flex flex-col gap-4 lg:gap-8">
+                
+                <!-- BONUS 1 -->
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-brand-surface/80 h-full w-full rounded-xl p-5 lg:p-8 backdrop-blur-sm relative z-10">
+                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
+                            INCLUIDO
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-5 lg:gap-8 items-center">
+                            <!-- Imagen Vertical -->
+                            <div class="w-full sm:w-2/3 md:w-1/3 shrink-0">
+                                <div class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden relative border border-white/10 shadow-lg group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/101010.png" 
+                                         alt="Instagram Strategy" 
+                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div class="absolute top-3 left-3 z-20">
+                                        <div class="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                                            <i class="ph-fill ph-video-camera text-brand-orange"></i>
+                                            <span>Clase Grabada</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Contenido -->
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 lg:mb-4 border-b border-white/5 pb-3 lg:pb-4 gap-2">
+                                    <div class="inline-flex items-center justify-center gap-2 px-2 py-1 rounded bg-brand-orange/10 border border-brand-orange/20">
+                                        <i class="ph-fill ph-video-camera text-brand-orange text-xs"></i>
+                                        <span class="text-brand-orange text-[10px] font-bold uppercase tracking-widest">VIDEO 12:32</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-zinc-500 text-xs line-through font-medium">Valor: $97 USD</span>
+                                        <span class="text-green-500 font-bold text-sm bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">GRATIS HOY</span>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="text-xl md:text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">Estrategia PASO a PASO para conseguir clientes desde INSTAGRAM</h3>
+                                
+                                <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
+                                  Aprende cómo convertir tu Instagram en un embudo de ventas real para atraer clientes sin parecer un vendedor. <br class="hidden md:block"> Deja de postear por postear.
+                                </p>
+                                
+                                <div class="flex justify-center md:justify-start">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-white bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+                                        <i class="ph-fill ph-lock-key-open text-brand-orange"></i>
+                                        SE DESBLOQUEA AL ACCEDER
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BONUS 2 -->
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-brand-surface/80 h-full w-full rounded-xl p-5 lg:p-8 backdrop-blur-sm relative z-10">
+                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
+                            INCLUIDO
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-5 lg:gap-8 items-center">
+                            <div class="w-full sm:w-2/3 md:w-1/3 shrink-0">
+                                <div class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden relative border border-white/10 shadow-lg group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/111011.png" 
+                                         alt="Metodo CASA" 
+                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div class="absolute top-3 left-3 z-20">
+                                        <div class="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                                            <i class="ph-fill ph-video-camera text-brand-orange"></i>
+                                            <span>Clase Grabada</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 lg:mb-4 border-b border-white/5 pb-3 lg:pb-4 gap-2">
+                                    <div class="inline-flex items-center justify-center gap-2 px-2 py-1 rounded bg-brand-orange/10 border border-brand-orange/20">
+                                        <i class="ph-fill ph-graduation-cap text-brand-orange text-xs"></i>
+                                        <span class="text-brand-orange text-[10px] font-bold uppercase tracking-widest">VIDEO 15:03</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-zinc-500 text-xs line-through font-medium">Valor: $47 USD</span>
+                                        <span class="text-green-500 font-bold text-sm bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">GRATIS HOY</span>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl md:text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">Cómo COBRAR sin miedo como DISEÑADOR (ESTRATEGIA)</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
+                                    Aprendé a poner precios y decirlos con seguridad sin que te regateen. Dejá de improvisar tarifas y empezá a cobrar como profesional, con respeto y control.
+                                </p>
+                                <div class="flex justify-center md:justify-start">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-white bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+                                        <i class="ph-fill ph-lock-key-open text-brand-orange"></i>
+                                        SE DESBLOQUEA AL ACCEDER
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BONUS 3 -->
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bg-brand-surface/80 h-full w-full rounded-xl p-5 lg:p-8 backdrop-blur-sm relative z-10">
+                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
+                            INCLUIDO
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-5 lg:gap-8 items-center">
+                            <div class="w-full sm:w-2/3 md:w-1/3 shrink-0">
+                                <div class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden relative border border-white/10 shadow-lg group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/11111.png" 
+                                         alt="Plan 7 Dias" 
+                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div class="absolute top-3 left-3 z-20">
+                                        <div class="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                                            <i class="ph-fill ph-calculator text-brand-orange"></i>
+                                            <span>Herramienta</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 lg:mb-4 border-b border-white/5 pb-3 lg:pb-4 gap-2">
+                                    <div class="inline-flex items-center justify-center gap-2 px-2 py-1 rounded bg-brand-orange/10 border border-brand-orange/20">
+                                        <i class="ph-fill ph-wrench text-brand-orange text-xs"></i>
+                                        <span class="text-brand-orange text-[10px] font-bold uppercase tracking-widest">FACTURACION</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-zinc-500 text-xs line-through font-medium">Valor: $27 USD</span>
+                                        <span class="text-green-500 font-bold text-sm bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">GRATIS HOY</span>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl md:text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">GENERADOR de FACTURAS Profesional</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
+                                    Herramienta online para crear facturas profesionales en minutos.
+                                    Dejá de improvisar documentos y empezá a cobrar con orden, claridad y autoridad.
+                                </p>
+                                <div class="flex justify-center md:justify-start">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-white bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+                                        <i class="ph-fill ph-lock-key-open text-brand-orange"></i>
+                                        SE DESBLOQUEA AL ACCEDER
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BONUS 4 -->
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bg-brand-surface/80 h-full w-full rounded-xl p-5 lg:p-8 backdrop-blur-sm relative z-10">
+                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
+                            INCLUIDO
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-5 lg:gap-8 items-center">
+                            <div class="w-full sm:w-2/3 md:w-1/3 shrink-0">
+                                <div class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden relative border border-white/10 shadow-lg group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/3333.png" 
+                                         alt="Contrato Freelance" 
+                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div class="absolute top-3 left-3 z-20">
+                                        <div class="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                                            <i class="ph-fill ph-file-text text-brand-orange"></i>
+                                            <span>Plantilla Editable</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 lg:mb-4 border-b border-white/5 pb-3 lg:pb-4 gap-2">
+                                    <div class="inline-flex items-center justify-center gap-2 px-2 py-1 rounded bg-brand-orange/10 border border-brand-orange/20">
+                                        <i class="ph-fill ph-file-text text-brand-orange text-xs"></i>
+                                        <span class="text-brand-orange text-[10px] font-bold uppercase tracking-widest">CONTRATACION</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-zinc-500 text-xs line-through font-medium">Valor: $27 USD</span>
+                                        <span class="text-green-500 font-bold text-sm bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">GRATIS HOY</span>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl md:text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">CONTRATO Freelance Profesional (EDITABLE)</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
+                                    Plantilla editable legal para proteger tu trabajo y profesionalizar tu servicio. Evita malentendidos y asegura tus pagos desde el día uno.
+                                </p>
+                                <div class="flex justify-center md:justify-start">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-white bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+                                        <i class="ph-fill ph-lock-key-open text-brand-orange"></i>
+                                        SE DESBLOQUEA AL ACCEDER
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BONUS 5 -->
+                <div class="group relative bg-gradient-to-r from-zinc-900 to-black border border-brand-orange/30 rounded-2xl p-1 hover:shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)] transition-all duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="500">
+                    <div class="bg-brand-surface/80 h-full w-full rounded-xl p-5 lg:p-8 backdrop-blur-sm relative z-10">
+                        <div class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-20">
+                            INCLUIDO
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-5 lg:gap-8 items-center">
+                            <div class="w-full sm:w-2/3 md:w-1/3 shrink-0">
+                                <div class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden relative border border-white/10 shadow-lg group-hover:scale-[1.02] transition-transform duration-500">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/2222.png" 
+                                         alt="Calculadora Freelance" 
+                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                                    <div class="absolute top-3 left-3 z-20">
+                                        <div class="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                                            <i class="ph-fill ph-calculator text-brand-orange"></i>
+                                            <span>Herramienta</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center md:text-left w-full">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 lg:mb-4 border-b border-white/5 pb-3 lg:pb-4 gap-2">
+                                    <div class="inline-flex items-center justify-center gap-2 px-2 py-1 rounded bg-brand-orange/10 border border-brand-orange/20">
+                                        <i class="ph-fill ph-calculator text-brand-orange text-xs"></i>
+                                        <span class="text-brand-orange text-[10px] font-bold uppercase tracking-widest">COTIZACION</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-zinc-500 text-xs line-through font-medium">Valor: $17 USD</span>
+                                        <span class="text-green-500 font-bold text-sm bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">GRATIS HOY</span>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl md:text-2xl font-display font-bold text-white group-hover:text-brand-orange transition-colors mb-3">CALCULADORA de PRECIOS</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed font-light mb-6">
+                                    Herramienta online para definir tus precios sin miedo ni dudas. Deja de improvisar y empieza a cobrar basándote en datos reales de tus costos y metas.
+                                </p>
+                                <div class="flex justify-center md:justify-start">
+                                    <div class="flex items-center gap-2 text-xs font-bold text-white bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+                                        <i class="ph-fill ph-lock-key-open text-brand-orange"></i>
+                                        SE DESBLOQUEA AL ACCEDER
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Aviso de Urgencia -->
+            <div class="mt-10 md:mt-16 max-w-2xl mx-auto" data-aos="zoom-in">
+                <div class="bg-yellow-500/5 border border-yellow-500/20 rounded-xl p-4 flex items-center justify-center gap-3 animate-pulse">
+                    <i class="ph-fill ph-warning-circle text-yellow-500 text-xl shrink-0"></i>
+                    <p class="text-yellow-500/90 text-sm font-medium text-center">
+                        Solo por tiempo limitado, puede desaparecer en cualquier momento.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <!-- NUEVA SECCIÓN: CHECKOUT PRODUCT (COMPRA DIRECTA) -->
+    <section id="checkout-product" class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
+                
+                <!-- Columna Izquierda: Galería Carrusel -->
+                <div class="lg:sticky lg:top-24" data-aos="fade-right">
+                    <div class="space-y-4">
+                        
+                        <!-- TITULO DINÁMICO & FLECHA -->
+                        <div class="text-center mb-6">
+                            <h3 id="product-discount-banner" class="font-display font-bold text-2xl md:text-3xl text-white tracking-wide uppercase drop-shadow-lg">
+                                Cargando oferta...
+                            </h3>
+                            <div class="mt-3 animate-float"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 mx-auto text-zinc-500 opacity-80">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Main Image Container -->
+                        <div class="relative bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group shadow-2xl">
+                            <!-- Badge Disponibilidad -->
+                            <div class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold text-white border border-white/10 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> SISTEMA POR DENTRO
+                            </div>
+                            
+                            <!-- Img Principal con ID para JS -->
+                            <div class="relative aspect-square md:aspect-auto">
+                                <img id="product-main-img" 
+                                     src="https://sandiprojects.com/wp-content/uploads/2026/03/12313.png" 
+                                     alt="Ebook Pack Completo" 
+                                     class="w-full h-full object-contain transition-all duration-500 ease-in-out">
+                            </div>
+
+                            <!-- Navigation Arrows -->
+                            <button id="galleryPrev" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand-orange transition-all text-white border border-white/10 z-30">
+                                <i class="ph-bold ph-caret-left"></i>
+                            </button>
+                            <button id="galleryNext" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-brand-orange transition-all text-white border border-white/10 z-30">
+                                <i class="ph-bold ph-caret-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Thumbnails con Lógica de Selección -->
+                        <div id="product-thumbs" class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+                            <button class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 thumb-active bg-zinc-900 transition-all" data-img="https://sandiprojects.com/wp-content/uploads/2026/03/12313.png">
+                                <img src="https://sandiprojects.com/wp-content/uploads/2026/03/12313.png" class="w-full h-full object-cover">
+                            </button>
+                            <button class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-900 transition-all" data-img="https://sandiprojects.com/wp-content/uploads/2026/03/image11.png">
+                                <img src="https://sandiprojects.com/wp-content/uploads/2026/03/image11.png" class="w-full h-full object-cover">
+                            </button>
+                            <button class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://sandiprojects.com/wp-content/uploads/2026/03/image33.png">
+                                <img src="https://sandiprojects.com/wp-content/uploads/2026/03/image33.png" class="w-full h-full object-cover">
+                            </button>
+                            <button class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://sandiprojects.com/wp-content/uploads/2026/03/imagen22.png">
+                                <img src="https://sandiprojects.com/wp-content/uploads/2026/03/imagen22.png" class="w-full h-full object-cover">
+                            </button>
+                            <button class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 thumb-inactive bg-zinc-800 flex items-center justify-center text-zinc-500 transition-all" data-img="https://sandiprojects.com/wp-content/uploads/2026/03/imagen100.png">
+                                <img src="https://sandiprojects.com/wp-content/uploads/2026/03/imagen100.png" class="w-full h-full object-cover">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Info del Producto -->
+                <div id="offer" class="space-y-5 lg:space-y-6" data-aos="fade-left" data-aos-delay="200">
+                    <div>
+                        <h1 class="font-display text-2xl md:text-4xl font-bold text-white mb-2">Sistema Completo + BONUS</h1>
+                        <p class="text-sm md:text-base text-zinc-400">El sistema paso a paso para conseguir clientes.</p>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="flex flex-wrap items-center gap-1 text-sm">
+                        <div class="flex text-brand-orange gap-0">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <span class="font-bold text-white">4.9/5</span>
+                        <span class="text-zinc-600">|</span>
+                        <span class="text-zinc-400">+500 diseñadores</span>
+                        <span class="text-zinc-600">|</span>
+                        <span class="text-green-500 font-medium">Garantía 7 días</span>
+                    </div>
+
+                    <!-- Pricing Card Principal -->
+                    <div class="relative rounded-2xl border-2 border-brand-orange bg-brand-orange/5 p-5 lg:p-6 shadow-[0_0_40px_-10px_rgba(255,69,0,0.15)]">
+                        <div class="absolute -top-3 right-4 bg-brand-orange text-white px-3 py-1 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 shadow-lg uppercase tracking-wider">
+                            <i class="ph-fill ph-fire"></i> PAGO UNICO
+                        </div>
+                        
+                        <div class="flex items-start gap-3 sm:gap-4 mb-6">
+                            <div class="w-6 h-6 rounded-full border-2 border-brand-orange bg-brand-orange flex items-center justify-center mt-1 shrink-0">
+                                <div class="w-2.5 h-2.5 rounded-full bg-white"></div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-wrap items-baseline gap-2 sm:gap-3">
+                                    <h3 class="font-bold text-lg sm:text-xl text-white">Acceso Completo</h3>
+                                    <span class="text-2xl sm:text-3xl font-display font-bold text-white">$14.99</span>
+                                    <span class="text-base sm:text-lg text-red-500 line-through decoration-red/20 opacity-60">Valor total: $262</span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-zinc-400 mt-1">Recuperás esta inversión con 1 solo cliente.</p>
+                                
+                                <div class="flex flex-col gap-3 mt-5">
+                                    <div class="flex items-start gap-3 text-xs sm:text-sm font-medium text-zinc-300">
+                                        <i class="ph-bold ph-check text-brand-orange mt-0.5 shrink-0"></i>
+                                        <span>Ebook Completo<br>"Cómo Atraer Clientes..."</span>
+                                    </div>
+                                    <div class="flex items-start gap-3 text-xs sm:text-sm text-zinc-300">
+                                        <i class="ph-bold ph-gift text-brand-orange mt-0.5 shrink-0"></i>
+                                        <span>Pack de 5 Bonus de REGALO</span>
+                                    </div>
+                                    <div class="flex items-start gap-3 text-xs sm:text-sm text-zinc-300">
+                                        <i class="ph-bold ph-infinity text-brand-orange mt-0.5 shrink-0"></i>
+                                        <span>Actualizaciones de por vida</span>
+                                    </div>
+                                    <div class="flex items-start gap-3 text-xs sm:text-sm text-zinc-300">
+                                        <i class="ph-bold ph-users text-brand-orange mt-0.5 shrink-0"></i>
+                                        <span>Acceso a soporte</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Urgency -->
+                        <div class="flex items-center gap-2 mt-2 mb-4 text-red-400 bg-red-500/10 px-3 py-2 rounded-lg border border-red-500/20">
+                            <i class="ph-fill ph-warning-circle shrink-0"></i>
+                            <span class="text-xs sm:text-sm font-bold">¡El precio sube al terminar el contador!</span>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <a href="https://pay.hotmart.com/D104828731T?checkoutMode=10" class="group flex items-center justify-center gap-2 w-full py-3.5 sm:py-4 bg-brand-orange hover:bg-brand-hover text-white font-bold text-base sm:text-lg rounded-xl transition-all shadow-glow hover:scale-[1.01]">
+                            <i class="ph-bold ph-caret-right"></i>
+                            QUIERO EL SISTEMA
+                        </a>
+
+                        <!-- Microcopy -->
+                        <div class="mt-4 space-y-2">
+                            <div class="flex items-start sm:items-center gap-2 text-[10px] sm:text-xs text-zinc-500">
+                                <i class="ph-fill ph-check-circle text-green-500 mt-0.5 sm:mt-0 shrink-0"></i>
+                                <span>Acceso inmediato: empezá hoy mismo</span>
+                            </div>
+                            <div class="flex items-start sm:items-center gap-2 text-[10px] sm:text-xs text-zinc-500">
+                                <i class="ph-fill ph-shield-check text-green-500 mt-0.5 sm:mt-0 shrink-0"></i>
+                                <span>Actualizaciones de por vida sin costo adicional</span>
+                            </div>
+                            <div class="flex items-start sm:items-center gap-2 text-[10px] sm:text-xs text-zinc-500">
+                                <i class="ph-fill ph-shield-check text-green-500 mt-0.5 sm:mt-0 shrink-0"></i>
+                                <span>Garantía de 7 días: si no te sirve, te devolvemos el dinero</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 md:mt-10 flex justify-center">
+                            <img src="https://sandiprojects.com/wp-content/uploads/2026/02/upscalemedia-transformed-2.png" 
+                                 alt="Satisfacción Garantizada" 
+                                 class="h-8 md:h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-105 transition-transform duration-300">
+                        </div>
+                    </div>
+
+                    <!-- Accordions -->
+                    <div class="border-t border-white/10 pt-2">
+                        <details class="group border-b border-white/5">
+                            <summary class="flex items-center justify-between py-4 cursor-pointer text-white font-medium hover:text-brand-orange transition-colors list-none">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-package text-zinc-500 group-hover:text-brand-orange transition-colors"></i>
+                                    <span class="text-sm md:text-base">¿Qué incluye el pack?</span>
+                                </div>
+                                <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
+                            </summary>
+                            
+                            <!-- Contenido Detallado -->
+                            <div class="pb-4 pl-2 md:pl-8 text-xs md:text-sm text-zinc-400 leading-relaxed">
+                                <div class="space-y-4 lg:space-y-6 pt-2">
+                                    
+                                    <!-- Programa -->
+                                    <div>
+                                        <h4 class="text-sm md:text-lg font-bold text-white mb-2 flex items-center gap-2">
+                                            📚 Ebook Completo +130 páginas paso a paso
+                                        </h4>
+                                        <p>Te revelamos nuestra estrategia de cómo pasamos de $350 a $4.000 USD como diseñadores, explicado claro y aplicable.</p>
+                                    </div>
+
+                                    <hr class="border-white/10">
+
+                                    <!-- Aprendizaje -->
+                                    <div>
+                                        <p class="font-bold text-white mb-3">Vas a aprender:</p>
+                                        <div class="space-y-3">
+                                            <p>1️⃣ Cómo pasar de diseñador a <strong class="text-white">PROFESIONAL rentable</strong><br><em class="text-zinc-500 text-[10px] md:text-xs">(Dejar de pensar como hobby y empezar a pensar como negocio)</em></p>
+                                            <p>2️⃣ Cómo <strong class="text-white">ATRAER clientes</strong> sin perseguirlos<br><em class="text-zinc-500 text-[10px] md:text-xs">(Instagram como embudo de ventas, no como CV)</em></p>
+                                            <p>3️⃣ Cómo crear un portafolio estratégico que vende <strong class="text-white">(PASO A PASO)</strong><br><em class="text-zinc-500 text-[10px] md:text-xs">(Para que te pidan precio y no te ignoren)</em></p>
+                                            <p>4️⃣ Cómo cobrar sin miedo ni regateo + <strong class="text-white">TARIFAS</strong><br><em class="text-zinc-500 text-[10px] md:text-xs">(Estructuras de precio que te dicen que sí)</em></p>
+                                            <p>5️⃣ Cómo escalar y sostener tu negocio<br><em class="text-zinc-500 text-[10px] md:text-xs">(El plan de 7 días para facturar $1097 USD)</em></p>
+                                        </div>
+                                        <p class="mt-4 flex flex-wrap items-center gap-2 text-white font-medium bg-white/5 p-2 rounded border border-white/10 w-fit">
+                                            🔑 <span>Acceso inmediato y de por vida + actualizaciones</span>
+                                        </p>
+                                    </div>
+
+                                    <hr class="border-white/10">
+
+                                    <!-- Bonos Box -->
+                                    <div class="bg-brand-orange/5 p-4 lg:p-5 rounded-xl border border-brand-orange/20 relative overflow-hidden">
+                                        <div class="absolute top-0 right-0 w-20 h-20 bg-brand-orange/10 blur-2xl rounded-full pointer-events-none"></div>
+                                        <h4 class="text-sm md:text-lg font-bold text-brand-orange mb-4 flex flex-wrap items-center gap-2">
+                                            🎁 BONOS EXCLUSIVOS
+                                            <span class="text-[10px] md:text-xs bg-green-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-wider ml-auto md:ml-2">¡100% GRATIS!</span>
+                                        </h4>
+                                        <div class="space-y-3 lg:space-y-4">
+                                            <div>
+                                                <p class="font-bold text-white flex flex-wrap items-center gap-2">
+                                                    🎁 Estrategia para ATRAER CLIENTES 
+                                                    <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-zinc-300 font-normal">Clase 35 min</span>
+                                                </p>
+                                                <p class="text-zinc-400 mt-1 text-[10px] md:text-xs">Cómo conseguir clientes en Instagram paso a paso.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-white flex flex-wrap items-center gap-2">🎁 APRENDE a COBRAR <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-zinc-300 font-normal">Clase 35 min</span></p>
+                                                <p class="text-zinc-400 mt-1 text-[10px] md:text-xs">Aprendé a poner precios y decirlos.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-white flex flex-wrap items-center gap-2">🎁 GENERADOR de FACTURAS Profesional <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-zinc-300 font-normal">Herramienta</span></p>
+                                                <p class="text-zinc-400 mt-1 text-[10px] md:text-xs">Crear facturas profesionales en minutos.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-white flex flex-wrap items-center gap-2">🎁 CONTRATO Freelance Profesional <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-zinc-300 font-normal">Editable</span></p>
+                                                <p class="text-zinc-400 mt-1 text-[10px] md:text-xs">Plantilla legal para proteger tu trabajo y asegurar tus pagos.</p>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-white flex flex-wrap items-center gap-2">🎁 CALCULADORA de Precios <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-zinc-300 font-normal">Herramienta</span></p>
+                                                <p class="text-zinc-400 mt-1 text-[10px] md:text-xs">Definí tus tarifas con datos reales, sin improvisar.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="group border-b border-white/5">
+                            <summary class="flex items-center justify-between py-4 cursor-pointer text-white font-medium hover:text-brand-orange transition-colors list-none">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-shield-check text-zinc-500 group-hover:text-brand-orange transition-colors"></i>
+                                    <span class="text-sm md:text-base">Garantía de Satisfacción</span>
+                                </div>
+                                <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
+                            </summary>
+                            <div class="pb-4 text-xs md:text-sm text-zinc-400 pl-8 leading-relaxed">
+                                • Garantía de satisfacción de 7 días<br>• Si no estás 100% conforme, te devolvemos el dinero<br>• Sin preguntas, sin complicaciones
+                            </div>
+                        </details>
+                        <details class="group border-b border-white/5">
+                            <summary class="flex items-center justify-between py-4 cursor-pointer text-white font-medium hover:text-brand-orange transition-colors list-none">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-fill ph-lightning text-zinc-500 group-hover:text-brand-orange transition-colors"></i>
+                                    <span class="text-sm md:text-base">Acceso Instantáneo</span>
+                                </div>
+                                <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
+                            </summary>
+                            <div class="pb-4 text-xs md:text-sm text-zinc-400 pl-8 leading-relaxed">
+                              • Acceso inmediato después del pago<br>• Plataforma disponible 24/7<br>• Compatible con celular, tablet y computadora
+                            </div>
+                        </details>
+
+                        <details class="group border-b-0">
+                            <summary class="flex items-center justify-between py-4 cursor-pointer text-white font-medium hover:text-brand-orange transition-colors list-none">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-credit-card text-zinc-500 group-hover:text-brand-orange transition-colors"></i>
+                                    <span class="text-sm md:text-base">Métodos de Pago</span>
+                                </div>
+                                <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
+                            </summary>
+                            <div class="pb-4 text-xs md:text-sm text-zinc-400 pl-8 leading-relaxed">
+                                Aceptamos todas las tarjetas de crédito y débito, PayPal y métodos locales según tu país a través de la plataforma segura de Hotmart.
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Link secundario -->
+                    <button class="flex items-center justify-center lg:justify-start gap-1 text-brand-orange hover:text-white text-xs md:text-sm font-medium transition-colors mx-auto lg:mx-0 w-full lg:w-auto">
+                        Ver detalles completos del temario
+                        <i class="ph-bold ph-caret-down"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECCIÓN: RESULTADOS REALES (CARRUSEL) -->
+    <section class="py-12 lg:py-24 relative z-10 border-t border-white/5 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,69,0,0.03)_0%,transparent_70%)] pointer-events-none"></div>
+        <div class="container mx-auto px-4 max-w-6xl relative">
+            
+            <!-- Título -->
+            <div class="text-center mb-8 lg:mb-16" data-aos="fade-up">
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">
+                    RESULTADOS <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">REALES</span> DE NUESTROS ALUMNOS
+                </h2>
+                <div class="w-16 md:w-20 h-1 bg-brand-orange mx-auto rounded-full"></div>
+                <p class="text-zinc-400 text-sm md:text-lg mt-4">Capturas reales de diseñadores <br class="md:hidden">que aplicaron el sistema.</p>
+            </div>
+
+            <div class="relative group mt-5 lg:mt-8 px-0 md:px-4" data-aos="zoom-in" data-aos-delay="200">
+                
+                <!-- Botones Navegación -->
+                <button id="prevBtn" class="flex absolute left-2 md:-left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-100 disabled:opacity-0 disabled:pointer-events-none">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <button id="nextBtn" class="flex absolute right-2 md:-right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-orange hover:border-brand-orange transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] opacity-100 disabled:opacity-0 disabled:pointer-events-none">
+                    <i class="ph-bold ph-caret-right text-xl"></i>
+                </button>
+
+                <!-- Slider Wrapper con Scroll Nativo -->
+                <div class="w-full">
+                    <div id="sliderTrack" class="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 pb-6 lg:pb-8 pt-4 px-4 lg:px-8 scrollbar-hide scroll-smooth w-full">
+                        
+                        <!-- Card 1 -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Subió <span class="text-brand-orange">30%</span> y Cerró <span class="text-brand-orange">+2 proyectos</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena1.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Aprendió a liderar la conversación y ganar <span class="text-brand-orange">autoridad en cada DM</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena2.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Cerró <span class="text-brand-orange">4 clientes más </span>que el mes pasado
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena3.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Pasó de mostrar todo a que <span class="text-brand-orange">una agencia la contrate</span> (sin buscar clientes)
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena4.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-[#121212] border border-white/10 rounded-2xl overflow-hidden hover:border-brand-orange/40 transition-colors flex flex-col shadow-2xl relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Subió precios, mejoró su sistema y cerró <span class="text-brand-orange">nuevos clientes</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena5.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Pagination Dots -->
+                <div id="paginationDots" class="flex justify-center gap-2 mt-2 md:mt-6"></div>
+            </div>
+
+            <!-- 4. RESULTADOS (Social Proof) -->
+            <div class="container mx-auto px-4 text-center mt-10 lg:mt-20" data-aos="fade-up">
+                <p class="text-brand-orange text-xs font-bold uppercase tracking-widest mb-3 md:mb-4">FACTURACIÓN DE ALUMNOS</p>
+                <h2 id="revenue-counter" class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 lg:mb-12">+$0 USD</h2>
+                <p class="text-sm md:text-base text-zinc-400 mb-6 md:mb-8 max-w-2xl mx-auto"><br>No es teoría: son resultados reales de personas comunes que decidieron ejecutar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SOBRE EL AUTOR -->
+    <section class="py-16 lg:py-24 bg-black border-t border-white/5 relative overflow-hidden">
+        <!-- Subtle background glow behind image area -->
+        <!-- FIX: Agregado max-w-[100vw] para evitar scroll -->
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] max-w-[100vw] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 lg:px-6 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl text-center mb-8 lg:mb-16 text-white font-bold tracking-tight" data-aos="fade-up">
+                    ¿QUIÉN ESTA <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">DETRÁS?</span>
+                </h2>
+                
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <!-- Image Column -->
+                    <div class="relative group" data-aos="fade-right" data-aos-delay="100">
+                        <div class="relative aspect-square max-w-sm md:max-w-md mx-auto lg:mx-0 overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_50px_-10px_rgba(255,69,0,0.15)]">
+                            <img src="https://sandiprojects.com/wp-content/uploads/2026/02/fwfwfwf-1-scaled.png" alt="Franco - Fundador" class="w-full h-full object-cover">
+                            <!-- Overlay Gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Text Column -->
+                    <div class="space-y-4 md:space-y-6 text-center lg:text-left" data-aos="fade-left" data-aos-delay="200">
+                        <p class="text-lg md:text-xl text-white/90 leading-relaxed">
+                            Soy <span class="font-semibold text-brand-orange">Fran</span>.
+                        </p>
+                        
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            Hace más de 11 años que diseño.
+                        </p>
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            Empecé desde cero.
+                        </p>
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            Probé, fallé, aprendí y construí un sistema que funciona.
+                        </p>
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            Creé @necesitodisenos, <br>una comunidad de casi 100.000 diseñadores.
+                        </p>
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            No vendo humo.
+                        </p>
+                        <p class="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                            No prometo milagros.
+                        </p>
+                        
+                        <p class="text-lg md:text-xl text-white font-medium italic font-display pt-2 md:pt-4">
+                            Te muestro el camino real.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. RESUMEN DE LA OFERTA -->
+    <section class="py-12 lg:py-24 bg-black relative border-t border-white/5 overflow-hidden">
+        <!-- Ambient Light -->
+        <!-- FIX: Agregado max-w-[100vw] para evitar scroll -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] max-w-[100vw] h-[600px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-4xl relative z-10">
+            
+            <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
+                <span class="text-brand-orange text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-2 md:mb-3 block">Oferta Limitada</span>
+                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl text-white font-bold mb-3 md:mb-4">ACCESO COMPLETO</h2>
+                <p class="text-sm md:text-base text-zinc-500 font-light">Acceso inmediato a todo el sistema.</p>
+                
+                <!-- New Image Added Here -->
+                <div class="mt-4 relative w-full max-w-[280px] sm:max-w-sm mx-auto group">
+                    <!-- Glow Effect -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-brand-orange/20 blur-[40px] rounded-full pointer-events-none group-hover:bg-brand-orange/30 transition-all duration-700"></div>
+                    
+                    <img src="https://sandiprojects.com/wp-content/uploads/2026/03/1231221.png" 
+                         alt="Métodos de Pago y Garantía" 
+                         class="relative z-10 w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-500 drop-shadow-xl"
+                         onerror="this.src='https://via.placeholder.com/600x150/121212/FF4500?text=Pagos+Seguros';">
+                </div>
+            </div>
+
+            <!-- The Stack Card -->
+            <div class="bg-[#0F0F0F] border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative group">
+                <!-- Glossy effect on top -->
+                <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                <!-- Content Grid -->
+                <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5">
+                    
+                    <!-- Left: Items Detail -->
+                    <div class="p-5 lg:p-10 space-y-4 lg:space-y-6" data-aos="fade-right">
+                        <h3 class="text-white font-bold text-base md:text-lg mb-4 lg:mb-6 flex items-center gap-2">
+                            <i class="ph-duotone ph-package text-brand-orange"></i>ESTO ES LO QUE OBTIENES
+                        </h3>
+
+                        <!-- Item 1 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">EBOOK "Como Atraer Clientes..."</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">+130 páginas de estrategia PASO a PASO.</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$47 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">CLASE GRABADA para ATRAER CLIENTES (+35min)</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">Aprende cómo convertir tu Instagram en un embudo de ventas</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$97 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">CLASE GRABADA para APRENDER a COBRAR (+35min)</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">Aprendé a poner precios y decirlos con seguridad sin que te regateen.</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$47 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">GENERADOR de FACTURAS Profesional</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">Herramienta online para crear facturas profesionales en minutos.</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$27 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">CONTRATO Freelance Profesional (EDITABLE)</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">Plantilla editable legal para proteger tu trabajo.</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$27 USD</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 6 -->
+                        <div class="flex justify-between items-start gap-3">
+                            <div>
+                                <p class="text-white font-medium text-xs sm:text-sm">CALCULADORA de PRECIOS</p>
+                                <p class="text-zinc-500 text-[10px] sm:text-xs mt-1 leading-relaxed">Herramienta online para definir tus precios sin miedo ni dudas.</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="block text-zinc-600 text-[10px] sm:text-xs line-through">$17 USD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Summary & CTA -->
+                    <div class="p-5 lg:p-10 bg-brand-surface/30 flex flex-col justify-between relative overflow-hidden" data-aos="fade-left">
+                        <!-- Decor element -->
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-orange/10 blur-[50px] rounded-full"></div>
+
+                        <div>
+                            <h3 class="text-white font-bold text-base md:text-lg mb-5 md:mb-6 flex items-center gap-2">
+                                <i class="ph-duotone ph-receipt text-brand-orange"></i> Resumen
+                            </h3>
+                            
+                            <div class="space-y-3 mb-6 md:mb-8">
+                                <div class="flex justify-between text-xs md:text-sm">
+                                    <span class="text-zinc-400">Valor Real Total</span>
+                                    <span class="text-zinc-500 line-through">$262.00 USD</span>
+                                </div>
+                                <div class="flex justify-between text-xs md:text-sm">
+                                    <span class="text-zinc-400">Descuento Aplicado</span>
+                                    <span class="text-green-500 font-medium">- $247.01 USD</span>
+                                </div>
+                                <div class="h-px bg-white/10 my-2"></div>
+                                <div class="flex justify-between items-end">
+                                    <span class="text-white font-bold text-sm md:text-base">TOTAL HOY</span>
+                                    <div class="text-right">
+                                        <span class="block text-3xl md:text-4xl font-display font-bold text-brand-orange leading-none">$14.99</span>
+                                        <span class="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-wider">Pago único</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <a href="https://pay.hotmart.com/D104828731T?checkoutMode=10" class="group relative flex items-center justify-center gap-2 w-full py-3.5 md:py-4 bg-white hover:bg-zinc-200 text-black font-bold text-xs md:text-sm uppercase tracking-widest rounded-lg transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 overflow-hidden">
+                                <span class="relative z-10">Obtener Acceso Ahora</span>
+                                <i class="ph-bold ph-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            
+                            <div class="flex items-center justify-center gap-3 md:gap-4">
+                                <div class="flex items-center gap-1 md:gap-1.5 text-[8px] md:text-[10px] text-zinc-500">
+                                    <i class="ph-fill ph-lock-key text-zinc-400"></i> SSL Seguro
+                                </div>
+                                <div class="w-px h-3 bg-zinc-800"></div>
+                                <div class="flex items-center gap-1 md:gap-1.5 text-[8px] md:text-[10px] text-zinc-500">
+                                    <i class="ph-fill ph-shield-check text-zinc-400"></i> Garantía 7 Días
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom note -->
+            <div data-aos="fade-up" data-aos-delay="150">
+                <p class="text-center text-zinc-600 text-[10px] md:text-xs mt-6 md:mt-8 max-w-lg mx-auto">
+                    Al hacer clic, serás redirigido a la pasarela de pago segura de Hotmart. El acceso al material llega a tu correo inmediatamente después de la compra.
+                </p>
+                <div class="mt-4 md:mt-5 flex justify-center">
+                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/upscalemedia-transformed-2.png" 
+                         alt="Satisfacción Garantizada" 
+                         class="h-8 md:h-10 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)] hover:scale-105 transition-transform duration-300">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
+        <!-- Subtle Glow -->
+        <!-- FIX: max-w-[100vw] para evitar scroll -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] max-w-[100vw] h-[500px] bg-brand-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-3xl relative z-10">
+            <div class="text-center mb-8 lg:mb-16" data-aos="fade-up">
+                <span class="text-brand-orange text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2 md:mb-3 block">ALGUNAS</span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">PREGUNTAS FRECUENTES</h2>
+                <div class="w-16 h-1 bg-brand-orange mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="space-y-3">
+                <!-- FAQ Item 1 -->
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="100">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none">
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
+                                <i class="ph-bold ph-book-open"></i>
+                            </div>
+                            <span class="text-white font-medium text-sm md:text-base">¿El libro está disponible en formato físico?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 pl-14 md:pl-[4.5rem]">
+                        <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                            Es un producto <strong>100% digital</strong> en formato PDF de alta calidad. Esto nos permite actualizarlo constantemente y que tengas acceso inmediato desde cualquier dispositivo (celular, tablet o computadora) sin costos de envío ni esperas.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="150">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none">
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
+                                <i class="ph-bold ph-download-simple"></i>
+                            </div>
+                            <span class="text-white font-medium text-sm md:text-base">¿Cómo recibo el acceso al material?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 pl-14 md:pl-[4.5rem]">
+                        <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                            Es automático. Inmediatamente después de que se confirme tu pago, recibirás un correo electrónico de Hotmart con un enlace único para acceder a tu área de miembros donde podrás descargar el Ebook y todos los bonus.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="200">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none">
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
+                                <i class="ph-bold ph-credit-card"></i>
+                            </div>
+                            <span class="text-white font-medium text-sm md:text-base">¿Es seguro pagar con tarjeta?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 pl-14 md:pl-[4.5rem]">
+                        <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                            Totalmente. Usamos la pasarela de pagos de <strong>Hotmart</strong>, la plataforma de productos digitales más grande y segura de Latinoamérica. Tus datos están encriptados y nosotros nunca tenemos acceso a tu información financiera.
+                        </p>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="group bg-brand-surface/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-orange/30 open:border-brand-orange/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="250">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none">
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
+                                <i class="ph-bold ph-graduation-cap"></i>
+                            </div>
+                            <span class="text-white font-medium text-sm md:text-base">¿Sirve si recién estoy empezando?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 pl-14 md:pl-[4.5rem]">
+                        <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                            Sí, de hecho es ideal. El sistema está diseñado para llevarte de cero a cien. Te ahorraremos años de prueba y error enseñándote desde el principio cómo cobrar bien, cómo presentar tu trabajo y cómo conseguir clientes, incluso sin tener un portafolio enorme.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        <!-- Guarantee Seal & CTA -->
+        <div class="text-center" data-aos="zoom-in" data-aos-delay="300">
+            <a href="https://pay.hotmart.com/D104828731T?checkoutMode=10" class="group inline-flex items-center gap-3 px-8 py-3.5 md:py-4 bg-brand-orange mt-8 md:mt-10 hover:bg-brand-hover text-white rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-[0_0_30px_-5px_rgba(255,69,0,0.4)] hover:shadow-[0_0_50px_-10px_rgba(255,69,0,0.6)] hover:-translate-y-1">
+                <span>ACCEDER AHORA</span>
+                <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <p class="text-zinc-600 text-[8px] md:text-[10px] mt-3 uppercase tracking-widest font-medium">Sin Riesgos • Garantía Total</p>
+        </div>
+    </section>
+
+    <!-- 9. TRANSPARENCIA & GARANTÍA -->
+    <section class="py-10 lg:py-16 bg-brand-surface border-t border-white/5 text-center">
+        <div class="container mx-auto px-4 max-w-3xl">
+            
+            <!-- Bloque de Transparencia -->
+            <div class="bg-brand-bg/50 border border-white/5 p-5 lg:p-6 rounded-xl mb-8 lg:mb-12 backdrop-blur-sm" data-aos="fade-up">
+                <div class="flex items-center justify-center gap-2 mb-3 text-zinc-300 font-bold uppercase text-[10px] md:text-xs tracking-widest">
+                    <i class="ph-fill ph-lock-key-open"></i> Transparencia Total
+                </div>
+                <p class="text-[11px] md:text-xs text-zinc-500 leading-relaxed">
+                    Lo hicimos desde un lugar <strong>genuino</strong>, pensando en <strong>ayudar a más diseñadores</strong>.<br class="hidden md:block"/>  No hay <strong>nada oculto</strong> ni pasos extra: este sistema <strong>funciona por sí solo</strong> y está pensado para que lo puedas <strong>aplicar desde hoy</strong>.
+                </p>
+            </div>
+
+            <div class="mb-8 md:mb-12" data-aos="fade-up" data-aos-delay="150">
+                <i class="ph-duotone ph-shield-check text-3xl md:text-4xl text-brand-orange mb-3 md:mb-4"></i>
+                <h3 class="text-lg md:text-xl font-bold text-white mb-2">Garantía de Satisfacción de 7 Días</h3>
+                <p class="text-xs md:text-sm text-zinc-400 mb-6 md:mb-8">Si en los primeros 7 días no cumple con tus expectativas, te reembolsaremos el 100% de tu dinero sin preguntas.</p>
+                
+                <!-- Trust Badge -->
+                <div class="flex justify-center">
+                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/con-respaldo.png" 
+                         alt="Compra 100% Segura" 
+                         class="h-16 md:h-20 w-auto drop-shadow-[0_0_15px_rgba(255,69,0,0.3)]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Bottom Offer Bar -->
+    <div id="sticky-offer-bar" class="fixed bottom-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-t border-brand-orange/20 z-50 transform translate-y-full transition-transform duration-500 shadow-[0_-4px_30px_-10px_rgba(255,69,0,0.15)]">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between gap-4 max-w-6xl mx-auto">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 relative group bg-zinc-900">
+                        <img src="https://sandiprojects.com/wp-content/uploads/2026/02/swfwfwf.png" alt="Pack Freelance Pro" class="w-full h-full object-contain p-1">
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs md:text-sm font-medium text-white truncate font-display">
+                            <span class="hidden sm:inline">SISTEMA COMPLETO + 5 Bonus</span>
+                            <span class="sm:hidden">Sistema + 5 BONUS</span>
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-base md:text-lg font-bold text-brand-orange">$14.99</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500 line-through decoration-white/20 hidden sm:inline">$262</span>
+                            <span class="bg-green-500/10 text-green-500 border border-green-500/20 text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">87% OFF</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://pay.hotmart.com/D104828731T?checkoutMode=10" class="inline-flex items-center justify-center gap-1.5 md:gap-2 whitespace-nowrap text-xs md:text-sm ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-lg bg-brand-orange hover:bg-brand-hover text-white font-bold px-4 md:px-6 h-10 md:h-11 flex-shrink-0 shadow-glow group">
+                    <i class="ph-bold ph-caret-right text-base md:text-lg group-hover:text-white transition-colors"></i>
+                    <span class="hidden sm:inline">QUIERO EL SISTEMA</span>
+                    <span class="sm:hidden">LO QUIERO</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // --- INICIALIZAR AOS ---
+        AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic', offset: 50 });
+
+        // --- TIMER ---
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            let diff = tomorrow - now;
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // --- DISCOUNT SCRIPT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+            const today = new Date().getDay();
+            const dayName = days[today];
+            document.getElementById('product-discount-banner').innerHTML = `HOY ${dayName} <span class="text-green-500">87% OFF</span>`;
+        });
+
+        // --- LÓGICA DE CARRUSEL DE PRODUCTO ---
+        const productMainImg = document.getElementById('product-main-img');
+        const thumbs = document.querySelectorAll('.gallery-thumb');
+        const galleryPrev = document.getElementById('galleryPrev');
+        const galleryNext = document.getElementById('galleryNext');
+        
+        let currentImgIndex = 0;
+        const imgUrls = Array.from(thumbs).map(t => t.dataset.img);
+
+        function updateGallery(index) {
+            currentImgIndex = index;
+            // Efecto de fade suave
+            productMainImg.style.opacity = '0';
+            setTimeout(() => {
+                productMainImg.src = imgUrls[currentImgIndex];
+                productMainImg.style.opacity = '1';
+            }, 200);
+
+            thumbs.forEach((t, i) => {
+                if (i === currentImgIndex) {
+                    t.classList.add('thumb-active');
+                    t.classList.remove('thumb-inactive');
+                } else {
+                    t.classList.remove('thumb-active');
+                    t.classList.add('thumb-inactive');
+                }
+            });
+            
+            // Auto-scroll miniaturas si es necesario
+            thumbs[currentImgIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', () => updateGallery(i));
+        });
+
+        galleryNext.addEventListener('click', () => {
+            let next = (currentImgIndex + 1) % imgUrls.length;
+            updateGallery(next);
+        });
+
+        galleryPrev.addEventListener('click', () => {
+            let prev = (currentImgIndex - 1 + imgUrls.length) % imgUrls.length;
+            updateGallery(prev);
+        });
+
+        // --- LÓGICA DE CARRUSEL DE TESTIMONIOS ---
+        const track = document.getElementById('sliderTrack');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const dotsContainer = document.getElementById('paginationDots');
+
+        if (track && nextBtn && prevBtn && dotsContainer) {
+            const cards = Array.from(track.children);
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600`;
+                dot.addEventListener('click', () => {
+                    const cardWidth = cards[0].offsetWidth;
+                    const gap = window.innerWidth < 768 ? 16 : 24; // Ajuste de gap para scroll en mobile vs pc
+                    track.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
+                });
+                dotsContainer.appendChild(dot);
+            });
+            const dots = Array.from(dotsContainer.children);
+
+            const updateSliderState = () => {
+                const scrollLeft = track.scrollLeft;
+                const cardWidth = cards[0].offsetWidth;
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+                dots.forEach((dot, i) => {
+                    if (i === activeIndex) {
+                        dot.classList.add('w-4', 'bg-brand-orange');
+                        dot.classList.remove('w-2', 'bg-zinc-600');
+                    } else {
+                        dot.classList.remove('w-4', 'bg-brand-orange');
+                        dot.classList.add('w-2', 'bg-zinc-600');
+                    }
+                });
+            };
+
+            nextBtn.addEventListener('click', () => {
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                track.scrollBy({ left: cards[0].offsetWidth + gap, behavior: 'smooth' });
+            });
+            prevBtn.addEventListener('click', () => {
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                track.scrollBy({ left: -(cards[0].offsetWidth + gap), behavior: 'smooth' });
+            });
+            track.addEventListener('scroll', updateSliderState);
+            setTimeout(updateSliderState, 100);
+        }
+
+        // --- STICKY BAR & REVENUE COUNTER ---
+        window.addEventListener('scroll', () => {
+            const stickyBar = document.getElementById('sticky-offer-bar');
+            const checkoutSec = document.getElementById('checkout-product');
+            if (window.scrollY > checkoutSec.offsetTop + 200) {
+                stickyBar.classList.remove('translate-y-full');
+            } else {
+                stickyBar.classList.add('translate-y-full');
+            }
+        });
+
+        // --- CONTADOR REVENUE ---
+        const counterElement = document.getElementById('revenue-counter');
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                let start = 0;
+                const end = 197463;
+                const duration = 2000;
+                const step = (timestamp) => {
+                    if (!start) start = timestamp;
+                    const progress = timestamp - start;
+                    const val = Math.min(Math.floor((progress / duration) * end), end);
+                    counterElement.innerText = `+$${val.toLocaleString('es-AR')} USD`;
+                    if (progress < duration) window.requestAnimationFrame(step);
+                    else counterElement.innerText = `+$197.463 USD`;
+                };
+                window.requestAnimationFrame(step);
+                observer.unobserve(counterElement);
+            }
+        });
+        observer.observe(counterElement);
+    </script>
+</body>
+</html>
