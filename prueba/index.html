@@ -157,7 +157,7 @@
 
     <!-- Fondo Técnico -->
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[100vw] sm:w-[800px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
     <!-- Sticky Header DE URGENCIA (DINÁMICO) -->
     <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-brand-orange/30 z-50 h-14 flex items-center shadow-[0_4px_30px_-10px_rgba(255,69,0,0.15)]">
@@ -169,7 +169,7 @@
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col truncate">
                     <span id="dynamic-offer-title" class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest md:tracking-[0.2em] text-white whitespace-nowrap">⚡ OFERTA RELÁMPAGO ⚡</span>
                 </div>
             </div>
@@ -748,6 +748,7 @@
     </section>
     
     <!-- NUEVA SECCIÓN: CHECKOUT PRODUCT (COMPRA DIRECTA) -->
+    <!-- (Nota: no le pusimos overflow-hidden a esta porque acá el bug ya no llega y rompería tu efecto Sticky en PC) -->
     <section id="checkout-product" class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
@@ -994,7 +995,7 @@
                                 <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
                             </summary>
                             <div class="pb-4 text-xs md:text-sm text-zinc-400 pl-8 leading-relaxed">
-                                • Garantía de satisfacción de 7 días<br>• Si no estás 100% conforme, te devolvemos el dinero<br>• Sin preguntas, sin complicaciones
+                                • Garantía de satisfaction de 7 días<br>• Si no estás 100% conforme, te devolvemos el dinero<br>• Sin preguntas, sin complicaciones
                             </div>
                         </details>
                         <details class="group border-b border-white/5">
@@ -1471,7 +1472,7 @@
     </section>
 
     <!-- 9. TRANSPARENCIA & GARANTÍA -->
-    <section class="py-10 lg:py-16 bg-brand-surface border-t border-white/5 text-center">
+    <section class="py-10 lg:py-16 bg-brand-surface border-t border-white/5 text-center overflow-hidden">
         <div class="container mx-auto px-4 max-w-3xl">
             
             <!-- Bloque de Transparencia -->
