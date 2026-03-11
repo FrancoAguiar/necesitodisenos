@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CÓMO ATRAER CLIENTES | @necesitodisenos</title>
     <meta name="description" content="El mapa paso a paso para vivir del diseño sin depender de nadie.">
     <meta property="og:title" content="CÓMO ATRAER CLIENTES | @necesitodisenos">
@@ -74,6 +74,13 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* El "botón nuclear" para matar el scroll horizontal en mobile */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+        }
+
         body {
             background-color: #0A0A0A;
             color: #E5E5E5;
@@ -124,13 +131,6 @@
             animation: urgent-pulse 1.5s ease-in-out infinite;
         }
         
-        /* Shimmer para IA */
-        .ai-shimmer {
-            background: linear-gradient(90deg, rgba(255,69,0,0) 0%, rgba(255,69,0,0.1) 50%, rgba(255,69,0,0) 100%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite linear;
-        }
-        
         /* Ocultar scrollbar para carrusel horizontal en movil */
         .scrollbar-hide::-webkit-scrollbar {
             display: none !important;
@@ -157,7 +157,7 @@
 
     <!-- Fondo Técnico -->
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[100vw] sm:w-[800px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
     <!-- Sticky Header DE URGENCIA (DINÁMICO) -->
     <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-brand-orange/30 z-50 h-14 flex items-center shadow-[0_4px_30px_-10px_rgba(255,69,0,0.15)]">
@@ -748,13 +748,13 @@
     </section>
     
     <!-- NUEVA SECCIÓN: CHECKOUT PRODUCT (COMPRA DIRECTA) -->
-    <!-- (Nota: no le pusimos overflow-hidden a esta porque acá el bug ya no llega y rompería tu efecto Sticky en PC) -->
+    <!-- (Nota: esta sección usa fade-up para no romper el ancho en mobile al tener animaciones) -->
     <section id="checkout-product" class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
                 
                 <!-- Columna Izquierda: Galería Carrusel -->
-                <div class="lg:sticky lg:top-24" data-aos="fade-right">
+                <div class="lg:sticky lg:top-24" data-aos="fade-up">
                     <div class="space-y-4">
                         
                         <!-- TITULO DINÁMICO & FLECHA -->
@@ -815,7 +815,7 @@
                 </div>
 
                 <!-- Columna Derecha: Info del Producto -->
-                <div id="offer" class="space-y-5 lg:space-y-6" data-aos="fade-left" data-aos-delay="200">
+                <div id="offer" class="space-y-5 lg:space-y-6" data-aos="fade-up" data-aos-delay="200">
                     <div>
                         <h1 class="font-display text-2xl md:text-4xl font-bold text-white mb-2">Sistema Completo + BONUS</h1>
                         <p class="text-sm md:text-base text-zinc-400">El sistema paso a paso para conseguir clientes.</p>
@@ -995,7 +995,7 @@
                                 <i class="ph-bold ph-caret-down group-open:rotate-180 transition-transform text-zinc-500"></i>
                             </summary>
                             <div class="pb-4 text-xs md:text-sm text-zinc-400 pl-8 leading-relaxed">
-                                • Garantía de satisfaction de 7 días<br>• Si no estás 100% conforme, te devolvemos el dinero<br>• Sin preguntas, sin complicaciones
+                                • Garantía de satisfacción de 7 días<br>• Si no estás 100% conforme, te devolvemos el dinero<br>• Sin preguntas, sin complicaciones
                             </div>
                         </details>
                         <details class="group border-b border-white/5">
@@ -1206,9 +1206,10 @@
     </section>
 
     <!-- 5. RESUMEN DE LA OFERTA -->
+    <!-- (También le ponemos fade-up a esta para que los bloques no empujen hacia los costados) -->
     <section class="py-12 lg:py-24 bg-black relative border-t border-white/5 overflow-hidden">
         <!-- Ambient Light -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
 
         <div class="container mx-auto px-4 max-w-4xl relative z-10">
             
@@ -1238,7 +1239,7 @@
                 <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5">
                     
                     <!-- Left: Items Detail -->
-                    <div class="p-5 lg:p-10 space-y-4 lg:space-y-6" data-aos="fade-right">
+                    <div class="p-5 lg:p-10 space-y-4 lg:space-y-6" data-aos="fade-up">
                         <h3 class="text-white font-bold text-base md:text-lg mb-4 lg:mb-6 flex items-center gap-2">
                             <i class="ph-duotone ph-package text-brand-orange"></i>ESTO ES LO QUE OBTIENES
                         </h3>
@@ -1311,7 +1312,7 @@
                     </div>
 
                     <!-- Right: Summary & CTA -->
-                    <div class="p-5 lg:p-10 bg-brand-surface/30 flex flex-col justify-between relative overflow-hidden" data-aos="fade-left">
+                    <div class="p-5 lg:p-10 bg-brand-surface/30 flex flex-col justify-between relative overflow-hidden" data-aos="fade-up">
                         <!-- Decor element -->
                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-orange/10 blur-[50px] rounded-full"></div>
 
@@ -1378,7 +1379,7 @@
     <!-- 8. FAQ -->
     <section class="py-12 lg:py-24 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
         <!-- Subtle Glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-brand-orange/5 blur-[100px] rounded-full pointer-events-none"></div>
 
         <div class="container mx-auto px-4 max-w-3xl relative z-10">
             <div class="text-center mb-8 lg:mb-16" data-aos="fade-up">
