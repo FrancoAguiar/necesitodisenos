@@ -2,965 +2,522 @@
 <html lang="es" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport estricto para evitar zoom automático al tocar inputs en iOS y prevenir rebotes -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plantilla de Contrato Freelance | @necesitodisenos</title>
     <meta name="description" content="Documento legal listo para usar que te protege de cambios infinitos y asegura tus pagos.">
-
+    
     <!-- Google Fonts: Inter Tight & Inter (SaaS Style) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=Kalam:wght@700&family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Scripts CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <!-- CONFIGURACIÓN TAILWIND (Estética SaaS Verde) -->
+    
+    <!-- Configuración personalizada de Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            primary: '#22c55e', /* Verde Neón */
-                            hover: '#16a34a',
+                            orange: '#FF4500', 
+                            hover: '#FF571A',
                             bg: '#0A0A0A',
                             surface: '#121212',
-                            card: '#161616',
-                            border: '#262626' 
+                            border: '#262626'
                         }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Inter Tight', 'sans-serif'],
-                        hand: ['Kalam', 'cursive'],
+                        hand: ['Kalam', 'cursive'], // Para simular notas a mano
                         poppins: ['Poppins', 'sans-serif'],
                     },
                     backgroundImage: {
                         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                     },
                     boxShadow: {
-                        'glow': '0 0 40px -10px rgba(34, 197, 94, 0.4)',
-                        'glow-hover': '0 0 50px -5px rgba(34, 197, 94, 0.6)',
-                        'sheet': '0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.6)',
+                        'glow': '0 0 40px -10px rgba(34, 197, 94, 0.4)', // Glow verde
                         'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
                     },
-                    animation: {
-                        'pulse-primary': 'pulsePrimary 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 5s ease-in-out infinite',
-                    },
                     keyframes: {
-                        pulsePrimary: {
-                            '0%, 100%': { opacity: '1' },
-                            '50%': { opacity: '.5' },
-                        },
                         float: {
                             '0%, 100%': { transform: 'translateY(0) rotate(-2deg)' },
-                            '50%': { transform: 'translateY(-5px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(0deg)' },
                         }
+                    },
+                    animation: {
+                        float: 'float 5s ease-in-out infinite',
                     }
                 }
             }
         }
     </script>
 
-    <!-- ESTILOS CSS -->
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <style>
-        body {
-            background-color: #0A0A0A;
-            color: #E5E5E5;
-            -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: none;
+        html, body {
             overflow-x: hidden !important;
             max-width: 100vw;
             width: 100%;
+            background-color: #0A0A0A;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::selection {
+            background: rgba(34, 197, 94, 0.3);
+            color: white;
         }
 
-        ::selection { background: rgba(34, 197, 94, 0.3); color: white; }
-
-        /* Patrón de fondo SaaS actualizado */
         .bg-grid-pattern {
             background-size: 50px 50px;
             background-image: 
                 linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 100%);
-            pointer-events: none;
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        .bg-ambient-glow {
-            position: absolute; top: 10%; left: 50%;
-            width: 80vw; height: 80vw; max-width: 800px; max-height: 800px;
-            background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, rgba(0,0,0,0) 70%);
-            transform: translate(-50%, -50%); pointer-events: none; z-index: 0;
-        }
-
-        /* Scrollbars actualizados */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Componentes UI */
-        .glass-card {
-            background: rgba(22, 22, 24, 0.4);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 0.75rem; transition: border-color 0.3s ease;
-        }
-        .glass-card:focus-within { border-color: rgba(34, 197, 94, 0.3); }
+        .scrollbar-hide::-webkit-scrollbar { display: none !important; }
+        .scrollbar-hide { -ms-overflow-style: none !important; scrollbar-width: none !important; }
 
-        .input-group { display: flex; flex-direction: column; gap: 0.35rem; scroll-margin-top: 20px; }
-        .input-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #A1A1AA; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-        .input-field { 
-            background-color: rgba(0,0,0,0.3); border: 1px solid #262626; color: #F4F4F5; 
-            padding: 0.65rem 0.85rem; border-radius: 0.5rem; font-size: 0.875rem; 
-            transition: all 0.2s; width: 100%; 
-        }
-        .input-field:focus:not(:disabled) { 
-            outline: none; border-color: #22c55e; 
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
-            background-color: rgba(0,0,0,0.5);
-        }
-        .input-field::placeholder { color: #52525B; }
-
-        .btn-na {
-            font-size: 0.65rem; background: #262626; color: #A1A1AA;
-            padding: 2px 6px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
-            z-index: 10; position: relative;
-        }
-        .btn-na:hover { background: #22c55e; color: white; }
-
-        /* Documento y Edición */
-        .document-sheet {
-            background-color: #121212; background-image: linear-gradient(to bottom, #151515 0%, #111 100%);
-            color: #D4D4D8; font-family: 'Inter', system-ui, sans-serif;
-            line-height: 1.7; font-size: 0.95rem; position: relative; z-index: 10; transition: all 0.3s ease;
-        }
-        .document-sheet::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, transparent, #22c55e, transparent);
-            opacity: 0.6; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;
-        }
-        .document-sheet:focus {
-            outline: none; box-shadow: 0 0 0 2px #22c55e, 0 20px 50px -10px rgba(0,0,0,0.8);
-        }
-
-        /* Variables interactivas dentro de la hoja */
-        .contract-placeholder {
-            background: rgba(34, 197, 94, 0.12); color: #22c55e;
-            padding: 0.1rem 0.4rem; border-radius: 0.25rem;
-            border: 1px dashed rgba(34, 197, 94, 0.4); font-size: 0.9em; font-weight: 500;
-            white-space: nowrap; transition: all 0.2s; cursor: pointer;
-        }
-        .contract-placeholder:hover { background: rgba(34, 197, 94, 0.25); }
-        
-        .contract-filled {
-            color: #FFFFFF; font-weight: 600; border-bottom: 1px dotted rgba(255, 255, 255, 0.3); transition: all 0.2s; cursor: pointer;
-        }
-        .contract-filled:hover { background: rgba(255, 255, 255, 0.05); border-radius: 4px; padding: 0 2px;}
-
-        /* Marca de agua */
-        .web-watermark {
-            position: fixed; bottom: 30px; right: -20px; font-size: 4rem; font-weight: 900;
-            color: rgba(255, 255, 255, 0.02); pointer-events: none; z-index: 0;
-            transform: rotate(-10deg); white-space: nowrap; user-select: none;
-        }
-
-        /* Tooltip */
-        [data-tooltip]:hover::after {
-            content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%;
-            transform: translateX(-50%) translateY(-8px); background: #18181B; border: 1px solid #262626;
-            color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; z-index: 100;
-        }
-
-        /* Cláusulas para PDF (evitar saltos feos) */
-        .clausula { margin-bottom: 1.5rem; page-break-inside: avoid; }
-
-        /* FAB Buttons Mobile */
-        .mobile-fab {
-            position: fixed; bottom: 20px; right: 20px; z-index: 50;
-            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-            padding: 0.8rem 1.2rem; border-radius: 9999px; font-weight: bold;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .mobile-fab:active { transform: scale(0.95); }
-        
-        @media (min-width: 1024px) {
-            .mobile-fab { display: none !important; }
-        }
-
-        /* ESTILOS PARA IMPRESIÓN DIRECTA / PDF NATIVO */
-        @media print {
-            body, html { background: white !important; height: auto !important; overflow: auto !important; }
-            aside, .bg-grid-pattern, .bg-ambient-glow, .web-watermark, .toolbar-actions, #toast, .mobile-fab, #confirmModal { display: none !important; }
-            main { background: white !important; height: auto !important; overflow: visible !important; display: block !important; }
-            .document-wrapper { padding: 0 !important; margin: 0 !important; display: block !important; }
-            #documentPreview {
-                box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important;
-                max-width: 100% !important; color: black !important; background: white !important; white-space: pre-wrap !important;
-            }
-            #documentPreview::before { display: none !important; }
-            .contract-placeholder { border: none !important; background: transparent !important; color: #666 !important; }
-            .contract-filled { color: black !important; border: none !important; font-weight: bold; }
-            .clausula, p, h3, ul, li { page-break-inside: avoid !important; }
-            .firma-box { page-break-inside: avoid !important; }
-        }
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
     </style>
 </head>
-<body class="bg-brand-bg text-gray-300 font-sans flex flex-col lg:flex-row h-[100dvh] overflow-hidden selection:bg-brand-primary/30 selection:text-white relative">
+<body class="pt-14 relative overflow-x-hidden">
 
-    <div class="web-watermark font-display tracking-tighter hidden md:block">@necesitodisenos</div>
+    <!-- Fondo Técnico -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-green-500/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-4 right-4 lg:top-6 lg:right-6 bg-[#18181B] border border-brand-border text-white px-4 py-3 rounded-xl shadow-2xl transform -translate-y-24 opacity-0 transition-all duration-400 ease-out z-[9999] flex items-center gap-3 min-w-[280px]">
-        <div class="bg-brand-primary/20 p-1.5 rounded-full shrink-0">
-            <i class="ph-fill ph-check-circle text-brand-primary text-xl"></i>
-        </div>
-        <div>
-            <h4 class="font-bold text-sm font-display" id="toastTitle">Éxito</h4>
-            <span id="toastMsg" class="font-medium text-xs text-gray-400 leading-tight block mt-0.5">Acción completada</span>
-        </div>
-    </div>
-
-    <!-- Modal Confirmación de Reseteo -->
-    <div id="confirmModal" class="fixed inset-0 z-[10000] hidden items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-brand-card border border-brand-border rounded-xl p-6 max-w-sm w-[90%] shadow-2xl transform scale-95 transition-transform duration-300">
-            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2 font-display">
-                <i class="ph-fill ph-warning-circle text-brand-primary"></i> ¿Restaurar documento?
-            </h3>
-            <p class="text-sm text-gray-400 mb-6">Se borrarán tus datos y los párrafos que hayas agregado manualmente. Esta acción no se puede deshacer.</p>
-            <div class="flex justify-end gap-3">
-                <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors">Cancelar</button>
-                <button onclick="executeReset()" class="px-4 py-2 rounded-lg text-sm font-bold bg-brand-primary text-black hover:bg-brand-hover shadow-glow transition-all">Sí, restaurar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- COLUMNA IZQUIERDA: Formulario -->
-    <aside id="sidebarPanel" class="w-full lg:w-[480px] h-[100dvh] lg:h-full flex flex-col bg-brand-surface border-r border-brand-border z-20 shadow-2xl relative shrink-0">
-        
-        <header class="p-5 lg:p-6 border-b border-brand-border bg-brand-surface/95 backdrop-blur z-10 shrink-0 flex flex-col gap-4">
-            <div class="flex justify-between items-start">
-                <div class="flex flex-col gap-1.5">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-white flex items-center gap-2 tracking-tight">
-                        <div class="bg-brand-primary p-1.5 rounded-lg shadow-glow animate-float">
-                            <i class="ph-bold ph-pen-nib text-black text-base lg:text-lg"></i>
-                        </div>
-                        Contrato<span class="text-brand-primary">Pro</span>
-                    </h1>
-                    <p class="text-xs text-gray-400 font-medium ml-1">Generador de Contrato para diseñadores</p>
+    <!-- Sticky Header DE URGENCIA -->
+    <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-white/10 z-50 h-14 flex items-center shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            
+            <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                <div class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </div>
-                <button onclick="openConfirmModal()" class="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" title="Limpiar y restaurar documento">
-                    <i class="ph ph-trash text-lg"></i>
-                </button>
+                <span class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">OFERTA ESPECIAL</span>
             </div>
             
-            <!-- Barra de Progreso -->
-            <div class="w-full bg-[#18181B] rounded-full h-1.5 border border-white/5 relative overflow-hidden">
-                <div id="progressBar" class="bg-brand-primary h-1.5 rounded-full transition-all duration-500 ease-out shadow-glow" style="width: 0%"></div>
-            </div>
-            <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase tracking-wider font-poppins">
-                <span id="progressText">0/27 CAMPOS LISTOS</span>
-                <span class="text-brand-primary" id="progressPercent">0%</span>
-            </div>
-        </header>
-
-        <!-- Contenedor del form con scroll independiente -->
-        <div id="formScrollArea" class="flex-1 overflow-y-auto p-5 lg:p-6 hide-scrollbar relative pb-24 lg:pb-6">
-            <form id="contractForm" class="flex flex-col gap-6 font-sans">
+            <div class="flex items-center gap-2 md:gap-6 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="hidden lg:inline text-[10px] font-medium text-white/70 uppercase tracking-wider mr-2">Termina en:</span>
+                    <div class="flex items-start gap-1 md:gap-2 text-center">
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="hours" class="font-mono text-white font-bold text-xs md:text-sm leading-none">08</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="minutes" class="font-mono text-white font-bold text-xs md:text-sm leading-none">37</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="seconds" class="font-mono text-white font-bold text-xs md:text-sm leading-none">38</span>
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Emisión -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-calendar-blank text-brand-primary"></i> Detalles de Emisión
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group col-span-2">
-                            <label class="input-label">Ciudad de Emisión</label>
-                            <input type="text" id="ciudad" class="input-field" placeholder="Ej. Buenos Aires">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Día</label>
-                            <input type="text" inputmode="numeric" id="dia" class="input-field" placeholder="Ej. 15">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Mes</label>
-                            <input type="text" id="mes" class="input-field" placeholder="Ej. Octubre">
-                        </div>
-                        <div class="input-group col-span-2">
-                            <label class="input-label">Año</label>
-                            <input type="text" inputmode="numeric" id="ano" class="input-field" placeholder="Ej. 2024">
+                <a href="#offer" class="hidden md:flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all hover:scale-105">
+                    DESCARGAR AHORA
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION (LA FÓRMULA APLICADA) -->
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 pb-12 lg:pb-20">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mt-8 lg:mt-12">
+            
+            <!-- COPY: LA PROMESA AL DOLOR -->
+            <div class="text-center lg:text-left space-y-6 md:space-y-8" data-aos="fade-right">
+                
+                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-xs font-medium tracking-wide mx-auto lg:mx-0 shadow-sm backdrop-blur-sm">
+                    <i class="ph-fill ph-file-doc text-white"></i> PLANTILLA WEB EDITABLE
+                </div>
+                
+                <!-- 2. EL TÍTULO -->
+                <h1 class="font-display text-[32px] sm:text-[40px] md:text-[52px] font-extrabold tracking-tight text-white leading-[1.05] uppercase">
+                    PLANTILLA DE CONTRATO<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">PARA DEJAR DE TRABAJAR GRATIS</span><br>
+                    Y EVITAR CLIENTES TÓXICOS
+                </h1>
+                
+                <!-- 3. EL SUBTÍTULO -->
+                <p class="text-base md:text-lg text-zinc-400 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Un documento legal listo para usar que te protege de cambios infinitos y asegura que cobres el 100% de tu trabajo.
+                </p>
+
+                <!-- 4. LOS QUICK WINS -->
+                <ul class="flex flex-row flex-wrap justify-center lg:justify-start gap-3 md:gap-6 text-sm md:text-base text-zinc-300 mx-auto lg:mx-0 max-w-lg w-full">
+                    <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Fácil de usar</strong></span>
+                    </li>
+                    <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Protección total</strong></span>
+                    </li>
+                                        <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Autoridad</strong></span>
+                    </li>
+                </ul>
+                <div class="pt-4 max-w-lg mx-auto lg:mx-0 w-full space-y-5">
+                    <!-- 5. EL ANCLAJE DE PRECIO -->
+                    <div class="p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 text-left relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+                        <div class="pl-3 md:pl-4 space-y-3">
+                            <p class="text-sm md:text-base text-zinc-300 leading-relaxed">
+                                Un cliente que desaparece te cuesta cientos de dólares. Un abogado para redactar esto te cobra <span class="line-through text-zinc-500">$150</span>.
+                            </p>
+                            <p class="text-sm md:text-base text-zinc-300 leading-relaxed">
+                                Llevate la plantilla exacta que usamos nosotros por solo <strong class="text-white text-lg bg-green-500/20 px-2 py-1 rounded-md border border-green-500/30 shadow-sm">$2.99</strong>.
+                            </p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Cliente -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-buildings text-brand-primary"></i> Datos del Cliente
-                    </h2>
-                    <div class="flex flex-col gap-4">
-                        <div class="input-group">
-                            <label class="input-label">Nombre o Razón Social</label>
-                            <input type="text" id="c_nombre" class="input-field" placeholder="Ej. Empresa S.A">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Documento / NIT / CUIT</label>
-                            <input type="text" id="c_doc" class="input-field" placeholder="Ej. 30-12345678-9">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Domicilio Completo</label>
-                            <input type="text" id="c_dom" class="input-field" placeholder="Calle Falsa 123, Ciudad">
-                        </div>
+                    <!-- 6. EL BOTÓN GIGANTE (SOLUCIONADO MOBILE) -->
+                    <a href="#offer" class="flex items-center justify-center gap-2 px-4 sm:px-8 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-xs sm:text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_50px_-10px_rgba(34,197,94,0.6)] hover:-translate-y-1 w-full text-center leading-tight">
+                        <i class="ph-bold ph-download-simple text-lg md:text-xl"></i>
+                        <span>QUIERO LA PLANTILLA POR $2.99</span>
+                    </a>
+                    
+                    <!-- 7. PAGO SEGURO Y SIN FRICCIÓN -->
+                    <div class="flex items-center justify-center gap-2 text-zinc-500 text-[11px] md:text-xs text-center">
+                        <i class="ph-fill ph-lock-key text-base text-zinc-400"></i> Transacción 100% segura. Descarga inmediata al instante.
                     </div>
                 </div>
+            </div>
 
-                <!-- Diseñador -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-pen-nib text-brand-primary"></i> Datos del Diseñador
-                    </h2>
-                    <div class="flex flex-col gap-4">
-                        <div class="input-group">
-                            <label class="input-label">Nombre o Estudio</label>
-                            <input type="text" id="d_nombre" class="input-field" placeholder="Tu Nombre o Agencia">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Documento / ID</label>
-                            <input type="text" id="d_doc" class="input-field" placeholder="Tu número de identificación">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Domicilio Comercial</label>
-                            <input type="text" id="d_dom" class="input-field" placeholder="Tu dirección comercial">
+            <!-- 1. EL HOOK VISUAL (CSS SIMULADO EN VEZ DE MOCKUP COMPLEJO) -->
+            <div data-aos="fade-left" data-aos-delay="200" class="mt-12 lg:mt-0 lg:ml-auto w-full max-w-[420px] mx-auto perspective-1000">
+                <div class="relative w-full bg-white text-black p-6 md:p-8 rounded-sm shadow-2xl transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500 border border-zinc-200 animate-float">
+                    
+                    <!-- Header Documento -->
+                    <div class="border-b-2 border-zinc-800 pb-3 mb-5 flex justify-between items-end">
+                        <h4 class="font-poppins font-black text-xl leading-tight uppercase text-zinc-900 tracking-tighter">CONTRATO DE SERVICIOS<br>FREELANCE</h4>
+                        <div class="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center">
+                            <i class="ph-bold ph-pen-nib text-zinc-400"></i>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Body Documento -->
+                    <div class="space-y-9 font-poppins text-[11px] md:text-xs leading-relaxed text-zinc-700">
+                        <p><strong class="text-black uppercase">Cláusula 2: Pagos.</strong> El proyecto iniciará únicamente tras el abono del 50% de anticipo no reembolsable. El 50% restante deberá ser cancelado previo a la entrega final de los archivos fuente.</p>
+                        
+                        <!-- Highlighting the pain point -->
+                        <div class="bg-yellow-200 p-2 md:p-3 rounded border-l-4 border-yellow-500 shadow-sm relative">
+                            <p class="font-medium text-black"><strong class="uppercase text-red-600">Cláusula 3: Límite de Cambios.</strong> El cliente tiene derecho a un máximo de dos (2) rondas de revisión sobre la propuesta. Cualquier cambio adicional será facturado a una tarifa de $50 USD por hora extra.</p>
+                            <!-- Fake cursor / highlight mark -->
+                            <i class="ph-fill ph-highlighter absolute -right-2 -top-3 text-2xl text-yellow-500 drop-shadow-md rotate-45"></i>
+                        </div>
 
-                <!-- Condiciones -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-briefcase text-brand-primary"></i> Alcance Económico
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group col-span-2 relative">
-                            <label class="input-label">Monto Total</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-brand-primary font-bold font-display opacity-80">USD</span>
-                                <input type="text" inputmode="decimal" id="monto" class="input-field pl-12" placeholder="1.500">
+                        <p><strong class="text-black uppercase">Cláusula 4: Propiedad.</strong> Los derechos de uso comercial se transferirán al cliente <u>exclusivamente</u> tras la confirmación de la recepción del pago del 100%.</p>
+                        
+                        <div class="flex items-end gap-4 mt-8 pt-4">
+                            <div class="w-1/2">
+                                <div class="font-hand text-xl text-blue-700 opacity-80 border-b border-zinc-400 pb-1 w-full mb-1">Firma Digital</div>
+                                <span class="text-[9px] uppercase tracking-widest text-zinc-400">El Profesional</span>
+                            </div>
+                            <div class="w-1/2">
+                                <div class="border-b border-zinc-400 pb-1 h-8 w-full mb-1"></div>
+                                <span class="text-[9px] uppercase tracking-widest text-zinc-400">El Cliente</span>
                             </div>
                         </div>
-                        <div class="input-group relative">
-                            <label class="input-label">Nº Publicaciones <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('n_pub')">N/A</span></label>
-                            <input type="text" inputmode="numeric" id="n_pub" class="input-field" placeholder="Ej. 12">
-                        </div>
-                        <div class="input-group relative">
-                            <label class="input-label">Nº Historias <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('n_his')">N/A</span></label>
-                            <input type="text" inputmode="numeric" id="n_his" class="input-field" placeholder="Ej. 8">
-                        </div>
-                        <div class="input-group relative">
-                            <label class="input-label">Rondas Revisión <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('n_ron')">N/A</span></label>
-                            <input type="text" inputmode="numeric" id="n_ron" class="input-field" placeholder="Ej. 2">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Interés Mora (%)</label>
-                            <input type="text" inputmode="decimal" id="x_int" class="input-field" placeholder="Ej. 5">
-                        </div>
                     </div>
-                </div>
 
-                <!-- Plazos -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-hourglass-high text-brand-primary"></i> Plazos (Días hábiles)
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group">
-                            <label class="input-label">Revisión Cliente</label>
-                            <input type="text" inputmode="numeric" id="x_rev_ent" class="input-field" placeholder="Ej. 3">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Silencio/Tácita</label>
-                            <input type="text" inputmode="numeric" id="x_sil" class="input-field" placeholder="Ej. 5">
-                        </div>
-                         <div class="input-group">
-                            <label class="input-label">Max. Retraso</label>
-                            <input type="text" inputmode="numeric" id="x_ret" class="input-field" placeholder="Ej. 10">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Subsanar Resc.</label>
-                            <input type="text" inputmode="numeric" id="x_sub" class="input-field" placeholder="Ej. 5">
-                        </div>
+                    <!-- Post-it Note visual -->
+                    <div class="absolute -right-6 -bottom-6 bg-yellow-300 text-black text-sm p-3 md:p-4 rounded-sm shadow-xl rotate-[-8deg] w-40 md:w-44 text-center border border-yellow-400 hover:rotate-[-5deg] transition-transform">
+                        <i class="ph-push-pin-fill absolute -top-2 left-1/2 -translate-x-1/2 text-red-500 text-xl drop-shadow-sm"></i>
+                        <p class="font-hand font-bold leading-snug mt-1 text-zinc-800 text-base md:text-lg">
+                            "Clientes que NO piden cambios extra" 😎
+                        </p>
                     </div>
-                </div>
 
-                <!-- Cronograma -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-calendar-check text-brand-primary"></i> Cronograma de Hitos
-                    </h2>
-                    <div class="flex flex-col gap-3">
-                        <div class="input-group">
-                            <label class="input-label">1. Briefing <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f1')">N/A</span></label>
-                            <input type="text" id="f1" class="input-field" placeholder="Ej. 10 de Octubre">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">2. Moodboard <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f2')">N/A</span></label>
-                            <input type="text" id="f2" class="input-field" placeholder="Ej. 15 de Octubre">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">3. 1ras Propuestas <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f3')">N/A</span></label>
-                            <input type="text" id="f3" class="input-field" placeholder="Ej. 22 de Octubre">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">4. Revisión <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f4')">N/A</span></label>
-                            <input type="text" id="f4" class="input-field" placeholder="Ej. Hasta el 25 de Octubre">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">5. Entrega Final <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f5')">N/A</span></label>
-                            <input type="text" id="f5" class="input-field" placeholder="Ej. 30 de Octubre">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">6. Cierre Proyecto <span class="btn-na" onclick="event.preventDefault(); event.stopPropagation(); setNA('f6')">N/A</span></label>
-                            <input type="text" id="f6" class="input-field" placeholder="Ej. 02 de Noviembre">
-                        </div>
-                    </div>
                 </div>
-
-                <!-- Jurisdicción -->
-                <div class="glass-card p-4 lg:p-5">
-                    <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                        <i class="ph-fill ph-scales text-brand-primary"></i> Jurisdicción Legal
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group">
-                            <label class="input-label">País</label>
-                            <input type="text" id="pais" class="input-field" placeholder="Ej. Argentina">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Ciudad / Tribunales</label>
-                            <input type="text" id="c_jur" class="input-field" placeholder="Ej. CABA">
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <!-- Firma / Powered By -->
-            <div class="mt-8 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
-                <span class="text-[#737373] text-[11px] font-semibold tracking-[0.15em] font-poppins">CREADO POR</span>
-                <span class="text-brand-primary text-[11px] font-bold tracking-[0.15em] ml-1.5 font-poppins">@NECESITODISENOS</span>
             </div>
         </div>
+    </section>
 
-        <!-- FAB Botón Mobile para ir al Documento -->
-        <button onclick="showDocMobile()" class="mobile-fab bg-brand-primary text-black shadow-glow">
-            <i class="ph-bold ph-eye text-xl"></i> <span>Ver Doc</span>
-        </button>
-    </aside>
+    <!-- 1.5 DISCLAIMER: EL FILTRO -->
+    <section class="py-12 bg-brand-surface border-t border-white/5 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-8" data-aos="fade-up">¿Por qué un cliente tóxico te arruina?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                <!-- SIN CONTRATO -->
+                <div class="p-6 rounded-xl bg-red-500/5 border border-red-500/10 text-left" data-aos="fade-right">
+                    <h3 class="text-red-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-warning-circle text-xl"></i> TRABAJAR SIN CONTRATO
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Cambios infinitos "solo para probar".</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Pagos a 60 días (o te ghostean).</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Trabajas fines de semana por culpa del cliente.</li>
+                    </ul>
+                </div>
+                <!-- CON LA PLANTILLA -->
+                <div class="p-6 rounded-xl bg-green-500/5 border border-green-500/10 text-left" data-aos="fade-left">
+                    <h3 class="text-green-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-shield-check text-xl"></i> USANDO ESTA PLANTILLA
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> Límites claros desde el día 1.</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> 50% por adelantado asegurado.</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> Cobras cada hora extra de revisión.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- COLUMNA DERECHA: Vista Previa y Acciones -->
-    <main id="mainPreviewArea" class="flex-1 h-[100dvh] lg:h-full flex-col relative bg-brand-bg overflow-y-auto overflow-x-hidden scroll-smooth" style="display: none;">
-        
-        <div class="absolute inset-0 bg-grid-pattern z-0 h-full"></div>
-        <div class="bg-ambient-glow"></div>
-        
-        <!-- Toolbar Flotante Superior -->
-        <div class="sticky top-4 lg:top-6 z-40 w-full max-w-[850px] px-4 pointer-events-none mx-auto toolbar-actions transition-all duration-300">
-            <div class="bg-[#121212]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2.5 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 pointer-events-auto">
-                
-                <div class="flex items-center gap-3 px-3 w-full sm:w-auto justify-between sm:justify-start">
-                    <div class="flex items-center gap-2" data-tooltip="El texto es editable libremente. Clic en las áreas verdes para volver al form.">
-                        <div class="relative flex h-2.5 w-2.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
+    <!-- 3. QUÉ INCLUYE (AGENDA) -->
+    <section class="py-16 lg:py-24 border-t border-white/5 relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <h2 class="font-display text-2xl md:text-4xl font-bold mb-4 text-center text-white" data-aos="fade-up">¿Qué incluye exactamente el documento?</h2>
+            <p class="text-center text-zinc-400 mb-12 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Es un contrato redactado para creativos, diseñadores y freelancers que necesitan proteger su tiempo y dinero de forma clara.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-prohibit"></i></div>
+                    <h3 class="font-bold text-white mb-2">Cláusula Anti-Cambios</h3>
+                    <p class="text-sm text-zinc-400">Establece un límite de revisiones. Si quieren más, pagan tarifa extra estipulada.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-money"></i></div>
+                    <h3 class="font-bold text-white mb-2">Pagos Seguros</h3>
+                    <p class="text-sm text-zinc-400">Blindaje de anticipos no reembolsables y cronograma de cobro estricto.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-copyright"></i></div>
+                    <h3 class="font-bold text-white mb-2">Propiedad Intelectual</h3>
+                    <p class="text-sm text-zinc-400">El diseño es tuyo hasta que te paguen el 100%. Nada de usar tu trabajo sin pagar.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-ghost"></i></div>
+                    <h3 class="font-bold text-white mb-2">Cláusula Anti-Ghosting</h3>
+                    <p class="text-sm text-zinc-400">¿El cliente desaparece por 15 días? El proyecto se pausa y hay penalidad para retomar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION CENTRAL (SOLUCIONADO MOBILE) -->
+    <section class="py-12 lg:py-16 bg-brand-surface border-t border-white/5 relative z-10 overflow-hidden">
+        <!-- Elemento decorativo de fondo -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md h-[300px] bg-green-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-2xl relative z-10 text-center">
+            <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4" data-aos="fade-up">
+                No esperes al próximo <span class="text-green-400">cliente tóxico</span>.
+            </h2>
+            <p class="text-sm md:text-base text-zinc-400 mb-8 max-w-lg mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Accede a la plantilla, rellená tus datos y empezá a trabajar tranquilo hoy mismo.
+            </p>
+
+            <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col items-center gap-4">
+                <a href="#offer" class="inline-flex items-center justify-center gap-2 px-4 md:px-8 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-xs sm:text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.5)] hover:-translate-y-1 w-full sm:w-auto sm:min-w-[280px] text-center leading-tight">
+                    <i class="ph-bold ph-download-simple text-lg"></i>
+                    <span>DESCARGAR AHORA POR $2.99</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESEÑAS CORTAS -->
+    <section class="py-16 border-t border-white/5">
+        <div class="container mx-auto px-4 max-w-5xl text-center">
+            <h2 class="text-xl font-bold text-white mb-10 text-center" data-aos="fade-up">Lo que dicen los que ya no regalan su trabajo</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Me salvó la vida con una marca de ropa que me pedía cambios todos los días por WhatsApp. Les mostré la cláusula 3 y al día siguiente me pagaron el saldo para cerrar."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295468757a_Diseosinttulo1.png" alt="Pablo A." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Pablo A.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Diseñador Gráfico</p>
                         </div>
-                        <span class="text-xs font-bold text-gray-300 tracking-wide uppercase font-poppins">Vista Interactiva</span>
-                    </div>
-                    
-                    <!-- Accesos rápidos en móvil -->
-                    <div class="flex sm:hidden items-center gap-1">
-                        <button onclick="duplicateDocument()" class="p-2 text-gray-400 hover:text-brand-primary hover:bg-white/10 rounded-lg"><i class="ph-bold ph-copy text-lg"></i></button>
-                        <button onclick="copyDocument()" class="p-2 text-gray-400 hover:text-brand-primary hover:bg-white/10 rounded-lg"><i class="ph-bold ph-clipboard-text text-lg"></i></button>
                     </div>
                 </div>
                 
-                <!-- Acciones Principales -->
-                <div class="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto hide-scrollbar pb-1 sm:pb-0 px-1 font-poppins">
-                    <button onclick="duplicateDocument()" class="hidden sm:flex hover:bg-white/10 text-gray-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors items-center gap-2">
-                        <i class="ph-bold ph-copy text-lg text-brand-primary"></i> Duplicar
-                    </button>
-                    <button onclick="copyDocument()" class="shrink-0 bg-white/5 hover:bg-white/10 border border-white/5 text-gray-200 hover:text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
-                        <i class="ph-bold ph-clipboard-text text-lg text-brand-primary"></i> Copiar
-                    </button>
-                    
-                    <div class="hidden sm:block w-px h-5 bg-white/10 mx-1"></div>
-                    
-                    <button onclick="window.print()" class="shrink-0 bg-white/5 hover:bg-white/10 border border-white/5 text-gray-200 hover:text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5" title="Imprimir Directo">
-                        <i class="ph-bold ph-printer text-brand-primary text-lg"></i>
-                    </button>
-                    <button onclick="downloadDocument('txt')" class="shrink-0 bg-white/5 hover:bg-white/10 border border-white/5 text-gray-200 hover:text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5" title="Descargar como TXT">
-                        <i class="ph-bold ph-file-text text-brand-primary text-lg"></i> TXT
-                    </button>
-                    <button id="btnPDF" onclick="generatePDF()" class="shrink-0 bg-brand-primary hover:bg-brand-hover text-black px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5 shadow-glow hover:shadow-glow-hover ml-1">
-                        <i class="ph-bold ph-file-pdf text-lg"></i> <span class="hidden sm:inline">Exportar PDF</span>
-                    </button>
+                <!-- Review 2 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Solo por tener un documento en PDF con firmas, mis clientes me perciben distinto. Ya nadie me regatea el anticipo del 50%."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/68229113ed534_images.jpg" alt="Laura V." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Laura V.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Community Manager</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Por $3 dólares resolví un dolor de cabeza que me costaba fines de semana enteros de trabajo gratis. La mejor inversión que hice para mi negocio."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295a168892_Diseosinttulo2.png" alt="Lucas A." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Lucas D.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Web Developer</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Documento (100% Editable a mano también) -->
-        <div class="flex-1 px-4 md:px-10 flex justify-center document-wrapper z-10 pt-4 pb-24 lg:pt-8">
-            <div id="documentPreview" class="document-sheet shadow-sheet rounded-xl w-full max-w-[850px] min-h-[1000px] p-6 sm:p-12 md:p-16 whitespace-pre-wrap outline-none" contenteditable="true" spellcheck="false">
-                <!-- Se inyecta la plantilla inicial mediante JS -->
+    <!-- CHECKOUT PRODUCT (COMPRA DIRECTA) -->
+    <section id="offer" class="py-16 lg:py-24 bg-brand-surface border-t border-white/5 relative z-10">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="bg-[#0A0A0A] rounded-3xl border border-white/10 p-6 lg:p-12 shadow-2xl relative overflow-hidden" data-aos="zoom-in">
+                <!-- Background decor -->
+                <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-green-500/10 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10 grid lg:grid-cols-2 gap-10 items-center">
+                    
+                    <!-- Lado izquierdo: Resumen -->
+                    <div>
+                        <div class="bg-white/5 w-fit px-3 py-1 rounded-full text-xs font-bold text-zinc-300 mb-4 border border-white/10">ACCESO INSTANTÁNEO</div>
+                        <h2 class="text-3xl lg:text-4xl font-display font-bold text-white mb-4">Tu escudo legal profesional</h2>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Accede a la plantilla, cambias tus datos y se lo envías a tu próximo cliente. Así de simple.</p>
+                        
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph-fill ph-file-doc text-green-500 text-xl"></i>
+                                Plantilla 100% editable.
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph ph-headset text-green-500 text-xl"></i>
+                                Soporte disponible.
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph-fill ph-infinity text-green-500 text-xl"></i>
+                                Acceso de por vida.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lado derecho: Caja de pago -->
+                    <div class="bg-zinc-900 border-2 border-green-500/30 rounded-2xl p-6 lg:p-8 shadow-[0_0_40px_-10px_rgba(34,197,94,0.15)] text-center relative">
+                        
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-black px-4 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-lg uppercase tracking-wider whitespace-nowrap">
+                            PAGO ÚNICO
+                        </div>
+
+                        <div class="text-zinc-500 line-through text-sm mt-2">Valor Real: $150.00</div>
+                        <div class="text-5xl font-display font-black text-white my-2">$2.99 <span class="text-lg text-zinc-400 font-normal">USD</span></div>
+                        <p class="text-xs text-green-400 font-medium mb-6">Recuperás la inversión frenando tu primer "cambio rápido".</p>
+
+                        <!-- BOTÓN CHECKOUT (SOLUCIONADO MOBILE) -->
+                        <a href="https://pay.hotmart.com/D104828731T?checkoutMode=10" class="flex flex-col sm:flex-row items-center justify-center gap-2 w-full px-4 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white font-extrabold text-xs sm:text-sm md:text-base uppercase rounded-xl transition-all shadow-glow hover:scale-[1.02] text-center leading-tight">
+                            <span>DESCARGAR DOCUMENTO AHORA</span>
+                        </a>
+
+                        <div class="mt-5 space-y-2 text-left">
+                            <div class="flex items-center justify-center gap-2 text-xs text-zinc-400">
+                                <i class="ph-fill ph-lock-key text-zinc-500"></i> Pago seguro y cifrado por Hotmart
+                            </div>
+                            <div class="flex items-center justify-center gap-2 text-xs text-zinc-400">
+                                <i class="ph-fill ph-lightning text-green-500"></i> Acceso automatico por mail
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-        
-        <!-- FAB Botón Mobile para ir al Formulario -->
-        <button onclick="showFormMobile()" class="mobile-fab bg-[#262626] border border-white/10 text-white">
-            <i class="ph-bold ph-pencil-simple text-brand-primary text-xl"></i> <span>Editar</span>
-        </button>
-    </main>
+    </section>
 
-    <!-- LÓGICA DE LA APLICACIÓN -->
+    <!-- FAQ RÁPIDO -->
+    <section class="py-12 bg-[#0A0A0A] border-t border-white/5">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h2 class="font-display text-2xl font-bold text-center text-white mb-8">Preguntas Frecuentes</h2>
+            <div class="space-y-3">
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Es un curso? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">No, no es un curso de horas. Es un documento legal listo para rellenar (Plantilla en pagina web) que puedes empezar a usar en 5 minutos.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Sirve para mi país? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">Sí. Es un formato internacional de prestación de servicios basado en buenas prácticas freelance. Es adaptable y establece reglas comerciales claras independientemente de tu legislación local.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Funciona para otras profesiones además de diseño? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">Totalmente. Sirve para programadores, editores de video, community managers, redactores y cualquier trabajador digital que cobre por proyecto o servicio.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-[#0A0A0A] border-t border-white/5 text-center text-xs text-zinc-600">
+        <div class="container mx-auto px-4">
+            <p>© 2026 @necesitodisenos. </br>Todos los derechos reservados.</p>
+            <div class="mt-6 flex justify-center relative">
+                <!-- Efecto de shadow blur de fondo -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-10 bg-white/10 blur-[20px] rounded-full pointer-events-none"></div>
+                <img src="https://sandiprojects.com/wp-content/uploads/2026/02/con-respaldo.png" alt="Con el respaldo de Hotmart" class="relative z-10 h-10 md:h-12 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- 1. DICCIONARIO DE VARIABLES ---
-        const MAP = {
-            'ciudad': { fb: 'CIUDAD' },
-            'dia': { fb: 'DÍA' },
-            'mes': { fb: 'MES' },
-            'ano': { fb: 'AÑO' },
-            'c_nombre': { fb: 'Nombre del Cliente / Razón Social' },
-            'c_doc': { fb: 'Doc. / NIT / CUIT' },
-            'c_dom': { fb: 'Domicilio del Cliente' },
-            'd_nombre': { fb: 'Nombre del Diseñador / Estudio' },
-            'd_doc': { fb: 'Documento del Diseñador' },
-            'd_dom': { fb: 'Domicilio del Diseñador' },
-            'monto': { fb: 'Monto USD' },
-            'n_pub': { fb: 'N' },
-            'n_his': { fb: 'N' },
-            'x_rev_ent': { fb: 'X' },
-            'x_int': { fb: 'X' },
-            'f1': { fb: 'Fecha' },
-            'f2': { fb: 'Fecha' },
-            'f3': { fb: 'Fecha' },
-            'f4': { fb: 'Fecha' },
-            'f5': { fb: 'Fecha' },
-            'f6': { fb: 'Fecha' },
-            'x_ret': { fb: 'X' },
-            'n_ron': { fb: 'N' },
-            'x_sil': { fb: 'X' },
-            'x_sub': { fb: 'X' },
-            'pais': { fb: 'PAÍS' },
-            'c_jur': { fb: 'CIUDAD' }
-        };
+        AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
 
-        // --- 2. PLANTILLA MAESTRA CON NODOS INTELIGENTES (data-id) ---
-        const TEMPLATE_BASE = `<div class="clausula text-center font-bold text-lg mb-8 uppercase" style="font-family: 'Inter Tight', sans-serif;">Contrato de Prestación de Servicios de Diseño</div>
-
-<div class="clausula">En la ciudad de <span data-id="ciudad" class="contract-placeholder" onclick="focusInput('ciudad')" contenteditable="false">CIUDAD</span>, a los <span data-id="dia" class="contract-placeholder" onclick="focusInput('dia')" contenteditable="false">DÍA</span> días del mes de <span data-id="mes" class="contract-placeholder" onclick="focusInput('mes')" contenteditable="false">MES</span> de <span data-id="ano" class="contract-placeholder" onclick="focusInput('ano')" contenteditable="false">AÑO</span>, comparecen:
-<b>EL CLIENTE:</b> <span data-id="c_nombre" class="contract-placeholder" onclick="focusInput('c_nombre')" contenteditable="false">Nombre del Cliente / Razón Social</span>, con domicilio en <span data-id="c_dom" class="contract-placeholder" onclick="focusInput('c_dom')" contenteditable="false">Domicilio del Cliente</span>, identificado con <span data-id="c_doc" class="contract-placeholder" onclick="focusInput('c_doc')" contenteditable="false">Doc. / NIT / CUIT</span>.
-<b>EL DISEÑADOR:</b> <span data-id="d_nombre" class="contract-placeholder" onclick="focusInput('d_nombre')" contenteditable="false">Nombre del Diseñador / Estudio</span>, con domicilio en <span data-id="d_dom" class="contract-placeholder" onclick="focusInput('d_dom')" contenteditable="false">Domicilio del Diseñador</span>, identificado con <span data-id="d_doc" class="contract-placeholder" onclick="focusInput('d_doc')" contenteditable="false">Documento del Diseñador</span>.
-Ambas partes acuerdan celebrar el presente contrato, el cual se regirá por las siguientes cláusulas:</div>
-
-<div class="clausula"><b>CLÁUSULA PRIMERA – DEFINICIONES</b>
-A efectos del presente contrato, se entenderá por: a) 'Entregables': los archivos finales definidos en el alcance. b) 'Archivos fuente': los documentos editables en su formato nativo (ej. AI, PSD, FIG). c) 'Revisión': modificación solicitada por el CLIENTE que no altere el objeto inicial. d) 'Plazo hábil': aquellos días que no sean sábados, domingos ni feriados.</div>
-
-<div class="clausula"><b>CLÁUSULA SEGUNDA – OBJETO</b>
-El DISEÑADOR se obliga a prestar al CLIENTE los servicios de diseño gráfico que consisten en el desarrollo de las piezas descritas en la sección 'ALCANCE Y ENTREGABLES'. Dichos servicios se ejecutarán con total autonomía técnica y creativa, dentro de los lineamientos acordados.</div>
-
-<div class="clausula"><b>CLÁUSULA SEGUNDA BIS – ALCANCE Y ENTREGABLES</b>
-Servicios incluidos:
-El DISEÑADOR se compromete a entregar al CLIENTE los siguientes materiales:
-a) Identidad visual: logotipo principal, variantes secundarias, paleta cromática y tipografías sugeridas.
-b) Manual de marca: documento en formato PDF.
-c) Piezas gráficas digitales: un mínimo de <span data-id="n_pub" class="contract-placeholder" onclick="focusInput('n_pub')" contenteditable="false">N</span> publicaciones y <span data-id="n_his" class="contract-placeholder" onclick="focusInput('n_his')" contenteditable="false">N</span> historias optimizadas para redes sociales.
-d) Archivos finales en formatos listos para impresión y/o publicación digital.</div>
-
-<div class="clausula">Servicios excluidos:
-a) Archivos fuente editables (AI, PSD, FIG u otros).
-b) Compra de tipografías, imágenes con licencia o música.
-c) Desarrollo web, impresión física o producción audiovisual.</div>
-
-<div class="clausula">Entregables y revisión:
-a) El CLIENTE contará con <span data-id="x_rev_ent" class="contract-placeholder" onclick="focusInput('x_rev_ent')" contenteditable="false">X</span> días hábiles para revisar y aceptar cada entregable. En caso de no emitir respuesta en ese plazo, se considerará aprobación tácita.</div>
-
-<div class="clausula"><b>CLÁUSULA TERCERA – NATURALEZA DE LA RELACIÓN</b>
-Este contrato no constituye relación laboral, societaria ni de dependencia. El DISEÑADOR actuará como profesional independiente. El CLIENTE no tendrá obligación de proporcionar beneficios laborales.</div>
-
-<div class="clausula"><b>CLÁUSULA CUARTA – HONORARIOS Y FORMA DE PAGO</b>
-1. El valor total de los servicios asciende a USD <span data-id="monto" class="contract-placeholder" onclick="focusInput('monto')" contenteditable="false">Monto USD</span>.
-2. El CLIENTE abonará un anticipo equivalente al 50% del valor total, en concepto de seña no reembolsable.
-3. El saldo restante será abonado contra la entrega final de los entregables aprobados.
-4. En caso de mora, el CLIENTE abonará un interés del <span data-id="x_int" class="contract-placeholder" onclick="focusInput('x_int')" contenteditable="false">X</span>% mensual, además de los costos de cobranza.</div>
-
-<div class="clausula"><b>CLÁUSULA QUINTA – CRONOGRAMA DE TRABAJO</b>
-El desarrollo se organizará en fases, con los siguientes hitos y plazos estimados:
-• Reunión inicial / Brief: <span data-id="f1" class="contract-placeholder" onclick="focusInput('f1')" contenteditable="false">Fecha</span>
-• Moodboard / Estilo: <span data-id="f2" class="contract-placeholder" onclick="focusInput('f2')" contenteditable="false">Fecha</span>
-• Primeras propuestas: <span data-id="f3" class="contract-placeholder" onclick="focusInput('f3')" contenteditable="false">Fecha</span>
-• Revisión y feedback: <span data-id="f4" class="contract-placeholder" onclick="focusInput('f4')" contenteditable="false">Fecha</span>
-• Entrega final: <span data-id="f5" class="contract-placeholder" onclick="focusInput('f5')" contenteditable="false">Fecha</span>
-• Cierre del proyecto: <span data-id="f6" class="contract-placeholder" onclick="focusInput('f6')" contenteditable="false">Fecha</span>
-
-Si el CLIENTE demorara más de <span data-id="x_ret" class="contract-placeholder" onclick="focusInput('x_ret')" contenteditable="false">X</span> días hábiles en entregar insumos o feedback, el DISEÑADOR podrá reprogramar las fechas y/o aplicar un ajuste en honorarios por extensión del plazo.</div>
-
-<div class="clausula"><b>CLÁUSULA SEXTA – REVISIÓN Y APROBACIÓN</b>
-1. El CLIENTE tendrá derecho a <span data-id="n_ron" class="contract-placeholder" onclick="focusInput('n_ron')" contenteditable="false">N</span> rondas de revisión (cambios menores sobre el entregable presentado).
-2. Toda modificación que altere el alcance original será considerada 'cambio de alcance'.
-3. El silencio del CLIENTE por más de <span data-id="x_sil" class="contract-placeholder" onclick="focusInput('x_sil')" contenteditable="false">X</span> días hábiles tras recibir un entregable será considerado aceptación tácita.</div>
-
-<div class="clausula"><b>CLÁUSULA SÉPTIMA – DERECHOS DE AUTOR</b>
-1. El DISEÑADOR conserva los derechos morales de autor.
-2. Los derechos patrimoniales de uso se transfieren al CLIENTE únicamente tras el pago total de los honorarios.
-3. El DISEÑADOR podrá utilizar el trabajo en su portafolio, salvo pacto expreso de confidencialidad.</div>
-
-<div class="clausula"><b>CLÁUSULA OCTAVA – TERMINACIÓN Y LIMITACIÓN</b>
-Cualquiera de las partes podrá dar por terminado el contrato en caso de incumplimiento grave, previa notificación de <span data-id="x_sub" class="contract-placeholder" onclick="focusInput('x_sub')" contenteditable="false">X</span> días hábiles para subsanar. El CLIENTE podrá rescindir en cualquier momento, abonando al DISEÑADOR lo efectivamente trabajado. La responsabilidad del DISEÑADOR no excederá en ningún caso el monto abonado.</div>
-
-<div class="clausula"><b>CLÁUSULA NOVENA – LEY APLICABLE</b>
-El presente contrato se regirá por las leyes de <span data-id="pais" class="contract-placeholder" onclick="focusInput('pais')" contenteditable="false">PAÍS</span>. Para cualquier controversia, las partes se someten a los tribunales ordinarios de <span data-id="c_jur" class="contract-placeholder" onclick="focusInput('c_jur')" contenteditable="false">CIUDAD</span>.</div>
-
-<div class="clausula firma-box" style="margin-top: 60px; display: flex; justify-content: space-between; gap: 40px;">
-    <div style="flex:1;">
-        <b>FIRMA DEL CLIENTE</b><br><br><br>
-        _______________________________<br>
-        Nombre: <br>
-        Documento: <br>
-        Fecha: 
-    </div>
-    <div style="flex:1;">
-        <b>FIRMA DEL DISEÑADOR</b><br><br><br>
-        _______________________________<br>
-        Nombre: <br>
-        Documento: <br>
-        Fecha: 
-    </div>
-</div>`;
-
-        // --- 3. INICIALIZACIÓN Y MOTOR HÍBRIDO ---
-        const previewDiv = document.getElementById('documentPreview');
-        const sidebar = document.getElementById('sidebarPanel');
-        const mainArea = document.getElementById('mainPreviewArea');
-        const LSK_DATA = 'contrato_saas_data_pro_green'; 
-        const LSK_HTML = 'contrato_saas_html_pro_green'; 
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicializar vistas correctamente según tamaño pantalla
-            handleResize();
-
-            // 1. Cargar HTML (si había uno editado a mano) o plantar el base
-            const savedHTML = localStorage.getItem(LSK_HTML);
-            if (savedHTML && savedHTML.trim() !== '') {
-                previewDiv.innerHTML = savedHTML;
-            } else {
-                previewDiv.innerHTML = TEMPLATE_BASE;
-            }
-
-            // 2. Cargar valores del form guardados
-            loadFromStorage();
-            
-            // 3. Listeners del formulario: Solo actualizan sus NODOS, sin borrar todo el div.
-            document.querySelectorAll('.input-field').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    updateSingleNode(e.target.id, e.target.value);
-                    updateProgress();
-                    saveData();
-                });
-            });
-            
-            // 4. Listener de escritura manual directa en el documento
-            previewDiv.addEventListener('input', () => {
-                localStorage.setItem(LSK_HTML, previewDiv.innerHTML);
-            });
-
-            window.addEventListener('resize', handleResize);
-        });
-
-        // Motor híbrido: Reemplaza contenido de etiquetas <span> sin destruir el documento
-        function updateSingleNode(id, value) {
-            const spans = previewDiv.querySelectorAll(`span[data-id="${id}"]`);
-            const fallback = MAP[id].fb;
-            const valClean = value.trim();
-            
-            spans.forEach(span => {
-                span.textContent = valClean ? valClean : fallback;
-                span.className = valClean ? 'contract-filled' : 'contract-placeholder';
-            });
+        // Timer simplificado
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            let diff = tomorrow - now;
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
         }
-
-        // Sincroniza form completo a nodos (útil al iniciar o reiniciar)
-        function syncAllNodes() {
-            for (const id of Object.keys(MAP)) {
-                const el = document.getElementById(id);
-                updateSingleNode(id, el ? el.value : '');
-            }
-            saveData();
-        }
-
-        function saveData() {
-            const dataToSave = {};
-            for (const id of Object.keys(MAP)) {
-                const el = document.getElementById(id);
-                if (el) dataToSave[id] = el.value.trim();
-            }
-            localStorage.setItem(LSK_DATA, JSON.stringify(dataToSave));
-            localStorage.setItem(LSK_HTML, previewDiv.innerHTML); // Salva el HTML con nodos actualizados
-        }
-
-        // --- 4. GESTIÓN MÓVIL (UX APP NATIVA Y ANTI-REBOTE) ---
-        function showDocMobile() {
-            if(window.innerWidth < 1024) {
-                sidebar.style.display = 'none';
-                mainArea.style.display = 'flex';
-                // Pequeño delay para que Tailwind renderice antes del scroll visual
-                setTimeout(() => window.scrollTo(0,0), 10);
-            }
-        }
-
-        function showFormMobile() {
-            if(window.innerWidth < 1024) {
-                mainArea.style.display = 'none';
-                sidebar.style.display = 'flex';
-            }
-        }
-
-        function handleResize() {
-            if (window.innerWidth >= 1024) {
-                sidebar.style.display = 'flex';
-                mainArea.style.display = 'flex';
-            } else {
-                if (sidebar.style.display !== 'none' && mainArea.style.display !== 'none') {
-                    // Por defecto en móvil al rotar, muestra el formulario
-                    mainArea.style.display = 'none';
-                }
-            }
-        }
-
-        // Foco Inteligente 100% Síncrono (Evita que iOS bloquee el teclado)
-        function focusInput(id) {
-            showFormMobile(); 
-            const el = document.getElementById(id);
-            if(el) {
-                // Focus inmediato
-                el.focus();
-                // Scroll visual elegante hacia el input
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Brillo de feedback (Verde)
-                el.parentElement.classList.add('ring-2', 'ring-brand-primary');
-                setTimeout(() => el.parentElement.classList.remove('ring-2', 'ring-brand-primary'), 1500);
-            }
-        }
-
-        // --- 5. UTILIDADES Y PROGRESO ---
-        function updateProgress() {
-            let filled = 0;
-            const total = Object.keys(MAP).length;
-            for (const key of Object.keys(MAP)) {
-                if (document.getElementById(key).value.trim() !== '') filled++;
-            }
-            const percent = Math.round((filled / total) * 100);
-            document.getElementById('progressBar').style.width = `${percent}%`;
-            document.getElementById('progressText').innerText = `${filled}/${total} CAMPOS LISTOS`;
-            document.getElementById('progressPercent').innerText = `${percent}%`;
-        }
-
-        function loadFromStorage() {
-            try {
-                const saved = localStorage.getItem(LSK_DATA);
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    for (const [key, val] of Object.entries(data)) {
-                        const input = document.getElementById(key);
-                        if (input) input.value = val;
-                    }
-                }
-            } catch (e) { console.error("Error", e); }
-            syncAllNodes();
-            updateProgress();
-        }
-
-        function setNA(id) {
-            const input = document.getElementById(id);
-            if(input) {
-                input.value = "N/A";
-                updateSingleNode(id, "N/A");
-                saveData();
-                updateProgress();
-            }
-        }
-
-        // --- MANEJO DEL MODAL DE CONFIRMACIÓN ---
-        function openConfirmModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            // Allow CSS transition to trigger by applying state after short delay
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.firstElementChild.classList.remove('scale-95');
-                modal.firstElementChild.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeConfirmModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.add('opacity-0');
-            modal.firstElementChild.classList.remove('scale-100');
-            modal.firstElementChild.classList.add('scale-95');
-            
-            // Wait for transition to finish before hiding
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        function executeReset() {
-            closeConfirmModal();
-            document.getElementById('contractForm').reset();
-            localStorage.removeItem(LSK_DATA);
-            localStorage.removeItem(LSK_HTML);
-            previewDiv.innerHTML = TEMPLATE_BASE;
-            syncAllNodes();
-            updateProgress();
-            showCustomToast("Limpieza exitosa", "Documento restaurado a su estado original.");
-        }
-
-        function duplicateDocument() {
-            const currentHTML = previewDiv.innerHTML;
-            // Separador Verde con fuente manuscrita "poppins"
-            const separator = `\n\n<div class="clausula" style="width: 100%; border-top: 2px dashed rgba(34, 197, 94, 0.4); margin: 4rem 0;"></div>\n<div class="clausula" style="text-align: center; color: #22c55e; font-family: 'poppins', cursive; font-size: 1.5rem; margin-bottom: 3rem; letter-spacing: 0.1em; page-break-before: always; text-shadow: 0 0 15px rgba(34, 197, 94, 0.3);">COPIA 2 (EDITABLE)</div>\n\n`;
-            
-            let baseHTML = currentHTML;
-            if (currentHTML.includes('COPIA 2')) {
-                baseHTML = currentHTML.split('<div class="clausula" style="width: 100%; border-top: 2px dashed')[0];
-            }
-
-            previewDiv.innerHTML = baseHTML + separator + baseHTML;
-            saveData();
-            
-            mainArea.scrollTo({ top: mainArea.scrollHeight, behavior: 'smooth'});
-            showCustomToast("Documento Duplicado", "La copia está sincronizada. Si cambias el formulario, ambas copias se actualizan.");
-        }
-
-        function copyDocument() {
-            const textToCopy = previewDiv.innerText;
-            // Intento con Clipboard API (Moderno)
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showCustomToast("Texto Copiado", "Copiado exitosamente al portapapeles.");
-                });
-            } else {
-                // Fallback robusto sin saltos de scroll
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy;
-                textarea.style.position = 'fixed'; // Evita scroll
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.select();
-                try {
-                    document.execCommand('copy');
-                    showCustomToast("Texto Copiado", "Copiado exitosamente al portapapeles.");
-                } catch (err) {
-                    showCustomToast("Error", "No se pudo copiar. Selecciona el texto manualmente.");
-                }
-                document.body.removeChild(textarea);
-            }
-        }
-
-        // GENERACIÓN DE PDF NATIVO (Ajustado para no cortar páginas)
-        function generatePDF() {
-            const btn = document.getElementById('btnPDF');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-lg"></i> <span class="hidden sm:inline">Procesando...</span>`;
-            showCustomToast("Generando PDF", "Calculando saltos de página...");
-            
-            const day = document.getElementById('dia').value;
-            const month = document.getElementById('mes').value;
-            const year = document.getElementById('ano').value;
-            const dateStr = (day && month && year) ? `${day}_${month}_${year}` : new Date().toISOString().split('T')[0];
-            
-            const element = previewDiv.cloneNode(true);
-            
-            // Limpiar estilos web para PDF formal
-            const placeholders = element.querySelectorAll('.contract-placeholder');
-            placeholders.forEach(p => { p.style.border = 'none'; p.style.background = 'transparent'; p.style.color = '#666'; p.removeAttribute('onclick'); });
-            const filled = element.querySelectorAll('.contract-filled');
-            filled.forEach(f => { f.style.color = '#000'; f.style.borderBottom = 'none'; f.style.fontWeight = 'bold'; f.removeAttribute('onclick'); });
-
-            const optWrapper = document.createElement('div');
-            optWrapper.style.backgroundColor = '#ffffff';
-            optWrapper.style.color = '#000000';
-            optWrapper.style.padding = '30px 40px';
-            optWrapper.style.fontFamily = 'Helvetica, Arial, sans-serif';
-            optWrapper.style.fontSize = '12px';
-            optWrapper.style.lineHeight = '1.6';
-            optWrapper.innerHTML = element.innerHTML;
-
-            const opt = {
-                margin:       15,
-                filename:     `Contrato_SaaS_${dateStr}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['avoid-all', 'css'] } 
-            };
-
-            html2pdf().set(opt).from(optWrapper).save().then(() => {
-                btn.innerHTML = originalHTML;
-                showCustomToast("¡PDF Listo!", "Revisa tu carpeta de descargas.");
-            }).catch(err => {
-                btn.innerHTML = originalHTML;
-                showCustomToast("Error PDF", "Usa el botón Imprimir > Guardar como PDF como alternativa.");
-            });
-        }
-
-        function downloadDocument(type) {
-            let blob, filename, content;
-            const date = new Date().toISOString().split('T')[0];
-
-            if (type === 'txt') {
-                content = previewDiv.innerText;
-                blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                filename = `Contrato_${date}.txt`;
-                showCustomToast("Descargando TXT", "Archivo de texto plano listo.");
-            }
-
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        // Sistema avanzado de Toast (Notificaciones)
-        let toastTimeout;
-        function showCustomToast(title, msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMsg').textContent = msg;
-            
-            toast.classList.remove('-translate-y-24', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-            
-            if (toastTimeout) clearTimeout(toastTimeout);
-            
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('-translate-y-24', 'opacity-0');
-            }, 3500);
-        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
     </script>
 </body>
 </html>
