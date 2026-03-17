@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Plantilla de Contrato Freelance | @necesitodisenos</title>
+    <meta name="description" content="Documento legal listo para usar que te protege de cambios infinitos y asegura tus pagos.">
+    <meta property="og:image" content="https://i.ibb.co/0HqBSjr/3333.png">
+    <meta property="og:url" content="https://www.necesitodisenos.com/">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.ibb.co/spPczB3P/12313.png">
+    
+    <!-- Google Fonts: Inter Tight & Inter (SaaS Style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=Kalam:wght@700&family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF4500', 
+                            hover: '#FF571A',
+                            bg: '#0A0A0A',
+                            surface: '#121212',
+                            border: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Inter Tight', 'sans-serif'],
+                        hand: ['Kalam', 'cursive'], // Para simular notas a mano
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(34, 197, 94, 0.4)', // Glow verde
+                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(-2deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(0deg)' },
+                        }
+                    },
+                    animation: {
+                        float: 'float 5s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+            background-color: #0A0A0A;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::selection {
+            background: rgba(34, 197, 94, 0.3);
+            color: white;
+        }
+
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none !important; }
+        .scrollbar-hide { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="pt-14 relative overflow-x-hidden">
+
+    <!-- Fondo Técnico -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-green-500/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+    <!-- Sticky Header DE URGENCIA -->
+    <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-white/10 z-50 h-14 flex items-center shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            
+            <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                <div class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </div>
+                <span class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">OFERTA ESPECIAL</span>
+            </div>
+            
+            <div class="flex items-center gap-2 md:gap-6 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="hidden lg:inline text-[10px] font-medium text-white/70 uppercase tracking-wider mr-2">Termina en:</span>
+                    <div class="flex items-start gap-1 md:gap-2 text-center">
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="hours" class="font-mono text-white font-bold text-xs md:text-sm leading-none">08</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="minutes" class="font-mono text-white font-bold text-xs md:text-sm leading-none">37</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="seconds" class="font-mono text-white font-bold text-xs md:text-sm leading-none">38</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://pay.hotmart.com/V104937357Y?off=ciy1snpv&checkoutMode=10" class="hidden md:flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all hover:scale-105">
+                    DESCARGAR AHORA
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION (LA FÓRMULA APLICADA) -->
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 pb-12 lg:pb-20">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mt-8 lg:mt-12">
+            
+            <!-- COPY: LA PROMESA AL DOLOR -->
+            <div class="text-center lg:text-left space-y-6 md:space-y-8" data-aos="fade-right">
+                
+                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-xs font-medium tracking-wide mx-auto lg:mx-0 shadow-sm backdrop-blur-sm">
+                    <i class="ph-fill ph-file-doc text-white"></i> PLANTILLA WEB EDITABLE
+                </div>
+                
+                <!-- 2. EL TÍTULO -->
+                <h1 class="font-display text-[32px] sm:text-[40px] md:text-[52px] font-extrabold tracking-tight text-white leading-[1.05] uppercase">
+                    PLANTILLA DE CONTRATO<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">PARA DEJAR DE TRABAJAR GRATIS</span><br>
+                    Y EVITAR CLIENTES TÓXICOS
+                </h1>
+                
+                <!-- 3. EL SUBTÍTULO -->
+                <p class="text-base md:text-lg text-zinc-400 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Un documento legal listo para usar que te protege de cambios infinitos y asegura que cobres el 100% de tu trabajo.
+                </p>
+
+                <!-- 4. LOS QUICK WINS -->
+                <ul class="flex flex-row flex-wrap justify-center lg:justify-start gap-3 md:gap-6 text-sm md:text-base text-zinc-300 mx-auto lg:mx-0 max-w-lg w-full">
+                    <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Fácil de usar</strong></span>
+                    </li>
+                    <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Protección total</strong></span>
+                    </li>
+                                        <li class="flex items-center gap-1.5 md:gap-2">
+                        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i>
+                        <span><strong>Autoridad</strong></span>
+                    </li>
+                </ul>
+                <div class="pt-4 max-w-lg mx-auto lg:mx-0 w-full space-y-5">
+                    <!-- 5. EL ANCLAJE DE PRECIO -->
+                    <div class="p-5 md:p-6 rounded-xl bg-white/5 border border-white/10 text-left relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+                        <div class="pl-3 md:pl-4 space-y-3">
+                            <p class="text-sm md:text-base text-zinc-300 leading-relaxed">
+                                Un cliente que desaparece te cuesta cientos de dólares. </br>Un abogado para redactar esto te cobra <span class="line-through text-zinc-500">$150</span>.
+                            </p>
+                            <p class="text-sm md:text-base text-zinc-300 leading-relaxed">
+                                Llevate la plantilla exacta que usamos nosotros por solo <strong>$0.99</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 6. EL BOTÓN GIGANTE (SOLUCIONADO MOBILE) -->
+                    <a href="#offer" class="flex items-center justify-center gap-2 px-4 sm:px-8 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-xs sm:text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_50px_-10px_rgba(34,197,94,0.6)] hover:-translate-y-1 w-full text-center leading-tight">
+                        <i class="ph-bold ph-download-simple text-lg md:text-xl"></i>
+                        <span>QUIERO EL CONTRATO</span>
+                    </a>
+                    
+                    <!-- 7. PAGO SEGURO Y SIN FRICCIÓN -->
+                    <div class="flex items-center justify-center gap-2 text-zinc-500 text-[11px] md:text-xs text-center">
+                        <i class="ph-fill ph-lock-key text-base text-zinc-400"></i> Transacción 100% segura. Descarga inmediata al instante.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. EL HOOK VISUAL (CSS SIMULADO EN VEZ DE MOCKUP COMPLEJO) -->
+            <div data-aos="fade-left" data-aos-delay="200" class="mt-12 lg:mt-0 lg:ml-auto w-full max-w-[420px] mx-auto perspective-1000">
+                <div class="relative w-full bg-white text-black p-6 md:p-8 rounded-sm shadow-2xl transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500 border border-zinc-200 animate-float">
+                    
+                    <!-- Header Documento -->
+                    <div class="border-b-2 border-zinc-800 pb-3 mb-5 flex justify-between items-end">
+                        <h4 class="font-poppins font-black text-xl leading-tight uppercase text-zinc-900 tracking-tighter">CONTRATO DE SERVICIOS<br>FREELANCE</h4>
+                        <div class="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center">
+                            <i class="ph-bold ph-pen-nib text-zinc-400"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Body Documento -->
+                    <div class="space-y-9 font-poppins text-[11px] md:text-xs leading-relaxed text-zinc-700">
+                        <p><strong class="text-black uppercase">Cláusula 2: Pagos.</strong> El proyecto iniciará únicamente tras el abono del 50% de anticipo no reembolsable. El 50% restante deberá ser cancelado previo a la entrega final de los archivos fuente.</p>
+                        
+                        <!-- Highlighting the pain point -->
+                        <div class="bg-yellow-200 p-2 md:p-3 rounded border-l-4 border-yellow-500 shadow-sm relative">
+                            <p class="font-medium text-black"><strong class="uppercase text-red-600">Cláusula 3: Límite de Cambios.</strong> El cliente tiene derecho a un máximo de dos (2) rondas de revisión sobre la propuesta. Cualquier cambio adicional será facturado a una tarifa de $50 USD por hora extra.</p>
+                            <!-- Fake cursor / highlight mark -->
+                            <i class="ph-fill ph-highlighter absolute -right-2 -top-3 text-2xl text-yellow-500 drop-shadow-md rotate-45"></i>
+                        </div>
+
+                        <p><strong class="text-black uppercase">Cláusula 4: Propiedad.</strong> Los derechos de uso comercial se transferirán al cliente <u>exclusivamente</u> tras la confirmación de la recepción del pago del 100%.</p>
+                        
+                        <div class="flex items-end gap-4 mt-8 pt-4">
+                            <div class="w-1/2">
+                                <div class="font-hand text-xl text-blue-700 opacity-80 border-b border-zinc-400 pb-1 w-full mb-1">Firma Digital</div>
+                                <span class="text-[9px] uppercase tracking-widest text-zinc-400">El Profesional</span>
+                            </div>
+                            <div class="w-1/2">
+                                <div class="border-b border-zinc-400 pb-1 h-8 w-full mb-1"></div>
+                                <span class="text-[9px] uppercase tracking-widest text-zinc-400">El Cliente</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post-it Note visual -->
+                    <div class="absolute -right-6 -bottom-6 bg-yellow-300 text-black text-sm p-3 md:p-4 rounded-sm shadow-xl rotate-[-8deg] w-40 md:w-44 text-center border border-yellow-400 hover:rotate-[-5deg] transition-transform">
+                        <i class="ph-push-pin-fill absolute -top-2 left-1/2 -translate-x-1/2 text-red-500 text-xl drop-shadow-sm"></i>
+                        <p class="font-hand font-bold leading-snug mt-1 text-zinc-800 text-base md:text-lg">
+                            "Clientes que NO piden cambios extra" 😎
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1.5 DISCLAIMER: EL FILTRO -->
+    <section class="py-12 bg-brand-surface border-t border-white/5 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-8" data-aos="fade-up">¿Por qué un cliente tóxico te arruina?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                <!-- SIN CONTRATO -->
+                <div class="p-6 rounded-xl bg-red-500/5 border border-red-500/10 text-left" data-aos="fade-right">
+                    <h3 class="text-red-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-warning-circle text-xl"></i> TRABAJAR SIN CONTRATO
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Cambios infinitos "solo para probar".</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Pagos a 60 días (o te ghostean).</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-400"><i class="ph-bold ph-x text-red-500 mt-0.5"></i> Trabajas fines de semana por culpa del cliente.</li>
+                    </ul>
+                </div>
+                <!-- CON LA PLANTILLA -->
+                <div class="p-6 rounded-xl bg-green-500/5 border border-green-500/10 text-left" data-aos="fade-left">
+                    <h3 class="text-green-400 font-bold mb-3 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-shield-check text-xl"></i> USANDO ESTA PLANTILLA
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> Límites claros desde el día 1.</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> 50% por adelantado asegurado.</li>
+                        <li class="flex items-start gap-2 text-sm text-zinc-300"><i class="ph-fill ph-check text-green-500 mt-0.5"></i> Cobras cada hora extra de revisión.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. QUÉ INCLUYE (AGENDA) -->
+    <section class="py-16 lg:py-24 border-t border-white/5 relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <h2 class="font-display text-2xl md:text-4xl font-bold mb-4 text-center text-white" data-aos="fade-up">¿Qué incluye exactamente el documento?</h2>
+            <p class="text-center text-zinc-400 mb-12 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Es un contrato redactado para creativos, diseñadores y freelancers que necesitan proteger su tiempo y dinero de forma clara.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-prohibit"></i></div>
+                    <h3 class="font-bold text-white mb-2">Cláusula Anti-Cambios</h3>
+                    <p class="text-sm text-zinc-400">Establece un límite de revisiones. Si quieren más, pagan tarifa extra estipulada.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-money"></i></div>
+                    <h3 class="font-bold text-white mb-2">Pagos Seguros</h3>
+                    <p class="text-sm text-zinc-400">Blindaje de anticipos no reembolsables y cronograma de cobro estricto.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-copyright"></i></div>
+                    <h3 class="font-bold text-white mb-2">Propiedad Intelectual</h3>
+                    <p class="text-sm text-zinc-400">El diseño es tuyo hasta que te paguen el 100%. Nada de usar tu trabajo sin pagar.</p>
+                </div>
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-white/10 hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center text-green-400 mb-4 text-xl"><i class="ph-fill ph-ghost"></i></div>
+                    <h3 class="font-bold text-white mb-2">Cláusula Anti-Ghosting</h3>
+                    <p class="text-sm text-zinc-400">¿El cliente desaparece por 15 días? El proyecto se pausa y hay penalidad para retomar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION CENTRAL (SOLUCIONADO MOBILE) -->
+    <section class="py-12 lg:py-16 bg-brand-surface border-t border-white/5 relative z-10 overflow-hidden">
+        <!-- Elemento decorativo de fondo -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md h-[300px] bg-green-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-2xl relative z-10 text-center">
+            <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4" data-aos="fade-up">
+                No esperes al próximo <span class="text-green-400">cliente tóxico</span>.
+            </h2>
+            <p class="text-sm md:text-base text-zinc-400 mb-8 max-w-lg mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Accede a la plantilla, rellená tus datos y empezá a trabajar tranquilo hoy mismo.
+            </p>
+
+            <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col items-center gap-4">
+                <a href="https://pay.hotmart.com/V104937357Y?off=ciy1snpv&checkoutMode=10" class="inline-flex items-center justify-center gap-2 px-4 md:px-8 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-xs sm:text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.5)] hover:-translate-y-1 w-full sm:w-auto sm:min-w-[280px] text-center leading-tight">
+                    <i class="ph-bold ph-download-simple text-lg"></i>
+                    <span>OBTENER AHORA</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESEÑAS CORTAS -->
+    <section class="py-16 border-t border-white/5">
+        <div class="container mx-auto px-4 max-w-5xl text-center">
+            <h2 class="text-xl font-bold text-white mb-10 text-center" data-aos="fade-up">Lo que dicen los que ya no regalan su trabajo</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Me salvó la vida con una marca de ropa que me pedía cambios todos los días por WhatsApp. Les mostré la cláusula 3 y al día siguiente me pagaron el saldo para cerrar."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295468757a_Diseosinttulo1.png" alt="Pablo A." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Pablo A.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Diseñador Gráfico</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Solo por tener un documento en PDF con firmas, mis clientes me perciben distinto. Ya nadie me regatea el anticipo del 50%."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/68229113ed534_images.jpg" alt="Laura V." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Laura V.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Community Manager</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Por $0.99 resolví un dolor de cabeza que me costaba fines de semana enteros de trabajo gratis. La mejor inversión que hice para mi negocio."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295a168892_Diseosinttulo2.png" alt="Lucas A." class="w-10 h-10 rounded-full object-cover border border-white/10">
+                        <div>
+                            <p class="text-sm text-white font-bold">Lucas D.</p>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Web Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHECKOUT PRODUCT (COMPRA DIRECTA) -->
+    <section id="offer" class="py-16 lg:py-24 bg-brand-surface border-t border-white/5 relative z-10">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="bg-[#0A0A0A] rounded-3xl border border-white/10 p-6 lg:p-12 shadow-2xl relative overflow-hidden" data-aos="zoom-in">
+                <!-- Background decor -->
+                <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-green-500/10 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10 grid lg:grid-cols-2 gap-10 items-center">
+                    
+                    <!-- Lado izquierdo: Resumen -->
+                    <div>
+                        <div class="bg-white/5 w-fit px-3 py-1 rounded-full text-xs font-bold text-zinc-300 mb-4 border border-white/10">ACCESO INSTANTÁNEO</div>
+                        <h2 class="text-3xl lg:text-4xl font-display font-bold text-white mb-4">Tu escudo legal profesional</h2>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Accede a la plantilla, cambias tus datos y se lo envías a tu próximo cliente. Así de simple.</p>
+                        
+                        <div class="space-y-3 mb-8">
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph-fill ph-file-doc text-green-500 text-xl"></i>
+                                Plantilla 100% editable.
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph ph-headset text-green-500 text-xl"></i>
+                                Soporte disponible.
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-white">
+                                <i class="ph-fill ph-infinity text-green-500 text-xl"></i>
+                                Acceso de por vida.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lado derecho: Caja de pago -->
+                    <div class="bg-zinc-900 border-2 border-green-500/30 rounded-2xl p-6 lg:p-8 shadow-[0_0_40px_-10px_rgba(34,197,94,0.15)] text-center relative">
+                        
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-black px-4 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-lg uppercase tracking-wider whitespace-nowrap">
+                            PAGO ÚNICO
+                        </div>
+
+                        <div class="text-zinc-500 line-through text-sm mt-2">Valor Real: $150.00</div>
+                        <div class="text-5xl font-display font-black text-white my-2">$0.99 <span class="text-lg text-zinc-400 font-normal">USD</span></div>
+                        <p class="text-xs text-green-400 font-medium mb-6">Recuperás la inversión frenando tu primer "cambio rápido".</p>
+
+                        <!-- BOTÓN CHECKOUT (SOLUCIONADO MOBILE) -->
+                        <a href="https://pay.hotmart.com/V104937357Y?off=ciy1snpv&checkoutMode=10" class="flex flex-col sm:flex-row items-center justify-center gap-2 w-full px-4 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white font-extrabold text-xs sm:text-sm md:text-base uppercase rounded-xl transition-all shadow-glow hover:scale-[1.02] text-center leading-tight">
+                            <span>DESCARGAR DOCUMENTO AHORA</span>
+                        </a>
+
+                        <div class="mt-5 space-y-2 text-left">
+                            <div class="flex items-center justify-center gap-2 text-xs text-zinc-400">
+                                <i class="ph-fill ph-lock-key text-zinc-500"></i> Pago seguro y cifrado por Hotmart
+                            </div>
+                            <div class="flex items-center justify-center gap-2 text-xs text-zinc-400">
+                                <i class="ph-fill ph-lightning text-green-500"></i> Acceso automatico por mail
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ RÁPIDO -->
+    <section class="py-12 bg-[#0A0A0A] border-t border-white/5">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h2 class="font-display text-2xl font-bold text-center text-white mb-8">Preguntas Frecuentes</h2>
+            <div class="space-y-3">
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Es un curso? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">No, no es un curso de horas. Es un documento legal listo para rellenar (Plantilla en pagina web) que puedes empezar a usar en 5 minutos.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Sirve para mi país? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">Sí. Es un formato internacional de prestación de servicios basado en buenas prácticas freelance. Es adaptable y establece reglas comerciales claras independientemente de tu legislación local.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface border border-white/5 rounded-xl transition-all duration-300">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-white outline-none">
+                        ¿Funciona para otras profesiones además de diseño? 
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-sm text-zinc-400 border-t border-white/5 pt-3">Totalmente. Sirve para programadores, editores de video, community managers, redactores y cualquier trabajador digital que cobre por proyecto o servicio.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-[#0A0A0A] border-t border-white/5 text-center text-xs text-zinc-600">
+        <div class="container mx-auto px-4">
+            <p>© 2026 @necesitodisenos. </br>Todos los derechos reservados.</p>
+            <div class="mt-6 flex justify-center relative">
+                <!-- Efecto de shadow blur de fondo -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-10 bg-white/10 blur-[20px] rounded-full pointer-events-none"></div>
+                <img src="https://sandiprojects.com/wp-content/uploads/2026/02/con-respaldo.png" alt="Con el respaldo de Hotmart" class="relative z-10 h-10 md:h-12 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
+
+        // Timer simplificado
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            let diff = tomorrow - now;
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
