@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sistema de Adquisición de Clientes | @necesitodisenos</title>
+    <meta name="description" content="Aprende a conseguir clientes siendo diseñador usando Instagram.">
+    
+    <!-- Google Fonts: Inter Tight & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#FF1E1E', 
+                            hover: '#CC0000', 
+                            bg: '#0A0A0A',
+                            surface: '#121212',
+                            border: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Inter Tight', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(255, 30, 30, 0.4)',
+                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+            background-color: #0A0A0A;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::selection {
+            background: rgba(255, 30, 30, 0.3);
+            color: white;
+        }
+
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .scrollbar-hide::-webkit-scrollbar { display: none !important; }
+        .scrollbar-hide { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        .timeline-line {
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, rgba(255,30,30,0.1), rgba(255,30,30,0.8), rgba(255,30,30,0.1));
+        }
+        @media (min-width: 768px) {
+            .timeline-line { left: 50%; transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="pt-14 relative overflow-x-hidden">
+
+    <!-- Fondo Técnico -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+    <!-- Sticky Header DE URGENCIA -->
+    <nav class="fixed top-0 left-0 w-full bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-white/10 z-50 h-14 flex items-center shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            
+            <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                <div class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-red"></span>
+                </div>
+                <span class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">⚡ OFERTA LIMITADA ⚡</span>
+            </div>
+            
+            <div class="flex items-center gap-2 md:gap-6 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="hidden lg:inline text-[10px] font-medium text-white/70 uppercase tracking-wider mr-2">Termina en:</span>
+                    <div class="flex items-start gap-1 md:gap-2 text-center">
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="hours" class="font-mono text-white font-bold text-xs md:text-sm leading-none">09</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="minutes" class="font-mono text-white font-bold text-xs md:text-sm leading-none">05</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold mt-0.5 md:mt-1">:</span>
+                        <div class="flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
+                            <span id="seconds" class="font-mono text-white font-bold text-xs md:text-sm leading-none">08</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#offer" class="hidden md:flex items-center gap-2 bg-brand-red hover:bg-brand-hover text-white px-5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all hover:scale-105">
+                    LO QUIERO AHORA
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden z-10 pb-12 lg:pb-20">
+        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mt-4 lg:mt-10">
+            
+            <div class="text-center lg:text-left space-y-6 md:space-y-8" data-aos="fade-right">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md border border-brand-red/20 bg-brand-red/5 text-brand-red text-xs font-medium tracking-wide mx-auto lg:mx-0">
+                    <i class="ph-fill ph-copy"></i> Modelo "Copiar y Pegar"
+                </div>
+                
+                <h1 class="font-display text-[32px] sm:text-[40px] md:text-[54px] lg:text-[59px] font-bold tracking-tight text-white leading-[1.05]">
+                    COPIA EL SISTEMA PARA <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-red-500 uppercase">CERRAR 3 A 5 CLIENTES</span> <br>
+                    NUEVOS CADA MES
+                </h1>
+                
+                <p class="text-base md:text-lg text-zinc-400 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    El embudo exacto de Instagram que nos permitió escalar de $350 a <span class="text-white font-bold">+$4,000 USD/mes</span> vendiendo diseño. Sin pagar anuncios, sin subir contenido de relleno y sin depender de referidos.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                    <div class="flex flex-col items-center lg:items-start gap-2">
+                        <a href="#offer" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-hover text-white rounded-lg font-bold text-sm uppercase tracking-widest transition-all shadow-glow hover:-translate-y-1">
+                            QUIERO COPIAR ESTE SISTEMA <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                        <span class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Acceso inmediato y de por vida</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-6 pt-4 border-t border-white/5 w-full max-w-md mx-auto lg:mx-0">
+                    <div class="flex flex-col items-center lg:items-start">
+                        <div class="flex text-brand-red text-sm mb-1"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                        <span class="text-[11px] text-white font-bold">Valoración 4.9/5</span>
+                    </div>
+                    <div class="hidden sm:block h-8 w-px bg-white/10"></div>
+                    <div class="text-center lg:text-left">
+                        <span class="block text-white font-bold text-sm">+537 diseñadores</span>
+                        <span class="text-[11px] text-zinc-500">ya lo están aplicando</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mockup Libro -->
+            <div data-aos="fade-left" data-aos-delay="200" class="mt-12 lg:mt-0 w-full mx-auto flex justify-center">
+                <div class="relative w-full max-w-[340px] mx-auto animate-float">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[90%] bg-brand-red/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
+                    <img src="https://i.ibb.co/5hLv0C7S/Book-Mockup-2.png" 
+                         alt="Sistema Cómo Atraer Clientes" 
+                         class="relative z-10 w-full h-auto object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
+                         onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 1.5 DISCLAIMER IMPORTANTE -->
+    <section class="py-10 lg:py-16 relative z-20 border-t border-white/5 bg-brand-bg/0 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-6 lg:mb-8" data-aos="fade-up">
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-white">Aclaremos algo importante...</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                <!-- Lo que te mantiene estancado -->
+                <div class="p-5 lg:p-6 rounded-xl bg-red-500/5 border border-red-500/10 backdrop-blur-sm" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-red-400 font-bold text-sm md:text-base mb-4 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-x-circle"></i> Esto NO es
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Esperar que los clientes lleguen solos.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Bajar tus precios por miedo a perderlos.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Subir contenido lindo que no vende nada.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-400"><i class="ph-bold ph-x text-red-500/60 mt-0.5"></i> Buscar "trucos mágicos" de marketing.</li>
+                    </ul>
+                </div>
+                <!-- Lo que realmente funciona -->
+                <div class="p-5 lg:p-6 rounded-xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-emerald-400 font-bold text-sm md:text-base mb-4 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="ph-fill ph-check-circle"></i> Esto SÍ es
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Una oferta imposible de ignorar.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Un embudo predecible en Instagram.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Cobrar caro con total confianza.</li>
+                        <li class="flex items-start gap-2 text-xs text-zinc-300"><i class="ph-fill ph-check text-emerald-500 mt-0.5"></i> Un sistema validado que trabajas 1 vez.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CTA EXTRA -->
+            <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="300">
+                <a href="#offer" class="inline-flex items-center gap-2 text-brand-red hover:text-white font-bold text-sm uppercase tracking-widest transition-colors border-b-2 border-brand-red/30 hover:border-brand-red pb-1">
+                    QUIERO EL SISTEMA QUE SÍ FUNCIONA <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ¿PARA QUIÉN ES? -->
+    <section class="py-12 lg:py-20 bg-brand-bg relative z-10 border-t border-white/5 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-8 lg:mb-12" data-aos="zoom-in">
+                <h2 class="font-display text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">¿Para quién es este sistema?</h2>
+                <p class="text-sm md:text-base text-zinc-500">Un filtro honesto para saber si esto te servirá.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-8">
+                <!-- Para vos -->
+                <div class="bg-brand-surface border border-brand-red/30 rounded-2xl p-6 lg:p-8 shadow-[0_0_30px_rgba(255,30,30,0.05)] transition-all" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-white font-bold text-base md:text-lg mb-5 md:mb-6 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-brand-red rounded-full"></span>
+                        Este sistema ES para vos si:
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-red mt-0.5 text-lg"></i>
+                            <span>Quieres vivir del diseño, no usarlo de pasatiempo.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-red mt-0.5 text-lg"></i>
+                            <span>Estás harto de clientes baratos que regatean tu trabajo.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-300">
+                            <i class="ph-fill ph-check-circle text-brand-red mt-0.5 text-lg"></i>
+                            <span>Sabes diseñar, pero no sabes CÓMO VENDER.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- No es para vos -->
+                <div class="bg-brand-surface/40 border border-white/5 rounded-2xl p-6 lg:p-8 transition-opacity" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-zinc-400 font-bold text-base md:text-lg mb-5 md:mb-6 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-zinc-700 rounded-full"></span>
+                        NO es para vos si:
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>Buscas dinero sin mover un dedo.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>Te da miedo cobrar lo que realmente vales.</span>
+                        </li>
+                        <li class="flex gap-3 text-sm text-zinc-500">
+                            <i class="ph-fill ph-x-circle text-zinc-600 mt-0.5 text-lg"></i>
+                            <span>Todavía no ofreces ningún servicio de diseño.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CTA EXTRA -->
+            <div class="mt-12 text-center" data-aos="fade-up" data-aos-delay="300">
+                <a href="#offer" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-hover text-white rounded-lg font-bold text-sm uppercase tracking-widest transition-all shadow-glow hover:-translate-y-1">
+                    SOY EL INDICADO <i class="ph-bold ph-check"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. EL MAPA PASO A PASO (TIMELINE) -->
+    <section class="py-16 lg:py-24 border-t border-white/5 bg-brand-bg relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">¿Qué vas a aprender exactamente?</h2>
+                <div class="w-16 h-1 bg-brand-red mx-auto rounded-full mt-6"></div>
+            </div>
+            
+            <!-- TIMELINE ESTRUCTURA -->
+            <div class="relative max-w-4xl mx-auto px-2 md:px-0">
+                <!-- Línea central conectora -->
+                <div class="timeline-line"></div>
+
+                <!-- HITO 1 -->
+                <div class="relative flex flex-col md:flex-row items-center mb-12 md:mb-16 group" data-aos="fade-up">
+                    <div class="md:w-1/2 w-full md:pr-14 text-left md:text-right pl-16 md:pl-0">
+                        <span class="text-brand-red text-[10px] font-bold uppercase tracking-widest bg-brand-red/10 px-2 py-1 rounded inline-block mb-3">Fase 01</span>
+                        <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2 group-hover:text-brand-red transition-colors flex items-center md:justify-end gap-2"><i class="ph-bold ph-compass"></i> EL MAPA REAL</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-1">Crea un servicio que la gente se sienta tonta al rechazar. Sal de la guerra de precios.</p>
+                    </div>
+                    <!-- Marcador Central -->
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 md:w-10 md:h-10 bg-brand-bg border-[3px] border-brand-red rounded-full -translate-x-1/2 flex items-center justify-center shadow-glow z-10 transition-transform group-hover:scale-110">
+                        <span class="text-white text-xs md:text-sm font-bold">1</span>
+                    </div>
+                    <div class="md:w-1/2 w-full hidden md:block"></div>
+                </div>
+
+                <!-- HITO 2 -->
+                <div class="relative flex flex-col md:flex-row items-center mb-12 md:mb-16 group" data-aos="fade-up">
+                    <div class="md:w-1/2 w-full hidden md:block"></div>
+                    <!-- Marcador Central -->
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 md:w-10 md:h-10 bg-brand-bg border-[3px] border-brand-red rounded-full -translate-x-1/2 flex items-center justify-center shadow-glow z-10 transition-transform group-hover:scale-110">
+                        <span class="text-white text-xs md:text-sm font-bold">2</span>
+                    </div>
+                    <div class="md:w-1/2 w-full md:pl-14 text-left pl-16 md:pl-14">
+                        <span class="text-brand-red text-[10px] font-bold uppercase tracking-widest bg-brand-red/10 px-2 py-1 rounded inline-block mb-3">Fase 02</span>
+                        <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2 group-hover:text-brand-red transition-colors flex items-center gap-2"><i class="ph-bold ph-funnel"></i> LA MÁQUINA DE CLIENTES</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-1">Usa Instagram como un embudo de ventas frío, no como una galería de arte linda.</p>
+                    </div>
+                </div>
+
+                <!-- HITO 3 -->
+                <div class="relative flex flex-col md:flex-row items-center mb-12 md:mb-16 group" data-aos="fade-up">
+                    <div class="md:w-1/2 w-full md:pr-14 text-left md:text-right pl-16 md:pl-0">
+                        <span class="text-brand-red text-[10px] font-bold uppercase tracking-widest bg-brand-red/10 px-2 py-1 rounded inline-block mb-3">Fase 03</span>
+                        <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2 group-hover:text-brand-red transition-colors flex items-center md:justify-end gap-2"><i class="ph-bold ph-money"></i> VENDER Y COBRAR CARO</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-1">Cómo pedir $1,000+ sin sudar. Guiones de cierre, manejo de objeciones y contratos.</p>
+                    </div>
+                    <!-- Marcador Central -->
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 md:w-10 md:h-10 bg-brand-bg border-[3px] border-brand-red rounded-full -translate-x-1/2 flex items-center justify-center shadow-glow z-10 transition-transform group-hover:scale-110">
+                        <span class="text-white text-xs md:text-sm font-bold">3</span>
+                    </div>
+                    <div class="md:w-1/2 w-full hidden md:block"></div>
+                </div>
+
+                <!-- HITO 4 -->
+                <div class="relative flex flex-col md:flex-row items-center group" data-aos="fade-up">
+                    <div class="md:w-1/2 w-full hidden md:block"></div>
+                    <!-- Marcador Central -->
+                    <div class="absolute left-4 md:left-1/2 w-12 h-12 bg-brand-red border-4 border-[#0A0A0A] rounded-full -translate-x-1/2 flex items-center justify-center shadow-[0_0_30px_rgba(255,30,30,0.8)] z-10 transition-transform group-hover:scale-110">
+                        <i class="ph-bold ph-rocket-launch text-white text-xl"></i>
+                    </div>
+                    <div class="md:w-1/2 w-full md:pl-14 text-left pl-16 md:pl-14">
+                        <span class="text-brand-red text-[10px] font-bold uppercase tracking-widest bg-brand-red/10 px-2 py-1 rounded inline-block mb-3">Fase 04</span>
+                        <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2 group-hover:text-brand-red transition-colors flex items-center gap-2">ESCALAR Y SOSTENER</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-1">Sistematiza tu entrega para no volverte esclavo de tu negocio. Escala sin romperte.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA EXTRA -->
+            <div class="mt-16 text-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="#offer" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-hover text-white rounded-lg font-bold text-sm uppercase tracking-widest transition-all shadow-[0_0_30px_rgba(255,30,30,0.4)] hover:-translate-y-1">
+                    QUIERO ESTE EMBUDO <i class="ph-bold ph-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. RESULTADOS REALES -->
+    <section class="py-12 lg:py-24 relative z-10 border-t border-white/5 bg-[#0F0F0F] overflow-hidden">
+        <div class="container mx-auto px-4 max-w-6xl relative">
+            
+            <div class="text-center mb-8 lg:mb-16" data-aos="fade-up">
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 uppercase tracking-tight">
+                    RESULTADOS REALES
+                </h2>
+                <div class="w-16 md:w-20 h-1 bg-brand-red mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative group mt-5 lg:mt-8 px-0 md:px-4" data-aos="zoom-in" data-aos-delay="100">
+                <!-- Botones Navegación -->
+                <button id="prevBtn" class="flex absolute left-2 md:-left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <button id="nextBtn" class="flex absolute right-2 md:-right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
+                    <i class="ph-bold ph-caret-right text-xl"></i>
+                </button>
+
+                <!-- Slider Wrapper -->
+                <div class="w-full">
+                    <div id="sliderTrack" class="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 pb-6 lg:pb-8 pt-4 px-4 lg:px-8 scrollbar-hide scroll-smooth w-full">
+                        
+                        <!-- Cards de Testimonios -->
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-black border border-white/10 rounded-2xl overflow-hidden hover:border-brand-red/40 transition-colors flex flex-col relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Subió <span class="text-brand-red">30%</span> y Cerró <span class="text-brand-red">+2 proyectos</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena1.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-black border border-white/10 rounded-2xl overflow-hidden hover:border-brand-red/40 transition-colors flex flex-col relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Cerró <span class="text-brand-red">4 clientes más </span>que el mes pasado
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena3.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-black border border-white/10 rounded-2xl overflow-hidden hover:border-brand-red/40 transition-colors flex flex-col relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Logró que <span class="text-brand-red">una agencia la contrate</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena4.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="snap-center shrink-0 w-[80vw] max-w-[280px] md:max-w-none md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-black border border-white/10 rounded-2xl overflow-hidden hover:border-brand-red/40 transition-colors flex flex-col relative">
+                            <div class="p-3 md:p-4 bg-gradient-to-b from-white/5 to-transparent border-b border-white/5">
+                                <p class="text-white text-xs md:text-sm lg:text-base font-bold leading-snug text-center">
+                                    Subió precios y cerró <span class="text-brand-red">nuevos clientes</span>
+                                </p>
+                            </div>
+                            <div class="p-3 md:p-5 relative flex-grow bg-black/60 flex items-center justify-center">
+                                <div class="relative w-full rounded-xl overflow-hidden border border-white/5 shadow-inner bg-zinc-900 aspect-[9/16]">
+                                    <img src="https://sandiprojects.com/wp-content/uploads/2026/02/resena5.png" alt="Resultado" class="w-full h-full object-cover object-top opacity-95 hover:opacity-100 transition-opacity" onerror="this.src='https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=400&auto=format&fit=crop'">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Pagination Dots -->
+                <div id="paginationDots" class="flex justify-center gap-2 mt-2 md:mt-6"></div>
+            </div>
+
+            <!-- Caja extra -->
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <p class="text-white text-lg font-bold mb-2">No es teoría: son resultados.</p>
+                <div class="mt-6">
+                    <a href="#offer" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-hover text-white rounded-lg font-bold text-sm uppercase tracking-widest transition-all shadow-[0_0_30px_rgba(255,30,30,0.4)] hover:-translate-y-1">
+                        QUIERO FACTURAR ASÍ <i class="ph-bold ph-lightning"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. OFERTA SIMPLE DIRECTA -->
+    <section id="offer" class="py-16 lg:py-24 bg-black relative border-t border-white/5 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 max-w-4xl relative z-10">
+            
+            <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
+                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl text-white font-bold mb-3 md:mb-4 uppercase tracking-tight">ACCESO INMEDIATO</h2>
+                <p class="text-zinc-400 text-sm md:text-base max-w-lg mx-auto">Por menos de lo que cuesta un café.</p>
+            </div>
+
+            <!-- Tarjeta Simple de Checkout -->
+            <div class="bg-[#111] border border-brand-red/40 rounded-3xl overflow-hidden shadow-[0_0_50px_-10px_rgba(255,30,30,0.2)] relative max-w-xl mx-auto" data-aos="zoom-in">
+                <div class="absolute inset-x-0 top-0 h-1 bg-brand-red"></div>
+
+                <div class="p-6 md:p-10 relative">
+                    <h3 class="text-white font-bold text-xl md:text-2xl mb-6 text-center border-b border-white/10 pb-6">
+                        SISTEMA DE ADQUISICIÓN DE CLIENTES PARA DISEÑADORES
+                    </h3>
+                    
+                    <!-- Resumen -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-brand-red/20 text-brand-red p-2 rounded-lg"><i class="ph-bold ph-book-open text-xl"></i></div>
+                            <div>
+                                <p class="text-white font-bold text-sm md:text-base">El Sistema Completo (Ebook)</p>
+                                <p class="text-zinc-500 text-xs">+130 páginas de estrategia accionable paso a paso.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-brand-red/20 text-brand-red p-2 rounded-lg"><i class="ph-bold ph-infinity text-xl"></i></div>
+                            <div>
+                                <p class="text-white font-bold text-sm md:text-base">Acceso de por Vida</p>
+                                <p class="text-zinc-500 text-xs">Descarga inmediata en todos tus dispositivos.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-brand-red/20 text-brand-red p-2 rounded-lg"><i class="ph-bold ph-arrows-clockwise text-xl"></i></div>
+                            <div>
+                                <p class="text-white font-bold text-sm md:text-base">Actualizaciones Futuras</p>
+                                <p class="text-zinc-500 text-xs">Gratis, sin suscripciones ni cargos ocultos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precio -->
+                    <div class="text-center mb-8">
+                        <p class="text-zinc-500 line-through text-sm md:text-base mb-1">Precio Regular: $47.00 USD</p>
+                        <div class="flex justify-center items-end gap-2">
+                            <span class="text-5xl md:text-6xl font-display font-black text-white leading-none">$8.99</span>
+                            <span class="text-brand-red font-bold text-sm mb-1 text-left">USD <br><span class="text-[10px] uppercase">Pago Único</span></span>
+                        </div>
+                    </div>
+
+                    <a href="https://pay.hotmart.com/" class="group flex items-center justify-center gap-2 w-full py-4 md:py-5 bg-brand-red hover:bg-brand-hover text-white font-bold text-sm md:text-base uppercase tracking-widest rounded-xl transition-all shadow-[0_0_30px_rgba(255,30,30,0.5)] hover:scale-[1.02]">
+                        OBTENER ACCESO AHORA <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    
+                    <div class="mt-4 flex items-center justify-center gap-2 text-[10px] md:text-xs text-zinc-500 uppercase tracking-wider font-bold">
+                        <i class="ph-fill ph-lock-key"></i> Compra Segura por Hotmart
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-center text-zinc-600 text-[10px] md:text-xs mt-6 max-w-lg mx-auto">
+                Al hacer clic, serás redirigido a la plataforma de pago encriptada. El sistema completo llega a tu correo inmediatamente tras confirmar el pago.
+            </p>
+        </div>
+    </section>
+
+    <!-- 6. FAQ SIMPLE -->
+    <section id="faq" class="py-12 lg:py-20 bg-brand-bg border-t border-white/5 relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-3xl relative z-10">
+            <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4">PREGUNTAS FRECUENTES</h2>
+                <div class="w-16 h-1 bg-brand-red mx-auto rounded-full mt-4"></div>
+            </div>
+            
+            <div class="space-y-3">
+                <details class="group bg-brand-surface/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-red/30 open:border-brand-red/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="100">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none outline-none">
+                        <div class="flex items-center gap-3">
+                            <span class="text-white font-medium text-sm md:text-base">¿El sistema es en formato físico o digital?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 text-zinc-400 text-xs md:text-sm leading-relaxed">
+                        Es un producto <strong>100% digital</strong>. Esto nos permite actualizarlo constantemente y que tengas acceso inmediato desde tu celular o computadora, sin costos de envío ni esperas.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-red/30 open:border-brand-red/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="150">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none outline-none">
+                        <div class="flex items-center gap-3">
+                            <span class="text-white font-medium text-sm md:text-base">¿Cómo recibo el acceso?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 text-zinc-400 text-xs md:text-sm leading-relaxed">
+                        Inmediatamente después de tu compra segura, recibirás un correo automático con el enlace directo para descargar todo el material a tu dispositivo.
+                    </div>
+                </details>
+
+                <details class="group bg-brand-surface/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-red/30 open:border-brand-red/30 open:bg-brand-surface" data-aos="fade-up" data-aos-delay="200">
+                    <summary class="flex items-center justify-between p-4 md:p-5 cursor-pointer list-none outline-none">
+                        <div class="flex items-center gap-3">
+                            <span class="text-white font-medium text-sm md:text-base">¿Sirve si recién estoy empezando en el diseño?</span>
+                        </div>
+                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="px-4 md:px-5 pb-4 md:pb-5 pt-0 text-zinc-400 text-xs md:text-sm leading-relaxed">
+                        Absolutamente. Está diseñado para ahorrarte años de prueba y error, dándote las bases correctas desde el día uno sobre cómo cobrar, estructurar tu servicio y conseguir clientes que valoren tu trabajo.
+                    </div>
+                </details>
+            </div>
+            
+            <div class="text-center mt-10" data-aos="zoom-in" data-aos-delay="300">
+                <a href="#offer" class="inline-flex items-center gap-2 text-white hover:text-brand-red font-bold text-sm uppercase tracking-widest transition-colors">
+                    IR AL CHECKOUT <i class="ph-bold ph-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-[#0A0A0A] border-t border-white/5 text-center text-xs text-zinc-600">
+        <div class="container mx-auto px-4">
+            <p class="font-bold mb-2">© 2026 Necesito Diseños.</p>
+            <p>Todos los derechos reservados. Este sitio no es parte del sitio web de Facebook o Facebook Inc.</p>
+        </div>
+    </footer>
+
+    <!-- Sticky Bottom Offer Bar Simple -->
+    <div id="sticky-offer-bar" class="fixed bottom-0 left-0 w-full bg-[#0A0A0A]/95 backdrop-blur-xl border-t border-brand-red/30 z-50 transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_-10px_rgba(255,30,30,0.2)]">
+        <div class="container mx-auto px-4 py-3 md:py-4">
+            <div class="flex items-center justify-between gap-4 max-w-4xl mx-auto">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="min-w-0">
+                        <p class="text-sm md:text-base font-bold text-white truncate font-display">
+                            SISTEMA DE ADQUISICIÓN
+                        </p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="text-lg md:text-xl font-black text-brand-red leading-none">$8.99</span>
+                            <span class="text-[10px] md:text-xs text-zinc-500 line-through decoration-white/20 hidden sm:inline">$47.00</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#offer" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-xs md:text-sm rounded-lg bg-brand-red hover:bg-brand-hover text-white font-extrabold px-6 h-10 md:h-12 shadow-[0_0_20px_rgba(255,30,30,0.4)] group">
+                    <span class="hidden sm:inline">ACCESO INMEDIATO</span>
+                    <span class="sm:hidden">COMPRAR</span>
+                    <i class="ph-bold ph-caret-right group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
+
+        // Timer de Urgencia en Navbar
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            let diff = tomorrow - now;
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Lógica Carrusel de Resultados (Reducido a lo funcional)
+        const track = document.getElementById('sliderTrack');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const dotsContainer = document.getElementById('paginationDots');
+
+        if (track && nextBtn && prevBtn && dotsContainer) {
+            const cards = Array.from(track.children);
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600`;
+                dot.addEventListener('click', () => {
+                    const cardWidth = cards[0].offsetWidth;
+                    const gap = window.innerWidth < 768 ? 16 : 24;
+                    track.scrollTo({ left: i * (cardWidth + gap), behavior: 'smooth' });
+                });
+                dotsContainer.appendChild(dot);
+            });
+            const dots = Array.from(dotsContainer.children);
+
+            const updateSliderState = () => {
+                const scrollLeft = track.scrollLeft;
+                const cardWidth = cards[0].offsetWidth;
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+                dots.forEach((dot, i) => {
+                    if (i === activeIndex) {
+                        dot.classList.add('w-4', 'bg-brand-red');
+                        dot.classList.remove('w-2', 'bg-zinc-600');
+                    } else {
+                        dot.classList.remove('w-4', 'bg-brand-red');
+                        dot.classList.add('w-2', 'bg-zinc-600');
+                    }
+                });
+            };
+
+            nextBtn.addEventListener('click', () => {
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                track.scrollBy({ left: cards[0].offsetWidth + gap, behavior: 'smooth' });
+            });
+            prevBtn.addEventListener('click', () => {
+                const gap = window.innerWidth < 768 ? 16 : 24;
+                track.scrollBy({ left: -(cards[0].offsetWidth + gap), behavior: 'smooth' });
+            });
+            track.addEventListener('scroll', updateSliderState);
+            setTimeout(updateSliderState, 100);
+        }
+
+        // Lógica de la Sticky Bar (Se muestra al llegar a FAQ o al pasar el Offer)
+        window.addEventListener('scroll', () => {
+            const stickyBar = document.getElementById('sticky-offer-bar');
+            const faqSec = document.getElementById('faq');
+            const offerSec = document.getElementById('offer');
+            
+            if (faqSec && offerSec && stickyBar) {
+                // Mostrar al pasar la sección de oferta
+                const offerRect = offerSec.getBoundingClientRect();
+                const isPastOffer = offerRect.bottom < 0;
+                
+                if (isPastOffer) {
+                    stickyBar.classList.remove('translate-y-full');
+                } else {
+                    stickyBar.classList.add('translate-y-full');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
