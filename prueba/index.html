@@ -767,7 +767,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE PRECIOS DINÁMICOS -->
+    <!-- SCRIPT DE PRECIOS DINÁMICOS MEJORADO -->
     <script>
         // 1. Configuramos tu precio original
         const precioBaseUSD = 8.99;
@@ -778,25 +778,41 @@
             const spanPrecioSticky = document.getElementById('precio-sticky');
 
             try {
-                // Averiguamos desde qué país nos visitan y su moneda
-                const resIP = await fetch('https://ipapi.co/json/');
+                // Usamos ipinfo.io que es muchísimo más permisiva con bloqueadores de anuncios
+                const resIP = await fetch('https://ipinfo.io/json');
+                if (!resIP.ok) throw new Error("Fallo API de país");
+                
                 const dataIP = await resIP.json();
-                const monedaVisitante = dataIP.currency || 'USD';
+                const pais = dataIP.country; // Nos da 'UY', 'AR', 'MX', etc.
 
-                // Averiguamos cómo cotiza el dólar contra esa moneda en este exacto momento
+                // Diccionario de monedas principales para LATAM y España
+                const mapaMonedas = {
+                    'AR': 'ARS', 'CL': 'CLP', 'CO': 'COP', 'MX': 'MXN', 
+                    'UY': 'UYU', 'PE': 'PEN', 'ES': 'EUR', 'CR': 'CRC'
+                };
+                
+                const monedaVisitante = mapaMonedas[pais] || 'USD';
+
+                // Si es un país que usa dólares, mostramos el precio base y terminamos acá
+                if (monedaVisitante === 'USD') {
+                    throw new Error("Mostrando dólares por defecto");
+                }
+
+                // Averiguamos la cotización de HOY para esa moneda
                 const resCambio = await fetch('https://open.er-api.com/v6/latest/USD');
+                if (!resCambio.ok) throw new Error("Fallo API de cambio");
+                
                 const dataCambio = await resCambio.json();
                 const cotizacionHoy = dataCambio.rates[monedaVisitante];
 
                 if (cotizacionHoy) {
                     let precioFinal;
                     
-                    // Si son monedas "fuertes" (Dólar, Euro, Libra), mantenemos los centavos exactos (ej: 8.99).
-                    if (['USD', 'EUR', 'GBP'].includes(monedaVisitante)) {
+                    // Si son Euros, mantenemos los decimales (ej: 8.35)
+                    if (monedaVisitante === 'EUR') {
                         precioFinal = (precioBaseUSD * cotizacionHoy).toFixed(2);
                     } else {
-                        // Para el resto de Latam (UYU, COP, ARS, MXN), redondeamos y ponemos el punto de los miles
-                        // Ejemplo: 3500 queda en "3.500" para que se vea más profesional.
+                        // Para LATAM, redondeamos a entero y ponemos el punto de mil (ej: 3.500)
                         precioFinal = Math.round(precioBaseUSD * cotizacionHoy).toLocaleString('es-ES'); 
                     }
 
@@ -805,21 +821,22 @@
                     spanMonedaPrincipal.innerText = monedaVisitante;
                     spanPrecioSticky.innerText = `$${precioFinal} ${monedaVisitante}`;
                 } else {
-                    throw new Error("No se pudo obtener la cotización de la moneda.");
+                    throw new Error("No hay cotización disponible");
                 }
 
             } catch (error) {
-                // Por si acaso el cliente tiene un AdBlocker o falla su internet, 
-                // mostramos el precio oficial en dólares para no perder la venta.
+                // FALLBACK DE SEGURIDAD: 
+                // Si el internet es lento, tiene un bloqueador extremo, o algo falla...
+                // Simplemente inyectamos el precio oficial en dólares y no perdemos la venta.
                 spanPrecioPrincipal.innerText = `$${precioBaseUSD}`;
                 spanMonedaPrincipal.innerText = `USD`;
                 spanPrecioSticky.innerText = `$${precioBaseUSD} USD`;
-                console.log("No se pudo adaptar la moneda local. Mostrando USD por defecto.");
+                console.log("Cargando precio base USD.", error.message);
             }
         }
 
-        // Ejecutar apenas cargue la estructura de la web
-        document.addEventListener('DOMContentLoaded', adaptarPrecioDinamico);
+        // Ejecutamos la función de una (sin esperar eventos externos que pueden trabarse)
+        adaptarPrecioDinamico();
     </script>
 
     <!-- Scripts de Interfaz Originales -->
