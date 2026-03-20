@@ -242,10 +242,16 @@
                 
                 <div class="flex items-center justify-between mb-4 relative z-10">
                     <div class="flex items-center gap-3">
-                        <!-- Avatar con placeholder transparente para evitar icono roto inicial -->
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-fuchsia-600 p-[2px]">
-                            <img id="arAvatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-zinc-900">
+                        <!-- Avatar interactivo (Permite carga manual si falla IG) -->
+                        <div class="relative w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-fuchsia-600 p-[2px] cursor-pointer group" title="Clic para subir la foto si Instagram la bloquea" onclick="document.getElementById('manualAvatarUpload').click()">
+                            <img id="arAvatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-[#DBDBDB]">
+                            <!-- Overlay Hover para indicar que es clickeable -->
+                            <div class="absolute inset-0 m-[2px] bg-black/60 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
+                                <i class="ph-bold ph-camera text-white text-[10px]"></i>
+                            </div>
                         </div>
+                        <input type="file" id="manualAvatarUpload" accept="image/*" class="hidden">
+                        
                         <div class="flex flex-col">
                             <span id="arUsername" class="text-white text-sm font-semibold tracking-tight leading-tight">@usuario</span>
                             <span class="text-gray-500 text-[11px]">Justo ahora</span>
@@ -276,7 +282,7 @@
                     <i class="ph-bold ph-spinner animate-spin text-lg"></i> Cargando imagen...
                 </button>
             </div>
-            <p class="text-gray-500 text-xs mt-4 text-center">Resolución optimizada para compartir en historias y feed.</p>
+            <p class="text-gray-500 text-xs mt-4 text-center">Si Instagram bloquea la foto, se mostrará el avatar gris oficial.<br><strong class="text-brand-primary">Puedes hacer clic en la foto para subirla tú mismo.</strong></p>
         </div>
     </div>
 
@@ -669,6 +675,20 @@
                 document.getElementById('arUsername').textContent = `@${igUser}`;
                 document.getElementById('arText').textContent = text;
                 
+                // --- MANEJO DE UPLOAD MANUAL (SALVAVIDAS DEFINITIVO) ---
+                const manualInput = document.getElementById('manualAvatarUpload');
+                manualInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            document.getElementById('arAvatar').src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+
+                // --- FUNCIÓN DE CARGA AUTOMÁTICA SEGURA ---
                 async function loadAvatarSecurely(username) {
                     const avatarImg = document.getElementById('arAvatar');
                     const downloadBtn = document.getElementById('btnDownloadImg');
@@ -687,7 +707,7 @@
                         }
                     }
 
-                    // Fallback visual: Si Instagram bloquea la cuenta, dibujamos el avatar GRIS por defecto de IG.
+                    // Fallback visual: SILUETA GRIS DE INSTAGRAM (Sin letras verdes)
                     function generateIGBlankAvatar() {
                         const canvas = document.createElement('canvas');
                         canvas.width = 150; canvas.height = 150;
@@ -712,57 +732,52 @@
                         enableBtn();
                     }
 
-                    const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
-                    
-                    // Sistema Multi-Proxy: Si Instagram bloquea uno, intentamos con otro.
-                    const proxies = [
-                        `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&output=png`,
-                        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-                        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
-                    ];
+                    try {
+                        const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
+                        const proxies = [
+                            `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                            `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+                        ];
 
-                    let success = false;
+                        let loaded = false;
 
-                    for (const proxyUrl of proxies) {
-                        if (success) break;
-                        
-                        try {
-                            const controller = new AbortController();
-                            const timeout = setTimeout(() => controller.abort(), 5000); // 5s max por proxy
-                            
-                            const response = await fetch(proxyUrl, { signal: controller.signal });
-                            clearTimeout(timeout);
-                            
-                            if (!response.ok) throw new Error('Error en proxy HTTP');
-                            
-                            const blob = await response.blob();
-                            
-                            // Instagram a veces manda un HTML (página de error) en vez de la foto si está bloqueado
-                            if (!blob.type.startsWith('image/') || blob.size < 800) {
-                                throw new Error('Respuesta inválida o imagen rota (Bloqueo de IG)');
+                        for (let proxy of proxies) {
+                            try {
+                                const controller = new AbortController();
+                                const timeout = setTimeout(() => controller.abort(), 6000);
+                                
+                                const res = await fetch(proxy, { signal: controller.signal });
+                                clearTimeout(timeout);
+                                
+                                if (res.ok) {
+                                    const blob = await res.blob();
+                                    // Verificación estricta: Si IG devuelve HTML en vez de foto, esto lo frena.
+                                    if (blob.type.startsWith('image/') && blob.size > 1000) {
+                                        await new Promise((resolve) => {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                                avatarImg.src = reader.result; // Base64 para evitar bloqueos
+                                                enableBtn();
+                                                resolve();
+                                            };
+                                            reader.readAsDataURL(blob);
+                                        });
+                                        loaded = true;
+                                        break; // Sale del loop si tuvo éxito
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn("Proxy falló:", proxy);
                             }
-
-                            // Convertimos a código puro (Base64) para evitar errores de html2canvas
-                            await new Promise((resolve, reject) => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    avatarImg.src = reader.result;
-                                    success = true;
-                                    enableBtn();
-                                    resolve();
-                                };
-                                reader.onerror = reject;
-                                reader.readAsDataURL(blob);
-                            });
-
-                        } catch (err) {
-                            console.warn(`Proxy falló (${proxyUrl}):`, err.message);
                         }
-                    }
 
-                    // Si todos los proxys fallaron (cuenta súper privada o inexistente)
-                    if (!success) {
-                        console.error('No se pudo obtener el avatar de Instagram. Usando silueta genérica.');
+                        // Si todos los proxys fallaron (cuenta súper privada o bloqueada)
+                        if (!loaded) {
+                            console.warn("Todos los intentos automáticos fallaron. Usando silueta de IG.");
+                            generateIGBlankAvatar();
+                        }
+
+                    } catch(err) {
                         generateIGBlankAvatar();
                     }
                 }
