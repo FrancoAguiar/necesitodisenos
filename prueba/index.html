@@ -242,9 +242,9 @@
                 
                 <div class="flex items-center justify-between mb-4 relative z-10">
                     <div class="flex items-center gap-3">
-                        <!-- Avatar -->
+                        <!-- Avatar con placeholder transparente para evitar icono roto inicial -->
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-fuchsia-600 p-[2px]">
-                            <img id="arAvatar" src="" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-zinc-900">
+                            <img id="arAvatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-zinc-900">
                         </div>
                         <div class="flex flex-col">
                             <span id="arUsername" class="text-white text-sm font-semibold tracking-tight leading-tight">@usuario</span>
@@ -669,7 +669,7 @@
                 document.getElementById('arUsername').textContent = `@${igUser}`;
                 document.getElementById('arText').textContent = text;
                 
-                // Función super optimizada y resistente a bloqueos CORS
+                // Función super optimizada y resistente a bloqueos CORS para cargar la foto
                 async function loadAvatarSecurely(username) {
                     const avatarImg = document.getElementById('arAvatar');
                     const downloadBtn = document.getElementById('btnDownloadImg');
@@ -688,45 +688,53 @@
                         }
                     }
 
-                    // Función auxiliar para descargar imagenes y convertirlas a código Base64
-                    const getBase64 = async (url) => {
-                        const response = await fetch(url);
+                    try {
+                        // 1. Intentamos obtener la foto real de Instagram usando un proxy avanzado (wsrv.nl es excelente para imágenes)
+                        const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
+                        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&output=png`;
+                        
+                        const response = await fetch(proxyUrl);
                         if (!response.ok) throw new Error('Error al obtener imagen');
                         
                         const blob = await response.blob();
-                        // Comprobación ESTRICTA: Si Instagram devuelve un HTML de error, esto lo detecta.
-                        if (!blob.type.includes('image')) throw new Error('La respuesta no es una imagen válida');
                         
-                        return new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => resolve(reader.result);
-                            reader.onerror = reject;
-                            reader.readAsDataURL(blob);
-                        });
-                    };
-
-                    try {
-                        // 1. Intentamos obtener la foto real de Instagram usando un proxy de blobs
-                        const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
-                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+                        // Verificación estricta: Si el proxy devuelve un HTML de error (bloqueo), saltamos al Catch
+                        if (!blob.type.startsWith('image/')) throw new Error('La respuesta del proxy no es una imagen válida');
                         
-                        avatarImg.src = await getBase64(proxyUrl);
-                        enableBtn();
-                    } catch (error) {
-                        console.warn("Instagram falló o bloqueó la foto, usando fallback inteligente.", error);
-                        
-                        // 2. Si falla, pasamos al avatar estético con Iniciales (Base64 para asegurar html2canvas)
-                        try {
-                            const fallbackUrl = `https://ui-avatars.com/api/?background=22c55e&color=000000&name=${encodeURIComponent(cleanUsername)}&size=128&bold=true`;
-                            avatarImg.src = await getBase64(fallbackUrl);
+                        // Convertir a Base64 para que html2canvas NUNCA se queje
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            avatarImg.src = reader.result;
                             enableBtn();
-                        } catch (e2) {
-                            // 3. Si todo falla de manera catastrófica (casi imposible), forzamos URL directa
-                            avatarImg.crossOrigin = "anonymous";
-                            avatarImg.src = `https://ui-avatars.com/api/?background=22c55e&color=000000&name=${encodeURIComponent(cleanUsername)}&size=128&bold=true`;
-                            avatarImg.onload = enableBtn;
-                            avatarImg.onerror = enableBtn; // Liberamos el botón de todas formas
-                        }
+                        };
+                        reader.readAsDataURL(blob);
+
+                    } catch (error) {
+                        console.warn("Instagram falló o bloqueó la foto, generando avatar interno.", error);
+                        
+                        // 2. FALLBACK A PRUEBA DE BALAS: Generamos la imagen con Canvas aquí mismo en el navegador.
+                        // Sin pedir archivos a internet, por lo que nunca puede dar icono roto o error CORS.
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 128;
+                        canvas.height = 128;
+                        const ctx = canvas.getContext('2d');
+
+                        // Fondo verde
+                        ctx.fillStyle = '#22c55e';
+                        ctx.fillRect(0, 0, 128, 128);
+
+                        // Letra inicial
+                        ctx.font = 'bold 64px sans-serif';
+                        ctx.fillStyle = '#000000';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        
+                        const initial = cleanUsername.charAt(0).toUpperCase();
+                        ctx.fillText(initial, 64, 68);
+
+                        // Asignamos la imagen base64 limpia al src
+                        avatarImg.src = canvas.toDataURL('image/png');
+                        enableBtn();
                     }
                 }
 
