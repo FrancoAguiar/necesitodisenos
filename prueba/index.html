@@ -244,7 +244,7 @@
                     <div class="flex items-center gap-3">
                         <!-- Avatar -->
                         <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-fuchsia-600 p-[2px]">
-                            <img id="arAvatar" src="" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-zinc-900" crossorigin="anonymous">
+                            <img id="arAvatar" src="" alt="Avatar" class="w-full h-full rounded-full border border-black object-cover bg-zinc-900">
                         </div>
                         <div class="flex flex-col">
                             <span id="arUsername" class="text-white text-sm font-semibold tracking-tight leading-tight">@usuario</span>
@@ -669,40 +669,36 @@
                 document.getElementById('arUsername').textContent = `@${igUser}`;
                 document.getElementById('arText').textContent = text;
                 
-                // Función SEGURA para cargar la imagen evitando bloqueos CORS
-                async function loadAvatarSecurely(username) {
+                // Función optimizada y más directa para cargar la imagen
+                function loadAvatarSecurely(username) {
                     const avatarImg = document.getElementById('arAvatar');
                     const downloadBtn = document.getElementById('btnDownloadImg');
                     
-                    // Asegurar que el botón no se pueda presionar hasta que la imagen esté lista
                     if(downloadBtn) {
                         downloadBtn.disabled = true;
                         downloadBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Procesando foto...';
                     }
 
-                    try {
-                        // 1. Utilizamos un Proxy CORS público para "engañar" la seguridad que bloquea Canvas
-                        const targetUrl = `https://unavatar.io/instagram/${username}?fallback=false`;
-                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-                        
-                        const response = await fetch(proxyUrl);
-                        if (!response.ok) throw new Error('No se pudo cargar la imagen original');
-                        
-                        const blob = await response.blob();
-                        // 2. Verificar que lo que descargamos sea realmente una imagen
-                        if (!blob.type.startsWith('image/')) throw new Error('La respuesta no es una imagen válida');
+                    // Permite que la imagen externa no contamine el canvas (CORS)
+                    avatarImg.crossOrigin = "anonymous";
+                    
+                    // Añadimos un timestamp para evitar que la caché bloquee los headers CORS
+                    avatarImg.src = `https://unavatar.io/instagram/${username}?fallback=false&t=${new Date().getTime()}`;
 
-                        // 3. Convertir el BLOB en una URL local (Esto hace que Canvas la acepte 100% sin chistar)
-                        avatarImg.src = URL.createObjectURL(blob);
-
-                    } catch (error) {
-                        console.warn("Fallo al extraer IG, utilizando avatar de respaldo seguro.", error);
-                        // Fallback que nunca falla: Iniciales personalizadas
-                        avatarImg.src = `https://ui-avatars.com/api/?background=22c55e&color=000&name=${username}&size=128&bold=true`;
-                    }
-
-                    // Una vez que el `src` (ya sea original o fallback) termina de pintar en pantalla, habilitamos la descarga
                     avatarImg.onload = () => {
+                        // Imagen cargada correctamente y validada por CORS
+                        if(downloadBtn) {
+                            downloadBtn.disabled = false;
+                            downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
+                            downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    };
+
+                    avatarImg.onerror = () => {
+                        // Fallback si falla (perfil privado, inexistente o bloqueo)
+                        console.warn("No se pudo cargar de unavatar. Usando iniciales de respaldo.");
+                        avatarImg.src = `https://ui-avatars.com/api/?background=22c55e&color=000&name=${username}&size=128&bold=true`;
+                        // Habilitamos igual porque ui-avatars siempre carga
                         if(downloadBtn) {
                             downloadBtn.disabled = false;
                             downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
@@ -732,17 +728,17 @@
         function downloadIgCard() {
             const card = document.getElementById('igCard');
             
-            // Efecto visual de "Flash" sutil como una cámara fotográfica
+            // Efecto visual de "Flash" sutil
             const originalBg = card.style.backgroundColor;
-            card.style.backgroundColor = '#111'; // Aclarar fondo un milisegundo
+            card.style.backgroundColor = '#111';
             setTimeout(() => card.style.backgroundColor = originalBg, 150);
 
             // Capturar Canvas
             html2canvas(card, {
                 backgroundColor: null,
                 scale: 3, // Alta resolución para historias
-                useCORS: true, // Vital
-                allowTaint: true,
+                useCORS: true, // Vital para la foto
+                allowTaint: false, // Protege contra lienzo manchado
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
@@ -751,8 +747,8 @@
                 link.click();
                 showCustomToast("Imagen descargada", "Lista para tus historias 🚀");
             }).catch(err => {
-                showCustomToast("Error", "Ocurrió un problema al generar la imagen.");
-                console.error("Error html2canvas:", err);
+                showCustomToast("Error", "No se pudo generar. Intenta de nuevo.");
+                console.error(err);
             });
         }
 
