@@ -670,7 +670,7 @@
                 document.getElementById('arText').textContent = text;
                 
                 // Función optimizada y más directa para cargar la imagen
-                function loadAvatarSecurely(username) {
+                async function loadAvatarSecurely(username) {
                     const avatarImg = document.getElementById('arAvatar');
                     const downloadBtn = document.getElementById('btnDownloadImg');
                     
@@ -679,32 +679,52 @@
                         downloadBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Procesando foto...';
                     }
 
-                    // Permite que la imagen externa no contamine el canvas (CORS)
-                    avatarImg.crossOrigin = "anonymous";
-                    
-                    // Añadimos un timestamp para evitar que la caché bloquee los headers CORS
-                    avatarImg.src = `https://unavatar.io/instagram/${username}?fallback=false&t=${new Date().getTime()}`;
-
-                    avatarImg.onload = () => {
-                        // Imagen cargada correctamente y validada por CORS
+                    function enableBtn() {
                         if(downloadBtn) {
                             downloadBtn.disabled = false;
                             downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
                             downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                         }
-                    };
+                    }
 
-                    avatarImg.onerror = () => {
-                        // Fallback si falla (perfil privado, inexistente o bloqueo)
-                        console.warn("No se pudo cargar de unavatar. Usando iniciales de respaldo.");
-                        avatarImg.src = `https://ui-avatars.com/api/?background=22c55e&color=000&name=${username}&size=128&bold=true`;
-                        // Habilitamos igual porque ui-avatars siempre carga
-                        if(downloadBtn) {
-                            downloadBtn.disabled = false;
-                            downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
-                            downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    try {
+                        // Usamos un proxy robusto y convertimos a Base64 para que html2canvas no de error de CORS
+                        const targetUrl = `https://unavatar.io/instagram/${username}?fallback=false`;
+                        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+                        
+                        const response = await fetch(proxyUrl);
+                        if (!response.ok) throw new Error('No se pudo cargar la imagen original');
+                        
+                        const blob = await response.blob();
+                        if (!blob.type.startsWith('image/')) throw new Error('La respuesta no es una imagen');
+
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            avatarImg.src = reader.result; // Pasamos a Base64
+                            enableBtn();
+                        };
+                        reader.readAsDataURL(blob);
+
+                    } catch (error) {
+                        console.warn("No se pudo extraer IG, utilizando avatar de respaldo.", error);
+                        // Fallback a iniciales (también convertido a Base64 por seguridad extrema)
+                        const fallbackUrl = `https://ui-avatars.com/api/?background=22c55e&color=000&name=${username}&size=128&bold=true`;
+                        try {
+                            const fallbackResponse = await fetch(`https://corsproxy.io/?${encodeURIComponent(fallbackUrl)}`);
+                            const fallbackBlob = await fallbackResponse.blob();
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                                avatarImg.src = reader.result;
+                                enableBtn();
+                            };
+                            reader.readAsDataURL(fallbackBlob);
+                        } catch (e) {
+                            // Último recurso absoluto
+                            avatarImg.crossOrigin = "anonymous";
+                            avatarImg.src = fallbackUrl;
+                            enableBtn();
                         }
-                    };
+                    }
                 }
 
                 loadAvatarSecurely(igUser);
