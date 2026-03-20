@@ -669,72 +669,101 @@
                 document.getElementById('arUsername').textContent = `@${igUser}`;
                 document.getElementById('arText').textContent = text;
                 
-                // Función super optimizada y resistente a bloqueos CORS para cargar la foto
                 async function loadAvatarSecurely(username) {
                     const avatarImg = document.getElementById('arAvatar');
                     const downloadBtn = document.getElementById('btnDownloadImg');
                     const cleanUsername = username.replace('@', '').trim() || 'User';
-                    
+
                     if(downloadBtn) {
                         downloadBtn.disabled = true;
-                        downloadBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Procesando foto...';
+                        downloadBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Obteniendo foto de IG...';
                     }
 
                     function enableBtn() {
-                        if(downloadBtn) {
+                        if (downloadBtn) {
                             downloadBtn.disabled = false;
                             downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
                             downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                         }
                     }
 
-                    try {
-                        // 1. Intentamos obtener la foto real de Instagram usando un proxy avanzado (wsrv.nl es excelente para imágenes)
-                        const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
-                        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&output=png`;
-                        
-                        const response = await fetch(proxyUrl);
-                        if (!response.ok) throw new Error('Error al obtener imagen');
-                        
-                        const blob = await response.blob();
-                        
-                        // Verificación estricta: Si el proxy devuelve un HTML de error (bloqueo), saltamos al Catch
-                        if (!blob.type.startsWith('image/')) throw new Error('La respuesta del proxy no es una imagen válida');
-                        
-                        // Convertir a Base64 para que html2canvas NUNCA se queje
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            avatarImg.src = reader.result;
-                            enableBtn();
-                        };
-                        reader.readAsDataURL(blob);
-
-                    } catch (error) {
-                        console.warn("Instagram falló o bloqueó la foto, generando avatar interno.", error);
-                        
-                        // 2. FALLBACK A PRUEBA DE BALAS: Generamos la imagen con Canvas aquí mismo en el navegador.
-                        // Sin pedir archivos a internet, por lo que nunca puede dar icono roto o error CORS.
+                    // Fallback visual: Si Instagram bloquea la cuenta, dibujamos el avatar GRIS por defecto de IG.
+                    function generateIGBlankAvatar() {
                         const canvas = document.createElement('canvas');
-                        canvas.width = 128;
-                        canvas.height = 128;
+                        canvas.width = 150; canvas.height = 150;
                         const ctx = canvas.getContext('2d');
-
-                        // Fondo verde
-                        ctx.fillStyle = '#22c55e';
-                        ctx.fillRect(0, 0, 128, 128);
-
-                        // Letra inicial
-                        ctx.font = 'bold 64px sans-serif';
-                        ctx.fillStyle = '#000000';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
                         
-                        const initial = cleanUsername.charAt(0).toUpperCase();
-                        ctx.fillText(initial, 64, 68);
-
-                        // Asignamos la imagen base64 limpia al src
+                        // Fondo gris claro
+                        ctx.fillStyle = '#DBDBDB'; 
+                        ctx.fillRect(0,0,150,150);
+                        
+                        // Silueta blanca
+                        ctx.fillStyle = '#FFFFFF';
+                        // Cabeza
+                        ctx.beginPath(); 
+                        ctx.arc(75, 55, 30, 0, Math.PI * 2); 
+                        ctx.fill();
+                        // Cuerpo
+                        ctx.beginPath(); 
+                        ctx.arc(75, 165, 70, Math.PI, 0); 
+                        ctx.fill();
+                        
                         avatarImg.src = canvas.toDataURL('image/png');
                         enableBtn();
+                    }
+
+                    const targetUrl = `https://unavatar.io/instagram/${cleanUsername}?fallback=false`;
+                    
+                    // Sistema Multi-Proxy: Si Instagram bloquea uno, intentamos con otro.
+                    const proxies = [
+                        `https://wsrv.nl/?url=${encodeURIComponent(targetUrl)}&output=png`,
+                        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
+                    ];
+
+                    let success = false;
+
+                    for (const proxyUrl of proxies) {
+                        if (success) break;
+                        
+                        try {
+                            const controller = new AbortController();
+                            const timeout = setTimeout(() => controller.abort(), 5000); // 5s max por proxy
+                            
+                            const response = await fetch(proxyUrl, { signal: controller.signal });
+                            clearTimeout(timeout);
+                            
+                            if (!response.ok) throw new Error('Error en proxy HTTP');
+                            
+                            const blob = await response.blob();
+                            
+                            // Instagram a veces manda un HTML (página de error) en vez de la foto si está bloqueado
+                            if (!blob.type.startsWith('image/') || blob.size < 800) {
+                                throw new Error('Respuesta inválida o imagen rota (Bloqueo de IG)');
+                            }
+
+                            // Convertimos a código puro (Base64) para evitar errores de html2canvas
+                            await new Promise((resolve, reject) => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    avatarImg.src = reader.result;
+                                    success = true;
+                                    enableBtn();
+                                    resolve();
+                                };
+                                reader.onerror = reject;
+                                reader.readAsDataURL(blob);
+                            });
+
+                        } catch (err) {
+                            console.warn(`Proxy falló (${proxyUrl}):`, err.message);
+                        }
+                    }
+
+                    // Si todos los proxys fallaron (cuenta súper privada o inexistente)
+                    if (!success) {
+                        console.error('No se pudo obtener el avatar de Instagram. Usando silueta genérica.');
+                        generateIGBlankAvatar();
                     }
                 }
 
@@ -866,7 +895,7 @@ Si el CLIENTE demorara más de <span data-id="x_ret" class="contract-placeholder
 
 <div class="clausula"><b>CLÁUSULA SEXTA – REVISIÓN Y APROBACIÓN</b>
 1. El CLIENTE tendrá derecho a <span data-id="n_ron" class="contract-placeholder" onclick="focusInput('n_ron')" contenteditable="false">N</span> rondas de revisión (cambios menores sobre el entregable presentado).
-2. Toda modificación que altere el alcance original será considerada 'cambio de alcance'.
+2. Toda modificación modification que altere el alcance original será considerada 'cambio de alcance'.
 3. El silencio del CLIENTE por más de <span data-id="x_sil" class="contract-placeholder" onclick="focusInput('x_sil')" contenteditable="false">X</span> días hábiles tras recibir un entregable será considerado aceptación tácita.</div>
 
 <div class="clausula"><b>CLÁUSULA SÉPTIMA – DERECHOS DE AUTOR</b>
@@ -1256,7 +1285,7 @@ El presente contrato se regirá por las leyes de <span data-id="pais" class="con
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Accept": "application/json" },
                     body: JSON.stringify({
-                        _subject: "⭐ NUEVA RESEÑA - ContratoPro",
+                        _subject: "⭐ NUEVA RESEÑA - Contrato",
                         _template: "box",
                         Estrellas: rating + " de 5",
                         Usuario: reviewIg ? `@${reviewIg}` : "Anónimo",
