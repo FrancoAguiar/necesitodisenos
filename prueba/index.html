@@ -272,8 +272,8 @@
             <!-- Botones de Acción Admin -->
             <div class="mt-8 flex gap-3 w-full">
                 <button onclick="window.location.href=window.location.pathname" class="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white font-semibold text-sm hover:bg-white/5 transition-all">Volver al Inicio</button>
-                <button onclick="downloadIgCard()" class="flex-1 px-4 py-3 rounded-xl bg-brand-primary text-black font-bold text-sm hover:bg-brand-hover shadow-glow transition-all flex justify-center items-center gap-2">
-                    <i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen
+                <button id="btnDownloadImg" onclick="downloadIgCard()" disabled class="flex-1 px-4 py-3 rounded-xl bg-brand-primary text-black font-bold text-sm hover:bg-brand-hover shadow-glow transition-all flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="ph-bold ph-spinner animate-spin text-lg"></i> Cargando imagen...
                 </button>
             </div>
             <p class="text-gray-500 text-xs mt-4 text-center">Resolución optimizada para compartir en historias y feed.</p>
@@ -649,7 +649,6 @@
     <!-- LÓGICA DE LA APLICACIÓN -->
     <script>
         // --- 0. LÓGICA MÁGICA DE ADMIN (GENERADOR DE IMAGEN) ---
-        // Verifica si la URL tiene los parámetros secretos generados por el envío de la reseña
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             
@@ -670,13 +669,49 @@
                 document.getElementById('arUsername').textContent = `@${igUser}`;
                 document.getElementById('arText').textContent = text;
                 
-                // Cargar imagen de Instagram vía API gratuita
-                // Se usa fallback genérico en caso de error o sin cuenta
-                const avatarImg = document.getElementById('arAvatar');
-                avatarImg.onerror = function() {
-                    this.src = 'https://ui-avatars.com/api/?background=random&color=fff&name=' + igUser;
-                };
-                avatarImg.src = `https://unavatar.io/instagram/${igUser}?fallback=false`;
+                // Función SEGURA para cargar la imagen evitando bloqueos CORS
+                async function loadAvatarSecurely(username) {
+                    const avatarImg = document.getElementById('arAvatar');
+                    const downloadBtn = document.getElementById('btnDownloadImg');
+                    
+                    // Asegurar que el botón no se pueda presionar hasta que la imagen esté lista
+                    if(downloadBtn) {
+                        downloadBtn.disabled = true;
+                        downloadBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Procesando foto...';
+                    }
+
+                    try {
+                        // 1. Utilizamos un Proxy CORS público para "engañar" la seguridad que bloquea Canvas
+                        const targetUrl = `https://unavatar.io/instagram/${username}?fallback=false`;
+                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+                        
+                        const response = await fetch(proxyUrl);
+                        if (!response.ok) throw new Error('No se pudo cargar la imagen original');
+                        
+                        const blob = await response.blob();
+                        // 2. Verificar que lo que descargamos sea realmente una imagen
+                        if (!blob.type.startsWith('image/')) throw new Error('La respuesta no es una imagen válida');
+
+                        // 3. Convertir el BLOB en una URL local (Esto hace que Canvas la acepte 100% sin chistar)
+                        avatarImg.src = URL.createObjectURL(blob);
+
+                    } catch (error) {
+                        console.warn("Fallo al extraer IG, utilizando avatar de respaldo seguro.", error);
+                        // Fallback que nunca falla: Iniciales personalizadas
+                        avatarImg.src = `https://ui-avatars.com/api/?background=22c55e&color=000&name=${username}&size=128&bold=true`;
+                    }
+
+                    // Una vez que el `src` (ya sea original o fallback) termina de pintar en pantalla, habilitamos la descarga
+                    avatarImg.onload = () => {
+                        if(downloadBtn) {
+                            downloadBtn.disabled = false;
+                            downloadBtn.innerHTML = '<i class="ph-bold ph-download-simple text-lg"></i> Descargar Imagen';
+                            downloadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    };
+                }
+
+                loadAvatarSecurely(igUser);
 
                 // Renderizar Estrellas
                 let starsHTML = '';
@@ -686,7 +721,7 @@
                 }
                 document.getElementById('arStars').innerHTML = starsHTML;
 
-                return; // Detiene la carga normal de la app
+                return; // Detiene la carga de la app normal
             }
 
             // Flujo Normal: Cargar App
@@ -696,18 +731,28 @@
         // Función para descargar la tarjeta como imagen
         function downloadIgCard() {
             const card = document.getElementById('igCard');
-            // Usar html2canvas con CORS habilitado para cargar la foto de perfil externa
+            
+            // Efecto visual de "Flash" sutil como una cámara fotográfica
+            const originalBg = card.style.backgroundColor;
+            card.style.backgroundColor = '#111'; // Aclarar fondo un milisegundo
+            setTimeout(() => card.style.backgroundColor = originalBg, 150);
+
+            // Capturar Canvas
             html2canvas(card, {
                 backgroundColor: null,
-                scale: 3, // Alta resolución
-                useCORS: true,
-                allowTaint: true
+                scale: 3, // Alta resolución para historias
+                useCORS: true, // Vital
+                allowTaint: true,
+                logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Resena_${document.getElementById('arUsername').textContent}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 showCustomToast("Imagen descargada", "Lista para tus historias 🚀");
+            }).catch(err => {
+                showCustomToast("Error", "Ocurrió un problema al generar la imagen.");
+                console.error("Error html2canvas:", err);
             });
         }
 
