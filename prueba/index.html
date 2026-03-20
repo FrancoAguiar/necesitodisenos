@@ -1096,7 +1096,7 @@ El presente contrato se regirá por las leyes de <span data-id="pais" class="con
         async function submitReview(e) {
             e.preventDefault();
             const rating = document.getElementById('ratingValue').value;
-            const reviewIg = document.getElementById('reviewIg').value;
+            let reviewIg = document.getElementById('reviewIg').value;
             const reviewText = document.getElementById('reviewText').value;
             const btn = e.target.querySelector('button[type="submit"]');
             
@@ -1110,8 +1110,15 @@ El presente contrato se regirá por las leyes de <span data-id="pais" class="con
             btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg inline-block align-middle mr-1"></i> Enviando...';
             btn.disabled = true;
 
+            // Limpiar y preparar el usuario de IG (quitar el @ si lo pusieron)
+            reviewIg = reviewIg.replace('@', '').trim();
+            
+            // Generar links útiles usando unavatar para la foto
+            const profileLink = reviewIg ? `https://instagram.com/${reviewIg}` : "No especificado";
+            const photoLink = reviewIg ? `https://unavatar.io/instagram/${reviewIg}` : "Sin Foto";
+
             try {
-                // Enviar usando FormSubmit AJAX (sin recargar la página)
+                // Usar la plantilla "box" de formsubmit para que el mail llegue más bonito
                 const response = await fetch("https://formsubmit.co/ajax/necesitodisenos@gmail.com", {
                     method: "POST",
                     headers: { 
@@ -1119,10 +1126,13 @@ El presente contrato se regirá por las leyes de <span data-id="pais" class="con
                         "Accept": "application/json"
                     },
                     body: JSON.stringify({
-                        _subject: "NUEVA RESEÑA - ContratoPro",
+                        _subject: "⭐ NUEVA RESEÑA - ContratoPro",
+                        _template: "box",
                         Estrellas: rating + " de 5",
-                        Instagram: reviewIg || "No especificado",
-                        Reseña: reviewText
+                        Instagram: reviewIg ? `@${reviewIg}` : "Anónimo",
+                        Enlace_Perfil: profileLink,
+                        Ver_Foto_IG: photoLink,
+                        Mensaje: reviewText
                     })
                 });
 
@@ -1132,7 +1142,7 @@ El presente contrato se regirá por las leyes de <span data-id="pais" class="con
                     document.getElementById('reviewSuccess').classList.remove('hidden');
                     document.getElementById('reviewSuccess').classList.add('flex');
                     
-                    // Apagar campana (quitar animación de sonido y rojo)
+                    // Apagar campana
                     const bellIcon = document.getElementById('bellIcon');
                     if(bellIcon) {
                         bellIcon.classList.remove('animate-ring', 'ph-bell-ringing', 'ph-fill', 'text-brand-primary');
