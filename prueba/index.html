@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SaaS Premium Quote Generator</title>
+    <title>ProQuote - Software de Presupuestos</title>
     
-    <!-- Fonts -->
+    <!-- Fonts: Inter para UI limpia, y Lora para un toque editorial opcional -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Inter"', 'sans-serif'],
                     },
                     colors: {
-                        primary: {
-                            DEFAULT: '#f97316', // orange-500
-                            hover: '#ea580c',   // orange-600
-                            glow: 'rgba(249, 115, 22, 0.35)',
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6', // Azul principal
+                            600: '#2563eb', // Azul hover
+                            900: '#1e3a8a',
+                            950: '#172554',
                         },
-                        surface: {
-                            bg: '#0a0a0a',
-                            panel: '#121212',
-                            card: '#181818',
-                            border: '#2a2a2a',
-                        },
-                        text: {
-                            main: '#f5f5f5',
-                            muted: '#a1a1aa',
+                        ui: {
+                            bg: '#f8fafc', // Fondo del workspace
+                            sidebar: '#ffffff',
+                            border: '#e2e8f0',
+                            text: '#334155',
+                            muted: '#64748b'
                         }
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(249, 115, 22, 0.15)',
-                        'glow-strong': '0 0 30px rgba(249, 115, 22, 0.3)',
+                        'paper': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
+                        'floating': '0 0 40px rgba(0,0,0,0.08)'
                     }
                 }
             }
@@ -50,443 +49,393 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* Custom Scrollbar for dark theme */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        body {
+            background-color: #f1f5f9;
+            /* Patrón sutil para el fondo del workspace */
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
         }
 
-        /* Glassmorphism utilities */
-        .glass-panel {
-            background: rgba(18, 18, 18, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(42, 42, 42, 0.5);
-        }
-
-        .input-premium {
-            background-color: #0a0a0a;
-            border: 1px solid #2a2a2a;
-            color: #f5f5f5;
+        .input-pro {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
             transition: all 0.2s ease;
+            font-size: 0.875rem;
         }
-        .input-premium:focus {
-            border-color: #f97316;
+        .input-pro:focus {
+            background-color: #ffffff;
+            border-color: #3b82f6;
             outline: none;
-            box-shadow: 0 0 0 1px #f97316, 0 0 15px rgba(249, 115, 22, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
-        /* Print Styles */
+        /* Ocultar input file nativo */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Estilos estrictos para impresión/PDF */
+        @page {
+            size: A4;
+            margin: 0;
+        }
         @media print {
-            body * {
-                visibility: hidden;
+            body { 
+                background: white !important; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
-            #preview-section, #preview-section * {
-                visibility: visible;
+            #sidebar, #mobile-toggle, .no-print { 
+                display: none !important; 
             }
-            #preview-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                background: white !important; /* Force white for printing */
-                color: black !important;
-                box-shadow: none !important;
+            #preview-section { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                display: block !important;
             }
-            .print-hidden {
-                display: none !important;
+            #document-paper { 
+                box-shadow: none !important; 
+                max-width: 100% !important; 
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 2cm 2cm !important; /* Márgenes del PDF */
+                border-radius: 0 !important;
             }
-            /* Adjust colors for print legibility */
-            #preview-container {
-                background: white !important;
-                border: none !important;
-                color: #111 !important;
-            }
-            #preview-container .text-text-main { color: #111 !important; }
-            #preview-container .text-text-muted { color: #555 !important; }
-            #preview-container .border-surface-border { border-color: #ddd !important; }
-            #preview-container .bg-surface-panel { background: #f9f9f9 !important; }
+            /* Asegurar colores en impresión */
+            .text-brand-600 { color: #2563eb !important; }
+            .bg-slate-50 { background-color: #f8fafc !important; }
+            .border-slate-200 { border-color: #e2e8f0 !important; }
         }
 
-        /* Ambient Glow Background */
-        .ambient-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vw;
-            height: 80vh;
-            background: radial-gradient(circle, rgba(249,115,22,0.05) 0%, rgba(10,10,10,0) 70%);
-            pointer-events: none;
-            z-index: 0;
+        .rich-textarea {
+            min-height: 120px;
+            resize: vertical;
         }
     </style>
 </head>
-<body class="bg-surface-bg text-text-main flex h-screen overflow-hidden selection:bg-primary selection:text-white">
+<body class="text-ui-text flex h-screen overflow-hidden antialiased">
 
-    <!-- SIDEBAR: Inputs Panel -->
-    <aside class="w-full md:w-[420px] h-full flex flex-col bg-surface-panel border-r border-surface-border z-20 relative shadow-2xl shrink-0 transition-transform duration-300 transform translate-x-0 overflow-hidden" id="sidebar">
+    <!-- SIDEBAR: Editor de Propuesta -->
+    <aside class="w-full md:w-[450px] h-full flex flex-col bg-ui-sidebar border-r border-ui-border z-20 relative shadow-xl shrink-0 transition-transform duration-300 transform translate-x-0 overflow-hidden" id="sidebar">
         
-        <!-- Header Actions -->
-        <div class="p-5 border-b border-surface-border flex justify-between items-center bg-surface-panel sticky top-0 z-10 glass-panel">
-            <div class="flex items-center gap-2 text-primary font-bold text-lg tracking-wide">
-                <i class="ph-fill ph-infinity text-2xl"></i>
-                Nexus<span class="text-text-main">Quote</span>
+        <!-- Header -->
+        <div class="p-5 border-b border-ui-border flex justify-between items-center bg-white sticky top-0 z-10">
+            <div class="flex items-center gap-2 text-brand-600 font-bold text-xl tracking-tight">
+                <i class="ph-fill ph-files text-2xl"></i>
+                Pro<span class="text-slate-900">Quote</span>
             </div>
             <div class="flex gap-2">
-                <button onclick="app.createNew()" class="p-2 hover:bg-surface-border rounded-md text-text-muted hover:text-primary transition-colors tooltip" title="Nueva Cotización">
-                    <i class="ph ph-plus text-xl"></i>
+                <button onclick="app.createNew()" class="p-2 hover:bg-slate-100 rounded-md text-slate-500 hover:text-brand-600 transition-colors" title="Nuevo Documento">
+                    <i class="ph ph-file-plus text-lg"></i>
                 </button>
-                <button onclick="app.downloadPDF()" class="p-2 hover:bg-surface-border rounded-md text-text-muted hover:text-primary transition-colors tooltip" title="Imprimir / PDF">
-                    <i class="ph ph-printer text-xl"></i>
+                <button onclick="app.downloadPDF()" class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium rounded-md shadow-sm transition-colors" title="Exportar a PDF">
+                    <i class="ph ph-printer text-lg"></i> PDF
                 </button>
             </div>
         </div>
 
-        <!-- Scrollable Form -->
-        <div class="flex-1 overflow-y-auto p-5 space-y-8 custom-scrollbar pb-24">
+        <!-- Scrollable Editor -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-10 pb-28">
             
-            <!-- Branding / Config -->
+            <!-- IDENTIDAD VISUAL -->
             <section class="space-y-4">
-                <div class="flex items-center gap-2 text-text-muted mb-2 border-b border-surface-border pb-2">
-                    <i class="ph ph-paint-brush"></i>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider">Configuración & Marca</h3>
-                </div>
+                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">1. Identidad Visual</h3>
                 
+                <div class="p-4 border border-dashed border-slate-300 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center gap-3 hover:bg-slate-100 transition-colors cursor-pointer" onclick="document.getElementById('logo-upload').click()">
+                    <i class="ph ph-image text-3xl text-slate-400"></i>
+                    <div>
+                        <p class="text-sm font-medium text-slate-700">Subir Logo de Empresa</p>
+                        <p class="text-xs text-slate-500 mt-1">PNG, JPG o SVG (Max 2MB)</p>
+                    </div>
+                    <input type="file" id="logo-upload" accept="image/*" onchange="app.handleLogoUpload(event)">
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-text-muted mb-1">Nombre Emisor</label>
-                        <input type="text" data-bind="issuer.name" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Tu Agencia Studio">
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Empresa Emisora</label>
+                        <input type="text" data-bind="issuer.name" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Tu Agencia">
                     </div>
                     <div>
-                        <label class="block text-xs text-text-muted mb-1">Cargo / Especialidad</label>
-                        <input type="text" data-bind="issuer.role" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Diseño Digital">
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Tu Nombre/Cargo</label>
+                        <input type="text" data-bind="issuer.role" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Consultor">
                     </div>
                 </div>
+            </section>
+
+            <!-- DATOS DEL CLIENTE -->
+            <section class="space-y-4">
+                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">2. Para el Cliente</h3>
+                
                 <div>
-                    <label class="block text-xs text-text-muted mb-1">Moneda</label>
-                    <select data-bind="quote.currency" class="input-premium rounded-md px-3 py-2 text-sm w-full appearance-none">
-                        <option value="USD">USD ($)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="MXN">MXN ($)</option>
-                        <option value="CLP">CLP ($)</option>
-                        <option value="ARS">ARS ($)</option>
-                    </select>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Nombre Empresa / Cliente</label>
+                    <input type="text" data-bind="client.company" class="input-pro rounded-md px-3 py-2 w-full font-medium" placeholder="Acme Corp">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Atención a</label>
+                        <input type="text" data-bind="client.name" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Nombre Contacto">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Email</label>
+                        <input type="email" data-bind="client.email" class="input-pro rounded-md px-3 py-2 w-full" placeholder="email@cliente.com">
+                    </div>
                 </div>
             </section>
 
-            <!-- Detalles de Cotización -->
+            <!-- DETALLES DEL DOCUMENTO -->
             <section class="space-y-4">
-                <div class="flex items-center gap-2 text-text-muted mb-2 border-b border-surface-border pb-2">
-                    <i class="ph ph-file-text"></i>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider">Detalles del Documento</h3>
+                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">3. Detalles de Propuesta</h3>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Nº</label>
+                        <input type="text" data-bind="quote.number" class="input-pro rounded-md px-2 py-2 w-full text-center" placeholder="001">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Fecha</label>
+                        <input type="date" data-bind="quote.date" class="input-pro rounded-md px-2 py-2 w-full">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Moneda</label>
+                        <select data-bind="quote.currency" class="input-pro rounded-md px-2 py-2 w-full">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="MXN">MXN ($)</option>
+                            <option value="CLP">CLP ($)</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Nº Cotización</label>
-                        <input type="text" data-bind="quote.number" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="QT-2024-001">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Fecha</label>
-                        <input type="date" data-bind="quote.date" class="input-premium rounded-md px-3 py-2 text-sm w-full text-text-muted">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Válido hasta</label>
-                        <input type="date" data-bind="quote.expiry" class="input-premium rounded-md px-3 py-2 text-sm w-full text-text-muted">
-                    </div>
-                </div>
                 <div>
-                    <label class="block text-xs text-text-muted mb-1">Título / Resumen del Proyecto</label>
-                    <input type="text" data-bind="quote.title" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Rediseño de plataforma web y branding">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Título del Proyecto</label>
+                    <input type="text" data-bind="quote.title" class="input-pro rounded-md px-3 py-2 w-full font-medium" placeholder="Escriba un título impactante">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Descripción / Alcance Detallado (Texto Largo)</label>
+                    <textarea data-bind="quote.description" class="input-pro rich-textarea rounded-md px-3 py-2 w-full" placeholder="Detalla el contexto del proyecto, objetivos y qué incluye este presupuesto. Puedes escribir varios párrafos aquí."></textarea>
                 </div>
             </section>
 
-            <!-- Datos del Cliente -->
+            <!-- COTIZACIÓN / SERVICIOS -->
             <section class="space-y-4">
-                <div class="flex items-center gap-2 text-text-muted mb-2 border-b border-surface-border pb-2">
-                    <i class="ph ph-user"></i>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider">Información del Cliente</h3>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-xs text-text-muted mb-1">Empresa / Razón Social</label>
-                        <input type="text" data-bind="client.company" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Acme Corp">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Contacto Principal</label>
-                        <input type="text" data-bind="client.name" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Jane Doe">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Cargo</label>
-                        <input type="text" data-bind="client.role" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="CEO">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Email</label>
-                        <input type="email" data-bind="client.email" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="jane@acme.com">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Teléfono</label>
-                        <input type="text" data-bind="client.phone" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="+1 234 567 890">
-                    </div>
-                </div>
-            </section>
-
-            <!-- Servicios / Items -->
-            <section class="space-y-4">
-                <div class="flex items-center justify-between border-b border-surface-border pb-2">
-                    <div class="flex items-center gap-2 text-text-muted">
-                        <i class="ph ph-list-dashes"></i>
-                        <h3 class="text-xs font-semibold uppercase tracking-wider">Servicios & Alcance</h3>
-                    </div>
-                    <button onclick="app.addItem()" class="text-xs text-primary hover:text-primary-hover flex items-center gap-1 font-medium">
-                        <i class="ph ph-plus"></i> Agregar
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest">4. Tabla de Inversión</h3>
+                    <button onclick="app.addItem()" class="text-xs text-brand-600 hover:text-brand-800 flex items-center gap-1 font-semibold bg-brand-50 px-2 py-1 rounded">
+                        <i class="ph ph-plus"></i> Fila
                     </button>
                 </div>
                 
                 <div id="items-container" class="space-y-3">
-                    <!-- Items dinámicos se renderizan aquí -->
+                    <!-- Filas dinámicas -->
+                </div>
+
+                <!-- Impuestos / Descuentos -->
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Impuestos (%)</label>
+                        <input type="number" data-bind="totals.taxRate" class="input-pro rounded-md px-3 py-2 w-full" placeholder="0">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 mb-1">Descuento Global</label>
+                        <input type="number" data-bind="totals.discount" class="input-pro rounded-md px-3 py-2 w-full" placeholder="0">
+                    </div>
                 </div>
             </section>
 
-            <!-- Condiciones y Finanzas -->
+            <!-- TÉRMINOS Y CONDICIONES -->
             <section class="space-y-4">
-                <div class="flex items-center gap-2 text-text-muted mb-2 border-b border-surface-border pb-2">
-                    <i class="ph ph-scales"></i>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider">Condiciones & Ajustes</h3>
-                </div>
+                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">5. Condiciones Comerciales</h3>
                 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Impuestos (%)</label>
-                        <input type="number" data-bind="totals.taxRate" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="0">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-text-muted mb-1">Descuento Global (Monto)</label>
-                        <input type="number" data-bind="totals.discount" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="0">
-                    </div>
-                </div>
-
                 <div>
-                    <label class="block text-xs text-text-muted mb-1">Términos de Pago</label>
-                    <textarea data-bind="quote.terms" class="input-premium rounded-md px-3 py-2 text-sm w-full h-20 resize-none" placeholder="Ej: 50% anticipo, 50% contra entrega."></textarea>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Tiempos y Entregables</label>
+                    <input type="text" data-bind="quote.delivery" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Ej: 4 semanas a partir de la firma">
                 </div>
                 <div>
-                    <label class="block text-xs text-text-muted mb-1">Tiempo de Entrega</label>
-                    <input type="text" data-bind="quote.delivery" class="input-premium rounded-md px-3 py-2 text-sm w-full" placeholder="Ej: 3 a 4 semanas">
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Forma de Pago y Condiciones</label>
+                    <textarea data-bind="quote.terms" class="input-pro rounded-md px-3 py-2 w-full h-24 resize-none" placeholder="Detalles de facturación, anticipos, etc."></textarea>
                 </div>
             </section>
-        </div>
-
-        <!-- Sticky Footer Action -->
-        <div class="p-4 border-t border-surface-border bg-surface-panel absolute bottom-0 w-full glass-panel">
-            <button onclick="app.copySummary()" class="w-full bg-primary hover:bg-primary-hover text-white font-medium py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all shadow-glow hover:shadow-glow-strong">
-                <i class="ph ph-copy text-lg"></i>
-                Copiar Resumen para Email
-            </button>
         </div>
     </aside>
 
-    <!-- MAIN: Live Preview -->
-    <main class="flex-1 relative overflow-y-auto" id="preview-section">
-        <div class="ambient-bg"></div>
+    <!-- MAIN WORKSPACE: Visualización de la Hoja -->
+    <main class="flex-1 relative overflow-y-auto p-4 md:p-12 flex justify-center items-start" id="preview-section">
         
-        <!-- Toggle Sidebar Mobile -->
-        <button id="mobile-toggle" class="md:hidden fixed top-4 right-4 z-50 bg-surface-card p-3 rounded-full shadow-lg border border-surface-border text-primary">
+        <!-- Toggle Menu Mobile -->
+        <button id="mobile-toggle" class="md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-full shadow-lg border border-slate-200 text-brand-600 no-print">
             <i class="ph ph-list text-xl"></i>
         </button>
 
-        <div class="min-h-full p-4 md:p-12 flex items-start justify-center">
+        <!-- EL DOCUMENTO (Hojas en blanco) -->
+        <div id="document-paper" class="w-full max-w-[850px] min-h-[1100px] bg-white text-slate-800 shadow-paper relative z-10 transition-all duration-300 p-10 md:p-16 ring-1 ring-slate-900/5">
             
-            <!-- Document Paper -->
-            <div id="preview-container" class="w-full max-w-[850px] bg-surface-card border border-surface-border rounded-2xl shadow-2xl relative z-10 overflow-hidden transition-all duration-300">
-                
-                <!-- Top Accent Line -->
-                <div class="h-2 w-full bg-gradient-to-r from-primary to-orange-400"></div>
+            <!-- Franja decorativa superior -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-brand-600 no-print"></div>
 
-                <div class="p-8 md:p-12">
-                    <!-- HEADER -->
-                    <header class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
-                        <div>
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-10 h-10 rounded-lg bg-surface-panel flex items-center justify-center border border-surface-border text-primary shadow-glow">
-                                    <i class="ph-fill ph-infinity text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h1 class="text-2xl font-bold tracking-tight text-white" id="out-issuer-name">Estudio Creativo</h1>
-                                    <p class="text-sm text-primary font-medium" id="out-issuer-role">Diseño Digital</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-left md:text-right">
-                            <h2 class="text-3xl font-light text-text-muted mb-2 tracking-widest uppercase">Cotización</h2>
-                            <p class="text-sm text-text-muted">Nº: <span class="text-text-main font-medium" id="out-quote-number">QT-000</span></p>
-                            <p class="text-sm text-text-muted">Fecha: <span class="text-text-main" id="out-quote-date">---</span></p>
-                            <p class="text-sm text-text-muted">Válido hasta: <span class="text-text-main" id="out-quote-expiry">---</span></p>
-                        </div>
-                    </header>
-
-                    <!-- INFO GRID -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                        <!-- Para -->
-                        <div class="bg-surface-panel p-5 rounded-xl border border-surface-border">
-                            <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Preparado para</h3>
-                            <h4 class="text-lg font-semibold text-white mb-1" id="out-client-company">Empresa Cliente</h4>
-                            <p class="text-sm text-text-main mb-1" id="out-client-name">Nombre Contacto</p>
-                            <p class="text-sm text-text-muted mb-2" id="out-client-role">Cargo</p>
-                            <div class="flex items-center gap-2 text-sm text-text-muted mt-3">
-                                <i class="ph ph-envelope-simple text-primary"></i>
-                                <span id="out-client-email">email@cliente.com</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-text-muted mt-1">
-                                <i class="ph ph-phone text-primary"></i>
-                                <span id="out-client-phone">---</span>
-                            </div>
-                        </div>
-
-                        <!-- Proyecto -->
-                        <div class="flex flex-col justify-center">
-                            <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Referencia del Proyecto</h3>
-                            <p class="text-lg text-text-main leading-relaxed" id="out-quote-title">Descripción general del proyecto o servicio a cotizar.</p>
-                        </div>
+            <!-- ENCABEZADO: Logo e Info -->
+            <header class="flex flex-col sm:flex-row justify-between items-start mb-16 gap-8">
+                <!-- Logo Area -->
+                <div class="w-full sm:w-1/2">
+                    <img id="out-logo" src="" alt="Logo" class="max-h-16 object-contain mb-4 hidden">
+                    <div id="out-logo-placeholder" class="text-2xl font-black tracking-tight text-slate-900 mb-2">
+                        <span id="out-issuer-name">Nombre Empresa</span>
                     </div>
+                    <p class="text-sm text-slate-500 font-medium" id="out-issuer-role">Especialidad / Cargo</p>
+                </div>
 
-                    <!-- SERVICES TABLE -->
-                    <div class="mb-10">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-surface-border text-xs uppercase tracking-wider text-text-muted">
-                                        <th class="py-3 px-2 font-semibold w-1/2">Descripción del Servicio</th>
-                                        <th class="py-3 px-2 font-semibold text-center">Cant.</th>
-                                        <th class="py-3 px-2 font-semibold text-right">Precio Unit.</th>
-                                        <th class="py-3 px-2 font-semibold text-right">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="out-items-table" class="text-sm">
-                                    <!-- Dynamic Rows -->
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- Info Documento -->
+                <div class="w-full sm:w-1/2 sm:text-right">
+                    <h1 class="text-4xl font-light text-slate-300 uppercase tracking-widest mb-4">Presupuesto</h1>
+                    <div class="grid grid-cols-2 sm:grid-cols-1 gap-2 text-sm">
+                        <p class="text-slate-500">Nº Documento: <strong class="text-slate-800" id="out-quote-number">000</strong></p>
+                        <p class="text-slate-500">Fecha: <strong class="text-slate-800" id="out-quote-date">---</strong></p>
                     </div>
+                </div>
+            </header>
 
-                    <!-- TOTALS & TERMS ROW -->
-                    <div class="flex flex-col md:flex-row justify-between items-start gap-12 border-t border-surface-border pt-8">
-                        
-                        <!-- Terms -->
-                        <div class="w-full md:w-1/2 space-y-6">
-                            <div>
-                                <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="ph ph-clock"></i> Tiempo de Entrega
-                                </h3>
-                                <p class="text-sm text-text-main bg-surface-panel px-4 py-3 rounded-lg border border-surface-border" id="out-quote-delivery">---</p>
-                            </div>
-                            <div>
-                                <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="ph ph-handshake"></i> Condiciones de Pago
-                                </h3>
-                                <p class="text-sm text-text-main bg-surface-panel px-4 py-3 rounded-lg border border-surface-border whitespace-pre-line" id="out-quote-terms">---</p>
-                            </div>
-                        </div>
+            <!-- BLOQUE: Para el cliente -->
+            <div class="mb-14 border-l-4 border-brand-500 pl-6 py-1">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Preparado para</p>
+                <h2 class="text-xl font-bold text-slate-900" id="out-client-company">Empresa Cliente</h2>
+                <p class="text-base text-slate-600 mt-1" id="out-client-name">Nombre Contacto</p>
+                <p class="text-sm text-slate-500" id="out-client-email">email@cliente.com</p>
+            </div>
 
-                        <!-- Totals Calc -->
-                        <div class="w-full md:w-[35%] bg-surface-panel p-6 rounded-xl border border-surface-border shadow-lg">
-                            <div class="flex justify-between items-center mb-3 text-sm text-text-muted">
-                                <span>Subtotal</span>
-                                <span id="out-calc-subtotal" class="text-text-main">$0.00</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-3 text-sm text-text-muted" id="row-discount">
-                                <span>Descuento</span>
-                                <span id="out-calc-discount" class="text-primary">-$0.00</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-4 text-sm text-text-muted" id="row-tax">
-                                <span>Impuestos (<span id="out-calc-taxrate">0</span>%)</span>
-                                <span id="out-calc-tax" class="text-text-main">$0.00</span>
-                            </div>
-                            
-                            <div class="border-t border-surface-border pt-4 mt-2">
-                                <div class="flex justify-between items-end">
-                                    <span class="text-sm text-text-muted uppercase tracking-wider font-semibold">Total Final</span>
-                                    <span class="text-3xl font-bold text-white tracking-tight" id="out-calc-grandtotal">$0.00</span>
-                                </div>
-                                <p class="text-right text-xs text-text-muted mt-1">Moneda: <span id="out-quote-currency" class="font-medium text-text-main">USD</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FOOTER -->
-                    <footer class="mt-16 pt-8 border-t border-surface-border text-center">
-                        <p class="text-xs text-text-muted italic">Este documento es una estimación de costos y alcance. Sujeto a aprobación final.</p>
-                        <div class="mt-8 flex justify-center">
-                             <div class="w-12 h-1 bg-surface-border rounded-full"></div>
-                        </div>
-                    </footer>
-
+            <!-- BLOQUE: Descripción Extensa / Scope -->
+            <div class="mb-14">
+                <h3 class="text-2xl font-bold text-slate-900 mb-4" id="out-quote-title">Título del Proyecto</h3>
+                <!-- Aquí entra el texto largo que detalla el presupuesto -->
+                <div class="text-slate-600 leading-relaxed whitespace-pre-wrap text-[15px]" id="out-quote-description">
+                    Aquí se mostrará la descripción detallada del proyecto, objetivos y alcance.
                 </div>
             </div>
+
+            <!-- BLOQUE: Tabla de Inversión -->
+            <div class="mb-14">
+                <h4 class="text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 border-b-2 border-slate-900 pb-2">Desglose de Inversión</h4>
+                
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+                            <th class="py-3 px-2 font-semibold w-[55%]">Concepto / Servicio</th>
+                            <th class="py-3 px-2 font-semibold text-center w-[15%]">Cant.</th>
+                            <th class="py-3 px-2 font-semibold text-right w-[15%]">Precio</th>
+                            <th class="py-3 px-2 font-semibold text-right w-[15%]">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="out-items-table" class="text-sm text-slate-700">
+                        <!-- Filas inyectadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BLOQUE: Totales -->
+            <div class="flex justify-end mb-16">
+                <div class="w-full sm:w-[320px] bg-slate-50 p-6 rounded-lg border border-slate-100">
+                    <div class="flex justify-between items-center mb-2 text-sm text-slate-600">
+                        <span>Subtotal</span>
+                        <span id="out-calc-subtotal" class="font-medium text-slate-900">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2 text-sm text-slate-600 hidden" id="row-discount">
+                        <span>Descuento Especial</span>
+                        <span id="out-calc-discount" class="text-red-500 font-medium">-$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 text-sm text-slate-600 hidden" id="row-tax">
+                        <span>Impuestos (<span id="out-calc-taxrate">0</span>%)</span>
+                        <span id="out-calc-tax" class="font-medium text-slate-900">$0.00</span>
+                    </div>
+                    
+                    <div class="border-t border-slate-200 pt-4 mt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-bold text-slate-900 uppercase tracking-widest">Total <span id="out-quote-currency" class="font-normal text-xs text-slate-500 ml-1">USD</span></span>
+                            <span class="text-2xl font-black text-brand-600" id="out-calc-grandtotal">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE: Términos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-8 border-t border-slate-200 text-sm">
+                <div>
+                    <h5 class="font-bold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
+                        <i class="ph ph-calendar-check text-brand-600 text-lg"></i> Cronograma
+                    </h5>
+                    <p class="text-slate-600" id="out-quote-delivery">---</p>
+                </div>
+                <div>
+                    <h5 class="font-bold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
+                        <i class="ph ph-shield-check text-brand-600 text-lg"></i> Condiciones Comerciales
+                    </h5>
+                    <p class="text-slate-600 whitespace-pre-line" id="out-quote-terms">---</p>
+                </div>
+            </div>
+
+            <!-- Pie de página de la hoja -->
+            <div class="mt-20 text-center text-xs text-slate-400 font-medium">
+                Documento generado confidencialmente. Válido por 15 días a partir de su emisión.
+            </div>
+
         </div>
     </main>
 
-    <!-- Templates for JavaScript -->
+    <!-- Template Fila Input -->
     <template id="item-input-template">
-        <div class="item-row bg-[#0f0f0f] border border-surface-border p-3 rounded-lg relative group transition-all hover:border-surface-border/80">
-            <button class="remove-item print-hidden absolute -top-2 -right-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all shadow-lg" title="Eliminar item">
-                <i class="ph ph-x text-xs"></i>
+        <div class="item-row bg-white border border-slate-200 p-3 rounded-lg relative group transition-shadow hover:shadow-md">
+            <button class="remove-item absolute -top-2 -right-2 bg-red-100 text-red-600 hover:bg-red-500 hover:text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all shadow-sm" title="Eliminar fila">
+                <i class="ph ph-trash text-sm"></i>
             </button>
-            <input type="text" class="item-name input-premium bg-transparent border-none px-1 py-1 text-sm w-full font-medium placeholder-text-muted focus:ring-0 mb-1" placeholder="Nombre del servicio">
-            <input type="text" class="item-desc input-premium bg-transparent border-none px-1 py-1 text-xs w-full text-text-muted placeholder-text-muted/50 focus:ring-0 mb-2" placeholder="Breve descripción (opcional)">
+            <input type="text" class="item-name bg-transparent border-none px-1 py-1 text-sm w-full font-bold text-slate-800 focus:ring-0 mb-1 placeholder-slate-400" placeholder="Nombre del servicio / Hito">
+            <textarea class="item-desc bg-transparent border-none px-1 py-1 text-xs w-full text-slate-500 focus:ring-0 mb-2 resize-none h-12 placeholder-slate-400" placeholder="Describe brevemente en qué consiste este ítem..."></textarea>
             
-            <div class="flex gap-2 items-center">
+            <div class="flex gap-2 items-center bg-slate-50 p-2 rounded border border-slate-100">
                 <div class="w-1/3 relative">
-                    <span class="absolute left-2 top-1.5 text-xs text-text-muted">Cant</span>
-                    <input type="number" class="item-qty input-premium bg-surface-panel border border-surface-border rounded px-2 py-1 text-sm w-full pl-10 text-right" placeholder="1" min="1">
+                    <span class="absolute left-2 top-1.5 text-xs text-slate-400">Cant.</span>
+                    <input type="number" class="item-qty bg-white border border-slate-200 rounded px-2 py-1 text-sm w-full pl-10 text-center focus:border-brand-500 focus:outline-none" placeholder="1" min="1">
                 </div>
                 <div class="w-2/3 relative flex items-center">
-                    <span class="absolute left-2 text-xs text-text-muted currency-symbol">$</span>
-                    <input type="number" class="item-price input-premium bg-surface-panel border border-surface-border rounded px-2 py-1 text-sm w-full pl-6 text-right" placeholder="0.00">
+                    <span class="absolute left-2 text-xs text-slate-400 currency-symbol">$</span>
+                    <input type="number" class="item-price bg-white border border-slate-200 rounded px-2 py-1 text-sm w-full pl-6 text-right focus:border-brand-500 focus:outline-none" placeholder="0.00">
                 </div>
             </div>
         </div>
     </template>
 
     <script>
-        // --- Core Application Logic ---
-        
         const app = {
             state: {
-                issuer: { name: 'Agencia Digital Studio', role: 'Desarrollo & Estrategia' },
-                client: { company: 'TechNova Inc.', name: 'Carlos Mendoza', role: 'Director de Marketing', email: 'carlos@technova.com', phone: '+34 600 123 456' },
+                issuer: { 
+                    name: 'DigitalFlow Studio', 
+                    role: 'Agencia de Desarrollo & Diseño UI/UX',
+                    logo: null // Base64 image
+                },
+                client: { company: 'TechNova Solutions', name: 'Carlos Mendoza', email: 'carlos@technova.com' },
                 quote: { 
-                    number: 'QT-2026-042', 
+                    number: 'PR-2026-089', 
                     date: new Date().toISOString().split('T')[0], 
-                    expiry: new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0], // +15 days
-                    title: 'Desarrollo de Plataforma SaaS y Sistema de Diseño',
-                    terms: '50% para inicio del proyecto.\n50% contra entrega e implementación final.',
-                    delivery: '6 a 8 semanas',
+                    title: 'Diseño y Desarrollo de Plataforma Web App (MVP)',
+                    description: 'El presente documento detalla la inversión requerida para el diseño de interfaces de usuario (UI/UX) y el posterior desarrollo frontend de la nueva aplicación web de TechNova.\n\nEste proceso asegurará un producto moderno, escalable y con una experiencia de usuario optimizada, listo para presentar a inversores.',
+                    terms: '• 50% de anticipo para iniciar el proyecto.\n• 25% tras la aprobación de los diseños UI.\n• 25% a la entrega del código final en producción.',
+                    delivery: 'Plazo estimado: 6 a 8 semanas laborables desde la recepción del anticipo.',
                     currency: 'USD'
                 },
                 items: [
-                    { id: 1, name: 'Investigación UX & Wireframes', desc: 'Análisis de usuarios y estructuración de flujos principales.', qty: 1, price: 1200 },
-                    { id: 2, name: 'Diseño UI Premium', desc: 'Diseño visual de alta fidelidad, sistema de diseño y componentes.', qty: 1, price: 2500 },
-                    { id: 3, name: 'Desarrollo Frontend', desc: 'Implementación responsiva con React/Tailwind.', qty: 1, price: 3800 }
+                    { id: 1, name: 'Investigación UX & Wireframing', desc: 'Análisis de flujos de usuario, arquitectura de información y prototipado de baja fidelidad.', qty: 1, price: 1500 },
+                    { id: 2, name: 'Diseño UI / Interfaz Premium', desc: 'Diseño visual de alta fidelidad, creación de Sistema de Diseño y componentes interactivos.', qty: 1, price: 2800 },
+                    { id: 3, name: 'Desarrollo Frontend React', desc: 'Implementación responsiva y limpia del diseño aprobado.', qty: 1, price: 4200 }
                 ],
                 totals: { taxRate: 0, discount: 0 }
             },
 
-            currencySymbols: { USD: '$', EUR: '€', MXN: '$', CLP: '$', ARS: '$' },
+            currencySymbols: { USD: '$', EUR: '€', MXN: '$', CLP: '$' },
 
             init() {
                 this.loadState();
@@ -497,40 +446,45 @@
             },
 
             loadState() {
-                const saved = localStorage.getItem('nexusQuoteState');
+                const saved = localStorage.getItem('proQuoteState');
                 if (saved) {
                     try {
-                        const parsed = JSON.parse(saved);
-                        // Merge basic structure to avoid undefined errors if structure changed
-                        this.state = { ...this.state, ...parsed };
-                    } catch(e) { console.error("Error loading state"); }
+                        this.state = { ...this.state, ...JSON.parse(saved) };
+                    } catch(e) { console.error("Error cargando estado."); }
                 }
             },
 
             saveState() {
-                localStorage.setItem('nexusQuoteState', JSON.stringify(this.state));
+                localStorage.setItem('proQuoteState', JSON.stringify(this.state));
+            },
+
+            handleLogoUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.state.issuer.logo = e.target.result;
+                        this.updatePreview();
+                        this.saveState();
+                    };
+                    reader.readAsDataURL(file);
+                }
             },
 
             setupBindings() {
-                // Bind all text/number/date inputs
                 document.querySelectorAll('[data-bind]').forEach(el => {
                     const keys = el.getAttribute('data-bind').split('.');
-                    
-                    // Set initial value
                     let val = this.state;
                     keys.forEach(k => val = val[k]);
                     el.value = val || '';
 
-                    // Listen for changes
                     el.addEventListener('input', (e) => {
                         let obj = this.state;
                         for (let i = 0; i < keys.length - 1; i++) {
                             obj = obj[keys[i]];
                         }
-                        
                         let newVal = e.target.value;
                         if(e.target.type === 'number') newVal = parseFloat(newVal) || 0;
-                        
                         obj[keys[keys.length - 1]] = newVal;
                         
                         this.saveState();
@@ -539,18 +493,12 @@
                 });
             },
 
-            // --- Items Management ---
-
             addItem() {
-                this.state.items.push({
-                    id: Date.now(),
-                    name: '', desc: '', qty: 1, price: 0
-                });
+                this.state.items.push({ id: Date.now(), name: '', desc: '', qty: 1, price: 0 });
                 this.renderItemInputs();
                 this.updatePreview();
                 this.saveState();
                 
-                // Scroll to bottom of items
                 const container = document.getElementById('items-container');
                 setTimeout(() => container.lastElementChild?.scrollIntoView({behavior: 'smooth', block: 'nearest'}), 50);
             },
@@ -584,7 +532,6 @@
                     inpPrice.value = item.price || '';
                     sym.textContent = this.currencySymbols[this.state.quote.currency] || '$';
 
-                    // Update handlers
                     const updateItem = (field, isNum = false) => (e) => {
                         let val = e.target.value;
                         this.state.items[index][field] = isNum ? (parseFloat(val) || 0) : val;
@@ -596,67 +543,73 @@
                     inpDesc.addEventListener('input', updateItem('desc'));
                     inpQty.addEventListener('input', updateItem('qty', true));
                     inpPrice.addEventListener('input', updateItem('price', true));
-                    
                     btnRemove.addEventListener('click', () => this.removeItem(item.id));
 
                     container.appendChild(clone);
                 });
             },
 
-            // --- Formatting & Formatting ---
-
             formatCurrency(amount) {
                 const currency = this.state.quote.currency || 'USD';
                 return new Intl.NumberFormat('es-US', {
-                    style: 'currency',
-                    currency: currency,
-                    minimumFractionDigits: 2
+                    style: 'currency', currency: currency, minimumFractionDigits: 2
                 }).format(amount);
             },
 
             formatDate(dateString) {
                 if(!dateString) return '---';
-                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
                 try {
                     return new Date(dateString + 'T12:00:00').toLocaleDateString('es-ES', options);
                 } catch(e) { return dateString; }
             },
 
-            // --- Live Preview Engine ---
-
             updatePreview() {
                 const s = this.state;
                 
-                // Update simple text fields
+                // Logo & Header logic
+                const imgEl = document.getElementById('out-logo');
+                const txtEl = document.getElementById('out-logo-placeholder');
+                
+                if (s.issuer.logo) {
+                    imgEl.src = s.issuer.logo;
+                    imgEl.classList.remove('hidden');
+                    txtEl.classList.add('hidden');
+                } else {
+                    imgEl.classList.add('hidden');
+                    txtEl.classList.remove('hidden');
+                }
+
+                // Text fields
                 document.getElementById('out-issuer-name').textContent = s.issuer.name || 'Empresa';
-                document.getElementById('out-issuer-role').textContent = s.issuer.role || 'Rol';
+                document.getElementById('out-issuer-role').textContent = s.issuer.role || '';
                 
                 document.getElementById('out-client-company').textContent = s.client.company || 'Empresa Cliente';
-                document.getElementById('out-client-name').textContent = s.client.name || 'Nombre Cliente';
-                document.getElementById('out-client-role').textContent = s.client.role || 'Cargo';
-                document.getElementById('out-client-email').textContent = s.client.email || 'email@cliente.com';
-                document.getElementById('out-client-phone').textContent = s.client.phone || '---';
+                document.getElementById('out-client-name').textContent = s.client.name || 'Nombre Contacto';
+                document.getElementById('out-client-email').textContent = s.client.email || '';
 
                 document.getElementById('out-quote-number').textContent = s.quote.number || '---';
                 document.getElementById('out-quote-date').textContent = this.formatDate(s.quote.date);
-                document.getElementById('out-quote-expiry').textContent = this.formatDate(s.quote.expiry);
+                
                 document.getElementById('out-quote-title').textContent = s.quote.title || 'Proyecto sin título';
+                document.getElementById('out-quote-description').textContent = s.quote.description || 'Detalles del proyecto...';
+                
                 document.getElementById('out-quote-terms').textContent = s.quote.terms || '---';
                 document.getElementById('out-quote-delivery').textContent = s.quote.delivery || '---';
                 document.getElementById('out-quote-currency').textContent = s.quote.currency;
 
-                // Update currency symbols in inputs dynamically
+                // Sync currency in inputs
                 document.querySelectorAll('.currency-symbol').forEach(el => {
                     el.textContent = this.currencySymbols[s.quote.currency] || '$';
                 });
 
-                // Render Table Items
+                // Table Render
                 const tbody = document.getElementById('out-items-table');
                 tbody.innerHTML = '';
                 let subtotal = 0;
 
                 if (s.items.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-text-muted italic">No hay servicios agregados.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 italic">No hay ítems en la tabla.</td></tr>`;
                 }
 
                 s.items.forEach((item, index) => {
@@ -664,20 +617,20 @@
                     subtotal += lineTotal;
                     
                     const tr = document.createElement('tr');
-                    tr.className = index !== s.items.length - 1 ? 'border-b border-surface-border/50' : '';
+                    tr.className = index !== s.items.length - 1 ? 'border-b border-slate-100' : '';
                     tr.innerHTML = `
-                        <td class="py-4 px-2 pr-4">
-                            <p class="font-medium text-white">${item.name || 'Servicio sin nombre'}</p>
-                            ${item.desc ? `<p class="text-xs text-text-muted mt-1 leading-relaxed">${item.desc}</p>` : ''}
+                        <td class="py-4 px-2 pr-4 align-top">
+                            <p class="font-bold text-slate-900">${item.name || 'Sin nombre'}</p>
+                            ${item.desc ? `<p class="text-sm text-slate-500 mt-1 leading-relaxed">${item.desc}</p>` : ''}
                         </td>
-                        <td class="py-4 px-2 text-center text-text-muted align-top">${item.qty || 0}</td>
-                        <td class="py-4 px-2 text-right text-text-muted align-top">${this.formatCurrency(item.price || 0)}</td>
-                        <td class="py-4 px-2 text-right font-medium text-white align-top">${this.formatCurrency(lineTotal)}</td>
+                        <td class="py-4 px-2 text-center text-slate-600 font-medium align-top">${item.qty || 0}</td>
+                        <td class="py-4 px-2 text-right text-slate-600 align-top">${this.formatCurrency(item.price || 0)}</td>
+                        <td class="py-4 px-2 text-right font-bold text-slate-900 align-top">${this.formatCurrency(lineTotal)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
 
-                // Calculate Totals
+                // Math
                 const discount = parseFloat(s.totals.discount) || 0;
                 const taxRate = parseFloat(s.totals.taxRate) || 0;
                 
@@ -685,7 +638,7 @@
                 const taxAmount = discountedSubtotal * (taxRate / 100);
                 const grandTotal = discountedSubtotal + taxAmount;
 
-                // Update Totals UI
+                // Totals Update
                 document.getElementById('out-calc-subtotal').textContent = this.formatCurrency(subtotal);
                 
                 const rowDiscount = document.getElementById('row-discount');
@@ -712,44 +665,17 @@
                 document.getElementById('out-calc-grandtotal').textContent = this.formatCurrency(grandTotal);
             },
 
-            // --- Actions ---
-
             createNew() {
-                if(confirm('¿Crear una nueva cotización? Se borrarán los datos actuales no guardados en PDF.')) {
-                    localStorage.removeItem('nexusQuoteState');
+                if(confirm('¿Crear un nuevo documento en blanco? Los datos no guardados en PDF se perderán.')) {
+                    localStorage.removeItem('proQuoteState');
                     location.reload();
                 }
             },
 
             downloadPDF() {
+                // Al presionar, el navegador abrirá el diálogo de impresión configurado 
+                // para capturar solo la "hoja de papel" como PDF gracias a nuestros @media print CSS
                 window.print();
-            },
-
-            copySummary() {
-                const s = this.state;
-                const total = document.getElementById('out-calc-grandtotal').textContent;
-                
-                let text = `Hola ${s.client.name.split(' ')[0] || 'equipo'},\n\n`;
-                text += `Adjunto el presupuesto para "${s.quote.title}".\n\n`;
-                text += `Resumen:\n`;
-                text += `- Proyecto: ${s.quote.title}\n`;
-                text += `- Tiempo estimado: ${s.quote.delivery}\n`;
-                text += `- Inversión total: ${total} ${s.quote.currency}\n\n`;
-                text += `Quedo a disposición por cualquier duda.\nSaludos,\n${s.issuer.name}`;
-
-                navigator.clipboard.writeText(text).then(() => {
-                    const btn = document.querySelector('button[onclick="app.copySummary()"]');
-                    const originalHTML = btn.innerHTML;
-                    btn.innerHTML = `<i class="ph ph-check-circle text-lg"></i> ¡Copiado al portapapeles!`;
-                    btn.classList.replace('bg-primary', 'bg-green-600');
-                    btn.classList.replace('hover:bg-primary-hover', 'hover:bg-green-500');
-                    
-                    setTimeout(() => {
-                        btn.innerHTML = originalHTML;
-                        btn.classList.replace('bg-green-600', 'bg-primary');
-                        btn.classList.replace('hover:bg-green-500', 'hover:bg-primary-hover');
-                    }, 2500);
-                });
             },
 
             setupMobileMenu() {
@@ -766,16 +692,13 @@
                     }
                 });
 
-                // Initially hide sidebar on mobile
                 if (window.innerWidth < 768) {
                     sidebar.classList.add('absolute', '-translate-x-full');
                 }
             }
         };
 
-        // Initialize App on DOM Load
         document.addEventListener('DOMContentLoaded', () => app.init());
-
     </script>
 </body>
 </html>
