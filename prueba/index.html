@@ -1,704 +1,633 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProQuote - Software de Presupuestos</title>
+    <title>Propose | Generador de Presupuestos Premium</title>
     
-    <!-- Fonts: Inter para UI limpia, y Lora para un toque editorial opcional -->
+    <!-- Fuentes Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;600;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                    },
                     colors: {
                         brand: {
                             50: '#eff6ff',
                             100: '#dbeafe',
-                            500: '#3b82f6', // Azul principal
-                            600: '#2563eb', // Azul hover
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb', // Primary Blue
+                            700: '#1d4ed8', // Deep Blue
+                            800: '#1e40af',
                             900: '#1e3a8a',
-                            950: '#172554',
                         },
-                        ui: {
-                            bg: '#f8fafc', // Fondo del workspace
-                            sidebar: '#ffffff',
-                            border: '#e2e8f0',
-                            text: '#334155',
-                            muted: '#64748b'
+                        surface: {
+                            900: '#0b1220', // Navbar
+                            800: '#0f172a', // App bg
+                            700: '#1e293b', // Panels
+                            600: '#334155', // Borders/Hover
                         }
                     },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // UI Font
+                        serif: ['"Playfair Display"', 'serif'], // Document Titles
+                        manrope: ['Manrope', 'sans-serif'],
+                        source: ['"Source Sans 3"', 'sans-serif'],
+                    },
                     boxShadow: {
-                        'paper': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
-                        'floating': '0 0 40px rgba(0,0,0,0.08)'
+                        'glow': '0 0 20px -5px rgba(37, 99, 235, 0.4)',
+                        'doc': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                     }
                 }
             }
         }
     </script>
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Estilos personalizados y Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-        body {
-            background-color: #f1f5f9;
-            /* Patrón sutil para el fondo del workspace */
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-
-        .input-pro {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e5e7eb; }
+        
+        /* Utilidades para campos editables que parecen texto estático */
+        .editable-field {
+            background: transparent;
+            border: 1px dashed transparent;
             transition: all 0.2s ease;
-            font-size: 0.875rem;
+            width: 100%;
+            resize: none;
+            overflow: hidden;
         }
-        .input-pro:focus {
-            background-color: #ffffff;
-            border-color: #3b82f6;
+        .editable-field:hover, .editable-field:focus {
+            border-color: #cbd5e1;
+            background: rgba(255,255,255,0.5);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .dark .editable-field:hover, .dark .editable-field:focus {
+            border-color: #475569;
+            background: rgba(30,41,59,0.5);
         }
 
-        /* Ocultar input file nativo */
-        input[type="file"] {
-            display: none;
+        /* Utilidad para auto-expandir textareas */
+        .auto-expand {
+            field-sizing: content; /* CSS moderno, fallback en JS si es necesario, pero funciona en Chromium reciente */
+            min-height: 1lh;
         }
 
-        /* Estilos estrictos para impresión/PDF */
-        @page {
-            size: A4;
-            margin: 0;
-        }
+        /* CSS ESPECÍFICO PARA IMPRESIÓN Y GENERACIÓN DE PDF */
         @media print {
-            body { 
-                background: white !important; 
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            #sidebar, #mobile-toggle, .no-print { 
-                display: none !important; 
-            }
-            #preview-section { 
-                background: white !important; 
-                padding: 0 !important; 
-                margin: 0 !important;
-                display: block !important;
-            }
-            #document-paper { 
-                box-shadow: none !important; 
-                max-width: 100% !important; 
+            body { background: white !important; color: black !important; }
+            .no-print, nav, aside, .ui-panel, .ui-controls { display: none !important; }
+            
+            #document-canvas {
                 width: 100% !important;
+                max-width: none !important;
                 margin: 0 !important;
-                padding: 2cm 2cm !important; /* Márgenes del PDF */
-                border-radius: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                background: white !important;
             }
-            /* Asegurar colores en impresión */
-            .text-brand-600 { color: #2563eb !important; }
-            .bg-slate-50 { background-color: #f8fafc !important; }
-            .border-slate-200 { border-color: #e2e8f0 !important; }
+
+            .page-break { page-break-before: always; break-before: page; }
+            .avoid-break { page-break-inside: avoid; break-inside: avoid; }
+            
+            /* Ajustes finos para print */
+            .print-padding { padding: 40px !important; }
+            .editable-field { border: none !important; background: transparent !important; }
+            
+            @page { margin: 1.5cm; }
         }
 
-        .rich-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
+        /* Animaciones suaves UI */
+        .slide-in { animation: slideIn 0.3s ease-out forwards; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="text-ui-text flex h-screen overflow-hidden antialiased">
+<body class="overflow-hidden flex flex-col h-screen">
+    <div id="root" class="h-full flex flex-col"></div>
 
-    <!-- SIDEBAR: Editor de Propuesta -->
-    <aside class="w-full md:w-[450px] h-full flex flex-col bg-ui-sidebar border-r border-ui-border z-20 relative shadow-xl shrink-0 transition-transform duration-300 transform translate-x-0 overflow-hidden" id="sidebar">
-        
-        <!-- Header -->
-        <div class="p-5 border-b border-ui-border flex justify-between items-center bg-white sticky top-0 z-10">
-            <div class="flex items-center gap-2 text-brand-600 font-bold text-xl tracking-tight">
-                <i class="ph-fill ph-files text-2xl"></i>
-                Pro<span class="text-slate-900">Quote</span>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="app.createNew()" class="p-2 hover:bg-slate-100 rounded-md text-slate-500 hover:text-brand-600 transition-colors" title="Nuevo Documento">
-                    <i class="ph ph-file-plus text-lg"></i>
-                </button>
-                <button onclick="app.downloadPDF()" class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium rounded-md shadow-sm transition-colors" title="Exportar a PDF">
-                    <i class="ph ph-printer text-lg"></i> PDF
-                </button>
-            </div>
-        </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
 
-        <!-- Scrollable Editor -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-10 pb-28">
-            
-            <!-- IDENTIDAD VISUAL -->
-            <section class="space-y-4">
-                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">1. Identidad Visual</h3>
+        // --- ICON COMPONENT ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const iconRef = useRef(null);
+            useEffect(() => {
+                if (iconRef.current) {
+                    lucide.createIcons({ icons: { [name]: lucide.icons[name] }, nameAttr: 'data-lucide', attrs: { class: className, width: size, height: size } });
+                }
+            }, [name, size, className]);
+            return <i ref={iconRef} data-lucide={name} className={className}></i>;
+        };
+
+        // --- DEFAULT DATA ---
+        const initialData = {
+            settings: {
+                companyName: "Studio Blue",
+                companyWeb: "www.studioblue.design",
+                clientName: "Acme Corp.",
+                clientContact: "Sarah Jenkins, CMO",
+                proposalTitle: "Estrategia de Rebranding Digital",
+                date: "26 de Marzo, 2026",
+                currency: "$",
+                taxRate: 21,
+                primaryColor: "#2563eb",
+                titleFont: "font-serif", // Playfair Display
+                bodyFont: "font-source", // Source Sans 3
+                logo: "SB."
+            },
+            blocks: [
+                { id: 'b1', type: 'cover', content: { subtitle: "Propuesta comercial y plan de acción." } },
+                { id: 'b2', type: 'text', content: { title: "1. Resumen Ejecutivo", text: "En Studio Blue entendemos la necesidad de Acme Corp de reposicionarse en el mercado tecnológico actual. Esta propuesta detalla un rediseño integral de la identidad visual y la plataforma digital, enfocado en aumentar la conversión y modernizar la percepción de marca frente a sus competidores directos.\n\nNuestro enfoque combina investigación de usuarios, diseño de sistemas escalables y una estética premium que resuena con audiencias B2B de alto nivel." } },
+                { id: 'b3', type: 'pricing', content: { 
+                    title: "2. Inversión Estimada",
+                    items: [
+                        { id: 'i1', name: "Fase 1: Auditoría y Estrategia", desc: "Análisis de marca actual, benchmark y estrategia de posicionamiento.", qty: 1, price: 2500 },
+                        { id: 'i2', name: "Fase 2: Identidad Visual", desc: "Diseño de logo, paleta, tipografía, y manual de marca básico.", qty: 1, price: 4800 },
+                        { id: 'i3', name: "Fase 3: Diseño UI/UX Web", desc: "Diseño de 10 pantallas clave, prototipo interactivo y UI Kit.", qty: 1, price: 6500 }
+                    ]
+                }},
+                { id: 'b4', type: 'text', content: { title: "3. Términos y Condiciones", text: "• Validez de la propuesta: 30 días a partir de la fecha de emisión.\n• Forma de pago: 50% al inicio del proyecto, 50% contra entrega final.\n• Propiedad Intelectual: Los derechos patrimoniales se cederán al cliente una vez liquidado el 100% del proyecto.\n• Revisiones: Se incluyen hasta 2 rondas de revisiones por fase." } },
+                { id: 'b5', type: 'closing', content: { message: "Estamos listos para transformar tu visión en realidad. Si estás de acuerdo con los términos propuestos, firma a continuación para dar inicio al proyecto.", signer: "Director Creativo" } }
+            ]
+        };
+
+        // --- MAIN APP COMPONENT ---
+        const App = () => {
+            const [data, setData] = useState(initialData);
+            const [activeTab, setActiveTab] = useState('blocks'); // 'blocks' or 'design'
+
+            const updateSettings = (key, value) => {
+                setData(prev => ({ ...prev, settings: { ...prev.settings, [key]: value } }));
+            };
+
+            const updateBlock = (id, newContent) => {
+                setData(prev => ({
+                    ...prev,
+                    blocks: prev.blocks.map(b => b.id === id ? { ...b, content: { ...b.content, ...newContent } } : b)
+                }));
+            };
+
+            const addBlock = (type) => {
+                const newBlock = { id: `b_${Date.now()}`, type, content: {} };
+                if(type === 'text') newBlock.content = { title: "Nueva Sección", text: "Escribe tu contenido aquí..." };
+                if(type === 'pricing') newBlock.content = { title: "Presupuesto", items: [{ id: Date.now(), name: "Nuevo Item", desc: "Descripción", qty: 1, price: 0 }] };
                 
-                <div class="p-4 border border-dashed border-slate-300 rounded-lg bg-slate-50 flex flex-col items-center justify-center text-center gap-3 hover:bg-slate-100 transition-colors cursor-pointer" onclick="document.getElementById('logo-upload').click()">
-                    <i class="ph ph-image text-3xl text-slate-400"></i>
-                    <div>
-                        <p class="text-sm font-medium text-slate-700">Subir Logo de Empresa</p>
-                        <p class="text-xs text-slate-500 mt-1">PNG, JPG o SVG (Max 2MB)</p>
+                setData(prev => ({ ...prev, blocks: [...prev.blocks, newBlock] }));
+            };
+
+            const removeBlock = (id) => {
+                setData(prev => ({ ...prev, blocks: prev.blocks.filter(b => b.id !== id) }));
+            };
+
+            const handlePrint = () => {
+                window.print();
+            };
+
+            return (
+                <div className="flex flex-col h-full bg-surface-800 font-sans text-slate-200">
+                    {/* TOP NAVBAR (No Print) */}
+                    <nav className="no-print h-14 bg-surface-900 border-b border-surface-600 flex items-center justify-between px-6 shrink-0 z-20 shadow-md">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded bg-brand-600 flex items-center justify-center shadow-glow">
+                                <Icon name="Layers" size={18} className="text-white" />
+                            </div>
+                            <span className="font-semibold text-lg tracking-tight text-white">Propose</span>
+                            <span className="px-2 py-0.5 ml-4 rounded bg-surface-700 text-xs font-medium text-slate-300 border border-surface-600">Borrador</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4">
+                            <button className="flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors">
+                                <Icon name="Save" size={16} /> Guardar
+                            </button>
+                            <button onClick={handlePrint} className="flex items-center gap-2 text-sm bg-surface-700 hover:bg-surface-600 text-white px-4 py-1.5 rounded-md transition-colors border border-surface-600 shadow-sm">
+                                <Icon name="Download" size={16} /> Exportar PDF
+                            </button>
+                            <button onClick={handlePrint} className="flex items-center gap-2 text-sm bg-brand-600 hover:bg-brand-500 text-white px-4 py-1.5 rounded-md transition-all shadow-glow font-medium">
+                                <Icon name="Printer" size={16} /> Imprimir
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* MAIN WORKSPACE */}
+                    <div className="flex-1 flex overflow-hidden">
+                        
+                        {/* LEFT SIDEBAR - BLOCK PALETTE (No Print) */}
+                        <aside className="no-print w-64 bg-surface-800 border-r border-surface-600 flex flex-col shrink-0 z-10">
+                            <div className="p-4 border-b border-surface-600">
+                                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Estructura del Doc</h3>
+                                <div className="space-y-2">
+                                    {data.blocks.map((block, idx) => (
+                                        <div key={block.id} className="flex items-center justify-between p-2 rounded bg-surface-700/50 border border-surface-600 text-sm text-slate-300 group hover:border-brand-500 transition-colors">
+                                            <div className="flex items-center gap-2 truncate">
+                                                <Icon name={block.type === 'cover' ? 'LayoutTemplate' : block.type === 'text' ? 'AlignLeft' : block.type === 'pricing' ? 'Calculator' : 'CheckSquare'} size={14} className="text-slate-400" />
+                                                <span className="truncate">{block.type === 'cover' ? 'Portada' : block.content.title || 'Bloque'}</span>
+                                            </div>
+                                            <button onClick={() => removeBlock(block.id)} className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity">
+                                                <Icon name="Trash2" size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="p-4 flex-1 overflow-y-auto">
+                                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Agregar Bloque</h3>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button onClick={() => addBlock('text')} className="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-900 border border-surface-600 hover:border-brand-500 hover:bg-surface-700 transition-all text-slate-300 hover:text-white group">
+                                        <Icon name="AlignLeft" size={20} className="mb-2 text-slate-400 group-hover:text-brand-400" />
+                                        <span className="text-xs">Texto</span>
+                                    </button>
+                                    <button onClick={() => addBlock('pricing')} className="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-900 border border-surface-600 hover:border-brand-500 hover:bg-surface-700 transition-all text-slate-300 hover:text-white group">
+                                        <Icon name="Calculator" size={20} className="mb-2 text-slate-400 group-hover:text-brand-400" />
+                                        <span className="text-xs">Precios</span>
+                                    </button>
+                                    <button onClick={() => addBlock('closing')} className="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-900 border border-surface-600 hover:border-brand-500 hover:bg-surface-700 transition-all text-slate-300 hover:text-white group">
+                                        <Icon name="PenTool" size={20} className="mb-2 text-slate-400 group-hover:text-brand-400" />
+                                        <span className="text-xs">Firma</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </aside>
+
+                        {/* CENTER CANVAS - THE DOCUMENT */}
+                        <main className="flex-1 bg-surface-900 overflow-y-auto flex justify-center py-10 px-4 scroll-smooth relative">
+                            {/* Document Wrapper */}
+                            <div 
+                                id="document-canvas" 
+                                className={`bg-white text-slate-800 shadow-doc min-h-[1122px] w-full max-w-[850px] relative transition-all duration-300 print:shadow-none print:m-0 print:w-full print:max-w-none ${data.settings.bodyFont}`}
+                                style={{ '--brand-color': data.settings.primaryColor }}
+                            >
+                                {data.blocks.map((block, index) => (
+                                    <div key={block.id} className={`${index > 0 ? 'page-break' : ''} avoid-break slide-in`}>
+                                        {block.type === 'cover' && <CoverBlock data={block.content} settings={data.settings} update={(c) => updateBlock(block.id, c)} />}
+                                        {block.type === 'text' && <TextBlock data={block.content} settings={data.settings} update={(c) => updateBlock(block.id, c)} />}
+                                        {block.type === 'pricing' && <PricingBlock data={block.content} settings={data.settings} update={(c) => updateBlock(block.id, c)} />}
+                                        {block.type === 'closing' && <ClosingBlock data={block.content} settings={data.settings} update={(c) => updateBlock(block.id, c)} />}
+                                        {block.type === 'terms' && <TextBlock data={block.content} settings={data.settings} update={(c) => updateBlock(block.id, c)} />}
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
+
+                        {/* RIGHT SIDEBAR - SETTINGS (No Print) */}
+                        <aside className="no-print w-72 bg-surface-800 border-l border-surface-600 flex flex-col shrink-0 z-10">
+                            <div className="flex border-b border-surface-600">
+                                <button className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'blocks' ? 'border-brand-500 text-white bg-surface-700/30' : 'border-transparent text-slate-400 hover:text-slate-200'}`} onClick={() => setActiveTab('blocks')}>Documento</button>
+                                <button className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'design' ? 'border-brand-500 text-white bg-surface-700/30' : 'border-transparent text-slate-400 hover:text-slate-200'}`} onClick={() => setActiveTab('design')}>Branding</button>
+                            </div>
+                            
+                            <div className="flex-1 overflow-y-auto p-5 space-y-6">
+                                {activeTab === 'blocks' && (
+                                    <div className="space-y-4 slide-in">
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Cliente</label>
+                                            <input type="text" value={data.settings.clientName} onChange={(e) => updateSettings('clientName', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Proyecto / Título</label>
+                                            <input type="text" value={data.settings.proposalTitle} onChange={(e) => updateSettings('proposalTitle', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Fecha</label>
+                                            <input type="text" value={data.settings.date} onChange={(e) => updateSettings('date', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors" />
+                                        </div>
+                                        <hr className="border-surface-600 my-4" />
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Moneda</label>
+                                            <select value={data.settings.currency} onChange={(e) => updateSettings('currency', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none">
+                                                <option value="$">USD ($)</option>
+                                                <option value="€">EUR (€)</option>
+                                                <option value="£">GBP (£)</option>
+                                                <option value="MXN$">MXN ($)</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Impuestos (%)</label>
+                                            <input type="number" value={data.settings.taxRate} onChange={(e) => updateSettings('taxRate', parseFloat(e.target.value))} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none transition-colors" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activeTab === 'design' && (
+                                    <div className="space-y-6 slide-in">
+                                         <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Tu Empresa / Logo Texto</label>
+                                            <input type="text" value={data.settings.companyName} onChange={(e) => updateSettings('companyName', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Color Principal</label>
+                                            <div className="flex gap-2">
+                                                <input type="color" value={data.settings.primaryColor} onChange={(e) => updateSettings('primaryColor', e.target.value)} className="w-10 h-10 rounded cursor-pointer bg-surface-900 border border-surface-600 p-1" />
+                                                <input type="text" value={data.settings.primaryColor} onChange={(e) => updateSettings('primaryColor', e.target.value)} className="flex-1 bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none uppercase font-mono" />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Tipografía Títulos (PDF)</label>
+                                            <select value={data.settings.titleFont} onChange={(e) => updateSettings('titleFont', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none">
+                                                <option value="font-serif">Playfair Display (Serif Elegante)</option>
+                                                <option value="font-sans">Inter (Moderno Minimal)</option>
+                                                <option value="font-manrope">Manrope (Geométrico)</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Tipografía Cuerpo (PDF)</label>
+                                            <select value={data.settings.bodyFont} onChange={(e) => updateSettings('bodyFont', e.target.value)} className="w-full bg-surface-900 border border-surface-600 rounded p-2 text-sm text-white focus:border-brand-500 focus:outline-none">
+                                                <option value="font-source">Source Sans (Editorial)</option>
+                                                <option value="font-sans">Inter (Limpio)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div className="p-4 bg-brand-900/30 border border-brand-500/30 rounded-lg text-sm text-brand-100 mt-6">
+                                            <Icon name="Info" size={16} className="mb-2 text-brand-400" />
+                                            Los cambios aquí afectan inmediatamente a la vista previa del documento central y al PDF final exportado.
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </aside>
                     </div>
-                    <input type="file" id="logo-upload" accept="image/*" onchange="app.handleLogoUpload(event)">
                 </div>
+            );
+        };
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Empresa Emisora</label>
-                        <input type="text" data-bind="issuer.name" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Tu Agencia">
+        // --- DOCUMENT BLOCKS COMPONENTS ---
+
+        const TextareaAutosize = ({ value, onChange, className, ...props }) => {
+            const ref = useRef(null);
+            useEffect(() => {
+                if (ref.current) {
+                    ref.current.style.height = 'auto';
+                    ref.current.style.height = ref.current.scrollHeight + 'px';
+                }
+            }, [value]);
+            return (
+                <textarea
+                    ref={ref}
+                    value={value}
+                    onChange={onChange}
+                    className={`editable-field auto-expand ${className}`}
+                    rows={1}
+                    {...props}
+                />
+            );
+        };
+
+        const CoverBlock = ({ data, settings, update }) => {
+            return (
+                <div className="relative w-full aspect-[1/1.414] min-h-[1122px] flex flex-col justify-between p-16 print:p-0 print-padding overflow-hidden bg-white group">
+                    {/* Elemento de diseño superior */}
+                    <div className="absolute top-0 right-0 w-[60%] h-4 bg-[var(--brand-color)] opacity-90"></div>
+                    <div className="absolute top-4 right-0 w-[40%] h-2 bg-[var(--brand-color)] opacity-50"></div>
+
+                    {/* Header: Logo y Fecha */}
+                    <div className="flex justify-between items-start z-10">
+                        <div className="text-3xl font-bold tracking-tighter" style={{ color: settings.primaryColor }}>
+                            {settings.logo || settings.companyName}
+                        </div>
+                        <div className="text-right">
+                            <p className="text-sm font-semibold tracking-widest uppercase text-slate-400 mb-1">Fecha</p>
+                            <input type="text" value={settings.date} readOnly className="editable-field text-right text-slate-800 font-medium w-32" />
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Tu Nombre/Cargo</label>
-                        <input type="text" data-bind="issuer.role" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Consultor">
+
+                    {/* Main Content: Títulos */}
+                    <div className="z-10 mt-32 mb-auto max-w-2xl">
+                        <p className="text-sm font-bold tracking-[0.2em] uppercase mb-6" style={{ color: settings.primaryColor }}>
+                            Propuesta Comercial
+                        </p>
+                        <TextareaAutosize 
+                            value={settings.proposalTitle} 
+                            readOnly
+                            className={`text-5xl md:text-6xl font-bold leading-[1.1] text-slate-900 mb-6 ${settings.titleFont} tracking-tight`}
+                        />
+                        <TextareaAutosize 
+                            value={data.subtitle || ''} 
+                            onChange={(e) => update({ subtitle: e.target.value })}
+                            placeholder="Añadir un subtítulo descriptivo..."
+                            className="text-xl text-slate-500 font-light max-w-lg leading-relaxed"
+                        />
                     </div>
-                </div>
-            </section>
 
-            <!-- DATOS DEL CLIENTE -->
-            <section class="space-y-4">
-                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">2. Para el Cliente</h3>
-                
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Nombre Empresa / Cliente</label>
-                    <input type="text" data-bind="client.company" class="input-pro rounded-md px-3 py-2 w-full font-medium" placeholder="Acme Corp">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Atención a</label>
-                        <input type="text" data-bind="client.name" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Nombre Contacto">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Email</label>
-                        <input type="email" data-bind="client.email" class="input-pro rounded-md px-3 py-2 w-full" placeholder="email@cliente.com">
-                    </div>
-                </div>
-            </section>
-
-            <!-- DETALLES DEL DOCUMENTO -->
-            <section class="space-y-4">
-                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">3. Detalles de Propuesta</h3>
-                
-                <div class="grid grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Nº</label>
-                        <input type="text" data-bind="quote.number" class="input-pro rounded-md px-2 py-2 w-full text-center" placeholder="001">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Fecha</label>
-                        <input type="date" data-bind="quote.date" class="input-pro rounded-md px-2 py-2 w-full">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Moneda</label>
-                        <select data-bind="quote.currency" class="input-pro rounded-md px-2 py-2 w-full">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="MXN">MXN ($)</option>
-                            <option value="CLP">CLP ($)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Título del Proyecto</label>
-                    <input type="text" data-bind="quote.title" class="input-pro rounded-md px-3 py-2 w-full font-medium" placeholder="Escriba un título impactante">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Descripción / Alcance Detallado (Texto Largo)</label>
-                    <textarea data-bind="quote.description" class="input-pro rich-textarea rounded-md px-3 py-2 w-full" placeholder="Detalla el contexto del proyecto, objetivos y qué incluye este presupuesto. Puedes escribir varios párrafos aquí."></textarea>
-                </div>
-            </section>
-
-            <!-- COTIZACIÓN / SERVICIOS -->
-            <section class="space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest">4. Tabla de Inversión</h3>
-                    <button onclick="app.addItem()" class="text-xs text-brand-600 hover:text-brand-800 flex items-center gap-1 font-semibold bg-brand-50 px-2 py-1 rounded">
-                        <i class="ph ph-plus"></i> Fila
-                    </button>
-                </div>
-                
-                <div id="items-container" class="space-y-3">
-                    <!-- Filas dinámicas -->
-                </div>
-
-                <!-- Impuestos / Descuentos -->
-                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Impuestos (%)</label>
-                        <input type="number" data-bind="totals.taxRate" class="input-pro rounded-md px-3 py-2 w-full" placeholder="0">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Descuento Global</label>
-                        <input type="number" data-bind="totals.discount" class="input-pro rounded-md px-3 py-2 w-full" placeholder="0">
-                    </div>
-                </div>
-            </section>
-
-            <!-- TÉRMINOS Y CONDICIONES -->
-            <section class="space-y-4">
-                <h3 class="text-xs font-bold text-brand-600 uppercase tracking-widest border-b border-slate-100 pb-2">5. Condiciones Comerciales</h3>
-                
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Tiempos y Entregables</label>
-                    <input type="text" data-bind="quote.delivery" class="input-pro rounded-md px-3 py-2 w-full" placeholder="Ej: 4 semanas a partir de la firma">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-600 mb-1">Forma de Pago y Condiciones</label>
-                    <textarea data-bind="quote.terms" class="input-pro rounded-md px-3 py-2 w-full h-24 resize-none" placeholder="Detalles de facturación, anticipos, etc."></textarea>
-                </div>
-            </section>
-        </div>
-    </aside>
-
-    <!-- MAIN WORKSPACE: Visualización de la Hoja -->
-    <main class="flex-1 relative overflow-y-auto p-4 md:p-12 flex justify-center items-start" id="preview-section">
-        
-        <!-- Toggle Menu Mobile -->
-        <button id="mobile-toggle" class="md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-full shadow-lg border border-slate-200 text-brand-600 no-print">
-            <i class="ph ph-list text-xl"></i>
-        </button>
-
-        <!-- EL DOCUMENTO (Hojas en blanco) -->
-        <div id="document-paper" class="w-full max-w-[850px] min-h-[1100px] bg-white text-slate-800 shadow-paper relative z-10 transition-all duration-300 p-10 md:p-16 ring-1 ring-slate-900/5">
-            
-            <!-- Franja decorativa superior -->
-            <div class="absolute top-0 left-0 w-full h-2 bg-brand-600 no-print"></div>
-
-            <!-- ENCABEZADO: Logo e Info -->
-            <header class="flex flex-col sm:flex-row justify-between items-start mb-16 gap-8">
-                <!-- Logo Area -->
-                <div class="w-full sm:w-1/2">
-                    <img id="out-logo" src="" alt="Logo" class="max-h-16 object-contain mb-4 hidden">
-                    <div id="out-logo-placeholder" class="text-2xl font-black tracking-tight text-slate-900 mb-2">
-                        <span id="out-issuer-name">Nombre Empresa</span>
-                    </div>
-                    <p class="text-sm text-slate-500 font-medium" id="out-issuer-role">Especialidad / Cargo</p>
-                </div>
-
-                <!-- Info Documento -->
-                <div class="w-full sm:w-1/2 sm:text-right">
-                    <h1 class="text-4xl font-light text-slate-300 uppercase tracking-widest mb-4">Presupuesto</h1>
-                    <div class="grid grid-cols-2 sm:grid-cols-1 gap-2 text-sm">
-                        <p class="text-slate-500">Nº Documento: <strong class="text-slate-800" id="out-quote-number">000</strong></p>
-                        <p class="text-slate-500">Fecha: <strong class="text-slate-800" id="out-quote-date">---</strong></p>
-                    </div>
-                </div>
-            </header>
-
-            <!-- BLOQUE: Para el cliente -->
-            <div class="mb-14 border-l-4 border-brand-500 pl-6 py-1">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Preparado para</p>
-                <h2 class="text-xl font-bold text-slate-900" id="out-client-company">Empresa Cliente</h2>
-                <p class="text-base text-slate-600 mt-1" id="out-client-name">Nombre Contacto</p>
-                <p class="text-sm text-slate-500" id="out-client-email">email@cliente.com</p>
-            </div>
-
-            <!-- BLOQUE: Descripción Extensa / Scope -->
-            <div class="mb-14">
-                <h3 class="text-2xl font-bold text-slate-900 mb-4" id="out-quote-title">Título del Proyecto</h3>
-                <!-- Aquí entra el texto largo que detalla el presupuesto -->
-                <div class="text-slate-600 leading-relaxed whitespace-pre-wrap text-[15px]" id="out-quote-description">
-                    Aquí se mostrará la descripción detallada del proyecto, objetivos y alcance.
-                </div>
-            </div>
-
-            <!-- BLOQUE: Tabla de Inversión -->
-            <div class="mb-14">
-                <h4 class="text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 border-b-2 border-slate-900 pb-2">Desglose de Inversión</h4>
-                
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
-                            <th class="py-3 px-2 font-semibold w-[55%]">Concepto / Servicio</th>
-                            <th class="py-3 px-2 font-semibold text-center w-[15%]">Cant.</th>
-                            <th class="py-3 px-2 font-semibold text-right w-[15%]">Precio</th>
-                            <th class="py-3 px-2 font-semibold text-right w-[15%]">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="out-items-table" class="text-sm text-slate-700">
-                        <!-- Filas inyectadas por JS -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- BLOQUE: Totales -->
-            <div class="flex justify-end mb-16">
-                <div class="w-full sm:w-[320px] bg-slate-50 p-6 rounded-lg border border-slate-100">
-                    <div class="flex justify-between items-center mb-2 text-sm text-slate-600">
-                        <span>Subtotal</span>
-                        <span id="out-calc-subtotal" class="font-medium text-slate-900">$0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center mb-2 text-sm text-slate-600 hidden" id="row-discount">
-                        <span>Descuento Especial</span>
-                        <span id="out-calc-discount" class="text-red-500 font-medium">-$0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center mb-4 text-sm text-slate-600 hidden" id="row-tax">
-                        <span>Impuestos (<span id="out-calc-taxrate">0</span>%)</span>
-                        <span id="out-calc-tax" class="font-medium text-slate-900">$0.00</span>
+                    {/* Footer: Info del cliente */}
+                    <div className="border-t-2 border-slate-100 pt-8 flex justify-between items-end z-10">
+                        <div>
+                            <p className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-2">Preparado para</p>
+                            <div className="text-lg font-semibold text-slate-900">{settings.clientName}</div>
+                            <div className="text-sm text-slate-500 mt-1">{settings.clientContact}</div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-2">Por</p>
+                            <div className="text-lg font-semibold text-slate-900">{settings.companyName}</div>
+                            <div className="text-sm text-slate-500 mt-1">{settings.companyWeb}</div>
+                        </div>
                     </div>
                     
-                    <div class="border-t border-slate-200 pt-4 mt-2">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-bold text-slate-900 uppercase tracking-widest">Total <span id="out-quote-currency" class="font-normal text-xs text-slate-500 ml-1">USD</span></span>
-                            <span class="text-2xl font-black text-brand-600" id="out-calc-grandtotal">$0.00</span>
+                    {/* Elemento de diseño fondo (sutil) */}
+                    <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full mix-blend-multiply opacity-[0.03]" style={{ backgroundColor: settings.primaryColor }}></div>
+                </div>
+            );
+        };
+
+        const TextBlock = ({ data, settings, update }) => {
+            return (
+                <div className="p-16 print-padding min-h-[500px]">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="w-12 h-1 mb-8" style={{ backgroundColor: settings.primaryColor }}></div>
+                        <input 
+                            value={data.title}
+                            onChange={(e) => update({ title: e.target.value })}
+                            className={`w-full text-3xl font-bold text-slate-900 mb-8 editable-field ${settings.titleFont}`}
+                            placeholder="Título de la sección"
+                        />
+                        <TextareaAutosize 
+                            value={data.text}
+                            onChange={(e) => update({ text: e.target.value })}
+                            className="w-full text-base leading-relaxed text-slate-600 whitespace-pre-wrap editable-field"
+                            placeholder="Escribe el contenido aquí..."
+                        />
+                    </div>
+                </div>
+            );
+        };
+
+        const PricingBlock = ({ data, settings, update }) => {
+            const updateItem = (id, field, value) => {
+                const newItems = data.items.map(item => item.id === id ? { ...item, [field]: value } : item);
+                update({ items: newItems });
+            };
+
+            const addItem = () => {
+                const newItem = { id: Date.now(), name: "", desc: "", qty: 1, price: 0 };
+                update({ items: [...data.items, newItem] });
+            };
+
+            const removeItem = (id) => {
+                update({ items: data.items.filter(i => i.id !== id) });
+            };
+
+            const subtotal = data.items.reduce((sum, item) => sum + (item.qty * item.price), 0);
+            const tax = subtotal * (settings.taxRate / 100);
+            const total = subtotal + tax;
+
+            const formatCurrency = (val) => {
+                return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' })
+                    .format(val).replace('$', settings.currency);
+            };
+
+            return (
+                <div className="p-16 print-padding min-h-[800px]">
+                     <div className="max-w-4xl mx-auto">
+                        <div className="w-12 h-1 mb-8" style={{ backgroundColor: settings.primaryColor }}></div>
+                        <input 
+                            value={data.title}
+                            onChange={(e) => update({ title: e.target.value })}
+                            className={`w-full text-3xl font-bold text-slate-900 mb-10 editable-field ${settings.titleFont}`}
+                            placeholder="Título del presupuesto"
+                        />
+
+                        {/* Table Header */}
+                        <div className="grid grid-cols-12 gap-4 pb-3 border-b-2 border-slate-900 text-sm font-bold tracking-widest uppercase text-slate-900 mb-4">
+                            <div className="col-span-6">Concepto / Servicio</div>
+                            <div className="col-span-2 text-center">Cant.</div>
+                            <div className="col-span-2 text-right">Precio Un.</div>
+                            <div className="col-span-2 text-right">Subtotal</div>
+                        </div>
+
+                        {/* Table Rows */}
+                        <div className="space-y-2 mb-8">
+                            {data.items.map((item, idx) => (
+                                <div key={item.id} className="grid grid-cols-12 gap-4 py-4 border-b border-slate-100 group relative">
+                                    <div className="col-span-6 pr-4">
+                                        <input 
+                                            value={item.name} 
+                                            onChange={(e) => updateItem(item.id, 'name', e.target.value)} 
+                                            className="font-bold text-slate-800 w-full editable-field" 
+                                            placeholder="Nombre del servicio"
+                                        />
+                                        <TextareaAutosize 
+                                            value={item.desc} 
+                                            onChange={(e) => updateItem(item.id, 'desc', e.target.value)} 
+                                            className="text-sm text-slate-500 mt-1 w-full editable-field" 
+                                            placeholder="Descripción detallada"
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <input 
+                                            type="number" 
+                                            value={item.qty} 
+                                            onChange={(e) => updateItem(item.id, 'qty', Number(e.target.value))} 
+                                            className="text-center w-full text-slate-700 editable-field" 
+                                            min="1"
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <div className="flex items-center justify-end">
+                                            <span className="text-slate-400 text-sm mr-1">{settings.currency}</span>
+                                            <input 
+                                                type="number" 
+                                                value={item.price} 
+                                                onChange={(e) => updateItem(item.id, 'price', Number(e.target.value))} 
+                                                className="text-right w-20 text-slate-700 editable-field" 
+                                                min="0"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-span-2 text-right font-medium text-slate-900 py-1 flex items-start justify-end">
+                                        {formatCurrency(item.qty * item.price)}
+                                        {/* Botón eliminar (solo UI) */}
+                                        <button onClick={() => removeItem(item.id)} className="absolute -right-8 top-4 opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 no-print transition-opacity">
+                                            <Icon name="XCircle" size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Add Row Button (No Print) */}
+                        <button onClick={addItem} className="no-print flex items-center gap-2 text-sm text-brand-600 hover:text-brand-800 font-medium mb-12">
+                            <Icon name="PlusCircle" size={16} /> Añadir línea de servicio
+                        </button>
+
+                        {/* Totals */}
+                        <div className="w-full max-w-sm ml-auto space-y-3 text-right">
+                            <div className="flex justify-between text-slate-500">
+                                <span>Subtotal</span>
+                                <span>{formatCurrency(subtotal)}</span>
+                            </div>
+                            <div className="flex justify-between text-slate-500">
+                                <span>Impuestos ({settings.taxRate}%)</span>
+                                <span>{formatCurrency(tax)}</span>
+                            </div>
+                            <div className="flex justify-between items-center pt-4 border-t-2 border-slate-900">
+                                <span className={`text-xl font-bold text-slate-900 ${settings.titleFont}`}>Total Final</span>
+                                <span className="text-2xl font-bold" style={{ color: settings.primaryColor }}>
+                                    {formatCurrency(total)}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- BLOQUE: Términos -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-8 border-t border-slate-200 text-sm">
-                <div>
-                    <h5 class="font-bold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
-                        <i class="ph ph-calendar-check text-brand-600 text-lg"></i> Cronograma
-                    </h5>
-                    <p class="text-slate-600" id="out-quote-delivery">---</p>
-                </div>
-                <div>
-                    <h5 class="font-bold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
-                        <i class="ph ph-shield-check text-brand-600 text-lg"></i> Condiciones Comerciales
-                    </h5>
-                    <p class="text-slate-600 whitespace-pre-line" id="out-quote-terms">---</p>
-                </div>
-            </div>
-
-            <!-- Pie de página de la hoja -->
-            <div class="mt-20 text-center text-xs text-slate-400 font-medium">
-                Documento generado confidencialmente. Válido por 15 días a partir de su emisión.
-            </div>
-
-        </div>
-    </main>
-
-    <!-- Template Fila Input -->
-    <template id="item-input-template">
-        <div class="item-row bg-white border border-slate-200 p-3 rounded-lg relative group transition-shadow hover:shadow-md">
-            <button class="remove-item absolute -top-2 -right-2 bg-red-100 text-red-600 hover:bg-red-500 hover:text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all shadow-sm" title="Eliminar fila">
-                <i class="ph ph-trash text-sm"></i>
-            </button>
-            <input type="text" class="item-name bg-transparent border-none px-1 py-1 text-sm w-full font-bold text-slate-800 focus:ring-0 mb-1 placeholder-slate-400" placeholder="Nombre del servicio / Hito">
-            <textarea class="item-desc bg-transparent border-none px-1 py-1 text-xs w-full text-slate-500 focus:ring-0 mb-2 resize-none h-12 placeholder-slate-400" placeholder="Describe brevemente en qué consiste este ítem..."></textarea>
-            
-            <div class="flex gap-2 items-center bg-slate-50 p-2 rounded border border-slate-100">
-                <div class="w-1/3 relative">
-                    <span class="absolute left-2 top-1.5 text-xs text-slate-400">Cant.</span>
-                    <input type="number" class="item-qty bg-white border border-slate-200 rounded px-2 py-1 text-sm w-full pl-10 text-center focus:border-brand-500 focus:outline-none" placeholder="1" min="1">
-                </div>
-                <div class="w-2/3 relative flex items-center">
-                    <span class="absolute left-2 text-xs text-slate-400 currency-symbol">$</span>
-                    <input type="number" class="item-price bg-white border border-slate-200 rounded px-2 py-1 text-sm w-full pl-6 text-right focus:border-brand-500 focus:outline-none" placeholder="0.00">
-                </div>
-            </div>
-        </div>
-    </template>
-
-    <script>
-        const app = {
-            state: {
-                issuer: { 
-                    name: 'DigitalFlow Studio', 
-                    role: 'Agencia de Desarrollo & Diseño UI/UX',
-                    logo: null // Base64 image
-                },
-                client: { company: 'TechNova Solutions', name: 'Carlos Mendoza', email: 'carlos@technova.com' },
-                quote: { 
-                    number: 'PR-2026-089', 
-                    date: new Date().toISOString().split('T')[0], 
-                    title: 'Diseño y Desarrollo de Plataforma Web App (MVP)',
-                    description: 'El presente documento detalla la inversión requerida para el diseño de interfaces de usuario (UI/UX) y el posterior desarrollo frontend de la nueva aplicación web de TechNova.\n\nEste proceso asegurará un producto moderno, escalable y con una experiencia de usuario optimizada, listo para presentar a inversores.',
-                    terms: '• 50% de anticipo para iniciar el proyecto.\n• 25% tras la aprobación de los diseños UI.\n• 25% a la entrega del código final en producción.',
-                    delivery: 'Plazo estimado: 6 a 8 semanas laborables desde la recepción del anticipo.',
-                    currency: 'USD'
-                },
-                items: [
-                    { id: 1, name: 'Investigación UX & Wireframing', desc: 'Análisis de flujos de usuario, arquitectura de información y prototipado de baja fidelidad.', qty: 1, price: 1500 },
-                    { id: 2, name: 'Diseño UI / Interfaz Premium', desc: 'Diseño visual de alta fidelidad, creación de Sistema de Diseño y componentes interactivos.', qty: 1, price: 2800 },
-                    { id: 3, name: 'Desarrollo Frontend React', desc: 'Implementación responsiva y limpia del diseño aprobado.', qty: 1, price: 4200 }
-                ],
-                totals: { taxRate: 0, discount: 0 }
-            },
-
-            currencySymbols: { USD: '$', EUR: '€', MXN: '$', CLP: '$' },
-
-            init() {
-                this.loadState();
-                this.setupBindings();
-                this.renderItemInputs();
-                this.updatePreview();
-                this.setupMobileMenu();
-            },
-
-            loadState() {
-                const saved = localStorage.getItem('proQuoteState');
-                if (saved) {
-                    try {
-                        this.state = { ...this.state, ...JSON.parse(saved) };
-                    } catch(e) { console.error("Error cargando estado."); }
-                }
-            },
-
-            saveState() {
-                localStorage.setItem('proQuoteState', JSON.stringify(this.state));
-            },
-
-            handleLogoUpload(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.state.issuer.logo = e.target.result;
-                        this.updatePreview();
-                        this.saveState();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            },
-
-            setupBindings() {
-                document.querySelectorAll('[data-bind]').forEach(el => {
-                    const keys = el.getAttribute('data-bind').split('.');
-                    let val = this.state;
-                    keys.forEach(k => val = val[k]);
-                    el.value = val || '';
-
-                    el.addEventListener('input', (e) => {
-                        let obj = this.state;
-                        for (let i = 0; i < keys.length - 1; i++) {
-                            obj = obj[keys[i]];
-                        }
-                        let newVal = e.target.value;
-                        if(e.target.type === 'number') newVal = parseFloat(newVal) || 0;
-                        obj[keys[keys.length - 1]] = newVal;
-                        
-                        this.saveState();
-                        this.updatePreview();
-                    });
-                });
-            },
-
-            addItem() {
-                this.state.items.push({ id: Date.now(), name: '', desc: '', qty: 1, price: 0 });
-                this.renderItemInputs();
-                this.updatePreview();
-                this.saveState();
-                
-                const container = document.getElementById('items-container');
-                setTimeout(() => container.lastElementChild?.scrollIntoView({behavior: 'smooth', block: 'nearest'}), 50);
-            },
-
-            removeItem(id) {
-                this.state.items = this.state.items.filter(item => item.id !== id);
-                this.renderItemInputs();
-                this.updatePreview();
-                this.saveState();
-            },
-
-            renderItemInputs() {
-                const container = document.getElementById('items-container');
-                const template = document.getElementById('item-input-template');
-                container.innerHTML = '';
-
-                this.state.items.forEach((item, index) => {
-                    const clone = template.content.cloneNode(true);
-                    const row = clone.querySelector('.item-row');
-                    
-                    const inpName = row.querySelector('.item-name');
-                    const inpDesc = row.querySelector('.item-desc');
-                    const inpQty = row.querySelector('.item-qty');
-                    const inpPrice = row.querySelector('.item-price');
-                    const btnRemove = row.querySelector('.remove-item');
-                    const sym = row.querySelector('.currency-symbol');
-
-                    inpName.value = item.name;
-                    inpDesc.value = item.desc;
-                    inpQty.value = item.qty;
-                    inpPrice.value = item.price || '';
-                    sym.textContent = this.currencySymbols[this.state.quote.currency] || '$';
-
-                    const updateItem = (field, isNum = false) => (e) => {
-                        let val = e.target.value;
-                        this.state.items[index][field] = isNum ? (parseFloat(val) || 0) : val;
-                        this.updatePreview();
-                        this.saveState();
-                    };
-
-                    inpName.addEventListener('input', updateItem('name'));
-                    inpDesc.addEventListener('input', updateItem('desc'));
-                    inpQty.addEventListener('input', updateItem('qty', true));
-                    inpPrice.addEventListener('input', updateItem('price', true));
-                    btnRemove.addEventListener('click', () => this.removeItem(item.id));
-
-                    container.appendChild(clone);
-                });
-            },
-
-            formatCurrency(amount) {
-                const currency = this.state.quote.currency || 'USD';
-                return new Intl.NumberFormat('es-US', {
-                    style: 'currency', currency: currency, minimumFractionDigits: 2
-                }).format(amount);
-            },
-
-            formatDate(dateString) {
-                if(!dateString) return '---';
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                try {
-                    return new Date(dateString + 'T12:00:00').toLocaleDateString('es-ES', options);
-                } catch(e) { return dateString; }
-            },
-
-            updatePreview() {
-                const s = this.state;
-                
-                // Logo & Header logic
-                const imgEl = document.getElementById('out-logo');
-                const txtEl = document.getElementById('out-logo-placeholder');
-                
-                if (s.issuer.logo) {
-                    imgEl.src = s.issuer.logo;
-                    imgEl.classList.remove('hidden');
-                    txtEl.classList.add('hidden');
-                } else {
-                    imgEl.classList.add('hidden');
-                    txtEl.classList.remove('hidden');
-                }
-
-                // Text fields
-                document.getElementById('out-issuer-name').textContent = s.issuer.name || 'Empresa';
-                document.getElementById('out-issuer-role').textContent = s.issuer.role || '';
-                
-                document.getElementById('out-client-company').textContent = s.client.company || 'Empresa Cliente';
-                document.getElementById('out-client-name').textContent = s.client.name || 'Nombre Contacto';
-                document.getElementById('out-client-email').textContent = s.client.email || '';
-
-                document.getElementById('out-quote-number').textContent = s.quote.number || '---';
-                document.getElementById('out-quote-date').textContent = this.formatDate(s.quote.date);
-                
-                document.getElementById('out-quote-title').textContent = s.quote.title || 'Proyecto sin título';
-                document.getElementById('out-quote-description').textContent = s.quote.description || 'Detalles del proyecto...';
-                
-                document.getElementById('out-quote-terms').textContent = s.quote.terms || '---';
-                document.getElementById('out-quote-delivery').textContent = s.quote.delivery || '---';
-                document.getElementById('out-quote-currency').textContent = s.quote.currency;
-
-                // Sync currency in inputs
-                document.querySelectorAll('.currency-symbol').forEach(el => {
-                    el.textContent = this.currencySymbols[s.quote.currency] || '$';
-                });
-
-                // Table Render
-                const tbody = document.getElementById('out-items-table');
-                tbody.innerHTML = '';
-                let subtotal = 0;
-
-                if (s.items.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 italic">No hay ítems en la tabla.</td></tr>`;
-                }
-
-                s.items.forEach((item, index) => {
-                    const lineTotal = (item.qty || 0) * (item.price || 0);
-                    subtotal += lineTotal;
-                    
-                    const tr = document.createElement('tr');
-                    tr.className = index !== s.items.length - 1 ? 'border-b border-slate-100' : '';
-                    tr.innerHTML = `
-                        <td class="py-4 px-2 pr-4 align-top">
-                            <p class="font-bold text-slate-900">${item.name || 'Sin nombre'}</p>
-                            ${item.desc ? `<p class="text-sm text-slate-500 mt-1 leading-relaxed">${item.desc}</p>` : ''}
-                        </td>
-                        <td class="py-4 px-2 text-center text-slate-600 font-medium align-top">${item.qty || 0}</td>
-                        <td class="py-4 px-2 text-right text-slate-600 align-top">${this.formatCurrency(item.price || 0)}</td>
-                        <td class="py-4 px-2 text-right font-bold text-slate-900 align-top">${this.formatCurrency(lineTotal)}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                // Math
-                const discount = parseFloat(s.totals.discount) || 0;
-                const taxRate = parseFloat(s.totals.taxRate) || 0;
-                
-                const discountedSubtotal = Math.max(0, subtotal - discount);
-                const taxAmount = discountedSubtotal * (taxRate / 100);
-                const grandTotal = discountedSubtotal + taxAmount;
-
-                // Totals Update
-                document.getElementById('out-calc-subtotal').textContent = this.formatCurrency(subtotal);
-                
-                const rowDiscount = document.getElementById('row-discount');
-                if(discount > 0) {
-                    rowDiscount.classList.remove('hidden');
-                    rowDiscount.classList.add('flex');
-                    document.getElementById('out-calc-discount').textContent = `-${this.formatCurrency(discount)}`;
-                } else {
-                    rowDiscount.classList.add('hidden');
-                    rowDiscount.classList.remove('flex');
-                }
-
-                const rowTax = document.getElementById('row-tax');
-                if(taxRate > 0) {
-                    rowTax.classList.remove('hidden');
-                    rowTax.classList.add('flex');
-                    document.getElementById('out-calc-taxrate').textContent = taxRate;
-                    document.getElementById('out-calc-tax').textContent = this.formatCurrency(taxAmount);
-                } else {
-                    rowTax.classList.add('hidden');
-                    rowTax.classList.remove('flex');
-                }
-
-                document.getElementById('out-calc-grandtotal').textContent = this.formatCurrency(grandTotal);
-            },
-
-            createNew() {
-                if(confirm('¿Crear un nuevo documento en blanco? Los datos no guardados en PDF se perderán.')) {
-                    localStorage.removeItem('proQuoteState');
-                    location.reload();
-                }
-            },
-
-            downloadPDF() {
-                // Al presionar, el navegador abrirá el diálogo de impresión configurado 
-                // para capturar solo la "hoja de papel" como PDF gracias a nuestros @media print CSS
-                window.print();
-            },
-
-            setupMobileMenu() {
-                const btn = document.getElementById('mobile-toggle');
-                const sidebar = document.getElementById('sidebar');
-                
-                btn.addEventListener('click', () => {
-                    sidebar.classList.toggle('-translate-x-full');
-                    sidebar.classList.toggle('absolute');
-                    if(sidebar.classList.contains('-translate-x-full')) {
-                        btn.innerHTML = '<i class="ph ph-list text-xl"></i>';
-                    } else {
-                        btn.innerHTML = '<i class="ph ph-x text-xl"></i>';
-                    }
-                });
-
-                if (window.innerWidth < 768) {
-                    sidebar.classList.add('absolute', '-translate-x-full');
-                }
-            }
+            );
         };
 
-        document.addEventListener('DOMContentLoaded', () => app.init());
+        const ClosingBlock = ({ data, settings, update }) => {
+            return (
+                <div className="p-16 print-padding min-h-[500px] flex flex-col justify-between bg-slate-50">
+                    <div className="max-w-3xl mx-auto w-full">
+                        <TextareaAutosize 
+                            value={data.message}
+                            onChange={(e) => update({ message: e.target.value })}
+                            className={`w-full text-2xl leading-relaxed text-slate-800 editable-field ${settings.titleFont} italic mb-16`}
+                        />
+                        
+                        <div className="flex justify-between items-end mt-20">
+                            <div className="w-64">
+                                <div className="border-b border-slate-400 h-10 mb-2"></div>
+                                <p className="font-bold text-slate-900 text-sm">Firma Cliente</p>
+                                <p className="text-slate-500 text-xs mt-1">{settings.clientName}</p>
+                            </div>
+                            <div className="w-64">
+                                <div className="border-b border-slate-400 h-10 mb-2 flex items-end justify-center pb-1">
+                                    <span className="font-serif text-2xl italic text-slate-800 opacity-80">{settings.companyName}</span>
+                                </div>
+                                <p className="font-bold text-slate-900 text-sm">Firma Emisor</p>
+                                <input 
+                                    value={data.signer}
+                                    onChange={(e) => update({ signer: e.target.value })}
+                                    className="text-slate-500 text-xs mt-1 editable-field w-full"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-20 pt-8 border-t border-slate-200 flex justify-between text-xs text-slate-400 font-medium tracking-wide uppercase">
+                        <span>{settings.companyName}</span>
+                        <span>{settings.companyWeb}</span>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
