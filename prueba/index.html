@@ -3,2572 +3,1251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PropuestaStudio — Generador de Propuestas Premium</title>
+<title>PropuestaStudio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-/* ============================================================
-   CSS VARIABLES & RESET
-   ============================================================ */
-:root {
-  --blue-primary: #2563eb;
-  --blue-deep: #1d4ed8;
-  --blue-light: #3b82f6;
-  --blue-glow: rgba(37, 99, 235, 0.18);
-  --blue-glow-strong: rgba(37, 99, 235, 0.32);
-  --navy: #0b1220;
-  --bg-app: #0d1424;
-  --surface: #111827;
-  --surface-soft: #172033;
-  --surface-hover: #1e2a40;
-  --surface-border: rgba(148, 163, 184, 0.10);
-  --surface-border-hover: rgba(148, 163, 184, 0.22);
-  --white-paper: #ffffff;
-  --text-main: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --pdf-dark: #0f172a;
-  --pdf-muted: #475569;
-  --pdf-light: #94a3b8;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
-  --shadow-paper: 0 4px 40px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
-  --shadow-panel: 0 2px 20px rgba(0,0,0,0.35);
-  --font-ui: 'Sora', sans-serif;
-  --font-pdf-title: 'Cormorant Garamond', serif;
-  --font-pdf-body: 'Source Sans 3', sans-serif;
-  --topbar-height: 58px;
-  --sidebar-left: 240px;
-  --sidebar-right: 280px;
-  --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
+/* ─── TOKENS ──────────────────────────────────────────────── */
+:root{
+  --bg:       #0a0c10;
+  --bg1:      #0d1117;
+  --bg2:      #111720;
+  --bg3:      #161d28;
+  --bg4:      #1b2434;
+  --border:   rgba(255,255,255,.07);
+  --border2:  rgba(255,255,255,.12);
+  --blue:     #2563eb;
+  --blue-h:   #1d4ed8;
+  --blue-glow:rgba(37,99,235,.22);
+  --blue-soft:rgba(37,99,235,.12);
+  --blue-dim: rgba(37,99,235,.06);
+  --txt:      #e8edf5;
+  --txt2:     #8b96a8;
+  --txt3:     #4f5a6b;
+  --success:  #10b981;
+  --warn:     #f59e0b;
+  --r4:       4px; --r8:8px; --r12:12px; --r16:16px; --r24:24px;
+  --ui: 'Plus Jakarta Sans', sans-serif;
+  --serif: 'Cormorant', serif;
+  --serif2: 'Instrument Serif', serif;
+  --top: 52px;
+  --lw: 224px;
+  --rw: 268px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; }
-body {
-  font-family: var(--font-ui);
-  background: var(--bg-app);
-  color: var(--text-main);
-  min-height: 100vh;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:var(--ui);background:var(--bg);color:var(--txt);overflow:hidden;height:100dvh}
+
+/* scrollbars */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.18)}
+
+/* ─── TOPBAR ──────────────────────────────────────────────── */
+#top{
+  position:fixed;top:0;left:0;right:0;height:var(--top);
+  background:rgba(10,12,16,.88);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:12px;
+  z-index:900;
+}
+.brand{display:flex;align-items:center;gap:9px;flex-shrink:0;user-select:none}
+.brand-mark{
+  width:26px;height:26px;background:var(--blue);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:#fff;letter-spacing:-.5px;
+  box-shadow:0 0 0 1px rgba(37,99,235,.6),0 4px 12px rgba(37,99,235,.35);
+}
+.brand-name{font-size:13px;font-weight:700;letter-spacing:-.3px;color:var(--txt)}
+.brand-name span{color:var(--blue)}
+.top-divider{width:1px;height:18px;background:var(--border);flex-shrink:0}
+
+.doc-name-wrap{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+#docName{
+  background:transparent;border:none;color:var(--txt);
+  font-family:var(--ui);font-size:13px;font-weight:600;
+  outline:none;width:220px;letter-spacing:-.2px;
+  padding:4px 6px;border-radius:var(--r8);transition:.15s;
+}
+#docName:hover{background:var(--bg3)}
+#docName:focus{background:var(--bg3);box-shadow:0 0 0 1px var(--blue)}
+
+.pill{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;
+  letter-spacing:.3px;text-transform:uppercase;flex-shrink:0;
+}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pill.saved{background:rgba(16,185,129,.1);color:#34d399}
+.pill.saving{background:rgba(245,158,11,.1);color:#fbbf24}
+.pill.draft{background:rgba(139,150,168,.08);color:var(--txt3)}
+
+.top-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.t-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:var(--r8);
+  border:none;cursor:pointer;font-family:var(--ui);
+  font-size:12px;font-weight:600;transition:.15s var(--ease);
+  white-space:nowrap;letter-spacing:-.1px;
+}
+.t-btn svg{width:13px;height:13px;flex-shrink:0}
+.ghost{background:transparent;color:var(--txt2)}
+.ghost:hover{background:var(--bg3);color:var(--txt)}
+.stroke{background:transparent;color:var(--txt2);border:1px solid var(--border)}
+.stroke:hover{border-color:var(--border2);color:var(--txt)}
+.primary{
+  background:var(--blue);color:#fff;
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 4px 14px var(--blue-glow);
+}
+.primary:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 6px 20px var(--blue-glow)}
+.primary:active{transform:translateY(0)}
+
+/* ─── LAYOUT ──────────────────────────────────────────────── */
+#shell{display:flex;height:calc(100dvh - var(--top));margin-top:var(--top)}
+
+/* ─── LEFT PANEL ──────────────────────────────────────────── */
+#left{
+  width:var(--lw);flex-shrink:0;
+  background:var(--bg1);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.left-head{
+  padding:14px 14px 10px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.section-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3)}
+
+.pages-scroll{overflow-y:auto;flex:1;padding:10px 10px 0}
+.pg-item{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 9px;border-radius:var(--r12);cursor:pointer;
+  transition:.12s var(--ease);margin-bottom:2px;
+  border:1px solid transparent;
+  user-select:none;
+}
+.pg-item:hover{background:var(--bg3)}
+.pg-item.active{background:var(--blue-dim);border-color:rgba(37,99,235,.2)}
+.pg-thumb{
+  width:28px;height:38px;background:white;border-radius:3px;
+  flex-shrink:0;overflow:hidden;position:relative;
+  box-shadow:0 1px 4px rgba(0,0,0,.4),0 0 0 .5px rgba(0,0,0,.2);
+}
+.pg-thumb-inner{position:absolute;inset:0;padding:2px}
+.pg-thumb-accent{border-radius:1px;margin-bottom:1.5px}
+.pg-info{min-width:0}
+.pg-name{font-size:11.5px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-sub{font-size:10px;color:var(--txt3);margin-top:.5px}
+
+.add-sect{
+  margin:8px 10px 10px;padding:8px;
+  border:1px dashed rgba(37,99,235,.3);border-radius:var(--r12);
+  background:var(--blue-dim);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  color:var(--blue);font-size:11.5px;font-weight:600;
+  cursor:pointer;transition:.15s var(--ease);flex-shrink:0;
+}
+.add-sect:hover{background:var(--blue-soft);border-color:rgba(37,99,235,.5)}
+
+/* ─── CANVAS ──────────────────────────────────────────────── */
+#canvas{
+  flex:1;overflow-y:auto;
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(37,99,235,.05) 0%, transparent 60%);
+  padding:32px 20px 60px;
+}
+.canvas-in{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+
+/* ─── DOCUMENT PAGES ─────────────────────────────────────── */
+.doc-page{
+  width:100%;background:#fff;
+  border-radius:3px;
+  box-shadow:0 2px 20px rgba(0,0,0,.35),0 8px 40px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.15);
+  position:relative;margin-bottom:20px;overflow:hidden;
+  transition:.2s var(--ease);
+  animation:pageIn .3s var(--ease) both;
+}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.doc-page:hover .page-tools{opacity:1}
+.doc-page.ring{box-shadow:0 2px 20px rgba(0,0,0,.35),0 8px 40px rgba(0,0,0,.25),0 0 0 1.5px var(--blue)}
+
+.page-tools{
+  position:absolute;top:10px;right:10px;
+  display:flex;gap:3px;opacity:0;transition:.15s;z-index:20;
+}
+.pt-btn{
+  width:26px;height:26px;background:rgba(255,255,255,.95);
+  border:.5px solid rgba(0,0,0,.12);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:12px;color:#444;
+  transition:.12s var(--ease);
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+}
+.pt-btn:hover{background:#fff;transform:scale(1.08)}
+.pt-btn.del:hover{background:#fee2e2;color:#dc2626}
+
+/* ─── COVER PAGE ─────────────────────────────────────────── */
+.cover{min-height:1050px;display:flex;flex-direction:column;font-family:'Plus Jakarta Sans',sans-serif}
+.cover-stripe{height:5px}
+.cover-body{flex:1;display:flex;flex-direction:column;padding:60px 56px 52px;position:relative;overflow:hidden}
+.cover-geo{
+  position:absolute;right:-80px;bottom:60px;
+  width:380px;height:380px;border-radius:50%;
+  border:1px solid rgba(37,99,235,.1);
+  pointer-events:none;
+}
+.cover-geo::before{
+  content:'';position:absolute;inset:40px;border-radius:50%;
+  border:1px solid rgba(37,99,235,.07);
+}
+.cover-logo-zone{margin-bottom:72px;display:flex;align-items:center;gap:10px}
+.cover-logo-img{max-height:44px;max-width:180px;object-fit:contain}
+.cover-logo-stub{
+  width:40px;height:40px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:800;color:#fff;
+}
+.cover-logo-name{font-size:15px;font-weight:700;color:#0f172a;letter-spacing:-.3px}
+
+.cover-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:99px;
+  background:#f0f4ff;border:.5px solid rgba(37,99,235,.2);
+  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:#2563eb;margin-bottom:20px;width:fit-content;
+}
+.cover-h1{
+  font-family:'Cormorant',serif;
+  font-size:52px;font-weight:500;color:#0d1117;
+  line-height:1.05;letter-spacing:-.5px;
+  margin-bottom:16px;
+}
+.cover-sub{
+  font-size:15px;color:#64748b;line-height:1.65;max-width:440px;
+  margin-bottom:44px;font-weight:400;
+}
+.cover-rule{width:40px;height:2.5px;border-radius:2px;margin-bottom:32px}
+.cover-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 36px;max-width:400px}
+.cover-kv label{
+  font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#94a3b8;display:block;margin-bottom:3px;
+}
+.cover-kv .val{font-size:13.5px;font-weight:600;color:#0f172a}
+
+.cover-foot{
+  padding:22px 56px;border-top:.5px solid rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cover-foot-l{font-size:11.5px;color:#94a3b8}
+.cover-foot-r{display:flex;align-items:center;gap:5px}
+.foot-dot{width:5px;height:5px;border-radius:50%}
+.foot-web{font-size:11.5px;color:#64748b}
+
+/* ─── CONTENT PAGES ──────────────────────────────────────── */
+.cpage{min-height:1050px;padding:64px 56px;display:flex;flex-direction:column}
+.cpage-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:44px;padding-bottom:18px;
+  border-bottom:.5px solid rgba(0,0,0,.08);
+}
+.pg-label{
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2563eb
+}
+.pg-num{font-size:11.5px;color:#94a3b8}
+
+.cb{margin-bottom:32px}
+.cb-h1{
+  font-family:'Cormorant',serif;
+  font-size:36px;font-weight:500;color:#0f172a;
+  line-height:1.12;letter-spacing:-.2px;margin-bottom:14px;
+}
+.cb-h1.xl{font-size:44px;letter-spacing:-.4px}
+.cb-body{font-size:13.5px;color:#475569;line-height:1.88;font-weight:400}
+.cb-body p{margin-bottom:13px}
+.cb-body p:last-child{margin-bottom:0}
+
+.hl-box{
+  background:#f8faff;border-left:2.5px solid #2563eb;
+  border-radius:0 var(--r8) var(--r8) 0;padding:16px 20px;margin:20px 0;
+}
+.hl-box p{font-size:13.5px;color:#1e3a6e;font-style:italic;line-height:1.7;margin:0}
+
+.cards2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.icard{
+  background:#f8faff;border:.5px solid rgba(37,99,235,.1);
+  border-radius:12px;padding:18px;
+}
+.icard-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2563eb;margin-bottom:7px}
+.icard-body{font-size:13px;color:#334155;line-height:1.7}
+
+.deliv-list{margin:14px 0}
+.deliv{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:.5px solid rgba(0,0,0,.06)}
+.deliv:last-child{border-bottom:none}
+.d-dot{width:5px;height:5px;border-radius:50%;background:#2563eb;margin-top:5px;flex-shrink:0}
+.d-text strong{font-size:13px;font-weight:600;color:#0f172a;display:block;margin-bottom:2px}
+.d-text span{font-size:12px;color:#64748b;line-height:1.5}
+
+/* ─── PRICING TABLE ──────────────────────────────────────── */
+.ptable-wrap{margin:16px 0}
+.ptable{width:100%;border-collapse:collapse;font-family:'Plus Jakarta Sans',sans-serif}
+.ptable thead tr{background:#0f172a}
+.ptable thead th{
+  padding:12px 14px;font-size:9.5px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55);
+  text-align:left;
+}
+.ptable thead th.ra{text-align:right}
+.ptable tbody tr{border-bottom:.5px solid rgba(0,0,0,.06);transition:.1s}
+.ptable tbody tr:hover{background:#f8faff}
+.ptable td{padding:13px 14px;font-size:13px;color:#0f172a;vertical-align:top}
+.ptable td.ra{text-align:right;font-weight:600}
+.item-n{font-weight:600;margin-bottom:2px;font-size:13px}
+.item-d{font-size:11.5px;color:#64748b;line-height:1.4}
+
+.totals-block{border-top:1.5px solid #0f172a;margin-top:6px}
+.total-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 14px;border-bottom:.5px solid rgba(0,0,0,.06);
+}
+.total-row.fin{background:#0f172a;border-radius:0 0 4px 4px;margin-top:3px}
+.tr-lbl{font-size:12.5px;color:#64748b}
+.tr-val{font-size:13.5px;font-weight:600;color:#0f172a}
+.total-row.fin .tr-lbl{
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55)
+}
+.total-row.fin .tr-val{
+  font-family:'Cormorant',serif;font-size:28px;font-weight:500;color:#fff
 }
 
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.18); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.35); }
+/* ─── TERMS PAGE ─────────────────────────────────────────── */
+.terms-sec{margin-bottom:22px}
+.terms-t{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#0f172a;margin-bottom:8px}
+.terms-body{font-size:12.5px;color:#475569;line-height:1.82}
 
-/* ============================================================
-   TOPBAR
-   ============================================================ */
-#topbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--topbar-height);
-  background: rgba(13, 20, 36, 0.97);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--surface-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1000;
-  gap: 16px;
+/* ─── CLOSING PAGE ───────────────────────────────────────── */
+.closing{min-height:1050px;padding:64px 56px;display:flex;flex-direction:column;justify-content:space-between}
+.closing-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.closing-eye{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#2563eb;margin-bottom:18px}
+.closing-h1{
+  font-family:'Cormorant',serif;font-size:46px;font-weight:500;
+  color:#0f172a;line-height:1.08;letter-spacing:-.5px;max-width:500px;margin-bottom:22px;
 }
+.closing-p{font-size:14px;color:#475569;line-height:1.8;max-width:460px;margin-bottom:36px}
+.sig-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px}
+.sig-name{font-family:'Instrument Serif',serif;font-size:26px;color:#0f172a;font-style:italic}
+.sig-role{font-size:12px;color:#64748b;margin-top:2px}
 
-.topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+.contact-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:32px}
+.c-card{display:flex;align-items:flex-start;gap:9px}
+.c-icon{
+  width:30px;height:30px;background:#f0f4ff;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
 }
-.topbar-brand-icon {
-  width: 30px; height: 30px;
-  background: var(--blue-primary);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  color: white;
-  font-weight: 800;
-  letter-spacing: -1px;
-  box-shadow: 0 0 16px var(--blue-glow-strong);
-}
-.topbar-brand-name {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text-main);
-}
-.topbar-brand-name span {
-  color: var(--blue-light);
-}
+.c-info label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:2px}
+.c-info span{font-size:13px;color:#0f172a;font-weight:500}
 
-.topbar-doc-status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
+.close-band{
+  margin:-64px -56px -64px;padding:26px 56px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.doc-title-input {
-  background: transparent;
-  border: none;
-  color: var(--text-main);
-  font-family: var(--font-ui);
-  font-size: 13.5px;
-  font-weight: 600;
-  outline: none;
-  width: 220px;
-  letter-spacing: -0.2px;
-}
-.doc-title-input:focus {
-  border-bottom: 1px solid var(--blue-primary);
-}
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-.status-badge.draft { background: rgba(148,163,184,0.12); color: var(--text-muted); }
-.status-badge.saved { background: rgba(16,185,129,0.12); color: var(--success); }
-.status-badge.saving { background: rgba(245,158,11,0.12); color: var(--warning); }
-.status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.cb-brand{display:flex;align-items:center;gap:9px}
+.cb-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+.cb-bname{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
+.cb-web{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px}
+.cb-right{text-align:right;font-size:11px;color:rgba(255,255,255,.3);line-height:1.6}
 
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+/* ─── RIGHT PANEL ────────────────────────────────────────── */
+#right{
+  width:var(--rw);flex-shrink:0;
+  background:var(--bg1);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
 }
-.tb-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: var(--radius-sm);
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-ui);
-  font-size: 12.5px;
-  font-weight: 600;
-  transition: var(--transition);
-  white-space: nowrap;
+.r-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.r-tab{
+  flex:1;padding:11px 4px;font-size:10.5px;font-weight:600;text-align:center;
+  cursor:pointer;color:var(--txt3);
+  border-bottom:1.5px solid transparent;transition:.15s;
+  background:transparent;border-top:none;border-left:none;border-right:none;
+  font-family:var(--ui);
 }
-.tb-btn-ghost {
-  background: transparent;
-  color: var(--text-secondary);
-}
-.tb-btn-ghost:hover {
-  background: var(--surface-hover);
-  color: var(--text-main);
-}
-.tb-btn-outline {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--surface-border);
-}
-.tb-btn-outline:hover {
-  border-color: var(--surface-border-hover);
-  color: var(--text-main);
-}
-.tb-btn-primary {
-  background: var(--blue-primary);
-  color: white;
-  box-shadow: 0 0 18px var(--blue-glow);
-}
-.tb-btn-primary:hover {
-  background: var(--blue-deep);
-  box-shadow: 0 0 24px var(--blue-glow-strong);
-  transform: translateY(-1px);
-}
-.tb-sep { width: 1px; height: 24px; background: var(--surface-border); }
+.r-tab:hover{color:var(--txt2)}
+.r-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
-#app-layout {
-  display: flex;
-  height: calc(100vh - var(--topbar-height));
-  margin-top: var(--topbar-height);
-}
+.r-panel{display:none;flex-direction:column;overflow-y:auto;flex:1}
+.r-panel.on{display:flex}
 
-/* ============================================================
-   LEFT SIDEBAR
-   ============================================================ */
-#sidebar-left {
-  width: var(--sidebar-left);
-  background: var(--surface);
-  border-right: 1px solid var(--surface-border);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
+.r-group{padding:14px 14px 14px;border-bottom:1px solid var(--border)}
+.r-group-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.r-row{margin-bottom:8px}
+.r-label{font-size:11px;font-weight:600;color:var(--txt2);margin-bottom:4px;display:block}
+.r-input{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r8);color:var(--txt);font-family:var(--ui);
+  font-size:12px;padding:7px 10px;outline:none;transition:.15s;
 }
+.r-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
+.r-input::placeholder{color:var(--txt3)}
+textarea.r-input{resize:vertical;min-height:64px;line-height:1.5}
+.r-2col{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.r-select{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r8);color:var(--txt);font-family:var(--ui);
+  font-size:12px;padding:7px 10px;outline:none;transition:.15s;
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234f5a6b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+  padding-right:28px;
+}
+.r-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
 
-.sidebar-section {
-  padding: 16px 14px 8px;
+/* Logo upload */
+.logo-drop{
+  width:100%;min-height:72px;border:1px dashed var(--border2);
+  border-radius:var(--r12);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;cursor:pointer;
+  transition:.15s;position:relative;overflow:hidden;margin-bottom:8px;
 }
-.sidebar-section-label {
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  padding-left: 2px;
-}
+.logo-drop:hover{border-color:var(--blue);background:var(--blue-dim)}
+.logo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.logo-drop-icon{font-size:18px}
+.logo-drop-text{font-size:11px;color:var(--txt3)}
+.logo-prev{max-width:100%;max-height:48px;object-fit:contain}
 
-.page-list {
-  overflow-y: auto;
-  flex: 1;
-  padding: 0 10px 10px;
-}
+/* Color swatches */
+.color-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.swatch{width:30px;height:30px;border-radius:var(--r8);border:1px solid var(--border);cursor:pointer;overflow:hidden;flex-shrink:0}
+.swatch input[type=color]{width:200%;height:200%;margin:-50% 0 0 -50%;border:none;outline:none;cursor:pointer}
+.color-label{font-size:11.5px;color:var(--txt2)}
 
-.page-thumb {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: var(--transition);
-  margin-bottom: 2px;
-  border: 1px solid transparent;
+/* Pricing item card */
+.p-item{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r12);padding:10px;margin-bottom:7px;
+  transition:.15s;
 }
-.page-thumb:hover { background: var(--surface-hover); }
-.page-thumb.active {
-  background: var(--blue-glow);
-  border-color: rgba(37,99,235,0.3);
+.p-item:hover{border-color:var(--border2)}
+.p-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.p-item-name{font-size:11.5px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.p-item-tot{font-size:12px;font-weight:700;color:#60a5fa}
+.p-del{background:transparent;border:none;color:var(--txt3);cursor:pointer;font-size:13px;padding:1px 4px;border-radius:5px;transition:.1s}
+.p-del:hover{color:#f87171;background:rgba(239,68,68,.1)}
+
+.totals-card{
+  background:var(--blue-dim);border:1px solid rgba(37,99,235,.15);
+  border-radius:var(--r12);padding:12px;margin-top:10px;
 }
-.page-thumb-preview {
-  width: 36px;
-  height: 50px;
-  background: white;
-  border-radius: 3px;
-  flex-shrink: 0;
-  overflow: hidden;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.35);
-  font-size: 3px;
-  color: #333;
-  padding: 3px;
-  line-height: 1.2;
+.tc-row{display:flex;justify-content:space-between;padding:3px 0}
+.tc-lbl{font-size:11px;color:var(--txt2)}
+.tc-val{font-size:12px;font-weight:600;color:var(--txt)}
+.tc-row.fin{border-top:1px solid rgba(37,99,235,.18);margin-top:5px;padding-top:8px}
+.tc-row.fin .tc-lbl{font-size:11.5px;font-weight:700;color:var(--txt)}
+.tc-row.fin .tc-val{font-size:17px;color:#60a5fa}
+
+/* Action buttons */
+.sm-btn{
+  padding:7px 12px;border-radius:var(--r8);border:1px solid var(--border);
+  background:var(--bg3);color:var(--txt2);font-family:var(--ui);
+  font-size:11.5px;font-weight:600;cursor:pointer;transition:.15s;
 }
-.page-thumb-info {
-  min-width: 0;
+.sm-btn:hover{border-color:var(--border2);color:var(--txt)}
+.sm-btn.blue{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px var(--blue-glow)}
+.sm-btn.blue:hover{background:var(--blue-h)}
+.w100{width:100%}
+.mt8{margin-top:8px}
+.mb8{margin-bottom:8px}
+
+/* ─── MODAL ──────────────────────────────────────────────── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:.2s;
 }
-.page-thumb-name {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r24);padding:28px;width:100%;max-width:520px;
+  transform:translateY(14px) scale(.98);transition:.25s var(--spring);
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.04);
 }
-.page-thumb-type {
-  font-size: 10px;
-  color: var(--text-muted);
-  margin-top: 1px;
+.overlay.open .modal{transform:none}
+.modal-title{font-size:17px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-.3px}
+.modal-sub{font-size:13px;color:var(--txt2);margin-bottom:20px;line-height:1.5}
+.block-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.block-opt{
+  padding:13px;border-radius:var(--r12);border:1px solid var(--border);
+  cursor:pointer;transition:.15s;background:var(--bg3);
+}
+.block-opt:hover{border-color:var(--blue);background:var(--blue-dim)}
+.bo-icon{font-size:18px;margin-bottom:5px}
+.bo-name{font-size:12.5px;font-weight:600;color:var(--txt);margin-bottom:2px}
+.bo-desc{font-size:11px;color:var(--txt3);line-height:1.4}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+
+/* ─── TOAST ──────────────────────────────────────────────── */
+#toast{
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%) translateY(56px);
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:99px;padding:10px 20px;
+  font-size:13px;font-weight:600;color:var(--txt);
+  box-shadow:0 8px 32px rgba(0,0,0,.45);z-index:3000;
+  transition:transform .35s var(--spring);
+  display:flex;align-items:center;gap:7px;white-space:nowrap;
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.ok .toast-ico{color:var(--success)}
+#toast.er .toast-ico{color:#f87171}
+
+/* ─── EXPORT PROGRESS ────────────────────────────────────── */
+#exporting{
+  position:fixed;inset:0;background:rgba(10,12,16,.94);
+  backdrop-filter:blur(12px);z-index:4000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  opacity:0;pointer-events:none;transition:.3s;
+}
+#exporting.show{opacity:1;pointer-events:all}
+.exp-ring{
+  width:44px;height:44px;border-radius:50%;
+  border:2.5px solid var(--bg4);border-top-color:var(--blue);
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.exp-label{font-size:14px;font-weight:600;color:var(--txt2)}
+.exp-sub{font-size:12px;color:var(--txt3)}
+
+/* ─── EDITABLE TEXT ──────────────────────────────────────── */
+[contenteditable]{outline:none;transition:.12s}
+[contenteditable]:hover{background:rgba(37,99,235,.04);border-radius:3px}
+[contenteditable]:focus{background:rgba(37,99,235,.07);border-radius:4px;box-shadow:0 0 0 1.5px rgba(37,99,235,.25)}
+
+/* ─── PRINT ──────────────────────────────────────────────── */
+@media print{
+  #top,#left,#right,#toast,#exporting,.overlay,.page-tools{display:none!important}
+  body,#shell,#canvas{overflow:visible!important;height:auto!important;background:white!important}
+  #canvas{padding:0!important;margin-top:0!important;background:white!important}
+  .canvas-in{max-width:none!important}
+  .doc-page{margin-bottom:0!important;box-shadow:none!important;border-radius:0!important;page-break-after:always}
+  .doc-page:last-child{page-break-after:auto}
+  @page{size:A4;margin:0}
 }
 
-.add-block-btn {
-  width: calc(100% - 20px);
-  margin: 10px;
-  padding: 9px;
-  background: rgba(37,99,235,0.08);
-  border: 1px dashed rgba(37,99,235,0.3);
-  border-radius: var(--radius-md);
-  color: var(--blue-light);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: var(--transition);
-}
-.add-block-btn:hover {
-  background: rgba(37,99,235,0.14);
-  border-color: rgba(37,99,235,0.5);
-}
-
-/* ============================================================
-   MAIN CANVAS
-   ============================================================ */
-#canvas-area {
-  flex: 1;
-  overflow-y: auto;
-  background: #0a1020;
-  background-image: radial-gradient(circle at 50% 0%, rgba(37,99,235,0.05) 0%, transparent 60%);
-  padding: 40px 24px;
-  position: relative;
-}
-
-.canvas-inner {
-  max-width: 820px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* ============================================================
-   DOCUMENT PAGES
-   ============================================================ */
-.doc-page {
-  width: 100%;
-  background: var(--white-paper);
-  box-shadow: var(--shadow-paper);
-  border-radius: 4px;
-  position: relative;
-  margin-bottom: 24px;
-  min-height: 400px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: box-shadow var(--transition);
-}
-.doc-page:hover .page-controls { opacity: 1; }
-.doc-page.selected {
-  box-shadow: var(--shadow-paper), 0 0 0 2px var(--blue-primary);
-}
-
-.page-controls {
-  position: absolute;
-  top: 10px; right: 10px;
-  display: flex;
-  gap: 4px;
-  opacity: 0;
-  transition: var(--transition);
-  z-index: 10;
-}
-.page-ctrl-btn {
-  width: 28px; height: 28px;
-  background: rgba(255,255,255,0.95);
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 13px;
-  color: #333;
-  transition: var(--transition);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-}
-.page-ctrl-btn:hover { background: white; transform: scale(1.05); }
-.page-ctrl-btn.danger:hover { background: #fee2e2; color: var(--danger); }
-
-/* ============================================================
-   COVER PAGE
-   ============================================================ */
-.cover-page {
-  min-height: 1123px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-.cover-accent-bar {
-  height: 6px;
-  background: linear-gradient(90deg, var(--blue-deep), var(--blue-light));
-}
-.cover-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 70px 64px 60px;
-  position: relative;
-}
-.cover-logo-area {
-  margin-bottom: 80px;
-}
-.cover-logo-img {
-  max-height: 52px;
-  max-width: 200px;
-  object-fit: contain;
-}
-.cover-logo-placeholder {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-.cover-logo-icon {
-  width: 48px; height: 48px;
-  background: var(--blue-primary);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  color: white;
-  font-size: 18px;
-  font-weight: 800;
-  font-family: var(--font-ui);
-}
-.cover-brand-text {
-  font-family: var(--font-ui);
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--pdf-dark);
-  letter-spacing: -0.3px;
-}
-
-.cover-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.cover-label {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--blue-primary);
-  margin-bottom: 18px;
-}
-.cover-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 58px;
-  font-weight: 600;
-  color: var(--pdf-dark);
-  line-height: 1.05;
-  letter-spacing: -1px;
-  margin-bottom: 20px;
-}
-.cover-subtitle {
-  font-family: var(--font-pdf-body);
-  font-size: 16px;
-  color: var(--pdf-muted);
-  font-weight: 400;
-  line-height: 1.6;
-  max-width: 480px;
-  margin-bottom: 52px;
-}
-.cover-blue-line {
-  width: 48px;
-  height: 3px;
-  background: var(--blue-primary);
-  border-radius: 2px;
-  margin-bottom: 36px;
-}
-.cover-meta-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px 40px;
-  max-width: 480px;
-}
-.cover-meta-item label {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--pdf-light);
-  display: block;
-  margin-bottom: 4px;
-}
-.cover-meta-item .meta-value {
-  font-family: var(--font-pdf-body);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--pdf-dark);
-}
-
-.cover-footer {
-  padding: 28px 64px;
-  border-top: 1px solid rgba(0,0,0,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.cover-footer-left {
-  font-family: var(--font-pdf-body);
-  font-size: 12px;
-  color: var(--pdf-light);
-}
-.cover-footer-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.cover-footer-dot {
-  width: 6px; height: 6px;
-  background: var(--blue-primary);
-  border-radius: 50%;
-}
-.cover-footer-text {
-  font-family: var(--font-pdf-body);
-  font-size: 12px;
-  color: var(--pdf-muted);
-}
-
-.cover-deco {
-  position: absolute;
-  right: -60px; bottom: 80px;
-  width: 340px; height: 340px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* ============================================================
-   CONTENT PAGES
-   ============================================================ */
-.content-page {
-  min-height: 1123px;
-  padding: 72px 64px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.page-header-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 52px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-.page-section-label {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--blue-primary);
-}
-.page-number {
-  font-family: var(--font-pdf-body);
-  font-size: 12px;
-  color: var(--pdf-light);
-  font-weight: 400;
-}
-
-.content-block { margin-bottom: 40px; }
-.content-block-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 30px;
-  font-weight: 600;
-  color: var(--pdf-dark);
-  line-height: 1.15;
-  margin-bottom: 16px;
-  letter-spacing: -0.3px;
-}
-.content-block-title.large {
-  font-size: 40px;
-  letter-spacing: -0.5px;
-}
-.content-block-text {
-  font-family: var(--font-pdf-body);
-  font-size: 14px;
-  color: var(--pdf-muted);
-  line-height: 1.85;
-  font-weight: 400;
-}
-.content-block-text p { margin-bottom: 14px; }
-
-.highlight-box {
-  background: #f8faff;
-  border-left: 3px solid var(--blue-primary);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 18px 22px;
-  margin: 24px 0;
-}
-.highlight-box p {
-  font-family: var(--font-pdf-body);
-  font-size: 14px;
-  color: var(--pdf-dark);
-  font-style: italic;
-  line-height: 1.7;
-  margin: 0;
-}
-
-.deliverable-list { margin: 16px 0; }
-.deliverable-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-.deliverable-item:last-child { border-bottom: none; }
-.deliverable-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--blue-primary);
-  margin-top: 6px;
-  flex-shrink: 0;
-}
-.deliverable-text {
-  font-family: var(--font-pdf-body);
-  font-size: 13.5px;
-  color: var(--pdf-dark);
-  line-height: 1.6;
-}
-.deliverable-text strong {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 2px;
-}
-.deliverable-text span {
-  color: var(--pdf-muted);
-  font-size: 12.5px;
-}
-
-.two-col-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin: 20px 0;
-}
-.info-card {
-  background: #f8faff;
-  border-radius: var(--radius-md);
-  padding: 20px;
-  border: 1px solid rgba(37,99,235,0.08);
-}
-.info-card-title {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--blue-primary);
-  margin-bottom: 8px;
-}
-.info-card-body {
-  font-family: var(--font-pdf-body);
-  font-size: 13px;
-  color: var(--pdf-dark);
-  line-height: 1.7;
-}
-
-/* ============================================================
-   PRICING TABLE
-   ============================================================ */
-.pricing-page {
-  min-height: 1123px;
-  padding: 72px 64px;
-  display: flex;
-  flex-direction: column;
-}
-
-.pricing-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-family: var(--font-pdf-body);
-}
-.pricing-table thead tr {
-  background: var(--pdf-dark);
-}
-.pricing-table thead th {
-  padding: 14px 16px;
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-  text-align: left;
-}
-.pricing-table thead th:last-child { text-align: right; }
-.pricing-table thead th.text-right { text-align: right; }
-.pricing-table tbody tr {
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  transition: background 0.1s;
-}
-.pricing-table tbody tr:hover { background: #f8faff; }
-.pricing-table tbody td {
-  padding: 14px 16px;
-  font-size: 13.5px;
-  color: var(--pdf-dark);
-  vertical-align: top;
-}
-.pricing-table tbody td:last-child { text-align: right; font-weight: 600; }
-.pricing-table td.text-right { text-align: right; }
-.pricing-item-name { font-weight: 600; margin-bottom: 2px; }
-.pricing-item-desc { font-size: 12px; color: var(--pdf-muted); line-height: 1.4; }
-
-.pricing-group-header td {
-  background: #f1f5f9 !important;
-  font-family: var(--font-ui) !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  letter-spacing: 1px !important;
-  text-transform: uppercase !important;
-  color: var(--pdf-muted) !important;
-  padding: 10px 16px !important;
-}
-
-.pricing-totals {
-  margin-top: 8px;
-  border-top: 2px solid var(--pdf-dark);
-}
-.pricing-total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-.pricing-total-row.final {
-  background: var(--pdf-dark);
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  margin-top: 4px;
-}
-.total-label {
-  font-family: var(--font-pdf-body);
-  font-size: 13px;
-  color: var(--pdf-muted);
-}
-.total-value {
-  font-family: var(--font-pdf-body);
-  font-size: 14px;
-  color: var(--pdf-dark);
-  font-weight: 600;
-}
-.pricing-total-row.final .total-label {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-}
-.pricing-total-row.final .total-value {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
-  color: white;
-  font-weight: 600;
-}
-
-/* ============================================================
-   TERMS PAGE
-   ============================================================ */
-.terms-page {
-  min-height: 1123px;
-  padding: 72px 64px;
-  display: flex;
-  flex-direction: column;
-}
-.terms-section { margin-bottom: 28px; }
-.terms-section-title {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--pdf-dark);
-  margin-bottom: 10px;
-}
-.terms-text {
-  font-family: var(--font-pdf-body);
-  font-size: 12.5px;
-  color: var(--pdf-muted);
-  line-height: 1.8;
-}
-
-/* ============================================================
-   CLOSING PAGE
-   ============================================================ */
-.closing-page {
-  min-height: 1123px;
-  padding: 72px 64px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.closing-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 40px 0;
-}
-.closing-eyebrow {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--blue-primary);
-  margin-bottom: 20px;
-}
-.closing-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 44px;
-  font-weight: 600;
-  color: var(--pdf-dark);
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  margin-bottom: 24px;
-  max-width: 520px;
-}
-.closing-text {
-  font-family: var(--font-pdf-body);
-  font-size: 14px;
-  color: var(--pdf-muted);
-  line-height: 1.8;
-  max-width: 500px;
-  margin-bottom: 40px;
-}
-.closing-signature-area { margin-bottom: 48px; }
-.signature-label {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--pdf-light);
-  margin-bottom: 4px;
-}
-.signature-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--pdf-dark);
-}
-.signature-role {
-  font-family: var(--font-pdf-body);
-  font-size: 12px;
-  color: var(--pdf-muted);
-  margin-top: 2px;
-}
-
-.contact-cards-row {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.contact-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.contact-icon {
-  width: 32px; height: 32px;
-  background: var(--blue-glow);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.contact-info label {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--pdf-light);
-  display: block;
-  margin-bottom: 2px;
-}
-.contact-info span {
-  font-family: var(--font-pdf-body);
-  font-size: 13px;
-  color: var(--pdf-dark);
-  font-weight: 500;
-}
-
-.closing-footer-band {
-  background: var(--pdf-dark);
-  margin: 0 -64px -72px;
-  padding: 28px 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.closing-footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.closing-footer-icon {
-  width: 34px; height: 34px;
-  background: var(--blue-primary);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  color: white;
-  font-size: 13px;
-  font-weight: 800;
-  font-family: var(--font-ui);
-}
-.closing-footer-name {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.9);
-}
-.closing-footer-tagline {
-  font-family: var(--font-pdf-body);
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.3px;
-}
-
-/* ============================================================
-   RIGHT SIDEBAR
-   ============================================================ */
-#sidebar-right {
-  width: var(--sidebar-right);
-  background: var(--surface);
-  border-left: 1px solid var(--surface-border);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-.right-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--surface-border);
-  flex-shrink: 0;
-}
-.right-tab {
-  flex: 1;
-  padding: 12px 6px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-align: center;
-  cursor: pointer;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
-  transition: var(--transition);
-  background: transparent;
-  border-top: none; border-left: none; border-right: none;
-  font-family: var(--font-ui);
-}
-.right-tab:hover { color: var(--text-secondary); }
-.right-tab.active {
-  color: var(--blue-light);
-  border-bottom-color: var(--blue-primary);
-}
-
-.right-panel { display: none; flex-direction: column; flex: 1; }
-.right-panel.active { display: flex; }
-
-.panel-group {
-  padding: 16px 16px 0;
-  border-bottom: 1px solid var(--surface-border);
-  padding-bottom: 16px;
-}
-.panel-group-title {
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.field-row {
-  margin-bottom: 10px;
-}
-.field-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 5px;
-  display: block;
-}
-.field-input {
-  width: 100%;
-  background: var(--bg-app);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-main);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  padding: 8px 10px;
-  outline: none;
-  transition: var(--transition);
-}
-.field-input:focus {
-  border-color: var(--blue-primary);
-  box-shadow: 0 0 0 3px var(--blue-glow);
-}
-.field-input::placeholder { color: var(--text-muted); }
-textarea.field-input {
-  resize: vertical;
-  min-height: 70px;
-  line-height: 1.5;
-}
-.field-row-half {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.color-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.color-swatch {
-  width: 32px; height: 32px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--surface-border);
-  cursor: pointer;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.color-swatch input[type=color] {
-  width: 200%;
-  height: 200%;
-  margin: -50% 0 0 -50%;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-.color-label { font-size: 11.5px; color: var(--text-secondary); flex: 1; }
-
-.logo-upload-area {
-  width: 100%;
-  min-height: 80px;
-  border: 1.5px dashed var(--surface-border);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-.logo-upload-area:hover {
-  border-color: var(--blue-primary);
-  background: var(--blue-glow);
-}
-.logo-upload-area input[type=file] {
-  position: absolute; inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  font-size: 0;
-}
-.logo-upload-icon { font-size: 20px; }
-.logo-upload-text { font-size: 11px; color: var(--text-muted); }
-.logo-preview {
-  max-width: 100%;
-  max-height: 60px;
-  object-fit: contain;
-}
-
-.select-input {
-  width: 100%;
-  background: var(--bg-app);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-main);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  padding: 8px 10px;
-  outline: none;
-  transition: var(--transition);
-  appearance: none;
-  cursor: pointer;
-}
-.select-input:focus {
-  border-color: var(--blue-primary);
-  box-shadow: 0 0 0 3px var(--blue-glow);
-}
-
-.small-btn {
-  padding: 7px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--surface-border);
-  background: var(--surface-hover);
-  color: var(--text-secondary);
-  font-family: var(--font-ui);
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.small-btn:hover {
-  border-color: var(--surface-border-hover);
-  color: var(--text-main);
-}
-.small-btn.primary {
-  background: var(--blue-primary);
-  border-color: var(--blue-primary);
-  color: white;
-}
-.small-btn.primary:hover {
-  background: var(--blue-deep);
-}
-
-/* ============================================================
-   PRICING EDITOR (sidebar)
-   ============================================================ */
-.pricing-item-editor {
-  background: var(--bg-app);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  margin-bottom: 8px;
-}
-.pricing-item-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-.pricing-item-name-disp {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-.pricing-item-total-disp {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--blue-light);
-}
-.item-delete-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 4px;
-  transition: var(--transition);
-  border-radius: 4px;
-}
-.item-delete-btn:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
-
-.totals-panel {
-  background: var(--blue-glow);
-  border: 1px solid rgba(37,99,235,0.2);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  margin-top: 12px;
-}
-.totals-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-}
-.totals-row-label { font-size: 11px; color: var(--text-secondary); }
-.totals-row-value { font-size: 12px; font-weight: 600; color: var(--text-main); }
-.totals-row.final {
-  border-top: 1px solid rgba(37,99,235,0.25);
-  margin-top: 6px;
-  padding-top: 10px;
-}
-.totals-row.final .totals-row-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-main);
-}
-.totals-row.final .totals-row-value {
-  font-size: 16px;
-  color: var(--blue-light);
-}
-
-/* ============================================================
-   MODAL
-   ============================================================ */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(6px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition);
-}
-.modal-overlay.open {
-  opacity: 1;
-  pointer-events: all;
-}
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-xl);
-  padding: 32px;
-  width: 100%;
-  max-width: 560px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  transform: translateY(12px);
-  transition: transform var(--transition);
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 6px;
-  letter-spacing: -0.3px;
-}
-.modal-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-.modal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-.block-option {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 14px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--surface-border);
-  cursor: pointer;
-  transition: var(--transition);
-  background: var(--bg-app);
-}
-.block-option:hover {
-  border-color: var(--blue-primary);
-  background: var(--blue-glow);
-}
-.block-option-icon { font-size: 20px; margin-bottom: 4px; }
-.block-option-name {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-.block-option-desc {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-/* ============================================================
-   NOTIFICATION
-   ============================================================ */
-#notification {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
-  border-radius: 40px;
-  padding: 12px 22px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  z-index: 3000;
-  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-#notification.show { transform: translateX(-50%) translateY(0); }
-#notification.success { border-color: rgba(16,185,129,0.3); }
-#notification.success .notif-icon { color: var(--success); }
-
-/* ============================================================
-   LOADING OVERLAY
-   ============================================================ */
-#loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(13,20,36,0.92);
-  backdrop-filter: blur(8px);
-  z-index: 4000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-#loading-overlay.show { opacity: 1; pointer-events: all; }
-.loading-spinner {
-  width: 44px; height: 44px;
-  border: 3px solid var(--surface-border);
-  border-top-color: var(--blue-primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.3px;
-}
-
-/* ============================================================
-   PRINT STYLES
-   ============================================================ */
-@media print {
-  #topbar, #sidebar-left, #sidebar-right, #notification, .page-controls, #modal-add-block, #loading-overlay { display: none !important; }
-  #app-layout { display: block; height: auto; margin-top: 0; }
-  #canvas-area { overflow: visible; padding: 0; background: white; }
-  .canvas-inner { max-width: none; }
-  body { background: white; overflow: visible; }
-  .doc-page {
-    page-break-after: always;
-    box-shadow: none;
-    margin: 0;
-    border-radius: 0;
-  }
-  .doc-page:last-child { page-break-after: auto; }
-  @page { size: A4; margin: 0; }
-}
-
-/* ============================================================
-   EDITABLE CONTENT IN PAGES
-   ============================================================ */
-[contenteditable="true"] {
-  outline: none;
-  transition: background var(--transition);
-}
-[contenteditable="true"]:hover {
-  background: rgba(37,99,235,0.04);
-  border-radius: 3px;
-}
-[contenteditable="true"]:focus {
-  background: rgba(37,99,235,0.06);
-  border-radius: 3px;
-  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
-}
-
-/* ============================================================
-   MISC UTILS
-   ============================================================ */
-.flex-row { display: flex; align-items: center; }
-.gap-8 { gap: 8px; }
-.spacer { flex: 1; }
-.w-full { width: 100%; }
-.text-right { text-align: right; }
-.mt-8 { margin-top: 8px; }
-.mb-16 { margin-bottom: 16px; }
+/* ─── MICROANIM ──────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.anim{animation:fadeUp .25s var(--ease) both}
 </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
-<header id="topbar">
-  <div class="topbar-brand">
-    <div class="topbar-brand-icon">P</div>
-    <div class="topbar-brand-name">Propuesta<span>Studio</span></div>
+<header id="top">
+  <div class="brand">
+    <div class="brand-mark">P</div>
+    <div class="brand-name">Propuesta<span>Studio</span></div>
   </div>
-
-  <div class="topbar-doc-status">
-    <div class="tb-sep"></div>
-    <input type="text" class="doc-title-input" id="docTitleInput" value="Propuesta de Branding Digital" />
-    <div class="status-badge saved" id="statusBadge">
-      <div class="status-dot"></div>
-      <span>Guardado</span>
+  <div class="top-divider"></div>
+  <div class="doc-name-wrap">
+    <input id="docName" value="Propuesta de Identidad Digital" />
+    <div class="pill saved" id="statusPill">
+      <div class="pill-dot"></div><span id="statusTxt">Guardado</span>
     </div>
   </div>
-
-  <div class="topbar-actions">
-    <button class="tb-btn tb-btn-ghost" onclick="showModal('modal-add-block')">
-      <span>＋</span> Agregar sección
+  <div class="top-actions">
+    <button class="t-btn ghost" onclick="openModal()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg>
+      Sección
     </button>
-    <div class="tb-sep"></div>
-    <button class="tb-btn tb-btn-outline" onclick="window.print()">
-      🖨️ Imprimir
+    <div class="top-divider"></div>
+    <button class="t-btn stroke" onclick="window.print()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="10" height="7" rx="1"/><path d="M5 6V3h6v3M5 12H3V8h10v4h-2"/><circle cx="11.5" cy="9.5" r=".75" fill="currentColor" stroke="none"/></svg>
+      Imprimir
     </button>
-    <button class="tb-btn tb-btn-primary" onclick="exportPDF()">
-      ⬇ Exportar PDF
+    <button class="t-btn primary" onclick="exportPDF()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M5 8l3 3 3-3M2 12v2h12v-2"/></svg>
+      Exportar PDF
     </button>
   </div>
 </header>
 
-<!-- APP LAYOUT -->
-<div id="app-layout">
+<!-- SHELL -->
+<div id="shell">
 
-  <!-- LEFT SIDEBAR -->
-  <aside id="sidebar-left">
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Estructura del documento</div>
+<!-- LEFT -->
+<aside id="left">
+  <div class="left-head"><div class="section-eyebrow">Documento</div></div>
+  <div class="pages-scroll" id="pageList"></div>
+  <div class="add-sect" onclick="openModal()">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1v10M1 6h10"/></svg>
+    Agregar sección
+  </div>
+</aside>
+
+<!-- CANVAS -->
+<main id="canvas">
+  <div class="canvas-in" id="canvasIn"></div>
+</main>
+
+<!-- RIGHT -->
+<aside id="right">
+  <div class="r-tabs">
+    <button class="r-tab on" onclick="switchTab('doc',this)">Documento</button>
+    <button class="r-tab" onclick="switchTab('brand',this)">Branding</button>
+    <button class="r-tab" onclick="switchTab('prices',this)">Precios</button>
+  </div>
+
+  <!-- DOC TAB -->
+  <div class="r-panel on" id="tab-doc">
+    <div class="r-group">
+      <div class="r-group-label">Cliente</div>
+      <div class="r-row"><label class="r-label">Nombre</label><input class="r-input" id="cName" placeholder="María González"/></div>
+      <div class="r-row"><label class="r-label">Empresa</label><input class="r-input" id="cCompany" placeholder="Nexus Digital S.A."/></div>
+      <div class="r-2col">
+        <div class="r-row"><label class="r-label">Email</label><input class="r-input" id="cEmail" placeholder="correo@empresa.com"/></div>
+        <div class="r-row"><label class="r-label">Teléfono</label><input class="r-input" id="cPhone" placeholder="+54 11 0000"/></div>
+      </div>
+      <div class="r-row"><label class="r-label">Ciudad / País</label><input class="r-input" id="cCity" placeholder="Buenos Aires, AR"/></div>
     </div>
-    <div class="page-list" id="pageList"></div>
-    <button class="add-block-btn" onclick="showModal('modal-add-block')">
-      + Agregar sección
-    </button>
-  </aside>
-
-  <!-- CANVAS -->
-  <main id="canvas-area">
-    <div class="canvas-inner" id="canvasInner"></div>
-  </main>
-
-  <!-- RIGHT SIDEBAR -->
-  <aside id="sidebar-right">
-    <div class="right-tabs">
-      <button class="right-tab active" onclick="switchRightTab('document', this)">Documento</button>
-      <button class="right-tab" onclick="switchRightTab('branding', this)">Branding</button>
-      <button class="right-tab" onclick="switchRightTab('pricing', this)">Precios</button>
-    </div>
-
-    <!-- DOCUMENT PANEL -->
-    <div class="right-panel active" id="panel-document">
-      <div class="panel-group">
-        <div class="panel-group-title">Datos del cliente</div>
-        <div class="field-row">
-          <label class="field-label">Nombre del cliente</label>
-          <input type="text" class="field-input" id="clientName" placeholder="Ej: María González" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Empresa</label>
-          <input type="text" class="field-input" id="clientCompany" placeholder="Ej: Nexus Digital S.A." />
-        </div>
-        <div class="field-row-half">
-          <div class="field-row">
-            <label class="field-label">Email</label>
-            <input type="text" class="field-input" id="clientEmail" placeholder="email@empresa.com" />
-          </div>
-          <div class="field-row">
-            <label class="field-label">Teléfono</label>
-            <input type="text" class="field-input" id="clientPhone" placeholder="+54 11 0000-0000" />
-          </div>
-        </div>
-        <div class="field-row">
-          <label class="field-label">Ciudad / País</label>
-          <input type="text" class="field-input" id="clientCity" placeholder="Buenos Aires, Argentina" />
-        </div>
-      </div>
-
-      <div class="panel-group">
-        <div class="panel-group-title">Datos del documento</div>
-        <div class="field-row-half">
-          <div class="field-row">
-            <label class="field-label">Nº Cotización</label>
-            <input type="text" class="field-input" id="quoteNum" placeholder="COT-2024-001" />
-          </div>
-          <div class="field-row">
-            <label class="field-label">Moneda</label>
-            <select class="select-input" id="currency">
-              <option value="USD">USD $</option>
-              <option value="EUR">EUR €</option>
-              <option value="ARS">ARS $</option>
-              <option value="MXN">MXN $</option>
-              <option value="COP">COP $</option>
-            </select>
-          </div>
-        </div>
-        <div class="field-row-half">
-          <div class="field-row">
-            <label class="field-label">Fecha emisión</label>
-            <input type="date" class="field-input" id="issueDate" />
-          </div>
-          <div class="field-row">
-            <label class="field-label">Válido hasta</label>
-            <input type="date" class="field-input" id="expiryDate" />
-          </div>
-        </div>
-        <div class="field-row">
-          <label class="field-label">IVA / Impuesto (%)</label>
-          <input type="number" class="field-input" id="taxRate" placeholder="21" min="0" max="100" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Descuento global (%)</label>
-          <input type="number" class="field-input" id="discountRate" placeholder="0" min="0" max="100" />
-        </div>
-      </div>
-
-      <div class="panel-group">
-        <div class="panel-group-title">Nombre del proyecto</div>
-        <div class="field-row">
-          <label class="field-label">Título de la propuesta</label>
-          <input type="text" class="field-input" id="projectTitle" placeholder="Estrategia de Identidad Digital" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Subtítulo</label>
-          <input type="text" class="field-input" id="projectSubtitle" placeholder="Propuesta comercial personalizada" />
-        </div>
-        <div style="margin-top:10px;">
-          <button class="small-btn primary w-full" onclick="syncAll()">↻ Actualizar documento</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BRANDING PANEL -->
-    <div class="right-panel" id="panel-branding">
-      <div class="panel-group">
-        <div class="panel-group-title">Logo de la empresa</div>
-        <div class="logo-upload-area" id="logoUploadArea">
-          <input type="file" accept="image/*" onchange="handleLogoUpload(event)" />
-          <div class="logo-upload-icon">🖼</div>
-          <div class="logo-upload-text">Arrastra tu logo o haz clic</div>
-        </div>
-      </div>
-
-      <div class="panel-group">
-        <div class="panel-group-title">Identidad del estudio</div>
-        <div class="field-row">
-          <label class="field-label">Nombre comercial</label>
-          <input type="text" class="field-input" id="studioName" placeholder="Ej: Studio Nórdico" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Responsable</label>
-          <input type="text" class="field-input" id="studioContact" placeholder="Ej: Carlos Vega" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Cargo</label>
-          <input type="text" class="field-input" id="studioRole" placeholder="Director Creativo" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Email</label>
-          <input type="text" class="field-input" id="studioEmail" placeholder="hola@studionordico.com" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Teléfono</label>
-          <input type="text" class="field-input" id="studioPhone" placeholder="+54 11 5555-1234" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Sitio web</label>
-          <input type="text" class="field-input" id="studioWeb" placeholder="www.studionordico.com" />
-        </div>
-      </div>
-
-      <div class="panel-group">
-        <div class="panel-group-title">Paleta de colores</div>
-        <div class="color-row">
-          <div class="color-swatch">
-            <input type="color" id="colorPrimary" value="#2563eb" onchange="updateBrandColors()" />
-          </div>
-          <div class="color-label">Color primario</div>
-        </div>
-        <div class="color-row">
-          <div class="color-swatch">
-            <input type="color" id="colorAccent" value="#1d4ed8" onchange="updateBrandColors()" />
-          </div>
-          <div class="color-label">Color de acento</div>
-        </div>
-        <div class="color-row">
-          <div class="color-swatch" style="background:#0f172a;">
-            <input type="color" id="colorDark" value="#0f172a" onchange="updateBrandColors()" />
-          </div>
-          <div class="color-label">Color oscuro / header</div>
-        </div>
-      </div>
-
-      <div class="panel-group">
-        <div class="panel-group-title">Tipografía del PDF</div>
-        <div class="field-row">
-          <label class="field-label">Fuente de títulos</label>
-          <select class="select-input" id="fontTitle" onchange="updateFonts()">
-            <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-            <option value="'DM Serif Display', serif">DM Serif Display</option>
-            <option value="'Sora', sans-serif">Sora</option>
+    <div class="r-group">
+      <div class="r-group-label">Documento</div>
+      <div class="r-2col">
+        <div class="r-row"><label class="r-label">Nº Cotización</label><input class="r-input" id="dNum" placeholder="COT-2024-001"/></div>
+        <div class="r-row"><label class="r-label">Moneda</label>
+          <select class="r-select" id="dCur">
+            <option value="USD">USD $</option><option value="EUR">EUR €</option>
+            <option value="ARS">ARS $</option><option value="MXN">MXN $</option><option value="COP">COP $</option>
           </select>
         </div>
-        <div class="field-row">
-          <label class="field-label">Fuente de cuerpo</label>
-          <select class="select-input" id="fontBody" onchange="updateFonts()">
-            <option value="'Source Sans 3', sans-serif">Source Sans 3</option>
-            <option value="'Sora', sans-serif">Sora</option>
-          </select>
-        </div>
-        <div style="margin-top:10px;">
-          <button class="small-btn primary w-full" onclick="syncAll()">↻ Aplicar branding</button>
-        </div>
+      </div>
+      <div class="r-2col">
+        <div class="r-row"><label class="r-label">Emisión</label><input type="date" class="r-input" id="dDate"/></div>
+        <div class="r-row"><label class="r-label">Vence</label><input type="date" class="r-input" id="dExp"/></div>
+      </div>
+      <div class="r-2col">
+        <div class="r-row"><label class="r-label">IVA (%)</label><input type="number" class="r-input" id="dTax" placeholder="21" min="0" max="100"/></div>
+        <div class="r-row"><label class="r-label">Descuento (%)</label><input type="number" class="r-input" id="dDisc" placeholder="0" min="0" max="100"/></div>
       </div>
     </div>
+    <div class="r-group">
+      <div class="r-group-label">Proyecto</div>
+      <div class="r-row"><label class="r-label">Título</label><input class="r-input" id="pTitle" placeholder="Identidad Visual Completa"/></div>
+      <div class="r-row"><label class="r-label">Subtítulo</label><input class="r-input" id="pSub" placeholder="Propuesta comercial personalizada"/></div>
+      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Actualizar vista</button>
+    </div>
+  </div>
 
-    <!-- PRICING PANEL -->
-    <div class="right-panel" id="panel-pricing">
-      <div class="panel-group">
-        <div class="panel-group-title">Líneas de presupuesto</div>
-        <div id="pricingItemsList"></div>
-        <button class="small-btn w-full mt-8" onclick="addPricingItem()">+ Agregar línea</button>
-      </div>
-      <div class="panel-group">
-        <div class="totals-panel" id="totalsPanelDisplay">
-          <div class="totals-row">
-            <span class="totals-row-label">Subtotal</span>
-            <span class="totals-row-value" id="displaySubtotal">$0.00</span>
-          </div>
-          <div class="totals-row">
-            <span class="totals-row-label">Descuento</span>
-            <span class="totals-row-value" id="displayDiscount">-$0.00</span>
-          </div>
-          <div class="totals-row">
-            <span class="totals-row-label">IVA</span>
-            <span class="totals-row-value" id="displayTax">$0.00</span>
-          </div>
-          <div class="totals-row final">
-            <span class="totals-row-label">Total</span>
-            <span class="totals-row-value" id="displayTotal">$0.00</span>
-          </div>
-        </div>
-        <div style="margin-top:10px;">
-          <button class="small-btn primary w-full" onclick="syncAll()">↻ Actualizar tabla</button>
-        </div>
+  <!-- BRAND TAB -->
+  <div class="r-panel" id="tab-brand">
+    <div class="r-group">
+      <div class="r-group-label">Logotipo</div>
+      <div class="logo-drop" id="logoDrop">
+        <input type="file" accept="image/*" onchange="handleLogo(event)"/>
+        <div class="logo-drop-icon">🖼</div>
+        <div class="logo-drop-text">Clic o arrastra tu logo</div>
       </div>
     </div>
-  </aside>
+    <div class="r-group">
+      <div class="r-group-label">Estudio / Agencia</div>
+      <div class="r-row"><label class="r-label">Nombre comercial</label><input class="r-input" id="sName" placeholder="Studio Nórdico"/></div>
+      <div class="r-row"><label class="r-label">Contacto</label><input class="r-input" id="sCont" placeholder="Carlos Vega"/></div>
+      <div class="r-row"><label class="r-label">Cargo</label><input class="r-input" id="sRole" placeholder="Director Creativo"/></div>
+      <div class="r-row"><label class="r-label">Email</label><input class="r-input" id="sEmail" placeholder="hola@studio.com"/></div>
+      <div class="r-row"><label class="r-label">Web</label><input class="r-input" id="sWeb" placeholder="www.studio.com"/></div>
+      <div class="r-row"><label class="r-label">Teléfono</label><input class="r-input" id="sPhone" placeholder="+54 11 5555-1234"/></div>
+    </div>
+    <div class="r-group">
+      <div class="r-group-label">Colores</div>
+      <div class="color-row">
+        <div class="swatch"><input type="color" id="cPrimary" value="#2563eb" onchange="applyBrand()"/></div>
+        <div class="color-label">Color principal</div>
+      </div>
+      <div class="color-row">
+        <div class="swatch"><input type="color" id="cDark" value="#0f172a" onchange="applyBrand()"/></div>
+        <div class="color-label">Oscuro (headers)</div>
+      </div>
+    </div>
+    <div class="r-group">
+      <div class="r-group-label">Tipografía PDF</div>
+      <div class="r-row"><label class="r-label">Títulos</label>
+        <select class="r-select" id="fTitle" onchange="applyBrand()">
+          <option value="'Cormorant',serif">Cormorant</option>
+          <option value="'Instrument Serif',serif">Instrument Serif</option>
+          <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
+        </select>
+      </div>
+      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Aplicar branding</button>
+    </div>
+  </div>
 
-</div>
+  <!-- PRICES TAB -->
+  <div class="r-panel" id="tab-prices">
+    <div class="r-group">
+      <div class="r-group-label">Líneas de inversión</div>
+      <div id="priceItems"></div>
+      <button class="sm-btn w100 mt8" onclick="addItem()">+ Agregar línea</button>
+    </div>
+    <div class="r-group">
+      <div class="totals-card" id="totalsCard">
+        <div class="tc-row"><span class="tc-lbl">Subtotal</span><span class="tc-val" id="tSub">$0.00</span></div>
+        <div class="tc-row"><span class="tc-lbl">Descuento</span><span class="tc-val" id="tDisc">$0.00</span></div>
+        <div class="tc-row"><span class="tc-lbl">IVA</span><span class="tc-val" id="tTax">$0.00</span></div>
+        <div class="tc-row fin"><span class="tc-lbl">Total</span><span class="tc-val" id="tTotal">$0.00</span></div>
+      </div>
+      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Actualizar tabla</button>
+    </div>
+  </div>
+</aside>
+
+</div><!-- /shell -->
 
 <!-- ADD BLOCK MODAL -->
-<div class="modal-overlay" id="modal-add-block" onclick="closeModalOutside(event)">
+<div class="overlay" id="addModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-title">Agregar sección</div>
-    <div class="modal-subtitle">Elige el tipo de bloque que deseas añadir al documento.</div>
-    <div class="modal-grid">
-      <div class="block-option" onclick="addBlock('intro')">
-        <div class="block-option-icon">✉️</div>
-        <div class="block-option-name">Carta de presentación</div>
-        <div class="block-option-desc">Introducción narrativa y contexto</div>
-      </div>
-      <div class="block-option" onclick="addBlock('executive')">
-        <div class="block-option-icon">📋</div>
-        <div class="block-option-name">Resumen ejecutivo</div>
-        <div class="block-option-desc">Objetivo, enfoque y beneficios</div>
-      </div>
-      <div class="block-option" onclick="addBlock('scope')">
-        <div class="block-option-icon">📐</div>
-        <div class="block-option-name">Alcance del trabajo</div>
-        <div class="block-option-desc">Entregables y fases del proyecto</div>
-      </div>
-      <div class="block-option" onclick="addBlock('pricing')">
-        <div class="block-option-icon">💰</div>
-        <div class="block-option-name">Tabla de inversión</div>
-        <div class="block-option-desc">Precios, ítems y totales</div>
-      </div>
-      <div class="block-option" onclick="addBlock('terms')">
-        <div class="block-option-icon">📄</div>
-        <div class="block-option-name">Términos y condiciones</div>
-        <div class="block-option-desc">Cláusulas legales y acuerdos</div>
-      </div>
-      <div class="block-option" onclick="addBlock('closing')">
-        <div class="block-option-icon">🤝</div>
-        <div class="block-option-name">Cierre y contacto</div>
-        <div class="block-option-desc">CTA final y datos de contacto</div>
-      </div>
+    <div class="modal-sub">Elige el tipo de página que quieres añadir al documento.</div>
+    <div class="block-grid">
+      <div class="block-opt" onclick="addBlock('intro')"><div class="bo-icon">✉️</div><div class="bo-name">Presentación</div><div class="bo-desc">Carta introductoria y contexto del proyecto</div></div>
+      <div class="block-opt" onclick="addBlock('executive')"><div class="bo-icon">📋</div><div class="bo-name">Resumen ejecutivo</div><div class="bo-desc">Objetivo, desafío, enfoque y beneficios</div></div>
+      <div class="block-opt" onclick="addBlock('scope')"><div class="bo-icon">📐</div><div class="bo-name">Alcance</div><div class="bo-desc">Fases, entregables y metodología</div></div>
+      <div class="block-opt" onclick="addBlock('pricing')"><div class="bo-icon">💰</div><div class="bo-name">Tabla de inversión</div><div class="bo-desc">Precios detallados y totales</div></div>
+      <div class="block-opt" onclick="addBlock('terms')"><div class="bo-icon">📄</div><div class="bo-name">Términos y condiciones</div><div class="bo-desc">Cláusulas, plazos y acuerdos</div></div>
+      <div class="block-opt" onclick="addBlock('closing')"><div class="bo-icon">🤝</div><div class="bo-name">Cierre</div><div class="bo-desc">CTA final, firma y contacto</div></div>
     </div>
-    <div class="modal-actions">
-      <button class="small-btn" onclick="closeModal('modal-add-block')">Cancelar</button>
+    <div class="modal-foot">
+      <button class="sm-btn" onclick="closeModal()">Cancelar</button>
     </div>
   </div>
 </div>
 
-<!-- LOADING OVERLAY -->
-<div id="loading-overlay">
-  <div class="loading-spinner"></div>
-  <div class="loading-text" id="loadingText">Generando PDF...</div>
+<!-- EXPORT OVERLAY -->
+<div id="exporting">
+  <div class="exp-ring"></div>
+  <div class="exp-label" id="expLabel">Preparando exportación…</div>
+  <div class="exp-sub">Esto puede tomar unos segundos</div>
 </div>
 
-<!-- NOTIFICATION -->
-<div id="notification">
-  <span class="notif-icon">✓</span>
-  <span id="notifText">Guardado correctamente</span>
-</div>
+<!-- TOAST -->
+<div id="toast"><span class="toast-ico" id="toastIco">✓</span><span id="toastMsg">Guardado</span></div>
 
 <script>
-/* ============================================================
-   ESTADO GLOBAL
-   ============================================================ */
-let state = {
-  title: 'Propuesta de Branding Digital',
-  client: {
-    name: 'María González',
-    company: 'Nexus Digital S.A.',
-    email: 'maria@nexusdigital.com',
-    phone: '+54 11 4823-9901',
-    city: 'Buenos Aires, Argentina'
-  },
-  studio: {
-    name: 'Studio Nórdico',
-    contact: 'Carlos Vega',
-    role: 'Director Creativo',
-    email: 'hola@studionordico.com',
-    phone: '+54 11 5555-1234',
-    web: 'www.studionordico.com'
-  },
-  doc: {
-    num: 'COT-2024-042',
-    currency: 'USD',
-    issueDate: '2024-06-15',
-    expiryDate: '2024-07-15',
-    taxRate: 21,
-    discount: 0
-  },
-  project: {
-    title: 'Estrategia de Identidad y Presencia Digital',
-    subtitle: 'Propuesta comercial personalizada — Junio 2024'
-  },
-  branding: {
-    primary: '#2563eb',
-    accent: '#1d4ed8',
-    dark: '#0f172a',
-    fontTitle: "'Cormorant Garamond', serif",
-    fontBody: "'Source Sans 3', sans-serif",
-    logo: null
-  },
-  pages: ['cover', 'intro', 'scope', 'pricing', 'terms', 'closing'],
-  pricing: [
-    { id: 1, name: 'Auditoría de marca y diagnóstico', desc: 'Análisis de identidad actual, competencia y posicionamiento', qty: 1, price: 1800 },
-    { id: 2, name: 'Estrategia de marca y concepto creativo', desc: 'Plataforma estratégica, propósito, valores y tono de voz', qty: 1, price: 2400 },
-    { id: 3, name: 'Diseño de identidad visual completa', desc: 'Logotipo, paleta, tipografía, sistema visual y brand book', qty: 1, price: 3600 },
-    { id: 4, name: 'Diseño de sitio web (5 páginas)', desc: 'Diseño UX/UI, prototipo interactivo y entrega de assets', qty: 1, price: 4200 },
-    { id: 5, name: 'Gestión de redes sociales (3 meses)', desc: 'Planificación editorial, diseño de piezas y publicación', qty: 3, price: 900 },
+/* ══════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════ */
+const S = {
+  title: 'Propuesta de Identidad Digital',
+  client: { name:'María González', company:'Nexus Digital S.A.', email:'maria@nexus.com', phone:'+54 11 4823-9901', city:'Buenos Aires, Argentina' },
+  studio: { name:'Studio Nórdico', contact:'Carlos Vega', role:'Director Creativo', email:'hola@studionordico.com', web:'www.studionordico.com', phone:'+54 11 5555-1234' },
+  doc: { num:'COT-2024-042', cur:'USD', date:'2024-06-15', exp:'2024-07-15', tax:21, disc:0 },
+  project: { title:'Estrategia de Identidad y Presencia Digital', sub:'Propuesta comercial personalizada — Junio 2024' },
+  brand: { primary:'#2563eb', dark:'#0f172a', fontTitle:"'Cormorant',serif", logo:null },
+  pages: ['cover','intro','scope','pricing','terms','closing'],
+  items: [
+    { id:1, name:'Auditoría y diagnóstico de marca', desc:'Análisis competitivo, usuarios y posicionamiento', qty:1, price:1800 },
+    { id:2, name:'Estrategia de marca y concepto', desc:'Plataforma estratégica, propósito y tono de voz', qty:1, price:2400 },
+    { id:3, name:'Diseño de identidad visual completa', desc:'Logotipo, sistema visual y Brand Book completo', qty:1, price:3600 },
+    { id:4, name:'Diseño de sitio web (5 páginas)', desc:'UX/UI, prototipo interactivo y assets exportados', qty:1, price:4200 },
+    { id:5, name:'Gestión de redes sociales', desc:'Planificación, diseño de piezas y publicación', qty:3, price:900 },
   ]
 };
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════════
    INIT
-   ============================================================ */
+══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  loadFromStorage();
-  populateFormFields();
-  renderPricingEditor();
-  renderDocument();
+  loadState();
+  fillForm();
+  renderPriceItems();
+  renderDoc();
   renderPageList();
-  setupAutoSync();
-  setDefaults();
+  wireForm();
+  initDates();
 });
 
-function setDefaults() {
-  const today = new Date();
-  const expiry = new Date();
-  expiry.setDate(today.getDate() + 30);
-  if (!document.getElementById('issueDate').value) {
-    document.getElementById('issueDate').value = today.toISOString().slice(0, 10);
-  }
-  if (!document.getElementById('expiryDate').value) {
-    document.getElementById('expiryDate').value = expiry.toISOString().slice(0, 10);
-  }
+function initDates(){
+  const t = new Date(), e = new Date(); e.setDate(t.getDate()+30);
+  const iso = d => d.toISOString().slice(0,10);
+  if (!document.getElementById('dDate').value) document.getElementById('dDate').value = iso(t);
+  if (!document.getElementById('dExp').value)  document.getElementById('dExp').value  = iso(e);
 }
 
-function setupAutoSync() {
-  const inputs = document.querySelectorAll('.field-input, .select-input');
-  inputs.forEach(input => {
-    input.addEventListener('input', debounce(() => {
-      collectFormData();
-      renderDocument();
-      renderPageList();
-      renderPricingEditor();
-      saveToStorage();
-      setStatus('saving');
-      setTimeout(() => setStatus('saved'), 1000);
-    }, 400));
+/* ══════════════════════════════════════════════════════════
+   WIRE FORM
+══════════════════════════════════════════════════════════ */
+function wireForm(){
+  document.querySelectorAll('.r-input,.r-select').forEach(el => {
+    el.addEventListener('input', debounce(()=>{ readForm(); renderDoc(); renderPageList(); renderPriceItems(); save(); ping('saving'); setTimeout(()=>ping('saved'),900); }, 380));
   });
+  document.getElementById('docName').addEventListener('input', function(){ S.title=this.value; save(); });
+}
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+
+/* ══════════════════════════════════════════════════════════
+   READ / FILL FORM
+══════════════════════════════════════════════════════════ */
+function readForm(){
+  const g = id => document.getElementById(id)?.value || '';
+  S.client = { name:g('cName'), company:g('cCompany'), email:g('cEmail'), phone:g('cPhone'), city:g('cCity') };
+  S.studio = { name:g('sName'), contact:g('sCont'), role:g('sRole'), email:g('sEmail'), web:g('sWeb'), phone:g('sPhone') };
+  S.doc = { num:g('dNum'), cur:g('dCur')||'USD', date:g('dDate'), exp:g('dExp'), tax:+g('dTax')||0, disc:+g('dDisc')||0 };
+  S.project = { title:g('pTitle'), sub:g('pSub') };
+  S.brand.primary = document.getElementById('cPrimary')?.value || '#2563eb';
+  S.brand.dark     = document.getElementById('cDark')?.value   || '#0f172a';
+  S.brand.fontTitle= document.getElementById('fTitle')?.value  || "'Cormorant',serif";
 }
 
-function debounce(fn, delay) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+function fillForm(){
+  const s = (id,v)=>{ const el=document.getElementById(id); if(el&&v!==undefined&&v!=='') el.value=v; };
+  s('docName',S.title);
+  s('cName',S.client.name); s('cCompany',S.client.company); s('cEmail',S.client.email);
+  s('cPhone',S.client.phone); s('cCity',S.client.city);
+  s('dNum',S.doc.num); s('dCur',S.doc.cur); s('dDate',S.doc.date); s('dExp',S.doc.exp);
+  s('dTax',S.doc.tax); s('dDisc',S.doc.disc);
+  s('pTitle',S.project.title); s('pSub',S.project.sub);
+  s('sName',S.studio.name); s('sCont',S.studio.contact); s('sRole',S.studio.role);
+  s('sEmail',S.studio.email); s('sWeb',S.studio.web); s('sPhone',S.studio.phone);
+  s('cPrimary',S.brand.primary); s('cDark',S.brand.dark); s('fTitle',S.brand.fontTitle);
+  if(S.brand.logo){ const d=document.getElementById('logoDrop'); d.innerHTML=`<img src="${S.brand.logo}" class="logo-prev"/><input type="file" accept="image/*" onchange="handleLogo(event)"/>`; }
 }
 
-/* ============================================================
-   FORM → STATE
-   ============================================================ */
-function collectFormData() {
-  state.title = document.getElementById('docTitleInput').value || state.title;
-  state.client.name = document.getElementById('clientName').value;
-  state.client.company = document.getElementById('clientCompany').value;
-  state.client.email = document.getElementById('clientEmail').value;
-  state.client.phone = document.getElementById('clientPhone').value;
-  state.client.city = document.getElementById('clientCity').value;
-  state.doc.num = document.getElementById('quoteNum').value;
-  state.doc.currency = document.getElementById('currency').value;
-  state.doc.issueDate = document.getElementById('issueDate').value;
-  state.doc.expiryDate = document.getElementById('expiryDate').value;
-  state.doc.taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-  state.doc.discount = parseFloat(document.getElementById('discountRate').value) || 0;
-  state.project.title = document.getElementById('projectTitle').value;
-  state.project.subtitle = document.getElementById('projectSubtitle').value;
-  state.studio.name = document.getElementById('studioName').value;
-  state.studio.contact = document.getElementById('studioContact').value;
-  state.studio.role = document.getElementById('studioRole').value;
-  state.studio.email = document.getElementById('studioEmail').value;
-  state.studio.phone = document.getElementById('studioPhone').value;
-  state.studio.web = document.getElementById('studioWeb').value;
+/* ══════════════════════════════════════════════════════════
+   SYNC ALL
+══════════════════════════════════════════════════════════ */
+function syncAll(){ readForm(); renderDoc(); renderPageList(); renderPriceItems(); save(); toast('Documento actualizado ✓'); }
+function applyBrand(){ S.brand.primary=document.getElementById('cPrimary')?.value||'#2563eb'; S.brand.dark=document.getElementById('cDark')?.value||'#0f172a'; S.brand.fontTitle=document.getElementById('fTitle')?.value||"'Cormorant',serif"; renderDoc(); save(); }
+
+/* ══════════════════════════════════════════════════════════
+   RENDER DOC
+══════════════════════════════════════════════════════════ */
+function renderDoc(){
+  const c = document.getElementById('canvasIn');
+  c.innerHTML = '';
+  S.pages.forEach((type,i) => { const el = buildPage(type,i); c.appendChild(el); });
+  updateTotals();
 }
 
-function populateFormFields() {
-  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
-  set('docTitleInput', state.title);
-  set('clientName', state.client.name);
-  set('clientCompany', state.client.company);
-  set('clientEmail', state.client.email);
-  set('clientPhone', state.client.phone);
-  set('clientCity', state.client.city);
-  set('quoteNum', state.doc.num);
-  set('currency', state.doc.currency);
-  set('issueDate', state.doc.issueDate);
-  set('expiryDate', state.doc.expiryDate);
-  set('taxRate', state.doc.taxRate);
-  set('discountRate', state.doc.discount);
-  set('projectTitle', state.project.title);
-  set('projectSubtitle', state.project.subtitle);
-  set('studioName', state.studio.name);
-  set('studioContact', state.studio.contact);
-  set('studioRole', state.studio.role);
-  set('studioEmail', state.studio.email);
-  set('studioPhone', state.studio.phone);
-  set('studioWeb', state.studio.web);
-  set('colorPrimary', state.branding.primary);
-  set('colorAccent', state.branding.accent);
-  set('colorDark', state.branding.dark);
+function buildPage(type, idx){
+  const wrap = document.createElement('div');
+  wrap.className = 'doc-page';
+  wrap.dataset.idx = idx;
+  wrap.onclick = () => selectPage(idx);
+
+  const upBtn = idx > 0 ? `<div class="pt-btn" title="Arriba" onclick="movePg(${idx},-1,event)">↑</div>` : '';
+  const dnBtn = idx < S.pages.length-1 ? `<div class="pt-btn" title="Abajo" onclick="movePg(${idx},1,event)">↓</div>` : '';
+  const delBtn = S.pages.length > 1 ? `<div class="pt-btn del" title="Eliminar" onclick="delPg(${idx},event)">✕</div>` : '';
+  const dupBtn = `<div class="pt-btn" title="Duplicar" onclick="dupPg(${idx},event)">⧉</div>`;
+
+  wrap.innerHTML = `<div class="page-tools">${upBtn}${dnBtn}${dupBtn}${delBtn}</div>${pageHTML(type, idx)}`;
+  return wrap;
 }
 
-/* ============================================================
-   RENDER DOCUMENT
-   ============================================================ */
-function renderDocument() {
-  const canvas = document.getElementById('canvasInner');
-  canvas.innerHTML = '';
-  state.pages.forEach((pageType, idx) => {
-    canvas.appendChild(createPage(pageType, idx));
-  });
-  updateTotalsDisplay();
+function pageHTML(type, idx){
+  const n = S.pages.length;
+  const pNum = `<span class="pg-label">${pgLabel(type)}</span><span class="pg-num">${studioName()} — ${String(idx+1).padStart(2,'0')} / ${String(n).padStart(2,'0')}</span>`;
+  switch(type){
+    case 'cover':    return coverHTML();
+    case 'intro':    return introHTML(pNum);
+    case 'executive':return execHTML(pNum);
+    case 'scope':    return scopeHTML(pNum);
+    case 'pricing':  return pricingHTML(pNum);
+    case 'terms':    return termsHTML(pNum);
+    case 'closing':  return closingHTML(pNum);
+    default: return `<div class="cpage"><div class="cpage-head">${pNum}</div><p style="color:#999;padding:20px">Sección</p></div>`;
+  }
 }
 
-function createPage(type, idx) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'doc-page';
-  wrapper.dataset.type = type;
-  wrapper.dataset.idx = idx;
-  wrapper.onclick = () => selectPage(idx);
+function pgLabel(t){ return {cover:'Portada',intro:'Presentación',executive:'Resumen Ejecutivo',scope:'Alcance del Trabajo',pricing:'Tabla de Inversión',terms:'Términos y Condiciones',closing:'Cierre'}[t]||t; }
+function studioName(){ return S.studio.name || 'Studio'; }
+function sym(){ return S.doc.cur==='EUR'?'€':'$'; }
+function fmtAmt(n){ return sym() + n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtDate(s){ if(!s) return '—'; try{ return new Date(s+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'}); }catch{return s;} }
 
-  const controls = `
-    <div class="page-controls">
-      ${idx > 0 ? `<button class="page-ctrl-btn" title="Mover arriba" onclick="movePage(${idx}, -1, event)">↑</button>` : ''}
-      ${idx < state.pages.length - 1 ? `<button class="page-ctrl-btn" title="Mover abajo" onclick="movePage(${idx}, 1, event)">↓</button>` : ''}
-      <button class="page-ctrl-btn" title="Duplicar" onclick="dupPage(${idx}, event)">⧉</button>
-      ${state.pages.length > 1 ? `<button class="page-ctrl-btn danger" title="Eliminar" onclick="deletePage(${idx}, event)">✕</button>` : ''}
-    </div>`;
-
-  wrapper.innerHTML = controls + getPageHTML(type, idx);
-  return wrapper;
-}
-
-function getPageHTML(type, idx) {
-  const cur = document.getElementById('currency')?.value || state.doc.currency || 'USD';
-  const sym = cur === 'EUR' ? '€' : '$';
-  const pageNum = `<span class="page-section-label">${getPageLabel(type)}</span><span class="page-number">${state.studio.name || 'Studio'} — ${String(idx + 1).padStart(2, '0')}</span>`;
-
-  if (type === 'cover') return renderCoverPage();
-  if (type === 'intro') return renderIntroPage(pageNum);
-  if (type === 'executive') return renderExecutivePage(pageNum);
-  if (type === 'scope') return renderScopePage(pageNum);
-  if (type === 'pricing') return renderPricingPage(pageNum, sym);
-  if (type === 'terms') return renderTermsPage(pageNum);
-  if (type === 'closing') return renderClosingPage(pageNum);
-  return `<div class="content-page"><div class="page-header-line">${pageNum}</div><p style="color:#666;padding:20px">Bloque de contenido</p></div>`;
-}
-
-function getPageLabel(type) {
-  const labels = {
-    cover: 'Portada', intro: 'Presentación', executive: 'Resumen Ejecutivo',
-    scope: 'Alcance', pricing: 'Inversión', terms: 'Términos', closing: 'Cierre'
-  };
-  return labels[type] || type;
-}
-
-/* ============================================================
+/* ══════════════════════════════════════════════════════════
    PAGE TEMPLATES
-   ============================================================ */
-function renderCoverPage() {
-  const logoHTML = state.branding.logo
-    ? `<img src="${state.branding.logo}" class="cover-logo-img" alt="logo" />`
-    : `<div class="cover-logo-placeholder">
-        <div class="cover-logo-icon">${(state.studio.name || 'S').charAt(0)}</div>
-        <div class="cover-brand-text">${state.studio.name || 'Studio Nórdico'}</div>
-       </div>`;
-  const pt = state.project.title || 'Título del Proyecto';
-  const ps = state.project.subtitle || 'Propuesta comercial personalizada';
-  const cn = state.client.name || 'Nombre del Cliente';
-  const cc = state.client.company || 'Empresa del Cliente';
-  const date = state.doc.issueDate ? new Date(state.doc.issueDate + 'T00:00:00').toLocaleDateString('es-AR', {day:'numeric',month:'long',year:'numeric'}) : 'Junio 2024';
-  const docNum = state.doc.num || 'COT-2024-001';
-
+══════════════════════════════════════════════════════════ */
+function coverHTML(){
+  const logoHTML = S.brand.logo
+    ? `<img src="${S.brand.logo}" class="cover-logo-img" alt="logo"/>`
+    : `<div class="cover-logo-stub" style="background:${S.brand.primary}">${(S.studio.name||'S').charAt(0).toUpperCase()}</div>
+       <div class="cover-logo-name">${S.studio.name||'Studio Nórdico'}</div>`;
   return `
-  <div class="cover-page">
-    <div class="cover-accent-bar"></div>
-    <div class="cover-body">
-      <div class="cover-deco"></div>
-      <div class="cover-logo-area">${logoHTML}</div>
-      <div class="cover-main-content">
-        <div class="cover-label">Propuesta comercial · ${docNum}</div>
-        <div class="cover-title" contenteditable="true" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">${pt}</div>
-        <div class="cover-subtitle" contenteditable="true">${ps}</div>
-        <div class="cover-blue-line" style="background:${state.branding.primary}"></div>
-        <div class="cover-meta-grid">
-          <div class="cover-meta-item">
-            <label>Preparado para</label>
-            <div class="meta-value">${cn}</div>
-          </div>
-          <div class="cover-meta-item">
-            <label>Empresa</label>
-            <div class="meta-value">${cc}</div>
-          </div>
-          <div class="cover-meta-item">
-            <label>Fecha de emisión</label>
-            <div class="meta-value">${date}</div>
-          </div>
-          <div class="cover-meta-item">
-            <label>Validez</label>
-            <div class="meta-value">30 días calendario</div>
-          </div>
-        </div>
-      </div>
+<div class="cover">
+  <div class="cover-stripe" style="background:linear-gradient(90deg,${S.brand.primary},${hexBright(S.brand.primary)})"></div>
+  <div class="cover-body">
+    <div class="cover-geo"></div>
+    <div class="cover-logo-zone">${logoHTML}</div>
+    <div class="cover-chip" style="background:${hexAlpha(S.brand.primary,.08)};border-color:${hexAlpha(S.brand.primary,.25)};color:${S.brand.primary}">
+      Propuesta comercial · ${S.doc.num||'COT-2024-001'}
     </div>
-    <div class="cover-footer">
-      <div class="cover-footer-left">Preparado por ${state.studio.contact || 'Carlos Vega'} · ${state.studio.role || 'Director Creativo'}</div>
-      <div class="cover-footer-right">
-        <div class="cover-footer-dot" style="background:${state.branding.primary}"></div>
-        <div class="cover-footer-text">${state.studio.web || 'www.studionordico.com'}</div>
-      </div>
+    <div class="cover-h1" style="font-family:${S.brand.fontTitle}" contenteditable="true">${S.project.title||'Título del Proyecto'}</div>
+    <div class="cover-sub" contenteditable="true">${S.project.sub||'Propuesta comercial personalizada'}</div>
+    <div class="cover-rule" style="background:${S.brand.primary}"></div>
+    <div class="cover-grid">
+      <div class="cover-kv"><label>Preparado para</label><div class="val">${S.client.name||'—'}</div></div>
+      <div class="cover-kv"><label>Empresa</label><div class="val">${S.client.company||'—'}</div></div>
+      <div class="cover-kv"><label>Fecha de emisión</label><div class="val">${fmtDate(S.doc.date)}</div></div>
+      <div class="cover-kv"><label>Validez</label><div class="val">30 días calendario</div></div>
     </div>
-  </div>`;
+  </div>
+  <div class="cover-foot">
+    <div class="cover-foot-l">Preparado por ${S.studio.contact||'—'} · ${S.studio.role||'—'}</div>
+    <div class="cover-foot-r">
+      <div class="foot-dot" style="background:${S.brand.primary}"></div>
+      <div class="foot-web">${S.studio.web||'—'}</div>
+    </div>
+  </div>
+</div>`;
 }
 
-function renderIntroPage(pageNum) {
+function introHTML(pn){
   return `
-  <div class="content-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="content-block">
-      <div class="content-block-title large" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Una propuesta construida sobre entendimiento profundo.</div>
+<div class="cpage">
+  <div class="cpage-head">${pn}</div>
+  <div class="cb">
+    <div class="cb-h1 xl" style="font-family:${S.brand.fontTitle}">Una propuesta construida sobre entendimiento profundo.</div>
+  </div>
+  <div class="cb">
+    <div class="cb-body" contenteditable="true">
+      <p>Estimada ${S.client.name||'[nombre]'},</p>
+      <p>Es un placer presentarles esta propuesta diseñada específicamente para ${S.client.company||'su empresa'}. Después de un análisis detallado de sus necesidades, objetivos de negocio y el contexto del mercado en el que operan, hemos estructurado un plan de trabajo integral que aborda cada dimensión de su desafío de posicionamiento.</p>
+      <p>En ${S.studio.name||'nuestro estudio'} creemos que una propuesta sólida no comienza con servicios, sino con comprensión. Por eso, antes de definir el alcance de este proyecto, invertimos tiempo en entender su visión, los obstáculos actuales y las oportunidades que aún no se han capitalizado completamente.</p>
+      <p>Lo que encontrarán en este documento no es una lista de tareas: es una hoja de ruta estratégica para consolidar su presencia en el mercado, construir una identidad que genere confianza y traducir esa confianza en resultados medibles.</p>
     </div>
-    <div class="content-block">
-      <div class="content-block-text" contenteditable="true">
-        <p>Estimada ${state.client.name || 'María'},</p>
-        <p>Es un placer presentarles esta propuesta diseñada específicamente para ${state.client.company || 'su empresa'}. Después de un análisis detallado de sus necesidades, objetivos de negocio y el contexto del mercado en el que operan, hemos estructurado un plan de trabajo integral que aborda cada dimensión de su desafío de posicionamiento.</p>
-        <p>En ${state.studio.name || 'Studio Nórdico'} creemos que una propuesta sólida no comienza con servicios, sino con comprensión. Por eso, antes de definir el alcance de este proyecto, invertimos tiempo en entender su visión, los obstáculos actuales y las oportunidades que aún no se han capitalizado completamente.</p>
-        <p>Lo que encontrarán en este documento no es una lista de tareas: es una hoja de ruta estratégica para consolidar su presencia en el mercado, construir una identidad que genere confianza y traducir esa confianza en resultados medibles.</p>
-        <p>Estamos convencidos de que este trabajo marcará un antes y un después en la manera en que ${state.client.company || 'Nexus Digital'} se relaciona con sus audiencias clave.</p>
-      </div>
-    </div>
-    <div class="highlight-box">
-      <p>Nuestro enfoque integra estrategia, diseño y tecnología para crear experiencias que no solo se ven bien, sino que funcionan, convierten y crecen con el negocio.</p>
-    </div>
-    <div style="margin-top:32px;">
-      <div class="signature-label">Con confianza,</div>
-      <div class="signature-name">${state.studio.contact || 'Carlos Vega'}</div>
-      <div class="signature-role">${state.studio.role || 'Director Creativo'} · ${state.studio.name || 'Studio Nórdico'}</div>
-    </div>
-  </div>`;
+  </div>
+  <div class="hl-box" style="border-left-color:${S.brand.primary}">
+    <p>Nuestro enfoque integra estrategia, diseño y tecnología para crear experiencias que no solo se ven bien, sino que funcionan, convierten y crecen con el negocio.</p>
+  </div>
+  <div style="margin-top:32px">
+    <div class="sig-label">Con confianza,</div>
+    <div class="sig-name">${S.studio.contact||'Carlos Vega'}</div>
+    <div class="sig-role">${S.studio.role||'Director Creativo'} · ${S.studio.name||'Studio Nórdico'}</div>
+  </div>
+</div>`;
 }
 
-function renderExecutivePage(pageNum) {
+function execHTML(pn){
   return `
-  <div class="content-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="content-block">
-      <div class="content-block-title" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Resumen Ejecutivo</div>
-      <div class="content-block-text">
-        <p>Este documento describe el alcance, metodología y presupuesto de la intervención estratégica propuesta para ${state.client.company || 'Nexus Digital S.A.'}. El objetivo central es consolidar y proyectar la identidad de la marca a través de un sistema visual coherente, una presencia digital robusta y una estrategia de contenidos orientada a resultados.</p>
-      </div>
-    </div>
-    <div class="two-col-grid">
-      <div class="info-card">
-        <div class="info-card-title">El desafío</div>
-        <div class="info-card-body" contenteditable="true">La marca actualmente carece de consistencia visual y narrativa entre sus diferentes puntos de contacto, generando confusión y debilitando la percepción de valor ante sus clientes potenciales.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title">La oportunidad</div>
-        <div class="info-card-body" contenteditable="true">Existe un segmento de mercado premium sub-atendido que responde positivamente a marcas con identidad sólida, lenguaje claro y presencia digital profesional.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title">Nuestro enfoque</div>
-        <div class="info-card-body" contenteditable="true">Un proceso de tres fases: diagnóstico y estrategia, diseño e implementación, y activación con medición. Cada etapa con entregables claros y revisiones colaborativas.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title">Beneficios clave</div>
-        <div class="info-card-body" contenteditable="true">Mayor reconocimiento de marca, coherencia en todos los canales, materiales de comunicación listos para usar y una plataforma digital optimizada para conversión.</div>
-      </div>
-    </div>
-  </div>`;
+<div class="cpage">
+  <div class="cpage-head">${pn}</div>
+  <div class="cb">
+    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Resumen Ejecutivo</div>
+    <div class="cb-body"><p>Este documento describe el alcance, metodología y presupuesto de la intervención estratégica propuesta para ${S.client.company||'su empresa'}. El objetivo central es consolidar la identidad de la marca a través de un sistema visual coherente y una presencia digital robusta orientada a resultados.</p></div>
+  </div>
+  <div class="cards2">
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">El desafío</div><div class="icard-body" contenteditable="true">La marca carece de consistencia visual entre sus puntos de contacto, generando confusión y debilitando la percepción de valor ante clientes potenciales.</div></div>
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">La oportunidad</div><div class="icard-body" contenteditable="true">Existe un segmento premium sub-atendido que responde positivamente a marcas con identidad sólida, lenguaje claro y presencia digital profesional.</div></div>
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Nuestro enfoque</div><div class="icard-body" contenteditable="true">Un proceso en tres fases: diagnóstico y estrategia, diseño e implementación, y activación con medición. Entregables claros en cada etapa.</div></div>
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Beneficios clave</div><div class="icard-body" contenteditable="true">Mayor reconocimiento de marca, coherencia en todos los canales y materiales de comunicación listos para usar desde el día uno.</div></div>
+  </div>
+</div>`;
 }
 
-function renderScopePage(pageNum) {
+function scopeHTML(pn){
   return `
-  <div class="content-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="content-block">
-      <div class="content-block-title" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Alcance del trabajo</div>
-      <div class="content-block-text">
-        <p>El proyecto se estructura en módulos de trabajo claramente definidos, cada uno con entregables específicos, responsables y criterios de aprobación. A continuación se detalla el alcance completo acordado.</p>
-      </div>
-    </div>
-    <div class="deliverable-list">
-      <div class="deliverable-item">
-        <div class="deliverable-dot" style="background:${state.branding.primary}"></div>
-        <div class="deliverable-text"><strong>Fase 1 — Auditoría y estrategia de marca</strong><span>Análisis de identidad actual, benchmarking competitivo, entrevistas de usuario, definición de posicionamiento y plataforma estratégica completa.</span></div>
-      </div>
-      <div class="deliverable-item">
-        <div class="deliverable-dot" style="background:${state.branding.primary}"></div>
-        <div class="deliverable-text"><strong>Fase 2 — Diseño de identidad visual</strong><span>Rediseño o creación del sistema visual: logotipo, tipografía, paleta de color, iconografía, fotografía de marca, texturas y patrones. Incluye Brand Book completo (PDF + archivos editables).</span></div>
-      </div>
-      <div class="deliverable-item">
-        <div class="deliverable-dot" style="background:${state.branding.primary}"></div>
-        <div class="deliverable-text"><strong>Fase 3 — Diseño de sitio web</strong><span>Arquitectura de información, wireframes, diseño UX/UI de 5 páginas principales, prototipo interactivo en Figma, guía de implementación técnica y assets exportados.</span></div>
-      </div>
-      <div class="deliverable-item">
-        <div class="deliverable-dot" style="background:${state.branding.primary}"></div>
-        <div class="deliverable-text"><strong>Fase 4 — Activación en redes sociales</strong><span>Diseño de perfil de redes, plantillas de publicación, guía de tono y voz, calendario editorial del primer mes y formación básica del equipo interno.</span></div>
-      </div>
-      <div class="deliverable-item">
-        <div class="deliverable-dot" style="background:${state.branding.primary}"></div>
-        <div class="deliverable-text"><strong>Fase 5 — Gestión y seguimiento (3 meses)</strong><span>Planificación editorial mensual, diseño de piezas gráficas, publicación programada, reporte mensual de métricas y ajuste estratégico basado en datos.</span></div>
-      </div>
-    </div>
-    <div class="highlight-box" style="margin-top:28px;">
-      <p>Cada fase incluye una ronda de revisiones y una sesión de presentación de resultados. El proceso es colaborativo: sus comentarios son parte del flujo de trabajo, no una fricción.</p>
-    </div>
-  </div>`;
+<div class="cpage">
+  <div class="cpage-head">${pn}</div>
+  <div class="cb">
+    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Alcance del trabajo</div>
+    <div class="cb-body"><p>El proyecto se estructura en módulos claramente definidos, cada uno con entregables específicos, responsables y criterios de aprobación.</p></div>
+  </div>
+  <div class="deliv-list">
+    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 1 — Auditoría y estrategia de marca</strong><span>Análisis de identidad actual, benchmarking, entrevistas de usuario, definición de posicionamiento y plataforma estratégica completa.</span></div></div>
+    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 2 — Diseño de identidad visual</strong><span>Rediseño del sistema visual: logotipo, tipografía, paleta, iconografía, texturas y Brand Book completo en PDF con archivos editables.</span></div></div>
+    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 3 — Diseño de sitio web</strong><span>Arquitectura de información, wireframes, diseño UX/UI de 5 páginas, prototipo interactivo en Figma y guía de implementación técnica.</span></div></div>
+    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 4 — Activación de redes sociales</strong><span>Diseño de perfil, plantillas de publicación, guía de tono y voz, calendario editorial del primer mes y formación del equipo.</span></div></div>
+    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 5 — Gestión mensual (3 meses)</strong><span>Planificación editorial, diseño de piezas gráficas, publicación programada y reporte mensual de métricas.</span></div></div>
+  </div>
+  <div class="hl-box" style="border-left-color:${S.brand.primary};margin-top:20px">
+    <p>Cada fase incluye rondas de revisión colaborativas y una sesión de presentación de resultados. Sus comentarios son parte del flujo de trabajo.</p>
+  </div>
+</div>`;
 }
 
-function renderPricingPage(pageNum, sym) {
-  const items = state.pricing;
-  const taxR = (parseFloat(document.getElementById('taxRate')?.value) || state.doc.taxRate || 0) / 100;
-  const discR = (parseFloat(document.getElementById('discountRate')?.value) || state.doc.discount || 0) / 100;
-  const subtotal = items.reduce((s, i) => s + (i.qty * i.price), 0);
-  const discAmt = subtotal * discR;
-  const base = subtotal - discAmt;
-  const taxAmt = base * taxR;
-  const total = base + taxAmt;
-  const fmt = (n) => sym + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
-
-  const rows = items.map(item => `
+function pricingHTML(pn){
+  const items = S.items;
+  const tax = (S.doc.tax||0)/100, disc = (S.doc.disc||0)/100;
+  const sub = items.reduce((a,i)=>a+(i.qty*i.price),0);
+  const da = sub*disc, base=sub-da, ta=base*tax, tot=base+ta;
+  const rows = items.map(i=>`
     <tr>
-      <td>
-        <div class="pricing-item-name">${item.name}</div>
-        <div class="pricing-item-desc">${item.desc}</div>
-      </td>
-      <td class="text-right">${item.qty}</td>
-      <td class="text-right">${fmt(item.price)}</td>
-      <td>${fmt(item.qty * item.price)}</td>
+      <td><div class="item-n">${i.name}</div><div class="item-d">${i.desc}</div></td>
+      <td class="ra">${i.qty}</td>
+      <td class="ra">${fmtAmt(i.price)}</td>
+      <td class="ra">${fmtAmt(i.qty*i.price)}</td>
     </tr>`).join('');
-
   return `
-  <div class="pricing-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="content-block">
-      <div class="content-block-title" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Tabla de inversión</div>
-      <div class="content-block-text">
-        <p>El siguiente detalle contempla todos los módulos de trabajo descritos en el alcance. Los precios están expresados en ${state.doc.currency || 'USD'} y son válidos por 30 días desde la emisión de esta propuesta.</p>
-      </div>
-    </div>
-    <table class="pricing-table">
-      <thead>
-        <tr>
-          <th style="width:50%">Servicio / Entregable</th>
-          <th class="text-right" style="width:12%">Cant.</th>
-          <th class="text-right" style="width:18%">Precio unit.</th>
-          <th class="text-right" style="width:20%">Total</th>
-        </tr>
-      </thead>
+<div class="pricing-page cpage">
+  <div class="cpage-head">${pn}</div>
+  <div class="cb">
+    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Tabla de inversión</div>
+    <div class="cb-body"><p>El siguiente detalle contempla todos los módulos descritos en el alcance. Los valores están en ${S.doc.cur||'USD'} y son válidos por 30 días desde la emisión.</p></div>
+  </div>
+  <div class="ptable-wrap">
+    <table class="ptable">
+      <thead><tr>
+        <th style="width:52%">Servicio / Entregable</th>
+        <th class="ra" style="width:10%">Cant.</th>
+        <th class="ra" style="width:18%">Precio unit.</th>
+        <th class="ra" style="width:20%">Total</th>
+      </tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <div class="pricing-totals">
-      <div class="pricing-total-row">
-        <span class="total-label">Subtotal</span>
-        <span class="total-value">${fmt(subtotal)}</span>
-      </div>
-      ${discR > 0 ? `<div class="pricing-total-row"><span class="total-label">Descuento (${state.doc.discount}%)</span><span class="total-value" style="color:#ef4444">-${fmt(discAmt)}</span></div>` : ''}
-      ${taxR > 0 ? `<div class="pricing-total-row"><span class="total-label">IVA (${state.doc.taxRate}%)</span><span class="total-value">${fmt(taxAmt)}</span></div>` : ''}
-      <div class="pricing-total-row final">
-        <span class="total-label">Total a invertir</span>
-        <span class="total-value">${fmt(total)}</span>
+    <div class="totals-block">
+      <div class="total-row"><span class="tr-lbl">Subtotal</span><span class="tr-val">${fmtAmt(sub)}</span></div>
+      ${disc>0?`<div class="total-row"><span class="tr-lbl">Descuento (${S.doc.disc}%)</span><span class="tr-val" style="color:#dc2626">-${fmtAmt(da)}</span></div>`:''}
+      ${tax>0?`<div class="total-row"><span class="tr-lbl">IVA (${S.doc.tax}%)</span><span class="tr-val">${fmtAmt(ta)}</span></div>`:''}
+      <div class="total-row fin">
+        <span class="tr-lbl">Total a invertir</span>
+        <span class="tr-val" style="font-family:${S.brand.fontTitle}">${fmtAmt(tot)}</span>
       </div>
     </div>
-    <div style="margin-top:28px;">
-      <div class="two-col-grid">
-        <div class="info-card">
-          <div class="info-card-title">Condiciones de pago</div>
-          <div class="info-card-body">50% anticipo al inicio del proyecto · 50% a la entrega final. Pagos vía transferencia bancaria o tarjeta de crédito.</div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-title">Tiempo de entrega</div>
-          <div class="info-card-body">El proyecto completo tiene una duración estimada de 8 a 10 semanas hábiles desde la aprobación y el pago del anticipo.</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
+  </div>
+  <div class="cards2" style="margin-top:24px">
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Condiciones de pago</div><div class="icard-body">50% anticipo al inicio · 50% a la entrega final. Transferencia bancaria o tarjeta de crédito.</div></div>
+    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Tiempo de entrega</div><div class="icard-body">8 a 10 semanas hábiles desde la aprobación y el pago del anticipo.</div></div>
+  </div>
+</div>`;
 }
 
-function renderTermsPage(pageNum) {
+function termsHTML(pn){
+  const terms = [
+    ['1. Alcance y modificaciones', `Este presupuesto cubre exclusivamente los servicios descritos. Cualquier trabajo adicional será cotizado por separado y requerirá aprobación escrita del cliente. ${S.studio.name||'El prestador'} se reserva el derecho de ajustar tiempos y costos ante cambios sustanciales en el alcance original.`],
+    ['2. Pagos y facturación', `El inicio del proyecto queda condicionado al cobro del anticipo. Retrasos superiores a 10 días hábiles permiten suspender el trabajo temporalmente sin responsabilidad. Todos los precios son en ${S.doc.cur||'USD'}.`],
+    ['3. Propiedad intelectual', `Los derechos de los entregables finales son transferidos al cliente una vez completado el pago íntegro. ${S.studio.name||'El prestador'} conserva el derecho de incluir el trabajo en su portfolio salvo acuerdo de confidencialidad previo.`],
+    ['4. Revisiones', `Cada fase contempla las rondas de revisión especificadas en el alcance. Las revisiones adicionales serán cotizadas a la tarifa vigente. Las aprobaciones deben ser confirmadas por escrito.`],
+    ['5. Confidencialidad', `Ambas partes se comprometen a mantener la confidencialidad de la información sensible compartida. Esta cláusula permanece vigente dos años tras la finalización del contrato.`],
+    ['6. Validez de la propuesta', `Esta propuesta tiene validez de 30 días calendario. La aceptación implica el acuerdo con todos los términos aquí descritos.`],
+  ];
   return `
-  <div class="terms-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="content-block">
-      <div class="content-block-title" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Términos y condiciones</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">1. Alcance y modificaciones</div>
-      <div class="terms-text" contenteditable="true">El presente presupuesto cubre exclusivamente los servicios descritos en este documento. Cualquier trabajo adicional fuera del alcance definido será presupuestado por separado y requerirá aprobación escrita del cliente antes de ser ejecutado. ${state.studio.name || 'Studio Nórdico'} se reserva el derecho de ajustar tiempos y costos en caso de cambios sustanciales en el alcance originalmente acordado.</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">2. Pagos y facturación</div>
-      <div class="terms-text" contenteditable="true">El inicio del proyecto queda condicionado al cobro del anticipo establecido. En caso de retraso en los pagos superiores a 10 días hábiles, ${state.studio.name || 'el prestador'} podrá suspender temporalmente el trabajo sin responsabilidad. Todos los precios son en ${state.doc.currency || 'USD'} y se facturan conforme a la legislación vigente.</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">3. Propiedad intelectual</div>
-      <div class="terms-text" contenteditable="true">Los derechos de los entregables finales son transferidos al cliente en su totalidad una vez completado el pago íntegro del proyecto. Los archivos de trabajo (archivos fuente editables) serán entregados al cliente en el cierre del proyecto. ${state.studio.name || 'Studio Nórdico'} conserva el derecho de incluir el trabajo realizado en su portfolio, salvo acuerdo de confidencialidad previo.</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">4. Revisiones y aprobaciones</div>
-      <div class="terms-text" contenteditable="true">Cada fase contempla las rondas de revisión especificadas en el alcance del trabajo. Las revisiones adicionales por encima de las incluidas en el presupuesto serán cotizadas a la tarifa vigente de ${state.studio.name || 'el prestador'}. Toda aprobación del cliente deberá ser confirmada por escrito (email o plataforma acordada) para proceder a la siguiente etapa.</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">5. Confidencialidad</div>
-      <div class="terms-text" contenteditable="true">Ambas partes se comprometen a mantener la confidencialidad de la información sensible compartida durante el desarrollo del proyecto. Esta cláusula permanece vigente por un período de dos años tras la finalización del contrato.</div>
-    </div>
-    <div class="terms-section">
-      <div class="terms-section-title">6. Validez de la propuesta</div>
-      <div class="terms-text">Esta propuesta tiene una validez de 30 días calendario desde su fecha de emisión. Transcurrido ese plazo, los precios y condiciones podrán ser revisados. La aceptación de esta propuesta implica el acuerdo con todos los términos y condiciones aquí descritos.</div>
-    </div>
-  </div>`;
+<div class="cpage">
+  <div class="cpage-head">${pn}</div>
+  <div class="cb">
+    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Términos y condiciones</div>
+  </div>
+  ${terms.map(([t,b])=>`<div class="terms-sec"><div class="terms-t">${t}</div><div class="terms-body" contenteditable="true">${b}</div></div>`).join('')}
+</div>`;
 }
 
-function renderClosingPage(pageNum) {
+function closingHTML(pn){
   return `
-  <div class="closing-page">
-    <div class="page-header-line">${pageNum}</div>
-    <div class="closing-main">
-      <div class="closing-eyebrow">Próximo paso</div>
-      <div class="closing-title" style="font-family:${state.branding.fontTitle||"'Cormorant Garamond', serif"}">Listos para comenzar cuando lo estés.</div>
-      <div class="closing-text" contenteditable="true">Si esta propuesta responde a tus expectativas, el siguiente paso es simple: confirmar tu aprobación y abonar el anticipo para que podamos agendar el kick-off del proyecto. Estamos disponibles para resolver cualquier duda, ajustar el alcance o simplemente conversar sobre los detalles antes de comprometerte.</div>
-      <div class="closing-signature-area">
-        <div class="signature-label">Con mucho gusto,</div>
-        <div class="signature-name">${state.studio.contact || 'Carlos Vega'}</div>
-        <div class="signature-role">${state.studio.role || 'Director Creativo'} · ${state.studio.name || 'Studio Nórdico'}</div>
-      </div>
-      <div class="contact-cards-row">
-        <div class="contact-card">
-          <div class="contact-icon">✉️</div>
-          <div class="contact-info">
-            <label>Email</label>
-            <span>${state.studio.email || 'hola@studionordico.com'}</span>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="contact-icon">📞</div>
-          <div class="contact-info">
-            <label>Teléfono</label>
-            <span>${state.studio.phone || '+54 11 5555-1234'}</span>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="contact-icon">🌐</div>
-          <div class="contact-info">
-            <label>Web</label>
-            <span>${state.studio.web || 'www.studionordico.com'}</span>
-          </div>
-        </div>
-      </div>
+<div class="closing">
+  <div class="cpage-head">${pn}</div>
+  <div class="closing-main">
+    <div class="closing-eye" style="color:${S.brand.primary}">Próximo paso</div>
+    <div class="closing-h1" style="font-family:${S.brand.fontTitle}">Listos para comenzar cuando lo estés.</div>
+    <div class="closing-p" contenteditable="true">Si esta propuesta responde a tus expectativas, el siguiente paso es confirmar tu aprobación y abonar el anticipo para que podamos agendar el kick-off. Estamos disponibles para resolver cualquier duda, ajustar el alcance o simplemente conversar antes de comprometerte.</div>
+    <div class="closing-signature-area">
+      <div class="sig-label">Con mucho gusto,</div>
+      <div class="sig-name">${S.studio.contact||'Carlos Vega'}</div>
+      <div class="sig-role">${S.studio.role||'Director Creativo'} · ${S.studio.name||'Studio Nórdico'}</div>
     </div>
-    <div class="closing-footer-band" style="background:${state.branding.dark}">
-      <div class="closing-footer-brand">
-        <div class="closing-footer-icon" style="background:${state.branding.primary}">${(state.studio.name || 'S').charAt(0)}</div>
-        <div>
-          <div class="closing-footer-name">${state.studio.name || 'Studio Nórdico'}</div>
-          <div class="closing-footer-tagline">${state.studio.web || 'www.studionordico.com'}</div>
-        </div>
-      </div>
-      <div style="font-family:'Source Sans 3',sans-serif; font-size:11px; color:rgba(255,255,255,0.35); text-align:right;">
-        Propuesta ${state.doc.num || 'COT-2024-001'}<br>
-        ${state.doc.issueDate ? new Date(state.doc.issueDate+'T00:00:00').getFullYear() : '2024'} — Todos los derechos reservados
-      </div>
+    <div class="contact-row">
+      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">✉</div><div class="c-info"><label>Email</label><span>${S.studio.email||'—'}</span></div></div>
+      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">☎</div><div class="c-info"><label>Teléfono</label><span>${S.studio.phone||'—'}</span></div></div>
+      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">⊕</div><div class="c-info"><label>Web</label><span>${S.studio.web||'—'}</span></div></div>
     </div>
-  </div>`;
+  </div>
+  <div class="close-band" style="background:${S.brand.dark}">
+    <div class="cb-brand">
+      <div class="cb-icon" style="background:${S.brand.primary}">${(S.studio.name||'S').charAt(0)}</div>
+      <div><div class="cb-bname">${S.studio.name||'Studio Nórdico'}</div><div class="cb-web">${S.studio.web||'—'}</div></div>
+    </div>
+    <div class="cb-right">${S.doc.num||'COT-2024-001'}<br>${new Date().getFullYear()} · Todos los derechos reservados</div>
+  </div>
+</div>`;
 }
 
-/* ============================================================
-   PAGE LIST (left sidebar thumbnails)
-   ============================================================ */
-function renderPageList() {
-  const list = document.getElementById('pageList');
-  const labels = { cover:'Portada', intro:'Presentación', executive:'Resumen', scope:'Alcance', pricing:'Inversión', terms:'Términos', closing:'Cierre' };
-  const icons = { cover:'🎨', intro:'✉️', executive:'📋', scope:'📐', pricing:'💰', terms:'📄', closing:'🤝' };
-  list.innerHTML = state.pages.map((type, idx) => `
-    <div class="page-thumb ${idx===0?'active':''}" onclick="scrollToPage(${idx})" data-idx="${idx}">
-      <div class="page-thumb-preview" style="background:${type==='cover'?'#fff':'#fff'}">
-        <div style="background:${state.branding.primary};height:${type==='cover'?'40%':'4px'};width:100%;margin-bottom:2px;border-radius:1px;"></div>
-        <div style="background:#ddd;height:2px;width:70%;margin-bottom:1px;border-radius:1px;"></div>
-        <div style="background:#eee;height:2px;width:50%;margin-bottom:1px;border-radius:1px;"></div>
-        <div style="background:#eee;height:1px;width:80%;margin-bottom:0.5px;border-radius:1px;"></div>
-        <div style="background:#eee;height:1px;width:60%;border-radius:1px;"></div>
+/* ══════════════════════════════════════════════════════════
+   COLOR UTILS
+══════════════════════════════════════════════════════════ */
+function hexAlpha(hex, a){
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function hexBright(hex){
+  let r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  r=Math.min(255,r+40); g=Math.min(255,g+40); b=Math.min(255,b+60);
+  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGE LIST
+══════════════════════════════════════════════════════════ */
+function renderPageList(){
+  const icons = {cover:'🎨',intro:'✉️',executive:'📋',scope:'📐',pricing:'💰',terms:'📄',closing:'🤝'};
+  const names = {cover:'Portada',intro:'Presentación',executive:'Resumen',scope:'Alcance',pricing:'Inversión',terms:'Términos',closing:'Cierre'};
+  document.getElementById('pageList').innerHTML = S.pages.map((t,i)=>`
+    <div class="pg-item${i===0?' active':''}" onclick="goPage(${i})" data-i="${i}">
+      <div class="pg-thumb">
+        <div class="pg-thumb-inner">
+          <div class="pg-thumb-accent" style="background:${t==='cover'?S.brand.primary:'#e2e8f0'};height:${t==='cover'?'45%':'4px'};width:100%"></div>
+          <div style="background:#dde4ee;height:2px;width:75%;margin-bottom:1.5px;border-radius:1px"></div>
+          <div style="background:#eef1f6;height:1.5px;width:55%;margin-bottom:1px;border-radius:1px"></div>
+          <div style="background:#eef1f6;height:1.5px;width:80%;border-radius:1px"></div>
+        </div>
       </div>
-      <div class="page-thumb-info">
-        <div class="page-thumb-name">${icons[type]||'📄'} ${labels[type]||type}</div>
-        <div class="page-thumb-type">Página ${idx+1}</div>
+      <div class="pg-info">
+        <div class="pg-name">${icons[t]||'📄'} ${names[t]||t}</div>
+        <div class="pg-sub">Página ${i+1}</div>
       </div>
     </div>`).join('');
 }
 
-function scrollToPage(idx) {
+function goPage(i){
   const pages = document.querySelectorAll('.doc-page');
-  if (pages[idx]) pages[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  document.querySelectorAll('.page-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+  if(pages[i]) pages[i].scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.pg-item').forEach((el,j)=>el.classList.toggle('active',j===i));
+}
+function selectPage(i){
+  document.querySelectorAll('.doc-page').forEach((el,j)=>el.classList.toggle('ring',j===i));
+  document.querySelectorAll('.pg-item').forEach((el,j)=>el.classList.toggle('active',j===i));
 }
 
-function selectPage(idx) {
-  document.querySelectorAll('.doc-page').forEach((p, i) => p.classList.toggle('selected', i === idx));
-  document.querySelectorAll('.page-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
-}
+document.getElementById('canvas').addEventListener('scroll', function(){
+  const pages = document.querySelectorAll('.doc-page'), top = this.scrollTop;
+  let active=0; pages.forEach((p,i)=>{ if(p.offsetTop-80<=top) active=i; });
+  document.querySelectorAll('.pg-item').forEach((el,i)=>el.classList.toggle('active',i===active));
+});
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════════
    PAGE ACTIONS
-   ============================================================ */
-function movePage(idx, dir, e) {
-  e.stopPropagation();
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= state.pages.length) return;
-  const tmp = state.pages[idx];
-  state.pages[idx] = state.pages[newIdx];
-  state.pages[newIdx] = tmp;
-  renderDocument();
-  renderPageList();
-  saveToStorage();
-}
+══════════════════════════════════════════════════════════ */
+function movePg(i, dir, e){ e.stopPropagation(); const j=i+dir; if(j<0||j>=S.pages.length) return; [S.pages[i],S.pages[j]]=[S.pages[j],S.pages[i]]; renderDoc(); renderPageList(); save(); }
+function dupPg(i, e){ e.stopPropagation(); S.pages.splice(i+1,0,S.pages[i]); renderDoc(); renderPageList(); save(); toast('Sección duplicada'); }
+function delPg(i, e){ e.stopPropagation(); if(S.pages.length<=1) return; if(!confirm('¿Eliminar esta sección?')) return; S.pages.splice(i,1); renderDoc(); renderPageList(); save(); toast('Sección eliminada'); }
+function addBlock(type){ S.pages.push(type); closeModal(); renderDoc(); renderPageList(); save(); setTimeout(()=>goPage(S.pages.length-1),80); toast(`Sección "${pgLabel(type)}" agregada`); }
 
-function dupPage(idx, e) {
-  e.stopPropagation();
-  state.pages.splice(idx + 1, 0, state.pages[idx]);
-  renderDocument();
-  renderPageList();
-  saveToStorage();
-  showNotification('Sección duplicada');
-}
-
-function deletePage(idx, e) {
-  e.stopPropagation();
-  if (state.pages.length <= 1) return;
-  if (!confirm('¿Eliminar esta sección del documento?')) return;
-  state.pages.splice(idx, 1);
-  renderDocument();
-  renderPageList();
-  saveToStorage();
-  showNotification('Sección eliminada');
-}
-
-function addBlock(type) {
-  state.pages.push(type);
-  closeModal('modal-add-block');
-  renderDocument();
-  renderPageList();
-  saveToStorage();
-  // scroll to new page
-  setTimeout(() => scrollToPage(state.pages.length - 1), 100);
-  showNotification(`Sección "${getPageLabel(type)}" agregada`);
-}
-
-/* ============================================================
+/* ══════════════════════════════════════════════════════════
    PRICING EDITOR
-   ============================================================ */
-function renderPricingEditor() {
-  const list = document.getElementById('pricingItemsList');
-  list.innerHTML = state.pricing.map((item, idx) => `
-    <div class="pricing-item-editor">
-      <div class="pricing-item-header">
-        <span class="pricing-item-name-disp">${item.name.substring(0,28)}${item.name.length>28?'…':''}</span>
-        <button class="item-delete-btn" onclick="deletePricingItem(${idx})">✕</button>
+══════════════════════════════════════════════════════════ */
+function renderPriceItems(){
+  document.getElementById('priceItems').innerHTML = S.items.map((item,i)=>`
+    <div class="p-item">
+      <div class="p-item-head">
+        <div class="p-item-name">${item.name.substring(0,26)}${item.name.length>26?'…':''}</div>
+        <button class="p-del" onclick="delItem(${i})">✕</button>
       </div>
-      <div class="field-row">
-        <input type="text" class="field-input" placeholder="Nombre del servicio" value="${item.name}" oninput="updatePricingItem(${idx},'name',this.value)" />
+      <div class="r-row"><input class="r-input" placeholder="Nombre" value="${item.name}" oninput="updItem(${i},'name',this.value)" style="font-size:11.5px;padding:6px 9px"/></div>
+      <div class="r-row"><input class="r-input" placeholder="Descripción" value="${item.desc}" oninput="updItem(${i},'desc',this.value)" style="font-size:11.5px;padding:6px 9px"/></div>
+      <div class="r-2col">
+        <div class="r-row"><label class="r-label">Cant.</label><input type="number" class="r-input" value="${item.qty}" min="1" oninput="updItem(${i},'qty',+this.value||1)" style="font-size:11.5px;padding:6px 9px"/></div>
+        <div class="r-row"><label class="r-label">Precio</label><input type="number" class="r-input" value="${item.price}" min="0" oninput="updItem(${i},'price',+this.value||0)" style="font-size:11.5px;padding:6px 9px"/></div>
       </div>
-      <div class="field-row">
-        <input type="text" class="field-input" placeholder="Descripción breve" value="${item.desc}" oninput="updatePricingItem(${idx},'desc',this.value)" />
-      </div>
-      <div class="field-row-half">
-        <div class="field-row">
-          <label class="field-label">Cant.</label>
-          <input type="number" class="field-input" value="${item.qty}" min="1" oninput="updatePricingItem(${idx},'qty',parseFloat(this.value)||1)" />
-        </div>
-        <div class="field-row">
-          <label class="field-label">Precio</label>
-          <input type="number" class="field-input" value="${item.price}" min="0" oninput="updatePricingItem(${idx},'price',parseFloat(this.value)||0)" />
-        </div>
-      </div>
-      <div class="pricing-item-total-disp" style="text-align:right;margin-top:4px;">${getCurrSym()}${(item.qty*item.price).toLocaleString('es-AR',{minimumFractionDigits:2})}</div>
+      <div style="text-align:right;font-size:11.5px;font-weight:700;color:#60a5fa;margin-top:3px">${sym()}${(item.qty*item.price).toLocaleString('es-AR',{minimumFractionDigits:2})}</div>
     </div>`).join('');
-  updateTotalsDisplay();
+  updateTotals();
+}
+function updItem(i, field, val){ S.items[i][field]=val; renderPriceItems(); debounce(()=>{ renderDoc(); save(); },500)(); }
+function addItem(){ S.items.push({id:Date.now(),name:'Nuevo servicio',desc:'Descripción del servicio',qty:1,price:500}); renderPriceItems(); renderDoc(); save(); }
+function delItem(i){ if(!confirm('¿Eliminar esta línea?')) return; S.items.splice(i,1); renderPriceItems(); renderDoc(); save(); }
+
+function updateTotals(){
+  const tax=(S.doc.tax||0)/100, disc=(S.doc.disc||0)/100;
+  const sub=S.items.reduce((a,i)=>a+(i.qty*i.price),0);
+  const da=sub*disc, base=sub-da, ta=base*tax, tot=base+ta;
+  const f=(n)=>sym()+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const s=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  s('tSub',f(sub)); s('tDisc',da>0?'-'+f(da):f(0)); s('tTax',f(ta)); s('tTotal',f(tot));
 }
 
-function getCurrSym() {
-  const c = document.getElementById('currency')?.value || state.doc.currency;
-  return c === 'EUR' ? '€' : '$';
-}
-
-function updatePricingItem(idx, field, val) {
-  state.pricing[idx][field] = val;
-  const disp = document.querySelectorAll('.pricing-item-total-disp')[idx];
-  if (disp) disp.textContent = getCurrSym() + (state.pricing[idx].qty * state.pricing[idx].price).toLocaleString('es-AR', {minimumFractionDigits:2});
-  const nameDisp = document.querySelectorAll('.pricing-item-name-disp')[idx];
-  if (nameDisp && field === 'name') nameDisp.textContent = val.substring(0,28) + (val.length>28?'…':'');
-  updateTotalsDisplay();
-  debounce(() => { renderDocument(); saveToStorage(); }, 600)();
-}
-
-function addPricingItem() {
-  const newId = Date.now();
-  state.pricing.push({ id: newId, name: 'Nuevo servicio', desc: 'Descripción del servicio', qty: 1, price: 500 });
-  renderPricingEditor();
-  renderDocument();
-  saveToStorage();
-}
-
-function deletePricingItem(idx) {
-  if (!confirm('¿Eliminar esta línea?')) return;
-  state.pricing.splice(idx, 1);
-  renderPricingEditor();
-  renderDocument();
-  saveToStorage();
-}
-
-function updateTotalsDisplay() {
-  const taxR = (parseFloat(document.getElementById('taxRate')?.value) || state.doc.taxRate || 0) / 100;
-  const discR = (parseFloat(document.getElementById('discountRate')?.value) || state.doc.discount || 0) / 100;
-  const subtotal = state.pricing.reduce((s, i) => s + (i.qty * i.price), 0);
-  const discAmt = subtotal * discR;
-  const base = subtotal - discAmt;
-  const taxAmt = base * taxR;
-  const total = base + taxAmt;
-  const sym = getCurrSym();
-  const fmt = (n) => sym + n.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
-  const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  s('displaySubtotal', fmt(subtotal));
-  s('displayDiscount', discAmt > 0 ? '-' + fmt(discAmt) : fmt(0));
-  s('displayTax', fmt(taxAmt));
-  s('displayTotal', fmt(total));
-}
-
-/* ============================================================
-   BRANDING
-   ============================================================ */
-function handleLogoUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    state.branding.logo = ev.target.result;
-    const area = document.getElementById('logoUploadArea');
-    area.innerHTML = `<img src="${ev.target.result}" class="logo-preview" alt="logo" /><input type="file" accept="image/*" onchange="handleLogoUpload(event)" />`;
-    renderDocument();
-    saveToStorage();
-    showNotification('Logo actualizado ✓');
+/* ══════════════════════════════════════════════════════════
+   LOGO UPLOAD
+══════════════════════════════════════════════════════════ */
+function handleLogo(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    S.brand.logo=ev.target.result;
+    const d=document.getElementById('logoDrop');
+    d.innerHTML=`<img src="${ev.target.result}" class="logo-prev" alt="logo"/><input type="file" accept="image/*" onchange="handleLogo(event)"/>`;
+    renderDoc(); save(); toast('Logo actualizado ✓');
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(file);
 }
 
-function updateBrandColors() {
-  state.branding.primary = document.getElementById('colorPrimary').value;
-  state.branding.accent = document.getElementById('colorAccent').value;
-  state.branding.dark = document.getElementById('colorDark').value;
-  renderDocument();
-  saveToStorage();
+/* ══════════════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════════════ */
+function openModal(){ document.getElementById('addModal').classList.add('open'); }
+function closeModal(){ document.getElementById('addModal').classList.remove('open'); }
+
+/* ══════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════ */
+function switchTab(id, btn){
+  document.querySelectorAll('.r-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.r-tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('on');
 }
 
-function updateFonts() {
-  state.branding.fontTitle = document.getElementById('fontTitle').value;
-  state.branding.fontBody = document.getElementById('fontBody').value;
-  renderDocument();
-  saveToStorage();
-}
-
-/* ============================================================
-   SYNC ALL
-   ============================================================ */
-function syncAll() {
-  collectFormData();
-  updateBrandColors();
-  updateFonts();
-  renderDocument();
-  renderPageList();
-  renderPricingEditor();
-  saveToStorage();
-  showNotification('Documento actualizado ✓');
-  setStatus('saved');
-}
-
-/* ============================================================
-   PDF EXPORT
-   ============================================================ */
-async function exportPDF() {
-  showLoading('Preparando exportación...');
+/* ══════════════════════════════════════════════════════════
+   EXPORT PDF
+══════════════════════════════════════════════════════════ */
+async function exportPDF(){
   syncAll();
-  await new Promise(r => setTimeout(r, 300));
-
-  setLoadingText('Generando PDF de alta calidad...');
-
-  const canvas = document.getElementById('canvasInner');
-  const opt = {
-    margin: 0,
-    filename: `${(state.title || 'propuesta').replace(/\s+/g,'-').toLowerCase()}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      letterRendering: true,
-      logging: false
-    },
-    jsPDF: {
-      unit: 'mm',
-      format: 'a4',
-      orientation: 'portrait'
-    },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.doc-page' }
+  await new Promise(r=>setTimeout(r,200));
+  document.getElementById('expLabel').textContent='Generando PDF de alta calidad…';
+  document.getElementById('exporting').classList.add('show');
+  const canvas = document.getElementById('canvasIn');
+  const opts={
+    margin:0,
+    filename:`${(S.title||'propuesta').replace(/\s+/g,'-').toLowerCase()}.pdf`,
+    image:{type:'jpeg',quality:.98},
+    html2canvas:{scale:2,useCORS:true,letterRendering:true,logging:false},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['css','legacy'],before:'.doc-page'}
   };
-
-  try {
-    await html2pdf().set(opt).from(canvas).save();
-    hideLoading();
-    showNotification('PDF generado exitosamente ✓');
-  } catch (err) {
-    hideLoading();
-    showNotification('Error al generar PDF. Intenta con imprimir.');
+  try{
+    await html2pdf().set(opts).from(canvas).save();
+    document.getElementById('exporting').classList.remove('show');
+    toast('PDF generado exitosamente ✓','ok');
+  }catch(err){
+    document.getElementById('exporting').classList.remove('show');
+    toast('Error al generar — intenta Imprimir','er');
     console.error(err);
   }
 }
 
-/* ============================================================
-   MODALS
-   ============================================================ */
-function showModal(id) {
-  document.getElementById(id).classList.add('open');
+/* ══════════════════════════════════════════════════════════
+   TOAST / STATUS
+══════════════════════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, type='ok'){
+  const el=document.getElementById('toast');
+  document.getElementById('toastIco').textContent = type==='ok'?'✓':type==='er'?'✕':'…';
+  document.getElementById('toastMsg').textContent=msg;
+  el.className='show '+(type==='ok'?'ok':type==='er'?'er':'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
 }
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-function closeModalOutside(e) {
-  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-}
-
-/* ============================================================
-   TABS
-   ============================================================ */
-function switchRightTab(panelId, btn) {
-  document.querySelectorAll('.right-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.right-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('panel-' + panelId).classList.add('active');
-  btn.classList.add('active');
+function ping(s){
+  const p=document.getElementById('statusPill'), t=document.getElementById('statusTxt');
+  p.className='pill '+({saving:'saving',saved:'saved',draft:'draft'}[s]||'draft');
+  t.textContent={saving:'Guardando…',saved:'Guardado',draft:'Borrador'}[s]||s;
 }
 
-/* ============================================================
-   NOTIFICATIONS
-   ============================================================ */
-function showNotification(msg, type = 'success') {
-  const n = document.getElementById('notification');
-  document.getElementById('notifText').textContent = msg;
-  n.className = `show ${type}`;
-  setTimeout(() => n.classList.remove('show'), 2800);
-}
-
-/* ============================================================
-   LOADING
-   ============================================================ */
-function showLoading(msg = 'Cargando...') {
-  setLoadingText(msg);
-  document.getElementById('loading-overlay').classList.add('show');
-}
-function hideLoading() {
-  document.getElementById('loading-overlay').classList.remove('show');
-}
-function setLoadingText(msg) {
-  document.getElementById('loadingText').textContent = msg;
-}
-
-/* ============================================================
-   STATUS
-   ============================================================ */
-function setStatus(status) {
-  const badge = document.getElementById('statusBadge');
-  const map = {
-    draft: ['draft', '● Borrador'],
-    saving: ['saving', '● Guardando…'],
-    saved: ['saved', '✓ Guardado']
-  };
-  const [cls, text] = map[status] || map.draft;
-  badge.className = 'status-badge ' + cls;
-  badge.innerHTML = `<div class="status-dot"></div><span>${text.replace('● ','').replace('✓ ','')}</span>`;
-}
-
-/* ============================================================
+/* ══════════════════════════════════════════════════════════
    LOCALSTORAGE
-   ============================================================ */
-function saveToStorage() {
-  try {
-    const save = { ...state };
-    // don't save logo as it can be huge, save separately
-    const logoBackup = state.branding.logo;
-    save.branding = { ...state.branding, logo: null };
-    localStorage.setItem('propuesta_state', JSON.stringify(save));
-    if (logoBackup) {
-      try { localStorage.setItem('propuesta_logo', logoBackup); } catch(e) {}
-    }
-  } catch(e) {}
+══════════════════════════════════════════════════════════ */
+function save(){
+  try{
+    const payload={...S, brand:{...S.brand,logo:null}};
+    localStorage.setItem('ps_state',JSON.stringify(payload));
+    try{ if(S.brand.logo) localStorage.setItem('ps_logo',S.brand.logo); }catch{}
+  }catch{}
 }
-
-function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem('propuesta_state');
-    if (raw) {
-      const saved = JSON.parse(raw);
-      Object.assign(state, saved);
-      // restore logo
-      const logo = localStorage.getItem('propuesta_logo');
-      if (logo) state.branding.logo = logo;
-    }
-  } catch(e) {}
+function loadState(){
+  try{
+    const raw=localStorage.getItem('ps_state');
+    if(raw){ const d=JSON.parse(raw); Object.assign(S,d); const logo=localStorage.getItem('ps_logo'); if(logo) S.brand.logo=logo; }
+  }catch{}
 }
-
-/* ============================================================
-   DOC TITLE SYNC
-   ============================================================ */
-document.getElementById('docTitleInput').addEventListener('input', function() {
-  state.title = this.value;
-  saveToStorage();
-});
-
-/* canvas scroll → highlight page thumb */
-document.getElementById('canvas-area').addEventListener('scroll', function() {
-  const pages = document.querySelectorAll('.doc-page');
-  const scrollTop = this.scrollTop;
-  let active = 0;
-  pages.forEach((p, i) => {
-    if (p.offsetTop - 100 <= scrollTop) active = i;
-  });
-  document.querySelectorAll('.page-thumb').forEach((t, i) => t.classList.toggle('active', i === active));
-});
 </script>
 </body>
 </html>
