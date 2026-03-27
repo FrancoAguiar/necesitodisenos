@@ -3,657 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumaFlow | TikTok URL Processor</title>
-    <!-- Inter Font for that premium SaaS look -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>TikSave - Descargador Minimalista</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* CSS Variables - Premium Dark Mode Theme */
-        :root {
-            --bg-base: #000000;
-            --bg-surface: #0a0a0a;
-            --bg-elevated: #111111;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 255, 255, 0.15);
-            --text-primary: #ededed;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #ffffff;
-            --accent-invert: #000000;
-            --error: #ef4444;
-            --success: #10b981;
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --radius-lg: 24px;
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc;
             overflow-x: hidden;
         }
 
-        /* Subtle radial gradient background */
-        body::before {
-            content: '';
+        /* Efectos de fondo ambiental (Blobs) */
+        .bg-shape {
             position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at top, rgba(255,255,255,0.03) 0%, transparent 50%);
-            pointer-events: none;
+            filter: blur(100px);
             z-index: -1;
+            opacity: 0.5;
+            animation: pulse 10s infinite alternate;
         }
 
-        /* Navbar */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            border-bottom: 1px solid transparent;
-            backdrop-filter: blur(12px);
+        .shape-1 {
+            top: -10%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(0,0,0,0) 70%); /* Violeta */
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            letter-spacing: -0.02em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
+        .shape-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56,189,248,0.3) 0%, rgba(0,0,0,0) 70%); /* Azul claro */
         }
 
-        .logo-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #fff, #888);
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(20px, -20px); }
+        }
+
+        /* Efecto de cristal */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Spinner de carga personalizado */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-bottom-color: #8b5cf6;
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(255,255,255,0.2);
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
         }
 
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: color var(--transition);
-        }
-
-        nav a:hover {
-            color: var(--text-primary);
-        }
-
-        /* Main Layout */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 4rem 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeUp 0.8s ease forwards;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-subtle);
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.01em;
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Input Form (Linear Style) */
-        .processor-form {
-            width: 100%;
-            position: relative;
-            margin-bottom: 2rem;
-            animation: fadeUp 0.8s ease 0.1s forwards;
-            opacity: 0;
-        }
-
-        .input-group {
-            display: flex;
-            position: relative;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 0.5rem;
-            transition: all var(--transition);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-        }
-
-        .input-group:focus-within {
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 8px 32px rgba(0,0,0,0.6);
-        }
-
-        .url-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .url-input::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .submit-btn {
-            background: var(--accent);
-            color: var(--accent-invert);
-            border: none;
-            border-radius: calc(var(--radius-lg) - 6px);
-            padding: 0 1.5rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            height: 44px;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: scale(0.98);
-            background: #e0e0e0;
-        }
-
-        .submit-btn:disabled {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-tertiary);
-            cursor: not-allowed;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-left-color: var(--accent-invert);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .submit-btn.loading .spinner {
-            display: block;
-        }
-        .submit-btn.loading .btn-text {
-            display: none;
-        }
-
-        /* Result Panel */
-        .result-panel {
-            width: 100%;
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            gap: 1rem;
-            animation: fadeUp 0.5s ease forwards;
-        }
-
-        .result-panel.active {
-            display: flex;
-        }
-
-        .card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .result-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .status-badge {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .json-preview {
-            background: #000;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-            color: #a1a1aa;
-            overflow-x: auto;
-            white-space: pre-wrap;
-        }
-
-        .copy-btn {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            width: fit-content;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--border-hover);
-        }
-
-        /* Features & Info */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            width: 100%;
-            margin-top: 4rem;
-            animation: fadeUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-
-        .info-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .info-card p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Error Message */
-        .error-msg {
-            color: var(--error);
-            font-size: 0.875rem;
-            margin-top: 0.75rem;
-            display: none;
-            text-align: left;
-            padding-left: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Legal & Footer */
-        .legal-notice {
-            margin-top: 3rem;
-            padding: 1rem;
-            background: rgba(255,255,255,0.02);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-align: center;
-            max-width: 600px;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-subtle);
-            width: 100%;
-        }
-
-        footer p {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
-
-        /* Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .input-group { flex-direction: column; background: transparent; border: none; box-shadow: none; padding: 0; gap: 0.5rem; }
-            .url-input { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-elevated); }
-            .submit-btn { border-radius: var(--radius-md); width: 100%; }
-            .info-grid { grid-template-columns: 1fr; }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-center relative px-4 sm:px-6">
 
-    <header>
-        <div class="logo">
-            <div class="logo-icon"></div>
-            LumaFlow
+    <!-- Fondos decorativos -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <!-- Contenedor Principal -->
+    <main class="w-full max-w-2xl z-10 flex flex-col items-center">
+        
+        <!-- Encabezado -->
+        <div class="text-center mb-10">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                    <i data-lucide="video" class="text-white w-6 h-6"></i>
+                </div>
+                <h1 class="text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                    TikSave
+                </h1>
+            </div>
+            <p class="text-gray-400 text-lg font-light max-w-md mx-auto">
+                Descarga videos de TikTok sin marca de agua, rápido y en alta calidad.
+            </p>
         </div>
-        <nav>
-            <a href="#">API Docs</a>
-        </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="badge">SaaS V1.0 Preview</div>
-            <h1>Extrae metadata.<br>Sin fricción.</h1>
-            <p class="subtitle">Procesa enlaces de TikTok para obtener metadatos estructurados a través de nuestra API abstracta. Rápido, seguro y listo para desarrolladores.</p>
-        </section>
-
-        <div class="processor-form">
-            <form id="urlForm" onsubmit="handleProcess(event)">
-                <div class="input-group">
+        <!-- Tarjeta de Búsqueda (Glassmorphism) -->
+        <div class="glass-panel w-full rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <form id="downloadForm" class="flex flex-col gap-4">
+                <div class="relative flex items-center">
+                    <div class="absolute left-4 text-gray-500">
+                        <i data-lucide="link-2" class="w-5 h-5"></i>
+                    </div>
                     <input 
                         type="url" 
                         id="tiktokUrl" 
-                        class="url-input" 
-                        placeholder="https://www.tiktok.com/@usuario/video/123456789" 
-                        autocomplete="off"
-                        spellcheck="false"
+                        placeholder="Pega el enlace de TikTok aquí..." 
+                        required
+                        class="w-full bg-slate-900/50 border border-slate-700 text-white placeholder-gray-500 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
                     >
-                    <button type="submit" id="submitBtn" class="submit-btn" disabled>
-                        <span class="btn-text">Procesar Enlace</span>
-                        <div class="spinner"></div>
-                    </button>
                 </div>
-            </form>
-            <div id="errorMsg" class="error-msg" style="display: none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                <span>URL inválida. Asegúrate de que sea un enlace de TikTok.</span>
-            </div>
-        </div>
-
-        <!-- Result Panel -->
-        <div id="resultPanel" class="result-panel">
-            <div class="card">
-                <div class="result-header">
-                    <span class="result-title">Respuesta del Backend (/api/process)</span>
-                    <span class="status-badge">200 OK</span>
-                </div>
-                <div id="jsonOutput" class="json-preview"></div>
-                <button class="copy-btn" onclick="copyToClipboard()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    <span id="copyText">Copiar JSON</span>
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="w-full bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-2xl py-4 transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-violet-600/20 flex items-center justify-center gap-2"
+                >
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span>Obtener Video</span>
                 </button>
+            </form>
+
+            <!-- Estado de Carga -->
+            <div id="loadingState" class="hidden flex-col items-center justify-center py-10 gap-4 mt-6 border-t border-slate-700/50">
+                <span class="loader w-8 h-8"></span>
+                <p class="text-gray-400 text-sm animate-pulse">Procesando el enlace, por favor espera...</p>
             </div>
+
+            <!-- Resultados (Oculto por defecto) -->
+            <div id="resultState" class="hidden mt-8 pt-6 border-t border-slate-700/50 transition-all duration-500 opacity-0 transform translate-y-4">
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <!-- Miniatura del video -->
+                    <div class="w-full sm:w-1/3 aspect-[9/16] bg-slate-800 rounded-xl overflow-hidden relative shadow-lg">
+                        <!-- Imagen de placeholder estétitca -->
+                        <img id="videoThumb" src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=400&auto=format&fit=crop" alt="Miniatura" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-3 left-3 flex items-center gap-2">
+                            <i data-lucide="user" class="w-4 h-4 text-gray-300"></i>
+                            <span id="videoAuthor" class="text-xs font-medium text-gray-200">@usuario_tiktok</span>
+                        </div>
+                    </div>
+
+                    <!-- Detalles y botones de descarga -->
+                    <div class="w-full sm:w-2/3 flex flex-col justify-center gap-4">
+                        <h3 id="videoTitle" class="text-lg font-medium text-white line-clamp-2">
+                            Este es un ejemplo de la descripción del video de TikTok que el usuario quiere descargar.
+                        </h3>
+                        
+                        <div class="flex flex-col gap-3 mt-2">
+                            <a href="#" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-slate-900 font-semibold py-3 px-4 rounded-xl transition-colors">
+                                <i data-lucide="play-square" class="w-5 h-5"></i>
+                                Descargar Video (Sin Marca)
+                            </a>
+                            <a href="#" class="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-medium py-3 px-4 rounded-xl transition-colors">
+                                <i data-lucide="music" class="w-5 h-5"></i>
+                                Descargar Audio (MP3)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje de Error -->
+            <div id="errorState" class="hidden mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+                <i data-lucide="alert-circle" class="w-5 h-5 inline-block mb-1 mr-1"></i>
+                <span id="errorMessage">Enlace inválido o video no encontrado. Intenta de nuevo.</span>
+            </div>
+
         </div>
 
-        <section class="info-grid">
-            <div class="info-card">
-                <h3>Integración Seamless</h3>
-                <p>Diseñado para ser consumido por aplicaciones de terceros. Devuelve JSON estructurado al instante.</p>
-            </div>
-            <div class="info-card">
-                <h3>Arquitectura Desacoplada</h3>
-                <p>El frontend es agnóstico. Toda la lógica de análisis se delega a endpoints seguros del lado del servidor.</p>
-            </div>
-            <div class="info-card">
-                <h3>Cumplimiento Legal</h3>
-                <p>No almacenamos datos y evitamos el scraping frágil. Operamos bajo las directrices de uso justo.</p>
-            </div>
-        </section>
-
-        <div class="legal-notice">
-            <strong>Aviso Legal:</strong> Solo para contenido propio o con autorización expresa del autor. LumaFlow no remueve marcas de agua ni evade restricciones de copyright. El usuario asume total responsabilidad sobre el uso de los datos obtenidos mediante esta herramienta.
-        </div>
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-500 text-xs flex flex-col gap-2">
+            <p>Esta es una herramienta de uso público para fines educativos.</p>
+            <p>No almacenamos los videos en nuestros servidores.</p>
+        </footer>
     </main>
 
-    <footer>
-        <p>&copy; 2026 LumaFlow. Construido con estándares modernos.</p>
-    </footer>
-
     <script>
-        // DOM Elements
-        const form = document.getElementById('urlForm');
-        const input = document.getElementById('tiktokUrl');
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Referencias del DOM
+        const form = document.getElementById('downloadForm');
+        const urlInput = document.getElementById('tiktokUrl');
         const submitBtn = document.getElementById('submitBtn');
-        const errorMsg = document.getElementById('errorMsg');
-        const resultPanel = document.getElementById('resultPanel');
-        const jsonOutput = document.getElementById('jsonOutput');
-        const copyText = document.getElementById('copyText');
+        const loadingState = document.getElementById('loadingState');
+        const resultState = document.getElementById('resultState');
+        const errorState = document.getElementById('errorState');
+        const errorMessage = document.getElementById('errorMessage');
 
-        // Regex for basic TikTok URL validation
-        // Matches standard web URLs and shortened vm.tiktok URLs
-        const tiktokRegex = /^https:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\/.*$/i;
-
-        // Real-time validation
-        input.addEventListener('input', (e) => {
-            const val = e.target.value.trim();
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Reset UI states
-            errorMsg.style.display = 'none';
-            resultPanel.classList.remove('active');
+            const url = urlInput.value.trim();
             
-            if (val.length === 0) {
-                submitBtn.disabled = true;
+            // Validación básica
+            if (!url.includes('tiktok.com')) {
+                showError('Por favor, ingresa un enlace válido de TikTok.');
                 return;
             }
 
-            if (tiktokRegex.test(val)) {
+            // Iniciar UI de carga
+            hideError();
+            hideResult();
+            showLoading();
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            try {
+                // ==========================================
+                // AQUÍ ES DONDE CONECTARÁS TU API REAL
+                // ==========================================
+                /*
+                Ejemplo de cómo se vería con una API real (ej. RapidAPI):
+                
+                const response = await fetch(`https://tu-api-tiktok.com/download?url=${encodeURIComponent(url)}`, {
+                    headers: { 'x-api-key': 'TU_API_KEY' }
+                });
+                const data = await response.json();
+                
+                if(!data.success) throw new Error("Video no encontrado");
+                
+                // Actualizar el DOM con datos reales:
+                // document.getElementById('videoThumb').src = data.cover_url;
+                // document.getElementById('videoAuthor').innerText = '@' + data.author;
+                // document.getElementById('videoTitle').innerText = data.title;
+                */
+
+                // SIMULACIÓN DE RETRASO DE RED (Para demostración visual)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Mostrar resultado (Animación de entrada)
+                hideLoading();
+                showResult();
+
+            } catch (error) {
+                hideLoading();
+                showError('Ocurrió un error al procesar el video. Intenta más tarde.');
+            } finally {
                 submitBtn.disabled = false;
-            } else {
-                submitBtn.disabled = true;
-                if(val.length > 10) {
-                    errorMsg.style.display = 'flex';
-                }
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
 
-        // Mock Fetch Implementation to simulate Backend decoupling
-        // In a real scenario, this is intercepted by your native fetch to a real API
-        async function mockBackendProcess(url) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Simulating metadata extraction (Mock Data)
-                    const mockData = {
-                        success: true,
-                        status: 200,
-                        endpoint: "POST /api/process",
-                        timestamp: new Date().toISOString(),
-                        data: {
-                            platform: "TikTok",
-                            original_url: url,
-                            video_id: "7329" + Math.floor(Math.random() * 1000000),
-                            author: {
-                                username: "@lumaflow_user",
-                                nickname: "LumaFlow Creator"
-                            },
-                            metadata: {
-                                duration_seconds: 15,
-                                type: "video",
-                                has_watermark: true // Explicitly maintaining constraint
-                            }
-                        }
-                    };
-                    resolve(mockData);
-                }, 1200); // 1.2s artificial delay to show loading state
-            });
+        // Funciones auxiliares para controlar la UI
+        function showLoading() {
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
         }
 
-        // Handle Form Submission
-        async function handleProcess(e) {
-            e.preventDefault();
-            const url = input.value.trim();
-
-            if (!tiktokRegex.test(url)) return;
-
-            // Set Loading State
-            submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            resultPanel.classList.remove('active');
-            errorMsg.style.display = 'none';
-
-            try {
-                // Here you would use real fetch:
-                // const response = await fetch('/api/process', { 
-                //     method: 'POST', 
-                //     headers: {'Content-Type': 'application/json'},
-                //     body: JSON.stringify({ url: url })
-                // });
-                // const data = await response.json();
-
-                // Using Mock Backend for MVP
-                const data = await mockBackendProcess(url);
-                
-                // Format JSON beautifully
-                jsonOutput.textContent = JSON.stringify(data, null, 2);
-                
-                // Show Result Panel
-                resultPanel.classList.add('active');
-                
-                // Reset Copy Button text
-                copyText.textContent = "Copiar JSON";
-                
-            } catch (err) {
-                errorMsg.querySelector('span').textContent = "Error al conectar con el servidor.";
-                errorMsg.style.display = 'flex';
-            } finally {
-                // Remove Loading State
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-            }
+        function hideLoading() {
+            loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
         }
 
-        // Copy to clipboard functionality
-        function copyToClipboard() {
-            const textToCopy = jsonOutput.textContent;
-            
-            // Using modern Clipboard API with fallback strategy not needed for standard browsers, 
-            // but relying on execCommand if inside restrictive iframes.
-            try {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showCopySuccess();
-                }).catch(err => {
-                    fallbackCopyTextToClipboard(textToCopy);
-                });
-            } catch (e) {
-                fallbackCopyTextToClipboard(textToCopy);
-            }
-        }
-
-        function fallbackCopyTextToClipboard(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            
-            // Avoid scrolling to bottom
-            textArea.style.top = "0";
-            textArea.style.left = "0";
-            textArea.style.position = "fixed";
-
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-
-            try {
-                document.execCommand('copy');
-                showCopySuccess();
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
-            }
-
-            document.body.removeChild(textArea);
-        }
-
-        function showCopySuccess() {
-            copyText.textContent = "¡Copiado!";
+        function showResult() {
+            resultState.classList.remove('hidden');
+            // Pequeño timeout para que la transición CSS se aplique correctamente
             setTimeout(() => {
-                copyText.textContent = "Copiar JSON";
-            }, 2000);
+                resultState.classList.remove('opacity-0', 'translate-y-4');
+                resultState.classList.add('opacity-100', 'translate-y-0');
+            }, 50);
+        }
+
+        function hideResult() {
+            resultState.classList.add('hidden', 'opacity-0', 'translate-y-4');
+            resultState.classList.remove('opacity-100', 'translate-y-0');
+        }
+
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            errorState.classList.remove('hidden');
+        }
+
+        function hideError() {
+            errorState.classList.add('hidden');
         }
     </script>
 </body>
