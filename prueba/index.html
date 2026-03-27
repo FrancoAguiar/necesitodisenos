@@ -3,115 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luma | Procesamiento de Contenido Elegante</title>
+    <title>Luma | Procesamiento de Contenido</title>
     
-    <!-- Tipografía Premium -->
+    <!-- Tipografía Inter (Estilo Apple / Vercel / Linear) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Iconos Lucide (Open Source, Minimalistas) -->
+    <!-- Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- ==========================================================================
+         STYLES.CSS (Integrado para despliegue rápido)
+         ========================================================================== -->
     <style>
-        /* ==========================================================================
-           1. VARIABLES CSS (Design System)
-           ========================================================================== */
         :root {
-            /* Paleta de Colores - Dark Mode Premium */
-            --bg-base: #09090b;
-            --bg-surface: #18181b;
-            --bg-surface-hover: #27272a;
+            /* Paleta Vercel/Linear: Deep Black y contrastes sutiles */
+            --bg-base: #000000;
+            --bg-surface: #0a0a0a;
+            --bg-surface-hover: #171717;
             
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
+            --text-primary: #ededed;
+            --text-secondary: #888888;
+            --text-muted: #666666;
             
-            --border-subtle: #27272a;
-            --border-focus: #52525b;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-strong: rgba(255, 255, 255, 0.2);
+            --border-focus: rgba(255, 255, 255, 0.4);
             
-            /* Acentos: Un gradiente índigo-púrpura sutil */
-            --accent-main: #818cf8;
-            --accent-hover: #6366f1;
-            --accent-glow: rgba(129, 140, 248, 0.15);
+            --accent-main: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.1);
             
-            /* Estados */
-            --error-text: #f87171;
-            --error-bg: rgba(248, 113, 113, 0.1);
-            --success-text: #34d399;
-            --success-bg: rgba(52, 211, 153, 0.1);
+            --error-text: #ff453a;
+            --success-text: #32d74b;
 
-            /* Radios y Sombras */
-            --radius-sm: 8px;
+            --radius-sm: 6px;
             --radius-md: 12px;
             --radius-lg: 24px;
-            --radius-full: 9999px;
+            --radius-pill: 9999px;
             
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-glow: 0 0 20px var(--accent-glow);
-
-            /* Animaciones */
-            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
-        /* ==========================================================================
-           2. RESET & BASE
-           ========================================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-base);
             color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
             overflow-x: hidden;
         }
 
-        /* Background sutil tipo "Malla" / Resplandor */
+        /* Resplandor superior (Vercel style) */
         body::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: -200px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100vw;
-            height: 500px;
-            background: radial-gradient(circle at top, var(--accent-glow) 0%, transparent 70%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%);
             z-index: -1;
             pointer-events: none;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: color var(--transition-fast);
+        /* Grid de fondo (Linear style) */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+            z-index: -2;
+            pointer-events: none;
         }
 
-        a:hover {
-            color: var(--text-primary);
-        }
+        a { color: inherit; text-decoration: none; transition: color var(--transition-fast); }
+        a:hover { color: var(--text-primary); }
 
-        /* ==========================================================================
-           3. LAYOUT & COMPONENTES
-           ========================================================================== */
         .container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1040px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* Header */
+        /* HEADER */
         header {
             padding: 24px 0;
             display: flex;
@@ -120,33 +110,51 @@
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.05em;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.04em;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .logo i {
-            color: var(--accent-main);
+        .badge {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
         }
 
-        /* Hero Section */
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--success-text);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success-text);
+        }
+
+        /* HERO */
         .hero {
             text-align: center;
-            padding: 80px 0 40px;
-            max-width: 680px;
+            padding: 100px 0 60px;
+            max-width: 720px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
+            font-size: 3.5rem;
+            font-weight: 600;
+            letter-spacing: -0.05em;
             line-height: 1.1;
-            margin-bottom: 16px;
-            background: linear-gradient(to right, #fff, #a1a1aa);
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 0%, #888 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -154,26 +162,33 @@
         .hero p {
             font-size: 1.125rem;
             color: var(--text-secondary);
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            font-weight: 400;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Input Area */
+        /* INPUT AREA (Glassmorphism) */
         .input-wrapper {
             position: relative;
             max-width: 580px;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            background: var(--bg-surface);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             padding: 6px;
-            transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+            transition: all var(--transition-smooth);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .input-wrapper:focus-within {
-            border-color: var(--accent-main);
-            box-shadow: var(--shadow-glow);
+            border-color: var(--border-focus);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 1px var(--border-focus), 0 8px 32px rgba(255, 255, 255, 0.05);
         }
 
         .input-icon {
@@ -189,24 +204,22 @@
             border: none;
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 14px 20px 14px 52px;
             outline: none;
             width: 100%;
         }
 
-        .url-input::placeholder {
-            color: var(--text-muted);
-        }
+        .url-input::placeholder { color: var(--text-muted); }
 
         .btn-primary {
-            background-color: var(--text-primary);
+            background-color: var(--accent-main);
             color: var(--bg-base);
             border: none;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-pill);
             padding: 12px 24px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 500;
             font-family: inherit;
             cursor: pointer;
             transition: all var(--transition-fast);
@@ -216,75 +229,74 @@
         }
 
         .btn-primary:hover:not(:disabled) {
-            background-color: var(--accent-main);
-            color: #fff;
-            transform: translateY(-1px);
+            transform: scale(0.98);
+            opacity: 0.9;
         }
 
         .btn-primary:disabled {
-            opacity: 0.5;
+            opacity: 0.3;
             cursor: not-allowed;
+            background-color: var(--text-secondary);
         }
 
-        /* Message / Error */
-        .message-container {
-            min-height: 24px;
-            margin-top: 16px;
-            font-size: 0.875rem;
-            text-align: center;
-        }
-
-        .msg-error {
-            color: var(--error-text);
-            display: inline-flex;
+        /* LOADING STATE */
+        .loader {
+            display: none;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             animation: fadeIn 0.3s ease;
         }
 
-        /* Loading State */
-        .loader {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 40px;
-            animation: fadeIn 0.5s ease;
+        .spinner-line {
+            width: 20px;
+            height: 2px;
+            background: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-subtle);
-            border-top-color: var(--accent-main);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
+        .spinner-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 50%;
+            background: var(--accent-main);
+            animation: lineLoading 1s ease-in-out infinite alternate;
         }
 
-        /* Result Card */
+        /* RESULT CARD (Bento box style) */
         .result-container {
             display: none;
-            max-width: 600px;
+            max-width: 640px;
             margin: 40px auto;
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-md);
+            padding: 8px; /* Inner padding for the nested look */
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .result-card {
+        .result-inner {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 24px;
             display: flex;
             gap: 24px;
         }
 
         .result-thumbnail {
-            width: 140px;
-            height: 200px;
-            border-radius: var(--radius-md);
+            width: 120px;
+            height: 160px;
+            border-radius: 6px;
             object-fit: cover;
-            background: linear-gradient(45deg, var(--bg-surface-hover), var(--border-subtle));
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-surface-hover);
             flex-shrink: 0;
         }
 
@@ -296,29 +308,26 @@
         }
 
         .result-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            color: var(--text-primary);
         }
 
         .result-meta {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .meta-item {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .actions {
@@ -331,9 +340,9 @@
             background-color: transparent;
             color: var(--text-primary);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-full);
-            padding: 10px 20px;
-            font-size: 0.9rem;
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             transition: all var(--transition-fast);
@@ -346,137 +355,142 @@
 
         .btn-secondary:hover {
             background-color: var(--bg-surface-hover);
-            border-color: var(--border-focus);
+            border-color: var(--border-strong);
         }
 
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
-            padding: 60px 0;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .feature-card {
+        /* MESSAGES */
+        .message-container {
+            min-height: 24px;
+            margin-top: 16px;
+            font-size: 0.85rem;
             text-align: center;
         }
 
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
+        .msg-error {
+            color: var(--error-text);
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* BENTO FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px; /* Borders via gap */
+            background: var(--border-subtle);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin: 60px 0;
+            overflow: hidden;
+        }
+
+        .feature-card {
+            background: var(--bg-base);
+            padding: 32px 24px;
+            text-align: left;
+        }
+
+        .feature-icon {
+            color: var(--text-primary);
             margin-bottom: 16px;
-            color: var(--accent-main);
+            opacity: 0.8;
         }
 
         .feature-card h3 {
-            font-size: 1.125rem;
+            font-size: 0.95rem;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
-        /* Footer & Legal */
+        /* FOOTER & LEGAL */
         footer {
             margin-top: auto;
             padding: 40px 0;
             border-top: 1px solid var(--border-subtle);
-            text-align: center;
         }
 
         .legal-notice {
-            background: var(--bg-surface);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 16px 24px;
-            max-width: 800px;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            max-width: 100%;
             margin: 0 auto 32px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            text-align: left;
         }
 
         .legal-icon {
-            color: var(--accent-main);
+            color: var(--text-secondary);
             flex-shrink: 0;
             margin-top: 2px;
         }
 
         .legal-text {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
         .legal-text strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 500;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
         .footer-links {
             display: flex;
-            justify-content: center;
             gap: 24px;
-            margin-bottom: 24px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
         }
 
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+        /* KEYFRAMES */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes lineLoading {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(100%); }
         }
 
-        /* Animaciones Keyframes */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.25rem; }
-            .hero p { font-size: 1rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; padding: 0 16px; }
             
             .input-wrapper {
                 flex-direction: column;
                 background: transparent;
                 border: none;
                 gap: 12px;
+                padding: 0;
             }
             
             .url-input {
-                background: var(--bg-surface);
+                background: rgba(255, 255, 255, 0.03);
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius-md);
                 padding-left: 48px;
             }
             
-            .input-icon {
-                top: 14px;
-                left: 16px;
-            }
+            .input-icon { top: 14px; left: 16px; }
             
             .btn-primary {
                 width: 100%;
@@ -485,7 +499,11 @@
                 padding: 14px;
             }
 
-            .result-card {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .result-inner {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
@@ -495,17 +513,12 @@
                 width: 100%;
                 height: auto;
                 aspect-ratio: 9/16;
-                max-width: 200px;
+                max-width: 180px;
             }
 
-            .result-meta {
-                justify-content: center;
-            }
-
-            .actions {
-                flex-direction: column;
-                width: 100%;
-            }
+            .result-meta { justify-content: center; }
+            .actions { flex-direction: column; width: 100%; }
+            .footer-content { flex-direction: column; gap: 16px; text-align: center; }
         }
     </style>
 </head>
@@ -515,11 +528,11 @@
         <!-- HEADER -->
         <header>
             <div class="logo">
-                <i data-lucide="sparkles"></i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 Luma
             </div>
             <nav>
-                <a href="#" style="font-size: 0.9rem; color: var(--text-secondary);">Recursos</a>
+                <a href="#" style="font-size: 0.85rem; color: var(--text-secondary);">Documentación</a>
             </nav>
         </header>
 
@@ -527,57 +540,61 @@
         <main>
             <!-- Hero Section -->
             <section class="hero">
-                <h1>Procesa tu contenido con elegancia.</h1>
-                <p>Extrae y analiza metadatos de enlaces de TikTok en segundos. Diseñado para creadores, agencias y análisis de marca.</p>
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    API Operativa v2.4
+                </div>
+                <h1>Gestión de contenido,<br>elevada al estándar.</h1>
+                <p>Extrae, analiza y estructura metadatos de tus enlaces de TikTok mediante una API unificada. Diseñado para workflows profesionales.</p>
 
                 <form id="processForm" class="input-form">
                     <div class="input-wrapper">
-                        <i data-lucide="link" class="input-icon" width="20" height="20"></i>
+                        <i data-lucide="link-2" class="input-icon" width="18" height="18"></i>
                         <input 
                             type="text" 
                             id="urlInput" 
                             class="url-input" 
-                            placeholder="Pega el enlace de TikTok aquí (ej: https://www.tiktok.com/@autor/video/123)"
+                            placeholder="Pega la URL de tu contenido (ej: https://tiktok.com/@autor/video/123)"
                             autocomplete="off"
+                            spellcheck="false"
                         >
                         <button type="submit" id="submitBtn" class="btn-primary" disabled>
-                            <span>Procesar</span>
-                            <i data-lucide="arrow-right" width="18" height="18"></i>
+                            Extraer
+                            <i data-lucide="arrow-right" width="16" height="16"></i>
                         </button>
                     </div>
                     <div class="message-container" id="messageBox"></div>
                 </form>
 
-                <!-- Loading State -->
+                <!-- Loading State (Minimalist) -->
                 <div class="loader" id="loader">
-                    <div class="spinner"></div>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Analizando enlace...</p>
+                    <div class="spinner-line"></div>
+                    <span>Procesando nodo...</span>
                 </div>
 
-                <!-- Result Card -->
+                <!-- Result Card (Bento Style) -->
                 <div class="result-container" id="resultContainer">
-                    <div class="result-card">
-                        <!-- Placeholder aesthetic de imagen -->
+                    <div class="result-inner">
                         <img src="" alt="Thumbnail" class="result-thumbnail" id="resImage">
                         <div class="result-info">
-                            <h2 class="result-title" id="resTitle">Título del video placeholder</h2>
+                            <h2 class="result-title" id="resTitle">Title placeholder</h2>
                             <div class="result-meta">
                                 <div class="meta-item">
-                                    <i data-lucide="user" width="14" height="14"></i>
-                                    <span id="resAuthor">@autor</span>
+                                    <i data-lucide="at-sign" width="14" height="14"></i>
+                                    <span id="resAuthor">autor</span>
                                 </div>
                                 <div class="meta-item">
-                                    <i data-lucide="clock" width="14" height="14"></i>
+                                    <i data-lucide="timer" width="14" height="14"></i>
                                     <span id="resDuration">00:00</span>
                                 </div>
                             </div>
                             <div class="actions">
-                                <button class="btn-primary" id="actionBtn" style="flex: 2; justify-content: center; border-radius: var(--radius-sm);">
-                                    Obtener Datos
+                                <button class="btn-secondary" id="actionBtn" style="background: var(--text-primary); color: var(--bg-base); border: none;">
+                                    Descargar JSON
                                 </button>
-                                <button class="btn-secondary" id="copyBtn" style="border-radius: var(--radius-sm);">
-                                    <i data-lucide="copy" width="16" height="16"></i>
-                                    Copiar Link
+                                <button class="btn-secondary" id="copyBtn">
+                                    <i data-lucide="copy" width="14" height="14"></i>
+                                    Copiar
                                 </button>
                             </div>
                         </div>
@@ -585,22 +602,22 @@
                 </div>
             </section>
 
-            <!-- Features -->
+            <!-- Features (Bento Grid) -->
             <section class="features">
                 <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="zap"></i></div>
-                    <h3>Rendimiento Óptimo</h3>
-                    <p>Arquitectura desacoplada que garantiza respuestas rápidas sin sobrecargar tu dispositivo.</p>
+                    <div class="feature-icon"><i data-lucide="cpu" width="20" height="20"></i></div>
+                    <h3>Infraestructura Edge</h3>
+                    <p>Resolución de metadatos distribuida globalmente para latencia cercana a cero.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="shield-check"></i></div>
-                    <h3>Seguro & Privado</h3>
-                    <p>No almacenamos tu información. Los enlaces son procesados en tiempo real y descartados.</p>
+                    <div class="feature-icon"><i data-lucide="lock" width="20" height="20"></i></div>
+                    <h3>Privacidad por diseño</h3>
+                    <p>Procesamiento stateless. No almacenamos registros de las URLs consultadas.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"><i data-lucide="layout"></i></div>
-                    <h3>Diseño Premium</h3>
-                    <p>Una interfaz libre de distracciones, pensada para que te enfoques en lo que realmente importa.</p>
+                    <div class="feature-icon"><i data-lucide="code-2" width="20" height="20"></i></div>
+                    <h3>API-First</h3>
+                    <p>Preparado para integrarse directamente en tus pipelines y webhooks personalizados.</p>
                 </div>
             </section>
         </main>
@@ -611,31 +628,33 @@
         <div class="container">
             <!-- Aviso Legal Prominente -->
             <div class="legal-notice">
-                <i data-lucide="info" class="legal-icon" width="20" height="20"></i>
+                <i data-lucide="alert-triangle" class="legal-icon" width="18" height="18"></i>
                 <div class="legal-text">
-                    <strong>Aviso de Uso Responsable:</strong> Luma es una herramienta diseñada estrictamente para uso personal y análisis de metadatos. 
-                    Solo debes procesar enlaces de contenido propio o para el cual tengas 
-                    autorización expresa del autor original. El usuario asume toda la responsabilidad sobre el uso que haga de los datos generados por esta herramienta.
+                    <strong>Términos de Uso Responsable:</strong> Luma proporciona una interfaz para la extracción de metadatos y análisis estructural. 
+                    El uso de esta herramienta está estrictamente limitado a <strong>contenido de tu propiedad</strong> o material para el cual posees 
+                    <strong>autorización explícita del creador original</strong>. Eres el único responsable del uso que le des a los datos resultantes.
                 </div>
             </div>
 
-            <div class="footer-links">
-                <a href="#">Privacidad</a>
-                <a href="#">Términos de Servicio</a>
-                <a href="#">Contacto</a>
+            <div class="footer-content">
+                <div class="copyright">© 2026 Luma Inc. Arquitectura abstracta.</div>
+                <div class="footer-links">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Contacto</a>
+                </div>
             </div>
-            <p class="copyright">© 2026 Luma Tech. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <!-- ==========================================================================
-         4. JAVASCRIPT LOGIC
+         SCRIPT.JS (Integrado para despliegue rápido)
          ========================================================================== -->
     <script>
-        // Inicializar iconos de Lucide
+        // Inicializar iconos
         lucide.createIcons();
 
-        // Referencias del DOM
+        // Referencias DOM
         const form = document.getElementById('processForm');
         const input = document.getElementById('urlInput');
         const submitBtn = document.getElementById('submitBtn');
@@ -644,63 +663,60 @@
         const resultContainer = document.getElementById('resultContainer');
         const copyBtn = document.getElementById('copyBtn');
 
-        // Referencias DOM del resultado
         const resImage = document.getElementById('resImage');
         const resTitle = document.getElementById('resTitle');
         const resAuthor = document.getElementById('resAuthor');
         const resDuration = document.getElementById('resDuration');
 
-        // Regex simple para validar URLs de TikTok
+        // Regex estricta para validación de origen
         const tiktokRegex = /^(?:https?:\/\/)?(?:www\.)?(?:tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\/.*$/i;
 
-        // Validar input en tiempo real
+        // Validación on-the-fly
         input.addEventListener('input', (e) => {
             const url = e.target.value.trim();
-            messageBox.innerHTML = ''; // Limpiar errores previos
+            messageBox.innerHTML = ''; 
 
             if (url === '') {
                 submitBtn.disabled = true;
                 return;
             }
 
-            if (tiktokRegex.test(url)) {
-                submitBtn.disabled = false;
-            } else {
-                submitBtn.disabled = true;
-            }
+            submitBtn.disabled = !tiktokRegex.test(url);
         });
 
-        // Simulación de conexión a Backend (Mock API)
-        // En producción, esto haría un fetch() real a POST /api/process
-        const mockProcessAPI = async (url) => {
+        /**
+         * Simulación de llamada al Endpoint Backend (POST /api/process)
+         * Arquitectura desacoplada.
+         */
+        const processNodeAPI = async (url) => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    // Simulamos un pequeño porcentaje de error (ej: link roto o privado)
-                    if (Math.random() > 0.9) {
-                        reject(new Error("No se pudo acceder al contenido. Verifica que sea público."));
+                    // Simulación de error de red o de permisos
+                    if (Math.random() > 0.95) {
+                        reject(new Error("Acceso denegado. Verifica la privacidad del nodo."));
                     } else {
                         resolve({
                             status: "success",
-                            data: {
-                                title: "Explorando la nueva colección minimalista de esta temporada ✨",
-                                author: "@minimalist_creator",
-                                duration: "00:45",
-                                // Imagen estética de Unsplash como placeholder
-                                thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop"
+                            metadata: {
+                                title: "Minimal setup for maximum productivity 💻 #workspace #tech",
+                                author: "tech.minimalist",
+                                duration: "00:24",
+                                // Imagen de Unsplash representando tecnología / setup
+                                thumbnail: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=400&auto=format&fit=crop"
                             }
                         });
                     }
-                }, 2000); // Simulamos 2 segundos de latencia
+                }, 1500); // 1.5s delay
             });
         };
 
-        // Manejo del formulario
+        // Submit Handler
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const url = input.value.trim();
 
             if (!tiktokRegex.test(url)) {
-                showError("Por favor, ingresa una URL de TikTok válida.");
+                showError("Formato de URL inválido. Requiere dominio tiktok.com.");
                 return;
             }
 
@@ -712,11 +728,11 @@
             input.disabled = true;
 
             try {
-                // Llamada a nuestro Mock (reemplazar con fetch en el futuro)
-                const response = await mockProcessAPI(url);
+                // Fetch to /api/process (Mocked)
+                const response = await processNodeAPI(url);
                 
                 // UI State: Success
-                renderResult(response.data);
+                renderResult(response.metadata);
                 loader.style.display = 'none';
                 resultContainer.style.display = 'block';
                 
@@ -727,38 +743,37 @@
             } finally {
                 submitBtn.disabled = false;
                 input.disabled = false;
+                input.focus();
             }
         });
 
-        // Función para renderizar el resultado en la UI
         function renderResult(data) {
             resImage.src = data.thumbnail;
             resTitle.textContent = data.title;
             resAuthor.textContent = data.author;
             resDuration.textContent = data.duration;
             
-            // Efecto visual al renderizar
+            // Reflow para reiniciar animación
             resultContainer.style.animation = 'none';
-            resultContainer.offsetHeight; /* trigger reflow */
-            resultContainer.style.animation = 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            resultContainer.offsetHeight; 
+            resultContainer.style.animation = 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
         }
 
-        // Mostrar errores elegantemente
         function showError(msg) {
             messageBox.innerHTML = `
                 <div class="msg-error">
-                    <i data-lucide="alert-circle" width="16" height="16"></i>
+                    <i data-lucide="x-circle" width="14" height="14"></i>
                     <span>${msg}</span>
                 </div>
             `;
-            lucide.createIcons(); // Recargar el icono del error
+            lucide.createIcons();
         }
 
-        // Copiar enlace al portapapeles
+        // Clipboard API (Segura)
         copyBtn.addEventListener('click', () => {
-            const originalText = copyBtn.innerHTML;
+            const originalHTML = copyBtn.innerHTML;
             
-            // Usando execCommand como fallback seguro para iframes/entornos restrictivos
+            // Fallback para iframes
             const textArea = document.createElement("textarea");
             textArea.value = input.value;
             document.body.appendChild(textArea);
@@ -766,16 +781,18 @@
             
             try {
                 document.execCommand('copy');
-                copyBtn.innerHTML = `<i data-lucide="check" width="16" height="16" style="color: var(--success-text)"></i> ¡Copiado!`;
+                copyBtn.innerHTML = `<i data-lucide="check" width="14" height="14" style="color: var(--success-text)"></i> Copiado`;
+                copyBtn.style.color = 'var(--text-primary)';
                 lucide.createIcons();
             } catch (err) {
-                console.error('Error copiando al portapapeles:', err);
+                console.error('Clipboard error:', err);
             }
             
             document.body.removeChild(textArea);
 
             setTimeout(() => {
-                copyBtn.innerHTML = originalText;
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.style.color = '';
                 lucide.createIcons();
             }, 2000);
         });
