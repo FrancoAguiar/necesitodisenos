@@ -1,1253 +1,784 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PropuestaStudio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<style>
-/* ─── TOKENS ──────────────────────────────────────────────── */
-:root{
-  --bg:       #0a0c10;
-  --bg1:      #0d1117;
-  --bg2:      #111720;
-  --bg3:      #161d28;
-  --bg4:      #1b2434;
-  --border:   rgba(255,255,255,.07);
-  --border2:  rgba(255,255,255,.12);
-  --blue:     #2563eb;
-  --blue-h:   #1d4ed8;
-  --blue-glow:rgba(37,99,235,.22);
-  --blue-soft:rgba(37,99,235,.12);
-  --blue-dim: rgba(37,99,235,.06);
-  --txt:      #e8edf5;
-  --txt2:     #8b96a8;
-  --txt3:     #4f5a6b;
-  --success:  #10b981;
-  --warn:     #f59e0b;
-  --r4:       4px; --r8:8px; --r12:12px; --r16:16px; --r24:24px;
-  --ui: 'Plus Jakarta Sans', sans-serif;
-  --serif: 'Cormorant', serif;
-  --serif2: 'Instrument Serif', serif;
-  --top: 52px;
-  --lw: 224px;
-  --rw: 268px;
-  --ease: cubic-bezier(.4,0,.2,1);
-  --spring: cubic-bezier(.34,1.56,.64,1);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luma | Procesamiento de Contenido Elegante</title>
+    
+    <!-- Tipografía Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos Lucide (Open Source, Minimalistas) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body{font-family:var(--ui);background:var(--bg);color:var(--txt);overflow:hidden;height:100dvh}
+    <style>
+        /* ==========================================================================
+           1. VARIABLES CSS (Design System)
+           ========================================================================== */
+        :root {
+            /* Paleta de Colores - Dark Mode Premium */
+            --bg-base: #09090b;
+            --bg-surface: #18181b;
+            --bg-surface-hover: #27272a;
+            
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            
+            --border-subtle: #27272a;
+            --border-focus: #52525b;
+            
+            /* Acentos: Un gradiente índigo-púrpura sutil */
+            --accent-main: #818cf8;
+            --accent-hover: #6366f1;
+            --accent-glow: rgba(129, 140, 248, 0.15);
+            
+            /* Estados */
+            --error-text: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.1);
+            --success-text: #34d399;
+            --success-bg: rgba(52, 211, 153, 0.1);
 
-/* scrollbars */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.18)}
+            /* Radios y Sombras */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-glow: 0 0 20px var(--accent-glow);
 
-/* ─── TOPBAR ──────────────────────────────────────────────── */
-#top{
-  position:fixed;top:0;left:0;right:0;height:var(--top);
-  background:rgba(10,12,16,.88);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 16px;gap:12px;
-  z-index:900;
-}
-.brand{display:flex;align-items:center;gap:9px;flex-shrink:0;user-select:none}
-.brand-mark{
-  width:26px;height:26px;background:var(--blue);border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:#fff;letter-spacing:-.5px;
-  box-shadow:0 0 0 1px rgba(37,99,235,.6),0 4px 12px rgba(37,99,235,.35);
-}
-.brand-name{font-size:13px;font-weight:700;letter-spacing:-.3px;color:var(--txt)}
-.brand-name span{color:var(--blue)}
-.top-divider{width:1px;height:18px;background:var(--border);flex-shrink:0}
+            /* Animaciones */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.doc-name-wrap{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
-#docName{
-  background:transparent;border:none;color:var(--txt);
-  font-family:var(--ui);font-size:13px;font-weight:600;
-  outline:none;width:220px;letter-spacing:-.2px;
-  padding:4px 6px;border-radius:var(--r8);transition:.15s;
-}
-#docName:hover{background:var(--bg3)}
-#docName:focus{background:var(--bg3);box-shadow:0 0 0 1px var(--blue)}
+        /* ==========================================================================
+           2. RESET & BASE
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.pill{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;
-  letter-spacing:.3px;text-transform:uppercase;flex-shrink:0;
-}
-.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
-.pill.saved{background:rgba(16,185,129,.1);color:#34d399}
-.pill.saving{background:rgba(245,158,11,.1);color:#fbbf24}
-.pill.draft{background:rgba(139,150,168,.08);color:var(--txt3)}
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
 
-.top-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.t-btn{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:6px 12px;border-radius:var(--r8);
-  border:none;cursor:pointer;font-family:var(--ui);
-  font-size:12px;font-weight:600;transition:.15s var(--ease);
-  white-space:nowrap;letter-spacing:-.1px;
-}
-.t-btn svg{width:13px;height:13px;flex-shrink:0}
-.ghost{background:transparent;color:var(--txt2)}
-.ghost:hover{background:var(--bg3);color:var(--txt)}
-.stroke{background:transparent;color:var(--txt2);border:1px solid var(--border)}
-.stroke:hover{border-color:var(--border2);color:var(--txt)}
-.primary{
-  background:var(--blue);color:#fff;
-  box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 4px 14px var(--blue-glow);
-}
-.primary:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 6px 20px var(--blue-glow)}
-.primary:active{transform:translateY(0)}
+        /* Background sutil tipo "Malla" / Resplandor */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 500px;
+            background: radial-gradient(circle at top, var(--accent-glow) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-/* ─── LAYOUT ──────────────────────────────────────────────── */
-#shell{display:flex;height:calc(100dvh - var(--top));margin-top:var(--top)}
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
 
-/* ─── LEFT PANEL ──────────────────────────────────────────── */
-#left{
-  width:var(--lw);flex-shrink:0;
-  background:var(--bg1);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.left-head{
-  padding:14px 14px 10px;border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.section-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3)}
+        a:hover {
+            color: var(--text-primary);
+        }
 
-.pages-scroll{overflow-y:auto;flex:1;padding:10px 10px 0}
-.pg-item{
-  display:flex;align-items:center;gap:9px;
-  padding:7px 9px;border-radius:var(--r12);cursor:pointer;
-  transition:.12s var(--ease);margin-bottom:2px;
-  border:1px solid transparent;
-  user-select:none;
-}
-.pg-item:hover{background:var(--bg3)}
-.pg-item.active{background:var(--blue-dim);border-color:rgba(37,99,235,.2)}
-.pg-thumb{
-  width:28px;height:38px;background:white;border-radius:3px;
-  flex-shrink:0;overflow:hidden;position:relative;
-  box-shadow:0 1px 4px rgba(0,0,0,.4),0 0 0 .5px rgba(0,0,0,.2);
-}
-.pg-thumb-inner{position:absolute;inset:0;padding:2px}
-.pg-thumb-accent{border-radius:1px;margin-bottom:1.5px}
-.pg-info{min-width:0}
-.pg-name{font-size:11.5px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pg-sub{font-size:10px;color:var(--txt3);margin-top:.5px}
+        /* ==========================================================================
+           3. LAYOUT & COMPONENTES
+           ========================================================================== */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-.add-sect{
-  margin:8px 10px 10px;padding:8px;
-  border:1px dashed rgba(37,99,235,.3);border-radius:var(--r12);
-  background:var(--blue-dim);
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  color:var(--blue);font-size:11.5px;font-weight:600;
-  cursor:pointer;transition:.15s var(--ease);flex-shrink:0;
-}
-.add-sect:hover{background:var(--blue-soft);border-color:rgba(37,99,235,.5)}
+        /* Header */
+        header {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* ─── CANVAS ──────────────────────────────────────────────── */
-#canvas{
-  flex:1;overflow-y:auto;
-  background:var(--bg);
-  background-image:
-    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(37,99,235,.05) 0%, transparent 60%);
-  padding:32px 20px 60px;
-}
-.canvas-in{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-/* ─── DOCUMENT PAGES ─────────────────────────────────────── */
-.doc-page{
-  width:100%;background:#fff;
-  border-radius:3px;
-  box-shadow:0 2px 20px rgba(0,0,0,.35),0 8px 40px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.15);
-  position:relative;margin-bottom:20px;overflow:hidden;
-  transition:.2s var(--ease);
-  animation:pageIn .3s var(--ease) both;
-}
-@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.doc-page:hover .page-tools{opacity:1}
-.doc-page.ring{box-shadow:0 2px 20px rgba(0,0,0,.35),0 8px 40px rgba(0,0,0,.25),0 0 0 1.5px var(--blue)}
+        .logo i {
+            color: var(--accent-main);
+        }
 
-.page-tools{
-  position:absolute;top:10px;right:10px;
-  display:flex;gap:3px;opacity:0;transition:.15s;z-index:20;
-}
-.pt-btn{
-  width:26px;height:26px;background:rgba(255,255,255,.95);
-  border:.5px solid rgba(0,0,0,.12);border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:12px;color:#444;
-  transition:.12s var(--ease);
-  box-shadow:0 1px 3px rgba(0,0,0,.1);
-}
-.pt-btn:hover{background:#fff;transform:scale(1.08)}
-.pt-btn.del:hover{background:#fee2e2;color:#dc2626}
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0 40px;
+            max-width: 680px;
+            margin: 0 auto;
+        }
 
-/* ─── COVER PAGE ─────────────────────────────────────────── */
-.cover{min-height:1050px;display:flex;flex-direction:column;font-family:'Plus Jakarta Sans',sans-serif}
-.cover-stripe{height:5px}
-.cover-body{flex:1;display:flex;flex-direction:column;padding:60px 56px 52px;position:relative;overflow:hidden}
-.cover-geo{
-  position:absolute;right:-80px;bottom:60px;
-  width:380px;height:380px;border-radius:50%;
-  border:1px solid rgba(37,99,235,.1);
-  pointer-events:none;
-}
-.cover-geo::before{
-  content:'';position:absolute;inset:40px;border-radius:50%;
-  border:1px solid rgba(37,99,235,.07);
-}
-.cover-logo-zone{margin-bottom:72px;display:flex;align-items:center;gap:10px}
-.cover-logo-img{max-height:44px;max-width:180px;object-fit:contain}
-.cover-logo-stub{
-  width:40px;height:40px;border-radius:9px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:800;color:#fff;
-}
-.cover-logo-name{font-size:15px;font-weight:700;color:#0f172a;letter-spacing:-.3px}
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.cover-chip{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:4px 12px;border-radius:99px;
-  background:#f0f4ff;border:.5px solid rgba(37,99,235,.2);
-  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
-  color:#2563eb;margin-bottom:20px;width:fit-content;
-}
-.cover-h1{
-  font-family:'Cormorant',serif;
-  font-size:52px;font-weight:500;color:#0d1117;
-  line-height:1.05;letter-spacing:-.5px;
-  margin-bottom:16px;
-}
-.cover-sub{
-  font-size:15px;color:#64748b;line-height:1.65;max-width:440px;
-  margin-bottom:44px;font-weight:400;
-}
-.cover-rule{width:40px;height:2.5px;border-radius:2px;margin-bottom:32px}
-.cover-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 36px;max-width:400px}
-.cover-kv label{
-  font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  color:#94a3b8;display:block;margin-bottom:3px;
-}
-.cover-kv .val{font-size:13.5px;font-weight:600;color:#0f172a}
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
 
-.cover-foot{
-  padding:22px 56px;border-top:.5px solid rgba(0,0,0,.08);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.cover-foot-l{font-size:11.5px;color:#94a3b8}
-.cover-foot-r{display:flex;align-items:center;gap:5px}
-.foot-dot{width:5px;height:5px;border-radius:50%}
-.foot-web{font-size:11.5px;color:#64748b}
+        /* Input Area */
+        .input-wrapper {
+            position: relative;
+            max-width: 580px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            padding: 6px;
+            transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+        }
 
-/* ─── CONTENT PAGES ──────────────────────────────────────── */
-.cpage{min-height:1050px;padding:64px 56px;display:flex;flex-direction:column}
-.cpage-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:44px;padding-bottom:18px;
-  border-bottom:.5px solid rgba(0,0,0,.08);
-}
-.pg-label{
-  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2563eb
-}
-.pg-num{font-size:11.5px;color:#94a3b8}
+        .input-wrapper:focus-within {
+            border-color: var(--accent-main);
+            box-shadow: var(--shadow-glow);
+        }
 
-.cb{margin-bottom:32px}
-.cb-h1{
-  font-family:'Cormorant',serif;
-  font-size:36px;font-weight:500;color:#0f172a;
-  line-height:1.12;letter-spacing:-.2px;margin-bottom:14px;
-}
-.cb-h1.xl{font-size:44px;letter-spacing:-.4px}
-.cb-body{font-size:13.5px;color:#475569;line-height:1.88;font-weight:400}
-.cb-body p{margin-bottom:13px}
-.cb-body p:last-child{margin-bottom:0}
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
 
-.hl-box{
-  background:#f8faff;border-left:2.5px solid #2563eb;
-  border-radius:0 var(--r8) var(--r8) 0;padding:16px 20px;margin:20px 0;
-}
-.hl-box p{font-size:13.5px;color:#1e3a6e;font-style:italic;line-height:1.7;margin:0}
+        .url-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 14px 20px 14px 52px;
+            outline: none;
+            width: 100%;
+        }
 
-.cards2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
-.icard{
-  background:#f8faff;border:.5px solid rgba(37,99,235,.1);
-  border-radius:12px;padding:18px;
-}
-.icard-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2563eb;margin-bottom:7px}
-.icard-body{font-size:13px;color:#334155;line-height:1.7}
+        .url-input::placeholder {
+            color: var(--text-muted);
+        }
 
-.deliv-list{margin:14px 0}
-.deliv{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:.5px solid rgba(0,0,0,.06)}
-.deliv:last-child{border-bottom:none}
-.d-dot{width:5px;height:5px;border-radius:50%;background:#2563eb;margin-top:5px;flex-shrink:0}
-.d-text strong{font-size:13px;font-weight:600;color:#0f172a;display:block;margin-bottom:2px}
-.d-text span{font-size:12px;color:#64748b;line-height:1.5}
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-base);
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-/* ─── PRICING TABLE ──────────────────────────────────────── */
-.ptable-wrap{margin:16px 0}
-.ptable{width:100%;border-collapse:collapse;font-family:'Plus Jakarta Sans',sans-serif}
-.ptable thead tr{background:#0f172a}
-.ptable thead th{
-  padding:12px 14px;font-size:9.5px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55);
-  text-align:left;
-}
-.ptable thead th.ra{text-align:right}
-.ptable tbody tr{border-bottom:.5px solid rgba(0,0,0,.06);transition:.1s}
-.ptable tbody tr:hover{background:#f8faff}
-.ptable td{padding:13px 14px;font-size:13px;color:#0f172a;vertical-align:top}
-.ptable td.ra{text-align:right;font-weight:600}
-.item-n{font-weight:600;margin-bottom:2px;font-size:13px}
-.item-d{font-size:11.5px;color:#64748b;line-height:1.4}
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--accent-main);
+            color: #fff;
+            transform: translateY(-1px);
+        }
 
-.totals-block{border-top:1.5px solid #0f172a;margin-top:6px}
-.total-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 14px;border-bottom:.5px solid rgba(0,0,0,.06);
-}
-.total-row.fin{background:#0f172a;border-radius:0 0 4px 4px;margin-top:3px}
-.tr-lbl{font-size:12.5px;color:#64748b}
-.tr-val{font-size:13.5px;font-weight:600;color:#0f172a}
-.total-row.fin .tr-lbl{
-  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55)
-}
-.total-row.fin .tr-val{
-  font-family:'Cormorant',serif;font-size:28px;font-weight:500;color:#fff
-}
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-/* ─── TERMS PAGE ─────────────────────────────────────────── */
-.terms-sec{margin-bottom:22px}
-.terms-t{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#0f172a;margin-bottom:8px}
-.terms-body{font-size:12.5px;color:#475569;line-height:1.82}
+        /* Message / Error */
+        .message-container {
+            min-height: 24px;
+            margin-top: 16px;
+            font-size: 0.875rem;
+            text-align: center;
+        }
 
-/* ─── CLOSING PAGE ───────────────────────────────────────── */
-.closing{min-height:1050px;padding:64px 56px;display:flex;flex-direction:column;justify-content:space-between}
-.closing-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
-.closing-eye{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#2563eb;margin-bottom:18px}
-.closing-h1{
-  font-family:'Cormorant',serif;font-size:46px;font-weight:500;
-  color:#0f172a;line-height:1.08;letter-spacing:-.5px;max-width:500px;margin-bottom:22px;
-}
-.closing-p{font-size:14px;color:#475569;line-height:1.8;max-width:460px;margin-bottom:36px}
-.sig-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px}
-.sig-name{font-family:'Instrument Serif',serif;font-size:26px;color:#0f172a;font-style:italic}
-.sig-role{font-size:12px;color:#64748b;margin-top:2px}
+        .msg-error {
+            color: var(--error-text);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeIn 0.3s ease;
+        }
 
-.contact-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:32px}
-.c-card{display:flex;align-items:flex-start;gap:9px}
-.c-icon{
-  width:30px;height:30px;background:#f0f4ff;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
-}
-.c-info label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;display:block;margin-bottom:2px}
-.c-info span{font-size:13px;color:#0f172a;font-weight:500}
+        /* Loading State */
+        .loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
 
-.close-band{
-  margin:-64px -56px -64px;padding:26px 56px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.cb-brand{display:flex;align-items:center;gap:9px}
-.cb-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
-.cb-bname{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
-.cb-web{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px}
-.cb-right{text-align:right;font-size:11px;color:rgba(255,255,255,.3);line-height:1.6}
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-main);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
 
-/* ─── RIGHT PANEL ────────────────────────────────────────── */
-#right{
-  width:var(--rw);flex-shrink:0;
-  background:var(--bg1);border-left:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.r-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
-.r-tab{
-  flex:1;padding:11px 4px;font-size:10.5px;font-weight:600;text-align:center;
-  cursor:pointer;color:var(--txt3);
-  border-bottom:1.5px solid transparent;transition:.15s;
-  background:transparent;border-top:none;border-left:none;border-right:none;
-  font-family:var(--ui);
-}
-.r-tab:hover{color:var(--txt2)}
-.r-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+        /* Result Card */
+        .result-container {
+            display: none;
+            max-width: 600px;
+            margin: 40px auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-md);
+        }
 
-.r-panel{display:none;flex-direction:column;overflow-y:auto;flex:1}
-.r-panel.on{display:flex}
+        .result-card {
+            display: flex;
+            gap: 24px;
+        }
 
-.r-group{padding:14px 14px 14px;border-bottom:1px solid var(--border)}
-.r-group-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
-.r-row{margin-bottom:8px}
-.r-label{font-size:11px;font-weight:600;color:var(--txt2);margin-bottom:4px;display:block}
-.r-input{
-  width:100%;background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--r8);color:var(--txt);font-family:var(--ui);
-  font-size:12px;padding:7px 10px;outline:none;transition:.15s;
-}
-.r-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
-.r-input::placeholder{color:var(--txt3)}
-textarea.r-input{resize:vertical;min-height:64px;line-height:1.5}
-.r-2col{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.r-select{
-  width:100%;background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--r8);color:var(--txt);font-family:var(--ui);
-  font-size:12px;padding:7px 10px;outline:none;transition:.15s;
-  appearance:none;cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234f5a6b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 10px center;
-  padding-right:28px;
-}
-.r-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
+        .result-thumbnail {
+            width: 140px;
+            height: 200px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--bg-surface-hover), var(--border-subtle));
+            flex-shrink: 0;
+        }
 
-/* Logo upload */
-.logo-drop{
-  width:100%;min-height:72px;border:1px dashed var(--border2);
-  border-radius:var(--r12);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:5px;cursor:pointer;
-  transition:.15s;position:relative;overflow:hidden;margin-bottom:8px;
-}
-.logo-drop:hover{border-color:var(--blue);background:var(--blue-dim)}
-.logo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
-.logo-drop-icon{font-size:18px}
-.logo-drop-text{font-size:11px;color:var(--txt3)}
-.logo-prev{max-width:100%;max-height:48px;object-fit:contain}
+        .result-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-/* Color swatches */
-.color-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.swatch{width:30px;height:30px;border-radius:var(--r8);border:1px solid var(--border);cursor:pointer;overflow:hidden;flex-shrink:0}
-.swatch input[type=color]{width:200%;height:200%;margin:-50% 0 0 -50%;border:none;outline:none;cursor:pointer}
-.color-label{font-size:11.5px;color:var(--txt2)}
+        .result-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-/* Pricing item card */
-.p-item{
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--r12);padding:10px;margin-bottom:7px;
-  transition:.15s;
-}
-.p-item:hover{border-color:var(--border2)}
-.p-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.p-item-name{font-size:11.5px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
-.p-item-tot{font-size:12px;font-weight:700;color:#60a5fa}
-.p-del{background:transparent;border:none;color:var(--txt3);cursor:pointer;font-size:13px;padding:1px 4px;border-radius:5px;transition:.1s}
-.p-del:hover{color:#f87171;background:rgba(239,68,68,.1)}
+        .result-meta {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.totals-card{
-  background:var(--blue-dim);border:1px solid rgba(37,99,235,.15);
-  border-radius:var(--r12);padding:12px;margin-top:10px;
-}
-.tc-row{display:flex;justify-content:space-between;padding:3px 0}
-.tc-lbl{font-size:11px;color:var(--txt2)}
-.tc-val{font-size:12px;font-weight:600;color:var(--txt)}
-.tc-row.fin{border-top:1px solid rgba(37,99,235,.18);margin-top:5px;padding-top:8px}
-.tc-row.fin .tc-lbl{font-size:11.5px;font-weight:700;color:var(--txt)}
-.tc-row.fin .tc-val{font-size:17px;color:#60a5fa}
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-/* Action buttons */
-.sm-btn{
-  padding:7px 12px;border-radius:var(--r8);border:1px solid var(--border);
-  background:var(--bg3);color:var(--txt2);font-family:var(--ui);
-  font-size:11.5px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.sm-btn:hover{border-color:var(--border2);color:var(--txt)}
-.sm-btn.blue{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px var(--blue-glow)}
-.sm-btn.blue:hover{background:var(--blue-h)}
-.w100{width:100%}
-.mt8{margin-top:8px}
-.mb8{margin-bottom:8px}
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
 
-/* ─── MODAL ──────────────────────────────────────────────── */
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;
-  opacity:0;pointer-events:none;transition:.2s;
-}
-.overlay.open{opacity:1;pointer-events:all}
-.modal{
-  background:var(--bg2);border:1px solid var(--border2);
-  border-radius:var(--r24);padding:28px;width:100%;max-width:520px;
-  transform:translateY(14px) scale(.98);transition:.25s var(--spring);
-  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.04);
-}
-.overlay.open .modal{transform:none}
-.modal-title{font-size:17px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-.3px}
-.modal-sub{font-size:13px;color:var(--txt2);margin-bottom:20px;line-height:1.5}
-.block-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.block-opt{
-  padding:13px;border-radius:var(--r12);border:1px solid var(--border);
-  cursor:pointer;transition:.15s;background:var(--bg3);
-}
-.block-opt:hover{border-color:var(--blue);background:var(--blue-dim)}
-.bo-icon{font-size:18px;margin-bottom:5px}
-.bo-name{font-size:12.5px;font-weight:600;color:var(--txt);margin-bottom:2px}
-.bo-desc{font-size:11px;color:var(--txt3);line-height:1.4}
-.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+        }
 
-/* ─── TOAST ──────────────────────────────────────────────── */
-#toast{
-  position:fixed;bottom:20px;left:50%;
-  transform:translateX(-50%) translateY(56px);
-  background:var(--bg3);border:1px solid var(--border2);
-  border-radius:99px;padding:10px 20px;
-  font-size:13px;font-weight:600;color:var(--txt);
-  box-shadow:0 8px 32px rgba(0,0,0,.45);z-index:3000;
-  transition:transform .35s var(--spring);
-  display:flex;align-items:center;gap:7px;white-space:nowrap;
-}
-#toast.show{transform:translateX(-50%) translateY(0)}
-#toast.ok .toast-ico{color:var(--success)}
-#toast.er .toast-ico{color:#f87171}
+        .btn-secondary:hover {
+            background-color: var(--bg-surface-hover);
+            border-color: var(--border-focus);
+        }
 
-/* ─── EXPORT PROGRESS ────────────────────────────────────── */
-#exporting{
-  position:fixed;inset:0;background:rgba(10,12,16,.94);
-  backdrop-filter:blur(12px);z-index:4000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-  opacity:0;pointer-events:none;transition:.3s;
-}
-#exporting.show{opacity:1;pointer-events:all}
-.exp-ring{
-  width:44px;height:44px;border-radius:50%;
-  border:2.5px solid var(--bg4);border-top-color:var(--blue);
-  animation:spin .7s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.exp-label{font-size:14px;font-weight:600;color:var(--txt2)}
-.exp-sub{font-size:12px;color:var(--txt3)}
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            padding: 60px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-subtle);
+        }
 
-/* ─── EDITABLE TEXT ──────────────────────────────────────── */
-[contenteditable]{outline:none;transition:.12s}
-[contenteditable]:hover{background:rgba(37,99,235,.04);border-radius:3px}
-[contenteditable]:focus{background:rgba(37,99,235,.07);border-radius:4px;box-shadow:0 0 0 1.5px rgba(37,99,235,.25)}
+        .feature-card {
+            text-align: center;
+        }
 
-/* ─── PRINT ──────────────────────────────────────────────── */
-@media print{
-  #top,#left,#right,#toast,#exporting,.overlay,.page-tools{display:none!important}
-  body,#shell,#canvas{overflow:visible!important;height:auto!important;background:white!important}
-  #canvas{padding:0!important;margin-top:0!important;background:white!important}
-  .canvas-in{max-width:none!important}
-  .doc-page{margin-bottom:0!important;box-shadow:none!important;border-radius:0!important;page-break-after:always}
-  .doc-page:last-child{page-break-after:auto}
-  @page{size:A4;margin:0}
-}
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--accent-main);
+        }
 
-/* ─── MICROANIM ──────────────────────────────────────────── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.anim{animation:fadeUp .25s var(--ease) both}
-</style>
+        .feature-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer & Legal */
+        footer {
+            margin-top: auto;
+            padding: 40px 0;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .legal-notice {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 24px;
+            max-width: 800px;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .legal-icon {
+            color: var(--accent-main);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .legal-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .legal-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Animaciones Keyframes */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.25rem; }
+            .hero p { font-size: 1rem; }
+            
+            .input-wrapper {
+                flex-direction: column;
+                background: transparent;
+                border: none;
+                gap: 12px;
+            }
+            
+            .url-input {
+                background: var(--bg-surface);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--radius-md);
+                padding-left: 48px;
+            }
+            
+            .input-icon {
+                top: 14px;
+                left: 16px;
+            }
+            
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+                border-radius: var(--radius-md);
+                padding: 14px;
+            }
+
+            .result-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .result-thumbnail {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 9/16;
+                max-width: 200px;
+            }
+
+            .result-meta {
+                justify-content: center;
+            }
+
+            .actions {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<header id="top">
-  <div class="brand">
-    <div class="brand-mark">P</div>
-    <div class="brand-name">Propuesta<span>Studio</span></div>
-  </div>
-  <div class="top-divider"></div>
-  <div class="doc-name-wrap">
-    <input id="docName" value="Propuesta de Identidad Digital" />
-    <div class="pill saved" id="statusPill">
-      <div class="pill-dot"></div><span id="statusTxt">Guardado</span>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <i data-lucide="sparkles"></i>
+                Luma
+            </div>
+            <nav>
+                <a href="#" style="font-size: 0.9rem; color: var(--text-secondary);">Recursos</a>
+            </nav>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Procesa tu contenido con elegancia.</h1>
+                <p>Extrae y analiza metadatos de enlaces de TikTok en segundos. Diseñado para creadores, agencias y análisis de marca.</p>
+
+                <form id="processForm" class="input-form">
+                    <div class="input-wrapper">
+                        <i data-lucide="link" class="input-icon" width="20" height="20"></i>
+                        <input 
+                            type="text" 
+                            id="urlInput" 
+                            class="url-input" 
+                            placeholder="Pega el enlace de TikTok aquí (ej: https://www.tiktok.com/@autor/video/123)"
+                            autocomplete="off"
+                        >
+                        <button type="submit" id="submitBtn" class="btn-primary" disabled>
+                            <span>Procesar</span>
+                            <i data-lucide="arrow-right" width="18" height="18"></i>
+                        </button>
+                    </div>
+                    <div class="message-container" id="messageBox"></div>
+                </form>
+
+                <!-- Loading State -->
+                <div class="loader" id="loader">
+                    <div class="spinner"></div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Analizando enlace...</p>
+                </div>
+
+                <!-- Result Card -->
+                <div class="result-container" id="resultContainer">
+                    <div class="result-card">
+                        <!-- Placeholder aesthetic de imagen -->
+                        <img src="" alt="Thumbnail" class="result-thumbnail" id="resImage">
+                        <div class="result-info">
+                            <h2 class="result-title" id="resTitle">Título del video placeholder</h2>
+                            <div class="result-meta">
+                                <div class="meta-item">
+                                    <i data-lucide="user" width="14" height="14"></i>
+                                    <span id="resAuthor">@autor</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i data-lucide="clock" width="14" height="14"></i>
+                                    <span id="resDuration">00:00</span>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-primary" id="actionBtn" style="flex: 2; justify-content: center; border-radius: var(--radius-sm);">
+                                    Obtener Datos
+                                </button>
+                                <button class="btn-secondary" id="copyBtn" style="border-radius: var(--radius-sm);">
+                                    <i data-lucide="copy" width="16" height="16"></i>
+                                    Copiar Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="zap"></i></div>
+                    <h3>Rendimiento Óptimo</h3>
+                    <p>Arquitectura desacoplada que garantiza respuestas rápidas sin sobrecargar tu dispositivo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+                    <h3>Seguro & Privado</h3>
+                    <p>No almacenamos tu información. Los enlaces son procesados en tiempo real y descartados.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i data-lucide="layout"></i></div>
+                    <h3>Diseño Premium</h3>
+                    <p>Una interfaz libre de distracciones, pensada para que te enfoques en lo que realmente importa.</p>
+                </div>
+            </section>
+        </main>
     </div>
-  </div>
-  <div class="top-actions">
-    <button class="t-btn ghost" onclick="openModal()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg>
-      Sección
-    </button>
-    <div class="top-divider"></div>
-    <button class="t-btn stroke" onclick="window.print()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="10" height="7" rx="1"/><path d="M5 6V3h6v3M5 12H3V8h10v4h-2"/><circle cx="11.5" cy="9.5" r=".75" fill="currentColor" stroke="none"/></svg>
-      Imprimir
-    </button>
-    <button class="t-btn primary" onclick="exportPDF()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M5 8l3 3 3-3M2 12v2h12v-2"/></svg>
-      Exportar PDF
-    </button>
-  </div>
-</header>
 
-<!-- SHELL -->
-<div id="shell">
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <!-- Aviso Legal Prominente -->
+            <div class="legal-notice">
+                <i data-lucide="info" class="legal-icon" width="20" height="20"></i>
+                <div class="legal-text">
+                    <strong>Aviso de Uso Responsable:</strong> Luma es una herramienta diseñada estrictamente para uso personal y análisis de metadatos. 
+                    Solo debes procesar enlaces de contenido propio o para el cual tengas 
+                    autorización expresa del autor original. El usuario asume toda la responsabilidad sobre el uso que haga de los datos generados por esta herramienta.
+                </div>
+            </div>
 
-<!-- LEFT -->
-<aside id="left">
-  <div class="left-head"><div class="section-eyebrow">Documento</div></div>
-  <div class="pages-scroll" id="pageList"></div>
-  <div class="add-sect" onclick="openModal()">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1v10M1 6h10"/></svg>
-    Agregar sección
-  </div>
-</aside>
-
-<!-- CANVAS -->
-<main id="canvas">
-  <div class="canvas-in" id="canvasIn"></div>
-</main>
-
-<!-- RIGHT -->
-<aside id="right">
-  <div class="r-tabs">
-    <button class="r-tab on" onclick="switchTab('doc',this)">Documento</button>
-    <button class="r-tab" onclick="switchTab('brand',this)">Branding</button>
-    <button class="r-tab" onclick="switchTab('prices',this)">Precios</button>
-  </div>
-
-  <!-- DOC TAB -->
-  <div class="r-panel on" id="tab-doc">
-    <div class="r-group">
-      <div class="r-group-label">Cliente</div>
-      <div class="r-row"><label class="r-label">Nombre</label><input class="r-input" id="cName" placeholder="María González"/></div>
-      <div class="r-row"><label class="r-label">Empresa</label><input class="r-input" id="cCompany" placeholder="Nexus Digital S.A."/></div>
-      <div class="r-2col">
-        <div class="r-row"><label class="r-label">Email</label><input class="r-input" id="cEmail" placeholder="correo@empresa.com"/></div>
-        <div class="r-row"><label class="r-label">Teléfono</label><input class="r-input" id="cPhone" placeholder="+54 11 0000"/></div>
-      </div>
-      <div class="r-row"><label class="r-label">Ciudad / País</label><input class="r-input" id="cCity" placeholder="Buenos Aires, AR"/></div>
-    </div>
-    <div class="r-group">
-      <div class="r-group-label">Documento</div>
-      <div class="r-2col">
-        <div class="r-row"><label class="r-label">Nº Cotización</label><input class="r-input" id="dNum" placeholder="COT-2024-001"/></div>
-        <div class="r-row"><label class="r-label">Moneda</label>
-          <select class="r-select" id="dCur">
-            <option value="USD">USD $</option><option value="EUR">EUR €</option>
-            <option value="ARS">ARS $</option><option value="MXN">MXN $</option><option value="COP">COP $</option>
-          </select>
+            <div class="footer-links">
+                <a href="#">Privacidad</a>
+                <a href="#">Términos de Servicio</a>
+                <a href="#">Contacto</a>
+            </div>
+            <p class="copyright">© 2026 Luma Tech. Todos los derechos reservados.</p>
         </div>
-      </div>
-      <div class="r-2col">
-        <div class="r-row"><label class="r-label">Emisión</label><input type="date" class="r-input" id="dDate"/></div>
-        <div class="r-row"><label class="r-label">Vence</label><input type="date" class="r-input" id="dExp"/></div>
-      </div>
-      <div class="r-2col">
-        <div class="r-row"><label class="r-label">IVA (%)</label><input type="number" class="r-input" id="dTax" placeholder="21" min="0" max="100"/></div>
-        <div class="r-row"><label class="r-label">Descuento (%)</label><input type="number" class="r-input" id="dDisc" placeholder="0" min="0" max="100"/></div>
-      </div>
-    </div>
-    <div class="r-group">
-      <div class="r-group-label">Proyecto</div>
-      <div class="r-row"><label class="r-label">Título</label><input class="r-input" id="pTitle" placeholder="Identidad Visual Completa"/></div>
-      <div class="r-row"><label class="r-label">Subtítulo</label><input class="r-input" id="pSub" placeholder="Propuesta comercial personalizada"/></div>
-      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Actualizar vista</button>
-    </div>
-  </div>
+    </footer>
 
-  <!-- BRAND TAB -->
-  <div class="r-panel" id="tab-brand">
-    <div class="r-group">
-      <div class="r-group-label">Logotipo</div>
-      <div class="logo-drop" id="logoDrop">
-        <input type="file" accept="image/*" onchange="handleLogo(event)"/>
-        <div class="logo-drop-icon">🖼</div>
-        <div class="logo-drop-text">Clic o arrastra tu logo</div>
-      </div>
-    </div>
-    <div class="r-group">
-      <div class="r-group-label">Estudio / Agencia</div>
-      <div class="r-row"><label class="r-label">Nombre comercial</label><input class="r-input" id="sName" placeholder="Studio Nórdico"/></div>
-      <div class="r-row"><label class="r-label">Contacto</label><input class="r-input" id="sCont" placeholder="Carlos Vega"/></div>
-      <div class="r-row"><label class="r-label">Cargo</label><input class="r-input" id="sRole" placeholder="Director Creativo"/></div>
-      <div class="r-row"><label class="r-label">Email</label><input class="r-input" id="sEmail" placeholder="hola@studio.com"/></div>
-      <div class="r-row"><label class="r-label">Web</label><input class="r-input" id="sWeb" placeholder="www.studio.com"/></div>
-      <div class="r-row"><label class="r-label">Teléfono</label><input class="r-input" id="sPhone" placeholder="+54 11 5555-1234"/></div>
-    </div>
-    <div class="r-group">
-      <div class="r-group-label">Colores</div>
-      <div class="color-row">
-        <div class="swatch"><input type="color" id="cPrimary" value="#2563eb" onchange="applyBrand()"/></div>
-        <div class="color-label">Color principal</div>
-      </div>
-      <div class="color-row">
-        <div class="swatch"><input type="color" id="cDark" value="#0f172a" onchange="applyBrand()"/></div>
-        <div class="color-label">Oscuro (headers)</div>
-      </div>
-    </div>
-    <div class="r-group">
-      <div class="r-group-label">Tipografía PDF</div>
-      <div class="r-row"><label class="r-label">Títulos</label>
-        <select class="r-select" id="fTitle" onchange="applyBrand()">
-          <option value="'Cormorant',serif">Cormorant</option>
-          <option value="'Instrument Serif',serif">Instrument Serif</option>
-          <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
-        </select>
-      </div>
-      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Aplicar branding</button>
-    </div>
-  </div>
+    <!-- ==========================================================================
+         4. JAVASCRIPT LOGIC
+         ========================================================================== -->
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
 
-  <!-- PRICES TAB -->
-  <div class="r-panel" id="tab-prices">
-    <div class="r-group">
-      <div class="r-group-label">Líneas de inversión</div>
-      <div id="priceItems"></div>
-      <button class="sm-btn w100 mt8" onclick="addItem()">+ Agregar línea</button>
-    </div>
-    <div class="r-group">
-      <div class="totals-card" id="totalsCard">
-        <div class="tc-row"><span class="tc-lbl">Subtotal</span><span class="tc-val" id="tSub">$0.00</span></div>
-        <div class="tc-row"><span class="tc-lbl">Descuento</span><span class="tc-val" id="tDisc">$0.00</span></div>
-        <div class="tc-row"><span class="tc-lbl">IVA</span><span class="tc-val" id="tTax">$0.00</span></div>
-        <div class="tc-row fin"><span class="tc-lbl">Total</span><span class="tc-val" id="tTotal">$0.00</span></div>
-      </div>
-      <button class="sm-btn blue w100 mt8" onclick="syncAll()">↻ Actualizar tabla</button>
-    </div>
-  </div>
-</aside>
+        // Referencias del DOM
+        const form = document.getElementById('processForm');
+        const input = document.getElementById('urlInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageBox = document.getElementById('messageBox');
+        const loader = document.getElementById('loader');
+        const resultContainer = document.getElementById('resultContainer');
+        const copyBtn = document.getElementById('copyBtn');
 
-</div><!-- /shell -->
+        // Referencias DOM del resultado
+        const resImage = document.getElementById('resImage');
+        const resTitle = document.getElementById('resTitle');
+        const resAuthor = document.getElementById('resAuthor');
+        const resDuration = document.getElementById('resDuration');
 
-<!-- ADD BLOCK MODAL -->
-<div class="overlay" id="addModal" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-title">Agregar sección</div>
-    <div class="modal-sub">Elige el tipo de página que quieres añadir al documento.</div>
-    <div class="block-grid">
-      <div class="block-opt" onclick="addBlock('intro')"><div class="bo-icon">✉️</div><div class="bo-name">Presentación</div><div class="bo-desc">Carta introductoria y contexto del proyecto</div></div>
-      <div class="block-opt" onclick="addBlock('executive')"><div class="bo-icon">📋</div><div class="bo-name">Resumen ejecutivo</div><div class="bo-desc">Objetivo, desafío, enfoque y beneficios</div></div>
-      <div class="block-opt" onclick="addBlock('scope')"><div class="bo-icon">📐</div><div class="bo-name">Alcance</div><div class="bo-desc">Fases, entregables y metodología</div></div>
-      <div class="block-opt" onclick="addBlock('pricing')"><div class="bo-icon">💰</div><div class="bo-name">Tabla de inversión</div><div class="bo-desc">Precios detallados y totales</div></div>
-      <div class="block-opt" onclick="addBlock('terms')"><div class="bo-icon">📄</div><div class="bo-name">Términos y condiciones</div><div class="bo-desc">Cláusulas, plazos y acuerdos</div></div>
-      <div class="block-opt" onclick="addBlock('closing')"><div class="bo-icon">🤝</div><div class="bo-name">Cierre</div><div class="bo-desc">CTA final, firma y contacto</div></div>
-    </div>
-    <div class="modal-foot">
-      <button class="sm-btn" onclick="closeModal()">Cancelar</button>
-    </div>
-  </div>
-</div>
+        // Regex simple para validar URLs de TikTok
+        const tiktokRegex = /^(?:https?:\/\/)?(?:www\.)?(?:tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\/.*$/i;
 
-<!-- EXPORT OVERLAY -->
-<div id="exporting">
-  <div class="exp-ring"></div>
-  <div class="exp-label" id="expLabel">Preparando exportación…</div>
-  <div class="exp-sub">Esto puede tomar unos segundos</div>
-</div>
+        // Validar input en tiempo real
+        input.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            messageBox.innerHTML = ''; // Limpiar errores previos
 
-<!-- TOAST -->
-<div id="toast"><span class="toast-ico" id="toastIco">✓</span><span id="toastMsg">Guardado</span></div>
+            if (url === '') {
+                submitBtn.disabled = true;
+                return;
+            }
 
-<script>
-/* ══════════════════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════════════════ */
-const S = {
-  title: 'Propuesta de Identidad Digital',
-  client: { name:'María González', company:'Nexus Digital S.A.', email:'maria@nexus.com', phone:'+54 11 4823-9901', city:'Buenos Aires, Argentina' },
-  studio: { name:'Studio Nórdico', contact:'Carlos Vega', role:'Director Creativo', email:'hola@studionordico.com', web:'www.studionordico.com', phone:'+54 11 5555-1234' },
-  doc: { num:'COT-2024-042', cur:'USD', date:'2024-06-15', exp:'2024-07-15', tax:21, disc:0 },
-  project: { title:'Estrategia de Identidad y Presencia Digital', sub:'Propuesta comercial personalizada — Junio 2024' },
-  brand: { primary:'#2563eb', dark:'#0f172a', fontTitle:"'Cormorant',serif", logo:null },
-  pages: ['cover','intro','scope','pricing','terms','closing'],
-  items: [
-    { id:1, name:'Auditoría y diagnóstico de marca', desc:'Análisis competitivo, usuarios y posicionamiento', qty:1, price:1800 },
-    { id:2, name:'Estrategia de marca y concepto', desc:'Plataforma estratégica, propósito y tono de voz', qty:1, price:2400 },
-    { id:3, name:'Diseño de identidad visual completa', desc:'Logotipo, sistema visual y Brand Book completo', qty:1, price:3600 },
-    { id:4, name:'Diseño de sitio web (5 páginas)', desc:'UX/UI, prototipo interactivo y assets exportados', qty:1, price:4200 },
-    { id:5, name:'Gestión de redes sociales', desc:'Planificación, diseño de piezas y publicación', qty:3, price:900 },
-  ]
-};
+            if (tiktokRegex.test(url)) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        });
 
-/* ══════════════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  loadState();
-  fillForm();
-  renderPriceItems();
-  renderDoc();
-  renderPageList();
-  wireForm();
-  initDates();
-});
+        // Simulación de conexión a Backend (Mock API)
+        // En producción, esto haría un fetch() real a POST /api/process
+        const mockProcessAPI = async (url) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulamos un pequeño porcentaje de error (ej: link roto o privado)
+                    if (Math.random() > 0.9) {
+                        reject(new Error("No se pudo acceder al contenido. Verifica que sea público."));
+                    } else {
+                        resolve({
+                            status: "success",
+                            data: {
+                                title: "Explorando la nueva colección minimalista de esta temporada ✨",
+                                author: "@minimalist_creator",
+                                duration: "00:45",
+                                // Imagen estética de Unsplash como placeholder
+                                thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop"
+                            }
+                        });
+                    }
+                }, 2000); // Simulamos 2 segundos de latencia
+            });
+        };
 
-function initDates(){
-  const t = new Date(), e = new Date(); e.setDate(t.getDate()+30);
-  const iso = d => d.toISOString().slice(0,10);
-  if (!document.getElementById('dDate').value) document.getElementById('dDate').value = iso(t);
-  if (!document.getElementById('dExp').value)  document.getElementById('dExp').value  = iso(e);
-}
+        // Manejo del formulario
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = input.value.trim();
 
-/* ══════════════════════════════════════════════════════════
-   WIRE FORM
-══════════════════════════════════════════════════════════ */
-function wireForm(){
-  document.querySelectorAll('.r-input,.r-select').forEach(el => {
-    el.addEventListener('input', debounce(()=>{ readForm(); renderDoc(); renderPageList(); renderPriceItems(); save(); ping('saving'); setTimeout(()=>ping('saved'),900); }, 380));
-  });
-  document.getElementById('docName').addEventListener('input', function(){ S.title=this.value; save(); });
-}
-function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+            if (!tiktokRegex.test(url)) {
+                showError("Por favor, ingresa una URL de TikTok válida.");
+                return;
+            }
 
-/* ══════════════════════════════════════════════════════════
-   READ / FILL FORM
-══════════════════════════════════════════════════════════ */
-function readForm(){
-  const g = id => document.getElementById(id)?.value || '';
-  S.client = { name:g('cName'), company:g('cCompany'), email:g('cEmail'), phone:g('cPhone'), city:g('cCity') };
-  S.studio = { name:g('sName'), contact:g('sCont'), role:g('sRole'), email:g('sEmail'), web:g('sWeb'), phone:g('sPhone') };
-  S.doc = { num:g('dNum'), cur:g('dCur')||'USD', date:g('dDate'), exp:g('dExp'), tax:+g('dTax')||0, disc:+g('dDisc')||0 };
-  S.project = { title:g('pTitle'), sub:g('pSub') };
-  S.brand.primary = document.getElementById('cPrimary')?.value || '#2563eb';
-  S.brand.dark     = document.getElementById('cDark')?.value   || '#0f172a';
-  S.brand.fontTitle= document.getElementById('fTitle')?.value  || "'Cormorant',serif";
-}
+            // UI State: Loading
+            resultContainer.style.display = 'none';
+            messageBox.innerHTML = '';
+            loader.style.display = 'flex';
+            submitBtn.disabled = true;
+            input.disabled = true;
 
-function fillForm(){
-  const s = (id,v)=>{ const el=document.getElementById(id); if(el&&v!==undefined&&v!=='') el.value=v; };
-  s('docName',S.title);
-  s('cName',S.client.name); s('cCompany',S.client.company); s('cEmail',S.client.email);
-  s('cPhone',S.client.phone); s('cCity',S.client.city);
-  s('dNum',S.doc.num); s('dCur',S.doc.cur); s('dDate',S.doc.date); s('dExp',S.doc.exp);
-  s('dTax',S.doc.tax); s('dDisc',S.doc.disc);
-  s('pTitle',S.project.title); s('pSub',S.project.sub);
-  s('sName',S.studio.name); s('sCont',S.studio.contact); s('sRole',S.studio.role);
-  s('sEmail',S.studio.email); s('sWeb',S.studio.web); s('sPhone',S.studio.phone);
-  s('cPrimary',S.brand.primary); s('cDark',S.brand.dark); s('fTitle',S.brand.fontTitle);
-  if(S.brand.logo){ const d=document.getElementById('logoDrop'); d.innerHTML=`<img src="${S.brand.logo}" class="logo-prev"/><input type="file" accept="image/*" onchange="handleLogo(event)"/>`; }
-}
+            try {
+                // Llamada a nuestro Mock (reemplazar con fetch en el futuro)
+                const response = await mockProcessAPI(url);
+                
+                // UI State: Success
+                renderResult(response.data);
+                loader.style.display = 'none';
+                resultContainer.style.display = 'block';
+                
+            } catch (error) {
+                // UI State: Error
+                loader.style.display = 'none';
+                showError(error.message);
+            } finally {
+                submitBtn.disabled = false;
+                input.disabled = false;
+            }
+        });
 
-/* ══════════════════════════════════════════════════════════
-   SYNC ALL
-══════════════════════════════════════════════════════════ */
-function syncAll(){ readForm(); renderDoc(); renderPageList(); renderPriceItems(); save(); toast('Documento actualizado ✓'); }
-function applyBrand(){ S.brand.primary=document.getElementById('cPrimary')?.value||'#2563eb'; S.brand.dark=document.getElementById('cDark')?.value||'#0f172a'; S.brand.fontTitle=document.getElementById('fTitle')?.value||"'Cormorant',serif"; renderDoc(); save(); }
+        // Función para renderizar el resultado en la UI
+        function renderResult(data) {
+            resImage.src = data.thumbnail;
+            resTitle.textContent = data.title;
+            resAuthor.textContent = data.author;
+            resDuration.textContent = data.duration;
+            
+            // Efecto visual al renderizar
+            resultContainer.style.animation = 'none';
+            resultContainer.offsetHeight; /* trigger reflow */
+            resultContainer.style.animation = 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        }
 
-/* ══════════════════════════════════════════════════════════
-   RENDER DOC
-══════════════════════════════════════════════════════════ */
-function renderDoc(){
-  const c = document.getElementById('canvasIn');
-  c.innerHTML = '';
-  S.pages.forEach((type,i) => { const el = buildPage(type,i); c.appendChild(el); });
-  updateTotals();
-}
+        // Mostrar errores elegantemente
+        function showError(msg) {
+            messageBox.innerHTML = `
+                <div class="msg-error">
+                    <i data-lucide="alert-circle" width="16" height="16"></i>
+                    <span>${msg}</span>
+                </div>
+            `;
+            lucide.createIcons(); // Recargar el icono del error
+        }
 
-function buildPage(type, idx){
-  const wrap = document.createElement('div');
-  wrap.className = 'doc-page';
-  wrap.dataset.idx = idx;
-  wrap.onclick = () => selectPage(idx);
+        // Copiar enlace al portapapeles
+        copyBtn.addEventListener('click', () => {
+            const originalText = copyBtn.innerHTML;
+            
+            // Usando execCommand como fallback seguro para iframes/entornos restrictivos
+            const textArea = document.createElement("textarea");
+            textArea.value = input.value;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                copyBtn.innerHTML = `<i data-lucide="check" width="16" height="16" style="color: var(--success-text)"></i> ¡Copiado!`;
+                lucide.createIcons();
+            } catch (err) {
+                console.error('Error copiando al portapapeles:', err);
+            }
+            
+            document.body.removeChild(textArea);
 
-  const upBtn = idx > 0 ? `<div class="pt-btn" title="Arriba" onclick="movePg(${idx},-1,event)">↑</div>` : '';
-  const dnBtn = idx < S.pages.length-1 ? `<div class="pt-btn" title="Abajo" onclick="movePg(${idx},1,event)">↓</div>` : '';
-  const delBtn = S.pages.length > 1 ? `<div class="pt-btn del" title="Eliminar" onclick="delPg(${idx},event)">✕</div>` : '';
-  const dupBtn = `<div class="pt-btn" title="Duplicar" onclick="dupPg(${idx},event)">⧉</div>`;
-
-  wrap.innerHTML = `<div class="page-tools">${upBtn}${dnBtn}${dupBtn}${delBtn}</div>${pageHTML(type, idx)}`;
-  return wrap;
-}
-
-function pageHTML(type, idx){
-  const n = S.pages.length;
-  const pNum = `<span class="pg-label">${pgLabel(type)}</span><span class="pg-num">${studioName()} — ${String(idx+1).padStart(2,'0')} / ${String(n).padStart(2,'0')}</span>`;
-  switch(type){
-    case 'cover':    return coverHTML();
-    case 'intro':    return introHTML(pNum);
-    case 'executive':return execHTML(pNum);
-    case 'scope':    return scopeHTML(pNum);
-    case 'pricing':  return pricingHTML(pNum);
-    case 'terms':    return termsHTML(pNum);
-    case 'closing':  return closingHTML(pNum);
-    default: return `<div class="cpage"><div class="cpage-head">${pNum}</div><p style="color:#999;padding:20px">Sección</p></div>`;
-  }
-}
-
-function pgLabel(t){ return {cover:'Portada',intro:'Presentación',executive:'Resumen Ejecutivo',scope:'Alcance del Trabajo',pricing:'Tabla de Inversión',terms:'Términos y Condiciones',closing:'Cierre'}[t]||t; }
-function studioName(){ return S.studio.name || 'Studio'; }
-function sym(){ return S.doc.cur==='EUR'?'€':'$'; }
-function fmtAmt(n){ return sym() + n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtDate(s){ if(!s) return '—'; try{ return new Date(s+'T00:00:00').toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'}); }catch{return s;} }
-
-/* ══════════════════════════════════════════════════════════
-   PAGE TEMPLATES
-══════════════════════════════════════════════════════════ */
-function coverHTML(){
-  const logoHTML = S.brand.logo
-    ? `<img src="${S.brand.logo}" class="cover-logo-img" alt="logo"/>`
-    : `<div class="cover-logo-stub" style="background:${S.brand.primary}">${(S.studio.name||'S').charAt(0).toUpperCase()}</div>
-       <div class="cover-logo-name">${S.studio.name||'Studio Nórdico'}</div>`;
-  return `
-<div class="cover">
-  <div class="cover-stripe" style="background:linear-gradient(90deg,${S.brand.primary},${hexBright(S.brand.primary)})"></div>
-  <div class="cover-body">
-    <div class="cover-geo"></div>
-    <div class="cover-logo-zone">${logoHTML}</div>
-    <div class="cover-chip" style="background:${hexAlpha(S.brand.primary,.08)};border-color:${hexAlpha(S.brand.primary,.25)};color:${S.brand.primary}">
-      Propuesta comercial · ${S.doc.num||'COT-2024-001'}
-    </div>
-    <div class="cover-h1" style="font-family:${S.brand.fontTitle}" contenteditable="true">${S.project.title||'Título del Proyecto'}</div>
-    <div class="cover-sub" contenteditable="true">${S.project.sub||'Propuesta comercial personalizada'}</div>
-    <div class="cover-rule" style="background:${S.brand.primary}"></div>
-    <div class="cover-grid">
-      <div class="cover-kv"><label>Preparado para</label><div class="val">${S.client.name||'—'}</div></div>
-      <div class="cover-kv"><label>Empresa</label><div class="val">${S.client.company||'—'}</div></div>
-      <div class="cover-kv"><label>Fecha de emisión</label><div class="val">${fmtDate(S.doc.date)}</div></div>
-      <div class="cover-kv"><label>Validez</label><div class="val">30 días calendario</div></div>
-    </div>
-  </div>
-  <div class="cover-foot">
-    <div class="cover-foot-l">Preparado por ${S.studio.contact||'—'} · ${S.studio.role||'—'}</div>
-    <div class="cover-foot-r">
-      <div class="foot-dot" style="background:${S.brand.primary}"></div>
-      <div class="foot-web">${S.studio.web||'—'}</div>
-    </div>
-  </div>
-</div>`;
-}
-
-function introHTML(pn){
-  return `
-<div class="cpage">
-  <div class="cpage-head">${pn}</div>
-  <div class="cb">
-    <div class="cb-h1 xl" style="font-family:${S.brand.fontTitle}">Una propuesta construida sobre entendimiento profundo.</div>
-  </div>
-  <div class="cb">
-    <div class="cb-body" contenteditable="true">
-      <p>Estimada ${S.client.name||'[nombre]'},</p>
-      <p>Es un placer presentarles esta propuesta diseñada específicamente para ${S.client.company||'su empresa'}. Después de un análisis detallado de sus necesidades, objetivos de negocio y el contexto del mercado en el que operan, hemos estructurado un plan de trabajo integral que aborda cada dimensión de su desafío de posicionamiento.</p>
-      <p>En ${S.studio.name||'nuestro estudio'} creemos que una propuesta sólida no comienza con servicios, sino con comprensión. Por eso, antes de definir el alcance de este proyecto, invertimos tiempo en entender su visión, los obstáculos actuales y las oportunidades que aún no se han capitalizado completamente.</p>
-      <p>Lo que encontrarán en este documento no es una lista de tareas: es una hoja de ruta estratégica para consolidar su presencia en el mercado, construir una identidad que genere confianza y traducir esa confianza en resultados medibles.</p>
-    </div>
-  </div>
-  <div class="hl-box" style="border-left-color:${S.brand.primary}">
-    <p>Nuestro enfoque integra estrategia, diseño y tecnología para crear experiencias que no solo se ven bien, sino que funcionan, convierten y crecen con el negocio.</p>
-  </div>
-  <div style="margin-top:32px">
-    <div class="sig-label">Con confianza,</div>
-    <div class="sig-name">${S.studio.contact||'Carlos Vega'}</div>
-    <div class="sig-role">${S.studio.role||'Director Creativo'} · ${S.studio.name||'Studio Nórdico'}</div>
-  </div>
-</div>`;
-}
-
-function execHTML(pn){
-  return `
-<div class="cpage">
-  <div class="cpage-head">${pn}</div>
-  <div class="cb">
-    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Resumen Ejecutivo</div>
-    <div class="cb-body"><p>Este documento describe el alcance, metodología y presupuesto de la intervención estratégica propuesta para ${S.client.company||'su empresa'}. El objetivo central es consolidar la identidad de la marca a través de un sistema visual coherente y una presencia digital robusta orientada a resultados.</p></div>
-  </div>
-  <div class="cards2">
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">El desafío</div><div class="icard-body" contenteditable="true">La marca carece de consistencia visual entre sus puntos de contacto, generando confusión y debilitando la percepción de valor ante clientes potenciales.</div></div>
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">La oportunidad</div><div class="icard-body" contenteditable="true">Existe un segmento premium sub-atendido que responde positivamente a marcas con identidad sólida, lenguaje claro y presencia digital profesional.</div></div>
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Nuestro enfoque</div><div class="icard-body" contenteditable="true">Un proceso en tres fases: diagnóstico y estrategia, diseño e implementación, y activación con medición. Entregables claros en cada etapa.</div></div>
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Beneficios clave</div><div class="icard-body" contenteditable="true">Mayor reconocimiento de marca, coherencia en todos los canales y materiales de comunicación listos para usar desde el día uno.</div></div>
-  </div>
-</div>`;
-}
-
-function scopeHTML(pn){
-  return `
-<div class="cpage">
-  <div class="cpage-head">${pn}</div>
-  <div class="cb">
-    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Alcance del trabajo</div>
-    <div class="cb-body"><p>El proyecto se estructura en módulos claramente definidos, cada uno con entregables específicos, responsables y criterios de aprobación.</p></div>
-  </div>
-  <div class="deliv-list">
-    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 1 — Auditoría y estrategia de marca</strong><span>Análisis de identidad actual, benchmarking, entrevistas de usuario, definición de posicionamiento y plataforma estratégica completa.</span></div></div>
-    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 2 — Diseño de identidad visual</strong><span>Rediseño del sistema visual: logotipo, tipografía, paleta, iconografía, texturas y Brand Book completo en PDF con archivos editables.</span></div></div>
-    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 3 — Diseño de sitio web</strong><span>Arquitectura de información, wireframes, diseño UX/UI de 5 páginas, prototipo interactivo en Figma y guía de implementación técnica.</span></div></div>
-    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 4 — Activación de redes sociales</strong><span>Diseño de perfil, plantillas de publicación, guía de tono y voz, calendario editorial del primer mes y formación del equipo.</span></div></div>
-    <div class="deliv"><div class="d-dot" style="background:${S.brand.primary}"></div><div class="d-text"><strong>Fase 5 — Gestión mensual (3 meses)</strong><span>Planificación editorial, diseño de piezas gráficas, publicación programada y reporte mensual de métricas.</span></div></div>
-  </div>
-  <div class="hl-box" style="border-left-color:${S.brand.primary};margin-top:20px">
-    <p>Cada fase incluye rondas de revisión colaborativas y una sesión de presentación de resultados. Sus comentarios son parte del flujo de trabajo.</p>
-  </div>
-</div>`;
-}
-
-function pricingHTML(pn){
-  const items = S.items;
-  const tax = (S.doc.tax||0)/100, disc = (S.doc.disc||0)/100;
-  const sub = items.reduce((a,i)=>a+(i.qty*i.price),0);
-  const da = sub*disc, base=sub-da, ta=base*tax, tot=base+ta;
-  const rows = items.map(i=>`
-    <tr>
-      <td><div class="item-n">${i.name}</div><div class="item-d">${i.desc}</div></td>
-      <td class="ra">${i.qty}</td>
-      <td class="ra">${fmtAmt(i.price)}</td>
-      <td class="ra">${fmtAmt(i.qty*i.price)}</td>
-    </tr>`).join('');
-  return `
-<div class="pricing-page cpage">
-  <div class="cpage-head">${pn}</div>
-  <div class="cb">
-    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Tabla de inversión</div>
-    <div class="cb-body"><p>El siguiente detalle contempla todos los módulos descritos en el alcance. Los valores están en ${S.doc.cur||'USD'} y son válidos por 30 días desde la emisión.</p></div>
-  </div>
-  <div class="ptable-wrap">
-    <table class="ptable">
-      <thead><tr>
-        <th style="width:52%">Servicio / Entregable</th>
-        <th class="ra" style="width:10%">Cant.</th>
-        <th class="ra" style="width:18%">Precio unit.</th>
-        <th class="ra" style="width:20%">Total</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <div class="totals-block">
-      <div class="total-row"><span class="tr-lbl">Subtotal</span><span class="tr-val">${fmtAmt(sub)}</span></div>
-      ${disc>0?`<div class="total-row"><span class="tr-lbl">Descuento (${S.doc.disc}%)</span><span class="tr-val" style="color:#dc2626">-${fmtAmt(da)}</span></div>`:''}
-      ${tax>0?`<div class="total-row"><span class="tr-lbl">IVA (${S.doc.tax}%)</span><span class="tr-val">${fmtAmt(ta)}</span></div>`:''}
-      <div class="total-row fin">
-        <span class="tr-lbl">Total a invertir</span>
-        <span class="tr-val" style="font-family:${S.brand.fontTitle}">${fmtAmt(tot)}</span>
-      </div>
-    </div>
-  </div>
-  <div class="cards2" style="margin-top:24px">
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Condiciones de pago</div><div class="icard-body">50% anticipo al inicio · 50% a la entrega final. Transferencia bancaria o tarjeta de crédito.</div></div>
-    <div class="icard"><div class="icard-label" style="color:${S.brand.primary}">Tiempo de entrega</div><div class="icard-body">8 a 10 semanas hábiles desde la aprobación y el pago del anticipo.</div></div>
-  </div>
-</div>`;
-}
-
-function termsHTML(pn){
-  const terms = [
-    ['1. Alcance y modificaciones', `Este presupuesto cubre exclusivamente los servicios descritos. Cualquier trabajo adicional será cotizado por separado y requerirá aprobación escrita del cliente. ${S.studio.name||'El prestador'} se reserva el derecho de ajustar tiempos y costos ante cambios sustanciales en el alcance original.`],
-    ['2. Pagos y facturación', `El inicio del proyecto queda condicionado al cobro del anticipo. Retrasos superiores a 10 días hábiles permiten suspender el trabajo temporalmente sin responsabilidad. Todos los precios son en ${S.doc.cur||'USD'}.`],
-    ['3. Propiedad intelectual', `Los derechos de los entregables finales son transferidos al cliente una vez completado el pago íntegro. ${S.studio.name||'El prestador'} conserva el derecho de incluir el trabajo en su portfolio salvo acuerdo de confidencialidad previo.`],
-    ['4. Revisiones', `Cada fase contempla las rondas de revisión especificadas en el alcance. Las revisiones adicionales serán cotizadas a la tarifa vigente. Las aprobaciones deben ser confirmadas por escrito.`],
-    ['5. Confidencialidad', `Ambas partes se comprometen a mantener la confidencialidad de la información sensible compartida. Esta cláusula permanece vigente dos años tras la finalización del contrato.`],
-    ['6. Validez de la propuesta', `Esta propuesta tiene validez de 30 días calendario. La aceptación implica el acuerdo con todos los términos aquí descritos.`],
-  ];
-  return `
-<div class="cpage">
-  <div class="cpage-head">${pn}</div>
-  <div class="cb">
-    <div class="cb-h1" style="font-family:${S.brand.fontTitle}">Términos y condiciones</div>
-  </div>
-  ${terms.map(([t,b])=>`<div class="terms-sec"><div class="terms-t">${t}</div><div class="terms-body" contenteditable="true">${b}</div></div>`).join('')}
-</div>`;
-}
-
-function closingHTML(pn){
-  return `
-<div class="closing">
-  <div class="cpage-head">${pn}</div>
-  <div class="closing-main">
-    <div class="closing-eye" style="color:${S.brand.primary}">Próximo paso</div>
-    <div class="closing-h1" style="font-family:${S.brand.fontTitle}">Listos para comenzar cuando lo estés.</div>
-    <div class="closing-p" contenteditable="true">Si esta propuesta responde a tus expectativas, el siguiente paso es confirmar tu aprobación y abonar el anticipo para que podamos agendar el kick-off. Estamos disponibles para resolver cualquier duda, ajustar el alcance o simplemente conversar antes de comprometerte.</div>
-    <div class="closing-signature-area">
-      <div class="sig-label">Con mucho gusto,</div>
-      <div class="sig-name">${S.studio.contact||'Carlos Vega'}</div>
-      <div class="sig-role">${S.studio.role||'Director Creativo'} · ${S.studio.name||'Studio Nórdico'}</div>
-    </div>
-    <div class="contact-row">
-      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">✉</div><div class="c-info"><label>Email</label><span>${S.studio.email||'—'}</span></div></div>
-      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">☎</div><div class="c-info"><label>Teléfono</label><span>${S.studio.phone||'—'}</span></div></div>
-      <div class="c-card"><div class="c-icon" style="background:${hexAlpha(S.brand.primary,.1)}">⊕</div><div class="c-info"><label>Web</label><span>${S.studio.web||'—'}</span></div></div>
-    </div>
-  </div>
-  <div class="close-band" style="background:${S.brand.dark}">
-    <div class="cb-brand">
-      <div class="cb-icon" style="background:${S.brand.primary}">${(S.studio.name||'S').charAt(0)}</div>
-      <div><div class="cb-bname">${S.studio.name||'Studio Nórdico'}</div><div class="cb-web">${S.studio.web||'—'}</div></div>
-    </div>
-    <div class="cb-right">${S.doc.num||'COT-2024-001'}<br>${new Date().getFullYear()} · Todos los derechos reservados</div>
-  </div>
-</div>`;
-}
-
-/* ══════════════════════════════════════════════════════════
-   COLOR UTILS
-══════════════════════════════════════════════════════════ */
-function hexAlpha(hex, a){
-  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-function hexBright(hex){
-  let r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-  r=Math.min(255,r+40); g=Math.min(255,g+40); b=Math.min(255,b+60);
-  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
-}
-
-/* ══════════════════════════════════════════════════════════
-   PAGE LIST
-══════════════════════════════════════════════════════════ */
-function renderPageList(){
-  const icons = {cover:'🎨',intro:'✉️',executive:'📋',scope:'📐',pricing:'💰',terms:'📄',closing:'🤝'};
-  const names = {cover:'Portada',intro:'Presentación',executive:'Resumen',scope:'Alcance',pricing:'Inversión',terms:'Términos',closing:'Cierre'};
-  document.getElementById('pageList').innerHTML = S.pages.map((t,i)=>`
-    <div class="pg-item${i===0?' active':''}" onclick="goPage(${i})" data-i="${i}">
-      <div class="pg-thumb">
-        <div class="pg-thumb-inner">
-          <div class="pg-thumb-accent" style="background:${t==='cover'?S.brand.primary:'#e2e8f0'};height:${t==='cover'?'45%':'4px'};width:100%"></div>
-          <div style="background:#dde4ee;height:2px;width:75%;margin-bottom:1.5px;border-radius:1px"></div>
-          <div style="background:#eef1f6;height:1.5px;width:55%;margin-bottom:1px;border-radius:1px"></div>
-          <div style="background:#eef1f6;height:1.5px;width:80%;border-radius:1px"></div>
-        </div>
-      </div>
-      <div class="pg-info">
-        <div class="pg-name">${icons[t]||'📄'} ${names[t]||t}</div>
-        <div class="pg-sub">Página ${i+1}</div>
-      </div>
-    </div>`).join('');
-}
-
-function goPage(i){
-  const pages = document.querySelectorAll('.doc-page');
-  if(pages[i]) pages[i].scrollIntoView({behavior:'smooth',block:'start'});
-  document.querySelectorAll('.pg-item').forEach((el,j)=>el.classList.toggle('active',j===i));
-}
-function selectPage(i){
-  document.querySelectorAll('.doc-page').forEach((el,j)=>el.classList.toggle('ring',j===i));
-  document.querySelectorAll('.pg-item').forEach((el,j)=>el.classList.toggle('active',j===i));
-}
-
-document.getElementById('canvas').addEventListener('scroll', function(){
-  const pages = document.querySelectorAll('.doc-page'), top = this.scrollTop;
-  let active=0; pages.forEach((p,i)=>{ if(p.offsetTop-80<=top) active=i; });
-  document.querySelectorAll('.pg-item').forEach((el,i)=>el.classList.toggle('active',i===active));
-});
-
-/* ══════════════════════════════════════════════════════════
-   PAGE ACTIONS
-══════════════════════════════════════════════════════════ */
-function movePg(i, dir, e){ e.stopPropagation(); const j=i+dir; if(j<0||j>=S.pages.length) return; [S.pages[i],S.pages[j]]=[S.pages[j],S.pages[i]]; renderDoc(); renderPageList(); save(); }
-function dupPg(i, e){ e.stopPropagation(); S.pages.splice(i+1,0,S.pages[i]); renderDoc(); renderPageList(); save(); toast('Sección duplicada'); }
-function delPg(i, e){ e.stopPropagation(); if(S.pages.length<=1) return; if(!confirm('¿Eliminar esta sección?')) return; S.pages.splice(i,1); renderDoc(); renderPageList(); save(); toast('Sección eliminada'); }
-function addBlock(type){ S.pages.push(type); closeModal(); renderDoc(); renderPageList(); save(); setTimeout(()=>goPage(S.pages.length-1),80); toast(`Sección "${pgLabel(type)}" agregada`); }
-
-/* ══════════════════════════════════════════════════════════
-   PRICING EDITOR
-══════════════════════════════════════════════════════════ */
-function renderPriceItems(){
-  document.getElementById('priceItems').innerHTML = S.items.map((item,i)=>`
-    <div class="p-item">
-      <div class="p-item-head">
-        <div class="p-item-name">${item.name.substring(0,26)}${item.name.length>26?'…':''}</div>
-        <button class="p-del" onclick="delItem(${i})">✕</button>
-      </div>
-      <div class="r-row"><input class="r-input" placeholder="Nombre" value="${item.name}" oninput="updItem(${i},'name',this.value)" style="font-size:11.5px;padding:6px 9px"/></div>
-      <div class="r-row"><input class="r-input" placeholder="Descripción" value="${item.desc}" oninput="updItem(${i},'desc',this.value)" style="font-size:11.5px;padding:6px 9px"/></div>
-      <div class="r-2col">
-        <div class="r-row"><label class="r-label">Cant.</label><input type="number" class="r-input" value="${item.qty}" min="1" oninput="updItem(${i},'qty',+this.value||1)" style="font-size:11.5px;padding:6px 9px"/></div>
-        <div class="r-row"><label class="r-label">Precio</label><input type="number" class="r-input" value="${item.price}" min="0" oninput="updItem(${i},'price',+this.value||0)" style="font-size:11.5px;padding:6px 9px"/></div>
-      </div>
-      <div style="text-align:right;font-size:11.5px;font-weight:700;color:#60a5fa;margin-top:3px">${sym()}${(item.qty*item.price).toLocaleString('es-AR',{minimumFractionDigits:2})}</div>
-    </div>`).join('');
-  updateTotals();
-}
-function updItem(i, field, val){ S.items[i][field]=val; renderPriceItems(); debounce(()=>{ renderDoc(); save(); },500)(); }
-function addItem(){ S.items.push({id:Date.now(),name:'Nuevo servicio',desc:'Descripción del servicio',qty:1,price:500}); renderPriceItems(); renderDoc(); save(); }
-function delItem(i){ if(!confirm('¿Eliminar esta línea?')) return; S.items.splice(i,1); renderPriceItems(); renderDoc(); save(); }
-
-function updateTotals(){
-  const tax=(S.doc.tax||0)/100, disc=(S.doc.disc||0)/100;
-  const sub=S.items.reduce((a,i)=>a+(i.qty*i.price),0);
-  const da=sub*disc, base=sub-da, ta=base*tax, tot=base+ta;
-  const f=(n)=>sym()+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const s=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
-  s('tSub',f(sub)); s('tDisc',da>0?'-'+f(da):f(0)); s('tTax',f(ta)); s('tTotal',f(tot));
-}
-
-/* ══════════════════════════════════════════════════════════
-   LOGO UPLOAD
-══════════════════════════════════════════════════════════ */
-function handleLogo(e){
-  const file=e.target.files[0]; if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    S.brand.logo=ev.target.result;
-    const d=document.getElementById('logoDrop');
-    d.innerHTML=`<img src="${ev.target.result}" class="logo-prev" alt="logo"/><input type="file" accept="image/*" onchange="handleLogo(event)"/>`;
-    renderDoc(); save(); toast('Logo actualizado ✓');
-  };
-  r.readAsDataURL(file);
-}
-
-/* ══════════════════════════════════════════════════════════
-   MODAL
-══════════════════════════════════════════════════════════ */
-function openModal(){ document.getElementById('addModal').classList.add('open'); }
-function closeModal(){ document.getElementById('addModal').classList.remove('open'); }
-
-/* ══════════════════════════════════════════════════════════
-   TABS
-══════════════════════════════════════════════════════════ */
-function switchTab(id, btn){
-  document.querySelectorAll('.r-panel').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.r-tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById('tab-'+id).classList.add('on');
-  btn.classList.add('on');
-}
-
-/* ══════════════════════════════════════════════════════════
-   EXPORT PDF
-══════════════════════════════════════════════════════════ */
-async function exportPDF(){
-  syncAll();
-  await new Promise(r=>setTimeout(r,200));
-  document.getElementById('expLabel').textContent='Generando PDF de alta calidad…';
-  document.getElementById('exporting').classList.add('show');
-  const canvas = document.getElementById('canvasIn');
-  const opts={
-    margin:0,
-    filename:`${(S.title||'propuesta').replace(/\s+/g,'-').toLowerCase()}.pdf`,
-    image:{type:'jpeg',quality:.98},
-    html2canvas:{scale:2,useCORS:true,letterRendering:true,logging:false},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-    pagebreak:{mode:['css','legacy'],before:'.doc-page'}
-  };
-  try{
-    await html2pdf().set(opts).from(canvas).save();
-    document.getElementById('exporting').classList.remove('show');
-    toast('PDF generado exitosamente ✓','ok');
-  }catch(err){
-    document.getElementById('exporting').classList.remove('show');
-    toast('Error al generar — intenta Imprimir','er');
-    console.error(err);
-  }
-}
-
-/* ══════════════════════════════════════════════════════════
-   TOAST / STATUS
-══════════════════════════════════════════════════════════ */
-let toastTimer;
-function toast(msg, type='ok'){
-  const el=document.getElementById('toast');
-  document.getElementById('toastIco').textContent = type==='ok'?'✓':type==='er'?'✕':'…';
-  document.getElementById('toastMsg').textContent=msg;
-  el.className='show '+(type==='ok'?'ok':type==='er'?'er':'');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
-}
-function ping(s){
-  const p=document.getElementById('statusPill'), t=document.getElementById('statusTxt');
-  p.className='pill '+({saving:'saving',saved:'saved',draft:'draft'}[s]||'draft');
-  t.textContent={saving:'Guardando…',saved:'Guardado',draft:'Borrador'}[s]||s;
-}
-
-/* ══════════════════════════════════════════════════════════
-   LOCALSTORAGE
-══════════════════════════════════════════════════════════ */
-function save(){
-  try{
-    const payload={...S, brand:{...S.brand,logo:null}};
-    localStorage.setItem('ps_state',JSON.stringify(payload));
-    try{ if(S.brand.logo) localStorage.setItem('ps_logo',S.brand.logo); }catch{}
-  }catch{}
-}
-function loadState(){
-  try{
-    const raw=localStorage.getItem('ps_state');
-    if(raw){ const d=JSON.parse(raw); Object.assign(S,d); const logo=localStorage.getItem('ps_logo'); if(logo) S.brand.logo=logo; }
-  }catch{}
-}
-</script>
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                lucide.createIcons();
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
