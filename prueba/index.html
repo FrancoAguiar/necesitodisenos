@@ -1,496 +1,927 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>TikDrop — Descarga tu TikTok sin marcas de agua</title>
-  <style>
-    /* ==========================================================================
-       Ultra-Modern Apple / VisionOS Style
-       ========================================================================== */
-    :root {
-      /* Light Mode Palette (Default) */
-      --bg-color: #fbfbfd;
-      --surface: rgba(255, 255, 255, 0.6);
-      --surface-hover: rgba(255, 255, 255, 0.8);
-      --border: rgba(0, 0, 0, 0.08);
-      --border-light: rgba(255, 255, 255, 0.5);
-      --text-main: #1d1d1f;
-      --text-muted: #86868b;
-      --accent: #0071e3;
-      --accent-hover: #0077ed;
-      --btn-bg: #1d1d1f;
-      --btn-text: #ffffff;
-      --input-bg: rgba(0, 0, 0, 0.04);
-      --success: #34c759;
-      --danger: #ff3b30;
-      
-      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
-      
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-sm: 8px;
-      
-      /* System Fonts for native Apple feel */
-      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        /* Dark Mode Palette */
-        --bg-color: #000000;
-        --surface: rgba(28, 28, 30, 0.5);
-        --surface-hover: rgba(44, 44, 46, 0.6);
-        --border: rgba(255, 255, 255, 0.1);
-        --border-light: rgba(255, 255, 255, 0.05);
-        --text-main: #f5f5f7;
-        --text-muted: #a1a1a6;
-        --accent: #0a84ff;
-        --accent-hover: #409cff;
-        --btn-bg: #f5f5f7;
-        --btn-text: #000000;
-        --input-bg: rgba(255, 255, 255, 0.05);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hazlo Más Grande | Freelance Survival</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap');
         
-        --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.2);
-        --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
-      }
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body { 
-      height: 100%; 
-      background-color: var(--bg-color); 
-      color: var(--text-main); 
-      font-family: var(--font-sans); 
-      font-size: 15px; 
-      line-height: 1.4; 
-      -webkit-font-smoothing: antialiased; 
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-    }
-
-    /* Ambient Background Orbs */
-    .ambient-bg {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      overflow: hidden; pointer-events: none; z-index: 0;
-    }
-    .orb {
-      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
-      animation: float 20s infinite ease-in-out alternate;
-    }
-    .orb-1 { width: 400px; height: 400px; background: #ff9a9e; top: -10%; left: -10%; }
-    .orb-2 { width: 500px; height: 500px; background: #a1c4fd; bottom: -20%; right: -10%; animation-delay: -5s; }
-    .orb-3 { width: 300px; height: 300px; background: #c2e9fb; top: 40%; left: 60%; animation-delay: -10s; }
-
-    @media (prefers-color-scheme: dark) {
-      .orb { opacity: 0.25; }
-      .orb-1 { background: #5e2a70; }
-      .orb-2 { background: #1a3b5c; }
-      .orb-3 { background: #1a4a40; }
-    }
-
-    .page { 
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
-      justify-content: center; padding: 60px 20px; position: relative; z-index: 1; 
-    }
-
-    /* Greeting */
-    .greeting {
-      font-size: 16px; font-weight: 500; color: var(--accent);
-      margin-bottom: 8px; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-
-    /* Header */
-    header { text-align: center; margin-bottom: 40px; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
-    .logo-mark { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .logo-text { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-main); }
-    .tagline { font-size: 15px; font-weight: 500; color: var(--text-muted); }
-
-    /* Main Glass Card */
-    .card { 
-      width: 100%; max-width: 520px; 
-      background: var(--surface); 
-      backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-      border: 1px solid var(--border); 
-      box-shadow: var(--shadow-lg), inset 0 1px 0 var(--border-light);
-      padding: 32px; 
-      border-radius: var(--radius-xl);
-      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; 
-    }
-
-    .input-group { margin-bottom: 16px; position: relative; }
-    .url-input { 
-      width: 100%; background: var(--input-bg); border: 1px solid transparent; 
-      color: var(--text-main); font-family: var(--font-sans); font-size: 16px; 
-      padding: 16px 20px; padding-right: 125px; border-radius: var(--radius-lg); 
-      outline: none; transition: all 0.2s ease;
-    }
-    .url-input::placeholder { color: var(--text-muted); }
-    .url-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); }
-
-    .btn-fetch { 
-      position: absolute; right: 6px; top: 6px; bottom: 6px;
-      background: var(--btn-bg); color: var(--btn-text); border: none; 
-      font-size: 14px; font-weight: 600; padding: 0 20px; 
-      cursor: pointer; transition: transform 0.1s, background 0.2s, opacity 0.2s; 
-      border-radius: var(--radius-md); 
-    }
-    .btn-fetch:hover:not(:disabled) { opacity: 0.9; transform: scale(0.98); }
-    .btn-fetch:active:not(:disabled) { transform: scale(0.95); }
-    .btn-fetch:disabled { opacity: 0.5; cursor: not-allowed; }
-    
-    .hint { font-size: 12px; color: var(--text-muted); text-align: center; }
-
-    /* Status Messages */
-    #status { min-height: 20px; font-size: 14px; font-weight: 500; text-align: center; margin: 20px 0 0 0; }
-    #status.loading { color: var(--accent); }
-    #status.error   { color: var(--danger); animation: shake 0.5s; }
-    #status.success { color: var(--success); }
-    .spinner { 
-      display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0, 113, 227, 0.2); 
-      border-top-color: var(--accent); border-radius: 50%; 
-      animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: -2px; 
-    }
-
-    /* Result Area */
-    #result { display: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); animation: fadeUp 0.5s ease both; }
-    .result-meta { display: flex; gap: 16px; align-items: center; margin-bottom: 24px; }
-    .thumb-wrap { width: 72px; height: 96px; flex-shrink: 0; overflow: hidden; border: 1px solid var(--border); background: var(--input-bg); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-    .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .meta-info { flex: 1; min-width: 0; }
-    .meta-author { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .meta-desc { font-size: 13px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .meta-stats { display: flex; gap: 16px; margin-top: 8px; }
-    .stat { font-size: 12px; font-weight: 500; color: var(--text-muted); }
-    .stat strong { color: var(--text-main); font-weight: 700; }
-
-    /* Download Buttons */
-    .download-options { display: flex; flex-direction: column; gap: 8px; }
-    .dl-btn { 
-      display: flex; align-items: center; justify-content: space-between; padding: 16px; 
-      background: var(--input-bg); border: 1px solid transparent; color: var(--text-main); 
-      text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; 
-      transition: all 0.2s ease; border-radius: var(--radius-md); 
-    }
-    .dl-btn:hover { background: var(--surface-hover); border-color: var(--border); transform: scale(1.01); }
-    .dl-btn:active { transform: scale(0.99); }
-    .dl-btn-badge { font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--border); padding: 4px 8px; border-radius: 6px; }
-    
-    .dl-btn.primary-dl { background: var(--accent); color: #fff; }
-    .dl-btn.primary-dl:hover { background: var(--accent-hover); transform: scale(1.02); box-shadow: 0 8px 20px rgba(0, 113, 227, 0.3); }
-    .dl-btn.primary-dl .dl-btn-badge { background: rgba(255, 255, 255, 0.2); color: #fff; }
-
-    /* How To Steps Section */
-    .how-to { width: 100%; max-width: 520px; margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
-    .step { 
-      background: var(--surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      padding: 20px 16px; text-align: center; border: 1px solid var(--border); 
-      border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
-    }
-    .step-icon { 
-      width: 40px; height: 40px; background: var(--input-bg); border-radius: 50%; 
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
-      font-weight: 700; color: var(--text-main); font-size: 16px;
-    }
-    .step-title { font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
-    .step-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-
-    footer { margin-top: 48px; text-align: center; font-size: 12px; font-weight: 500; color: var(--text-muted); animation: fadeUp 1s 0.4s both; }
-
-    /* Modal Styles */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; opacity: 1; transition: opacity 0.3s ease, visibility 0.3s;
-    }
-    .modal-overlay.hidden {
-      opacity: 0; visibility: hidden; pointer-events: none;
-    }
-    .modal-content {
-      width: 90%; max-width: 360px; padding: 32px;
-      text-align: center; box-shadow: var(--shadow-lg);
-    }
-    .modal-content h3 { margin-bottom: 8px; font-size: 20px; color: var(--text-main); }
-    .modal-content p { color: var(--text-muted); margin-bottom: 20px; font-size: 14px; }
-    .modal-btn { position: static; width: 100%; padding: 14px; margin-top: 16px; font-size: 15px; }
-
-    /* Keyframes */
-    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -50px) scale(1.1); } }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
-
-    /* Responsive adjustments */
-    @media (max-width: 540px) {
-      .card { padding: 24px; border-radius: var(--radius-lg); }
-      .input-group { display: flex; flex-direction: column; gap: 8px; }
-      .url-input { padding-right: 20px; }
-      .btn-fetch { position: static; width: 100%; padding: 14px; }
-      .how-to { grid-template-columns: 1fr; gap: 12px; }
-      .step { display: flex; align-items: center; text-align: left; gap: 16px; padding: 16px; }
-      .step-icon { margin: 0; flex-shrink: 0; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- Ambient background -->
-<div class="ambient-bg">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
-
-<!-- Welcome Modal (ahora oculto por defecto hasta verificar autenticación) -->
-<div id="welcomeModal" class="modal-overlay hidden">
-  <div class="modal-content card">
-    <h3>¡Bienvenido a TikDrop!</h3>
-    <p>¿Cómo te gusta que te llamen?</p>
-    <input type="text" id="nameInput" class="url-input" placeholder="Ingresa tu nombre..." autocomplete="off" />
-    <button class="btn-fetch modal-btn" id="saveNameBtn">Entrar a la app</button>
-  </div>
-</div>
-
-<div class="page">
-
-  <div class="greeting" id="greetingText" style="display: none;">¡Hola, <span id="userNameDisplay">Sol</span>! 👋</div>
-
-  <header>
-    <div class="logo-mark">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-main);">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="7 10 12 15 17 10"></polyline>
-        <line x1="12" y1="15" x2="12" y2="3"></line>
-      </svg>
-      <span class="logo-text">TikDrop</span>
-    </div>
-    <p class="tagline">Descarga tu TikTok favorito sin marca de agua</p>
-  </header>
-
-  <div class="card">
-    <div class="input-group">
-      <input id="urlInput" class="url-input" type="url"
-        placeholder="Pega el enlace de tu video aquí..."
-        autocomplete="off" spellcheck="false" inputmode="url" />
-      <button class="btn-fetch" id="fetchBtn">Descargar</button>
-    </div>
-    <p class="hint">Soporta enlaces de tiktok.com, vm.tiktok.com y v.tiktok.com</p>
-    
-    <div id="status"></div>
-    
-    <div id="result">
-      <div class="result-meta">
-        <div class="thumb-wrap"><img id="thumbImg" src="" alt="Miniatura del video" /></div>
-        <div class="meta-info">
-          <div class="meta-author" id="metaAuthor"></div>
-          <div class="meta-desc" id="metaDesc"></div>
-          <div class="meta-stats">
-            <div class="stat"><strong id="statLikes">—</strong> Me gusta</div>
-            <div class="stat"><strong id="statViews">—</strong> Vistas</div>
-          </div>
-        </div>
-      </div>
-      <div class="download-options" id="downloadOptions"></div>
-    </div>
-  </div>
-
-  <div class="how-to">
-    <div class="step">
-      <div class="step-icon">1</div>
-      <div>
-        <div class="step-title">Copia el enlace</div>
-        <div class="step-desc">Abre TikTok, toca la flecha de 'Compartir' y elige 'Copiar enlace'.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-icon">2</div>
-      <div>
-        <div class="step-title">Pégalo aquí</div>
-        <div class="step-desc">Vuelve a TikDrop, pega tu enlace en la barra de arriba y presiona buscar.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-icon">3</div>
-      <div>
-        <div class="step-title">¡Guárdalo!</div>
-        <div class="step-desc">Elige MP4 o MP3 y descarga el contenido directo a tu galería o PC.</div>
-      </div>
-    </div>
-  </div>
-
-  <footer><p>Herramienta 100% gratuita &nbsp;·&nbsp; Privacidad garantizada (no almacenamos tus videos)</p></footer>
-
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-  import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-  // --- Elementos del DOM ---
-  const nameInput = document.getElementById('nameInput');
-  const saveNameBtn = document.getElementById('saveNameBtn');
-  const welcomeModal = document.getElementById('welcomeModal');
-  const greetingText = document.getElementById('greetingText');
-  const userNameDisplay = document.getElementById('userNameDisplay');
-  const statusEl = document.getElementById('status');
-  const resultEl = document.getElementById('result');
-  const fetchBtn = document.getElementById('fetchBtn');
-  const urlInput = document.getElementById('urlInput');
-
-  // --- Lógica de Firebase para Recordar Usuario ---
-  let db = null;
-  let currentUser = null;
-  const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-  async function initFirebase() {
-    try {
-      if (typeof __firebase_config === 'undefined') {
-        console.warn("Entorno sin base de datos detectado.");
-        welcomeModal.classList.remove('hidden');
-        return;
-      }
-
-      const firebaseConfig = JSON.parse(__firebase_config);
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      db = getFirestore(app);
-
-      // Esperar la autenticación ANTES de consultar
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-
-      // Una vez logueado, asignamos el usuario y buscamos sus datos guardados
-      currentUser = auth.currentUser;
-
-      if (currentUser) {
-        const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-        const userDoc = await getDoc(userDocRef);
-        
-        if (userDoc.exists() && userDoc.data().name) {
-          // El nombre ya estaba guardado
-          userNameDisplay.textContent = userDoc.data().name;
-          welcomeModal.classList.add('hidden');
-          greetingText.style.display = 'block';
-        } else {
-          // Usuario nuevo, mostramos el modal para pedir el nombre
-          welcomeModal.classList.remove('hidden');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
         }
-      } else {
-        welcomeModal.classList.remove('hidden');
-      }
-    } catch (error) {
-      console.error("Error inicializando Firebase:", error);
-      welcomeModal.classList.remove('hidden');
-    }
-  }
 
-  // Inicializar todo al cargar el script
-  initFirebase();
+        h1, h2, h3, .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
-  // --- Lógica del Modal ---
-  nameInput.addEventListener('keydown', e => { 
-    if (e.key === 'Enter') saveName(); 
-  });
-  saveNameBtn.addEventListener('click', saveName);
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
 
-  async function saveName() {
-    const inputVal = nameInput.value.trim();
-    // Si está vacío, por defecto será "Sol"
-    const finalName = inputVal !== '' ? inputVal : 'Sol';
-    
-    userNameDisplay.textContent = finalName;
-    welcomeModal.classList.add('hidden');
-    greetingText.style.display = 'block';
+        .screen.active {
+            display: flex;
+        }
 
-    // Guardar en la nube asegurándonos de que Firebase esté inicializado y autenticado
-    if (db && currentUser) {
-      try {
-        const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-        await setDoc(userDocRef, { name: finalName });
-      } catch (err) {
-        console.error("Error guardando el nombre en la nube:", err);
-      }
-    }
-  }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  // --- Lógica para buscar el TikTok ---
-  const WORKER = 'https://tokless-proxy.necesitodisenos.workers.dev';
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-  urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') fetchVideo(); });
-  fetchBtn.addEventListener('click', fetchVideo);
+        .stat-bar { transition: width 0.3s ease-in-out; }
+        
+        .btn-option {
+            transition: all 0.2s;
+        }
+        .btn-option:hover {
+            transform: translateY(-2px);
+        }
+        .btn-option.selected {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex justify-center items-center">
 
-  function setStatus(type, msg) {
-    statusEl.className = type;
-    statusEl.innerHTML = type === 'loading' ? `<span class="spinner"></span>${msg}` : msg;
-  }
+    <!-- Game Container -->
+    <div id="game-container" class="w-full max-w-4xl h-full max-h-[900px] bg-slate-900 shadow-2xl relative flex flex-col overflow-hidden sm:rounded-2xl sm:h-[95vh] sm:border border-slate-700">
+        
+        <!-- Global Topbar (Hidden on Home/GameOver) -->
+        <header id="global-topbar" class="hidden bg-slate-800 border-b border-slate-700 p-4 shrink-0 flex-col sm:flex-row justify-between items-center gap-4 z-10">
+            <div class="flex items-center gap-4 w-full sm:w-auto justify-between">
+                <div class="title-font text-xl font-bold text-blue-400">DÍA <span id="top-day">1</span>/7</div>
+                <div class="flex items-center gap-1 font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-lg">
+                    <i class="ph-fill ph-currency-circle-dollar text-xl"></i> $<span id="top-money">0</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 text-sm w-full sm:w-auto justify-between overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
+                <!-- Energy -->
+                <div class="flex flex-col gap-1 min-w-[80px]">
+                    <div class="flex justify-between text-yellow-400"><i class="ph-fill ph-lightning"></i> <span><span id="top-energy">80</span>%</span></div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div id="bar-energy" class="bg-yellow-400 h-1.5 rounded-full stat-bar" style="width: 80%"></div></div>
+                </div>
+                <!-- Stress -->
+                <div class="flex flex-col gap-1 min-w-[80px]">
+                    <div class="flex justify-between text-red-400"><i class="ph-fill ph-warning-circle"></i> <span><span id="top-stress">10</span>%</span></div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div id="bar-stress" class="bg-red-400 h-1.5 rounded-full stat-bar" style="width: 10%"></div></div>
+                </div>
+                <!-- Rep -->
+                <div class="flex flex-col gap-1 min-w-[80px]">
+                    <div class="flex justify-between text-blue-400"><i class="ph-fill ph-star"></i> <span><span id="top-rep">50</span></span></div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div id="bar-rep" class="bg-blue-400 h-1.5 rounded-full stat-bar" style="width: 50%"></div></div>
+                </div>
+                <!-- Creativity -->
+                <div class="flex flex-col gap-1 min-w-[80px]">
+                    <div class="flex justify-between text-purple-400"><i class="ph-fill ph-lightbulb"></i> <span><span id="top-creativity">70</span>%</span></div>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full"><div id="bar-creativity" class="bg-purple-400 h-1.5 rounded-full stat-bar" style="width: 70%"></div></div>
+                </div>
+            </div>
+        </header>
 
-  function fmt(n) {
-    if (!n && n !== 0) return '—';
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-    if (n >= 1_000)     return (n / 1_000).toFixed(1) + 'K';
-    return String(n);
-  }
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-8 relative">
 
-  async function fetchVideo() {
-    const url = urlInput.value.trim();
-    if (!url) { setStatus('error', 'Por favor, pega un enlace válido de TikTok primero.'); return; }
+            <!-- SCREEN: HOME -->
+            <section id="screen-home" class="screen active flex-col items-center justify-center h-full text-center gap-8">
+                <div class="space-y-4">
+                    <i class="ph-duotone ph-bezier-curve text-8xl text-blue-500"></i>
+                    <h1 class="text-5xl sm:text-7xl font-bold tracking-tighter bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        HAZLO MÁS<br>GRANDE
+                    </h1>
+                    <p class="text-slate-400 max-w-md mx-auto">El simulador de supervivencia freelance. Sobrevive 7 días sin quebrar, sin colapsar por estrés y lidia con los peores briefs del universo.</p>
+                </div>
+                <div class="flex flex-col gap-4 w-full max-w-xs">
+                    <button onclick="navTo('screen-class')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl text-lg transition-colors">Nueva Partida</button>
+                    <button onclick="loadGame()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl text-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="ph ph-floppy-disk"></i> Continuar Partida
+                    </button>
+                </div>
+            </section>
 
-    resultEl.style.display = 'none';
-    fetchBtn.disabled = true;
-    setStatus('loading', 'Preparando tu descarga...');
+            <!-- SCREEN: CLASS SELECTION -->
+            <section id="screen-class" class="screen flex-col h-full max-w-3xl mx-auto">
+                <div class="mb-8 text-center">
+                    <h2 class="text-3xl font-bold mb-2">Elige tu desgracia</h2>
+                    <p class="text-slate-400">Tu background define tus estadísticas iniciales.</p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-3">
+                    <!-- Cards injected by JS -->
+                    <div id="class-container" class="contents"></div>
+                </div>
+                <div class="mt-8 text-center">
+                    <button onclick="navTo('screen-home')" class="text-slate-400 hover:text-white underline">Volver al inicio</button>
+                </div>
+            </section>
 
-    try {
-      const res  = await fetch(`${WORKER}/video?url=${encodeURIComponent(url)}`);
-      const json = await res.json();
-      if (!json.ok) throw new Error(json.error || 'Oops, no pudimos procesar ese enlace.');
-      render(json.data);
-      setStatus('success', '¡Video listo! Elige un formato abajo para guardarlo.');
-    } catch (err) {
-      setStatus('error', `${err.message}`);
-    } finally {
-      fetchBtn.disabled = false;
-    }
-  }
+            <!-- SCREEN: DASHBOARD -->
+            <section id="screen-dashboard" class="screen flex-col h-full max-w-3xl mx-auto gap-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg">
+                    <h2 class="text-2xl font-bold mb-1">Tu Estudio <span class="text-sm font-normal text-slate-400">(Tu habitación)</span></h2>
+                    <p class="text-slate-400 mb-6" id="dash-greeting">Día nuevo, drama nuevo. Revisa tu bandeja de entrada.</p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <button onclick="generateProject()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-6 px-4 rounded-xl transition-all flex flex-col items-center justify-center gap-2 group">
+                            <i class="ph-duotone ph-envelope-open text-4xl group-hover:scale-110 transition-transform"></i>
+                            <span>Ver Nuevo Brief</span>
+                        </button>
+                        <button onclick="renderShop()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-6 px-4 rounded-xl transition-all flex flex-col items-center justify-center gap-2 group">
+                            <i class="ph-duotone ph-shopping-cart text-4xl group-hover:scale-110 transition-transform"></i>
+                            <span>Tienda y Mejoras</span>
+                        </button>
+                    </div>
+                </div>
 
-  function render(d) {
-    document.getElementById('thumbImg').src             = d.cover || d.origin_cover || '';
-    document.getElementById('metaAuthor').textContent   = '@' + (d.author?.unique_id || 'usuario');
-    document.getElementById('metaDesc').textContent     = d.title || 'Sin descripción';
-    document.getElementById('statLikes').textContent    = fmt(d.digg_count);
-    document.getElementById('statViews').textContent    = fmt(d.play_count);
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-chart-bar"></i> Tus Stats Reales</h3>
+                    <div id="stats-container" class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+                <div class="text-center mt-auto">
+                    <button onclick="saveGame()" class="text-slate-500 hover:text-slate-300 text-sm flex items-center justify-center gap-1 mx-auto"><i class="ph ph-cloud-arrow-up"></i> Guardar Progreso</button>
+                </div>
+            </section>
 
-    const opts = document.getElementById('downloadOptions');
-    opts.innerHTML = '';
-    const btns = [];
+            <!-- SCREEN: SHOP -->
+            <section id="screen-shop" class="screen flex-col h-full max-w-3xl mx-auto gap-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-3xl font-bold flex items-center gap-2"><i class="ph-duotone ph-storefront"></i> Tienda</h2>
+                    <button onclick="navTo('screen-dashboard')" class="text-slate-400 hover:text-white"><i class="ph ph-x text-2xl"></i></button>
+                </div>
+                <p class="text-slate-400">Gasta tu dinero en cosas que te ayuden a no enloquecer.</p>
+                <div id="shop-container" class="grid gap-4 sm:grid-cols-2 overflow-y-auto pb-4">
+                    <!-- Shop items injected by JS -->
+                </div>
+            </section>
 
-    if (d.play)  btns.push({ label: 'Descargar Video Sin Marca', badge: 'MP4', url: `${WORKER}/proxy?url=${encodeURIComponent(d.play)}`, primary: true });
-    if (d.music) btns.push({ label: 'Descargar Solo Audio',      badge: 'MP3', url: `${WORKER}/proxy?url=${encodeURIComponent(d.music)}`, primary: false });
+            <!-- SCREEN: BRIEF -->
+            <section id="screen-brief" class="screen flex-col h-full max-w-3xl mx-auto gap-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-lg flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider" id="brief-industry">Industria</span>
+                            <h2 class="text-3xl font-bold mt-2" id="brief-client">Nombre Cliente</h2>
+                            <p class="text-slate-400" id="brief-type">Tipo de proyecto</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-emerald-400" id="brief-budget">$0</div>
+                            <div class="text-sm text-slate-400" id="brief-deadline">Deadline: 0h</div>
+                        </div>
+                    </div>
 
-    if (!btns.length) {
-      opts.innerHTML = '<p style="font-size:13px;color:var(--text-muted);text-align:center;padding:10px;">No encontramos enlaces de descarga disponibles para este video.</p>';
-      return;
-    }
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 mb-6 flex-1">
+                        <p class="text-lg italic text-slate-300 mb-4">"<span id="brief-text"></span>"</p>
+                        <div class="flex gap-4 text-sm text-slate-400">
+                            <div title="Nivel de toxicidad"><i class="ph-fill ph-skull text-red-400"></i> Toxicidad: <span id="brief-toxic">Baja</span></div>
+                            <div title="Dificultad base"><i class="ph-fill ph-barbell text-purple-400"></i> Dificultad: <span id="brief-diff">Media</span></div>
+                        </div>
+                    </div>
 
-    btns.forEach(b => {
-      const a = document.createElement('a');
-      a.href      = b.url;
-      a.download  = '';
-      a.className = 'dl-btn' + (b.primary ? ' primary-dl' : '');
-      a.innerHTML = `<span>${b.label}</span><span class="dl-btn-badge">${b.badge}</span>`;
-      opts.appendChild(a);
-    });
+                    <div class="grid grid-cols-3 gap-4 mt-auto">
+                        <button onclick="rejectProject()" class="bg-slate-700 hover:bg-red-600/50 text-white font-bold py-3 rounded-xl transition-colors text-sm">Rechazar</button>
+                        <button onclick="negotiateProject()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition-colors text-sm flex justify-center items-center gap-1"><i class="ph ph-handshake"></i> Negociar</button>
+                        <button onclick="acceptProject()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-colors text-sm shadow-lg shadow-blue-500/30">Aceptar</button>
+                    </div>
+                </div>
+            </section>
 
-    resultEl.style.display = 'block';
-  }
-</script>
+            <!-- SCREEN: DECISIONS -->
+            <section id="screen-decision" class="screen flex-col h-full max-w-4xl mx-auto gap-6 pb-20 sm:pb-0 overflow-y-auto">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Mesa de Trabajo</h2>
+                    <span class="text-slate-400" id="dec-client-name">Cliente</span>
+                </div>
+                
+                <div class="grid gap-6 sm:grid-cols-2">
+                    <!-- Style -->
+                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl">
+                        <h3 class="font-bold mb-3 flex items-center gap-2"><i class="ph ph-paint-brush"></i> Estilo Visual</h3>
+                        <div class="grid grid-cols-2 gap-2" id="opts-style">
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="minimal">Minimalista</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="bold">Urbano/Bold</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="corporate">Corporativo</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="vintage">Vintage/Craft</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Typography -->
+                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl">
+                        <h3 class="font-bold mb-3 flex items-center gap-2"><i class="ph ph-text-t"></i> Tipografía</h3>
+                        <div class="grid grid-cols-2 gap-2" id="opts-typo">
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="sans">Sans Geométrica</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="serif">Serif Elegante</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="script">Handwritten</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="display">Display Experimental</button>
+                        </div>
+                    </div>
+
+                    <!-- Palette -->
+                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl">
+                        <h3 class="font-bold mb-3 flex items-center gap-2"><i class="ph ph-palette"></i> Paleta de Color</h3>
+                        <div class="grid grid-cols-2 gap-2" id="opts-palette">
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500 flex items-center justify-center gap-2" data-val="monochrome"><span class="w-3 h-3 rounded-full bg-gray-400"></span> Monocromo</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500 flex items-center justify-center gap-2" data-val="earthy"><span class="w-3 h-3 rounded-full bg-amber-700"></span> Tonos Tierra</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500 flex items-center justify-center gap-2" data-val="neon"><span class="w-3 h-3 rounded-full bg-pink-500"></span> Vibrante/Neón</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500 flex items-center justify-center gap-2" data-val="pastel"><span class="w-3 h-3 rounded-full bg-blue-200"></span> Pastel Suave</button>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl">
+                        <h3 class="font-bold mb-3 flex items-center gap-2"><i class="ph ph-clock"></i> Tiempo Dedicado</h3>
+                        <p class="text-xs text-slate-400 mb-2">Más tiempo = mejor calidad, pero agota más energía.</p>
+                        <div class="grid grid-cols-2 gap-2" id="opts-time">
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="2">2 Horas (Express)</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="4">4 Horas (Normal)</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="6">6 Horas (Detallista)</button>
+                            <button class="btn-option border border-slate-600 bg-slate-700 p-2 rounded-lg text-sm hover:border-blue-500" data-val="8">8 Horas (Burnout)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button onclick="submitProjectDesign()" id="btn-submit-design" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-12 rounded-xl transition-colors shadow-lg shadow-blue-500/30 opacity-50 cursor-not-allowed">Entregar Diseño al Cliente</button>
+                    <p id="error-design" class="text-red-400 text-sm mt-2 hidden">Falta seleccionar opciones</p>
+                </div>
+            </section>
+
+            <!-- SCREEN: EVENT MODAL (Overlay) -->
+            <section id="screen-event" class="screen absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-sm flex-col items-center justify-center p-4">
+                <div class="bg-slate-800 border-2 border-red-500/50 rounded-2xl p-6 sm:p-8 shadow-2xl max-w-lg w-full transform scale-100 transition-transform">
+                    <div class="text-red-400 flex justify-center mb-4"><i class="ph-duotone ph-warning-octagon text-6xl animate-pulse"></i></div>
+                    <h2 class="text-2xl font-bold text-center mb-2" id="event-title">¡Revisión Salvaje Aparece!</h2>
+                    <p class="text-slate-300 text-center mb-6 italic" id="event-desc">"El sobrino del dueño sabe usar Canva y dice que le falta impacto."</p>
+                    
+                    <div class="space-y-3" id="event-choices">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN: RESULT -->
+            <section id="screen-result" class="screen flex-col h-full max-w-2xl mx-auto justify-center gap-6">
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold mb-2" id="res-title">Resultado</h2>
+                    <div class="inline-block px-4 py-1 rounded-full text-sm font-bold mt-2" id="res-badge">CALIFICACIÓN</div>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg">
+                    <p class="text-lg italic text-slate-300 mb-6 text-center">"<span id="res-feedback">Feedback del cliente</span>"</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="bg-slate-900 p-3 rounded-lg">
+                            <div class="text-slate-400 text-xs mb-1">Ganancia</div>
+                            <div class="font-bold text-emerald-400 text-lg" id="res-money">+$0</div>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg">
+                            <div class="text-slate-400 text-xs mb-1">Reputación</div>
+                            <div class="font-bold text-blue-400 text-lg" id="res-rep">+0</div>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg">
+                            <div class="text-slate-400 text-xs mb-1">Estrés</div>
+                            <div class="font-bold text-red-400 text-lg" id="res-stress">+0</div>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg">
+                            <div class="text-slate-400 text-xs mb-1">Energía Usada</div>
+                            <div class="font-bold text-yellow-400 text-lg" id="res-energy">-0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="endDay()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-colors w-full">Finalizar Día</button>
+            </section>
+
+            <!-- SCREEN: GAME OVER / FINAL -->
+            <section id="screen-gameover" class="screen flex-col items-center justify-center h-full text-center gap-6 max-w-2xl mx-auto">
+                <i id="go-icon" class="ph-duotone ph-skull text-8xl text-red-500"></i>
+                <div>
+                    <h1 class="text-5xl font-bold mb-2" id="go-title">BURNOUT TOTAL</h1>
+                    <p class="text-xl text-slate-400" id="go-subtitle">Sobreviviste 3 días.</p>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl w-full max-w-md shadow-lg">
+                    <h3 class="font-bold text-slate-300 mb-4">Tu Resumen Freelance</h3>
+                    <div class="space-y-2 text-left">
+                        <div class="flex justify-between border-b border-slate-700 pb-2"><span>Puntuación Final:</span> <strong class="text-blue-400 text-xl" id="go-score">0</strong></div>
+                        <div class="flex justify-between border-b border-slate-700 pb-2"><span>Dinero Acumulado:</span> <strong class="text-emerald-400" id="go-money">$0</strong></div>
+                        <div class="flex justify-between border-b border-slate-700 pb-2"><span>Rango Obtenido:</span> <strong class="text-purple-400" id="go-rank">Diseñador Explotado</strong></div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 w-full max-w-md">
+                    <button onclick="navTo('screen-home')" class="bg-slate-700 hover:bg-slate-600 flex-1 text-white font-bold py-3 rounded-xl transition-colors">Volver a Intentar</button>
+                    <button onclick="shareScore()" class="bg-blue-600 hover:bg-blue-500 flex-1 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"><i class="ph ph-share-network"></i> Compartir</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- AUDIO (Silent by default, played via JS) -->
+    <audio id="sfx-click" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="></audio>
+
+    <script>
+        /* --- 1. DATOS DEL JUEGO --- */
+        const gameData = {
+            classes: {
+                visual_designer: {
+                    id: "visual_designer", name: "Diseñador Visual", icon: "ph-magic-wand", 
+                    desc: "Ojo fino para lo estético, malo peleando presupuestos.",
+                    stats: { typography: 7, color: 8, composition: 8, negotiation: 3, speed: 5, branding: 6 }
+                },
+                freelance_hustler: {
+                    id: "freelance_hustler", name: "Freelance Callejero", icon: "ph-money", 
+                    desc: "Vende hielo a esquimales. Los diseños son 'meh' pero cobras bien.",
+                    stats: { typography: 4, color: 4, composition: 4, negotiation: 9, speed: 8, branding: 5 }
+                },
+                brand_designer: {
+                    id: "brand_designer", name: "Brand Strategist", icon: "ph-strategy", 
+                    desc: "Cobras por 'estrategia'. Escribes manifiestos de 40 páginas.",
+                    stats: { typography: 6, color: 6, composition: 6, negotiation: 6, speed: 4, branding: 9 }
+                }
+            },
+            projects: [
+                {
+                    id: "cafe_01", client: "Café de Especialidad 'El Grano'", industry: "Gastronomía", type: "Identidad Visual",
+                    budget: 150, deadline: 6, difficulty: 2, toxicLevel: 1,
+                    brief: "Queremos algo súper minimalista, que transmita paz, calor humano y café caro. Piensa en tonos tierra y mucha limpieza.",
+                    pref: { style: "minimal", typography: "sans", palette: "earthy" },
+                    rewards: { exp: 20 }
+                },
+                {
+                    id: "startup_01", client: "TechBro App", industry: "Tecnología", type: "Logo y UI Base",
+                    budget: 300, deadline: 4, difficulty: 4, toxicLevel: 3,
+                    brief: "Somos el Uber de pasear iguanas. Necesitamos disrupción, neón, velocidad, impacto. ¡Para ayer! Vamos a levantar serie A.",
+                    pref: { style: "bold", typography: "sans", palette: "neon" },
+                    rewards: { exp: 35 }
+                },
+                {
+                    id: "bakery_01", client: "Pastelería de la Tía", industry: "Comercio Local", type: "Rebranding",
+                    budget: 80, deadline: 8, difficulty: 1, toxicLevel: 2,
+                    brief: "Mi sobrino nos hizo un logo en Word, queremos modernizarlo pero que no pierda lo artesanal y caserito.",
+                    pref: { style: "vintage", typography: "script", palette: "pastel" },
+                    rewards: { exp: 15 }
+                },
+                {
+                    id: "lawyer_01", client: "García & Asoc.", industry: "Legal", type: "Branding Corporativo",
+                    budget: 250, deadline: 6, difficulty: 3, toxicLevel: 4,
+                    brief: "Exigimos seriedad absoluta. Valores conservadores. Nada de dibujitos, queremos parecer una firma de Wall Street.",
+                    pref: { style: "corporate", typography: "serif", palette: "monochrome" },
+                    rewards: { exp: 30 }
+                },
+                {
+                    id: "influencer_01", client: "Cbum_Fake", industry: "Redes Sociales", type: "Kit de Streaming",
+                    budget: 120, deadline: 2, difficulty: 3, toxicLevel: 5,
+                    brief: "Bro, necesito que mi stream grite ALFA. Letras gigantes, colores agresivos, que te rompa la cara al verlo. Dale que prendo hoy.",
+                    pref: { style: "bold", typography: "display", palette: "neon" },
+                    rewards: { exp: 25 }
+                },
+                {
+                    id: "indie_band", client: "Los Llorones", industry: "Música", type: "Portada de Single",
+                    budget: 90, deadline: 5, difficulty: 2, toxicLevel: 1,
+                    brief: "Queremos algo raro, experimental, nostálgico. Que no se entienda muy bien pero que sientas cosas.",
+                    pref: { style: "vintage", typography: "display", palette: "monochrome" },
+                    rewards: { exp: 20 }
+                }
+            ],
+            events: [
+                {
+                    id: "bigger_logo", title: "Hazlo Más Grande", desc: "El cliente te llama a las 2 AM. 'Me encanta, pero ¿podemos hacer el logo un 500% más grande?'",
+                    choices: [
+                        { text: "Aceptar llorando", effects: { stress: 15, creativity: -10, rep: -5 } },
+                        { text: "Explicar por qué es mala idea", requires: "negotiation", reqLvl: 5, effects: { stress: 5, rep: 5 } },
+                        { text: "Cobrar extra por arruinarlo", effects: { money: 50, stress: 10, rep: -10 } }
+                    ]
+                },
+                {
+                    id: "nephew", title: "El Sobrino de Canva", desc: "El cliente dice que a su sobrino de 12 años no le convence la paleta de colores y sugiere usar Comic Sans.",
+                    choices: [
+                        { text: "Ignorar al sobrino (Riesgoso)", effects: { stress: 20, rep: -15 } },
+                        { text: "Darle una clase de diseño gratis", requires: "branding", reqLvl: 6, effects: { energy: -20, rep: 10, exp: 10 } },
+                        { text: "Ceder ante el niño", effects: { stress: -5, creativity: -20, rep: -5 } }
+                    ]
+                },
+                {
+                    id: "exposure", title: "Pago con Exposición", desc: "El cliente se quedó sin presupuesto, pero te promete etiquetarte en una story para sus 300 seguidores.",
+                    choices: [
+                        { text: "Rechazar e insultar mentalmente", effects: { stress: 5, rep: 5, money: -50 } }, // Pierdes parte del pago
+                        { text: "Amenazar con abogados", requires: "negotiation", reqLvl: 7, effects: { money: 0, stress: 15 } },
+                        { text: "Aceptar (Derrota moral)", effects: { energy: -10, stress: 20, rep: 2 } }
+                    ]
+                },
+                {
+                    id: "viral", title: "Behance Highlight", desc: "Un curador vio tu WIP y lo destacó. Estás recibiendo mucho tráfico.",
+                    choices: [
+                        { text: "Aprovechar para subir precios", effects: { rep: 15, creativity: 10 } }
+                    ]
+                }
+            ],
+            upgrades: [
+                { id: "coffee", name: "Café de Especialidad", desc: "+20 Energía max", cost: 50, effect: { maxEnergy: 20, energy: 20 }, icon: "ph-coffee" },
+                { id: "monitor", name: "Monitor Ultrawide", desc: "+2 Velocidad, +10 Creatividad", cost: 200, effect: { speed: 2, creativity: 10 }, icon: "ph-monitor" },
+                { id: "fonts", name: "Suscripción Tipográfica", desc: "+2 Tipografía", cost: 120, effect: { typography: 2 }, icon: "ph-text-aa" },
+                { id: "therapy", name: "Sesión de Terapia", desc: "Reduce 30 Estrés", cost: 80, effect: { stress: -30 }, icon: "ph-heartbeat" },
+                { id: "notion", name: "Plantilla Notion Premium", desc: "+2 Negociación y Branding", cost: 150, effect: { negotiation: 2, branding: 2 }, icon: "ph-kanban" }
+            ],
+            feedback: {
+                excellent: ["¡Espectacular! Exactamente lo que no sabía que quería.", "Mi jefe lloró al verlo. Aprobado de inmediato.", "Eres un genio incomprendido. Te recomendaré."],
+                good: ["Está bien. No me vuela la cabeza pero sirve.", "Aprobado, pasame la factura.", "Me gusta. Le cambié un par de cositas en Paint nomás."],
+                average: ["No sé... siento que le falta 'chispa'.", "Pensé que iba a quedar distinto. Igual lo usamos.", "Mmm. Esperaba más por lo que cobras."],
+                bad: ["Esto es un desastre. ¿Seguro que eres diseñador?", "Mi sobrino lo hacía mejor en 5 minutos.", "Exijo la devolución de mi dinero. Inaceptable."]
+            }
+        };
+
+        /* --- 2. ESTADO DEL JUEGO --- */
+        let state = {};
+        const maxDays = 7;
+        let selectedChoices = { style: null, typography: null, palette: null, time: null };
+
+        function getInitialState() {
+            return {
+                day: 1,
+                money: 100,
+                energy: 100,
+                maxEnergy: 100,
+                reputation: 50,
+                stress: 0,
+                creativity: 80,
+                classId: null,
+                stats: {},
+                upgrades: [],
+                currentProject: null,
+                totalMoneyEarned: 0,
+                projectsCompleted: 0
+            };
+        }
+
+        /* --- 3. FUNCIONES CORE Y UTILIDADES --- */
+        function sfx() {
+            // Un pequeño sonido genérico si el navegador lo permite
+            try { document.getElementById('sfx-click').play().catch(()=>{}); } catch(e){}
+        }
+
+        function navTo(screenId) {
+            sfx();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            const topbar = document.getElementById('global-topbar');
+            if(screenId === 'screen-home' || screenId === 'screen-class' || screenId === 'screen-gameover') {
+                topbar.classList.add('hidden');
+            } else {
+                topbar.classList.remove('hidden');
+                updateTopbar();
+            }
+        }
+
+        function updateTopbar() {
+            document.getElementById('top-day').innerText = state.day;
+            document.getElementById('top-money').innerText = state.money;
+            
+            document.getElementById('top-energy').innerText = state.energy;
+            document.getElementById('bar-energy').style.width = `${(state.energy / state.maxEnergy) * 100}%`;
+            
+            document.getElementById('top-stress').innerText = state.stress;
+            document.getElementById('bar-stress').style.width = `${state.stress}%`;
+            
+            document.getElementById('top-rep').innerText = state.reputation;
+            document.getElementById('bar-rep').style.width = `${state.reputation}%`;
+
+            document.getElementById('top-creativity').innerText = state.creativity;
+            document.getElementById('bar-creativity').style.width = `${state.creativity}%`;
+            
+            // Warnings de color
+            document.getElementById('bar-stress').className = `h-1.5 rounded-full stat-bar ${state.stress > 70 ? 'bg-red-500 animate-pulse' : 'bg-red-400'}`;
+            document.getElementById('bar-energy').className = `h-1.5 rounded-full stat-bar ${state.energy < 30 ? 'bg-yellow-500 animate-pulse' : 'bg-yellow-400'}`;
+        }
+
+        function modifyStat(stat, amount) {
+            state[stat] += amount;
+            if(stat === 'energy') state.energy = Math.max(0, Math.min(state.energy, state.maxEnergy));
+            if(stat === 'stress') state.stress = Math.max(0, Math.min(state.stress, 100));
+            if(stat === 'creativity') state.creativity = Math.max(0, Math.min(state.creativity, 100));
+            if(stat === 'reputation') state.reputation = Math.max(0, Math.min(state.reputation, 100));
+            if(stat === 'money' && amount > 0) state.totalMoneyEarned += amount;
+            updateTopbar();
+        }
+
+        /* --- 4. FLUJO DEL JUEGO --- */
+        
+        // Render Class Selection
+        function initClassScreen() {
+            const container = document.getElementById('class-container');
+            container.innerHTML = '';
+            Object.values(gameData.classes).forEach(cls => {
+                container.innerHTML += `
+                    <div onclick="startGame('${cls.id}')" class="bg-slate-800 border border-slate-700 hover:border-blue-500 p-6 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 text-left flex flex-col gap-2 group">
+                        <i class="ph-duotone ${cls.icon} text-5xl text-blue-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl">${cls.name}</h3>
+                        <p class="text-sm text-slate-400 mb-4 h-16">${cls.desc}</p>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-xs text-slate-300 mt-auto bg-slate-900 p-3 rounded-lg">
+                            <div>Arte: ${cls.stats.typography + cls.stats.color + cls.stats.composition}</div>
+                            <div>Negocio: ${cls.stats.negotiation + cls.stats.branding}</div>
+                            <div>Velocidad: ${cls.stats.speed}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            navTo('screen-class');
+        }
+
+        function startGame(classId) {
+            state = getInitialState();
+            state.classId = classId;
+            state.stats = { ...gameData.classes[classId].stats };
+            renderDashboard();
+            navTo('screen-dashboard');
+        }
+
+        function renderDashboard() {
+            document.getElementById('dash-greeting').innerText = `Día ${state.day}. Sobrevive a la jungla freelance.`;
+            
+            const statsDiv = document.getElementById('stats-container');
+            statsDiv.innerHTML = Object.entries(state.stats).map(([k, v]) => `
+                <div class="bg-slate-900 p-2 rounded border border-slate-700">
+                    <span class="text-slate-400 capitalize block">${k}</span>
+                    <span class="font-bold text-blue-400 text-lg">${v}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderShop() {
+            const container = document.getElementById('shop-container');
+            container.innerHTML = '';
+            gameData.upgrades.forEach(up => {
+                const isOwned = state.upgrades.includes(up.id);
+                const canAfford = state.money >= up.cost;
+                container.innerHTML += `
+                    <div class="bg-slate-800 border ${isOwned ? 'border-emerald-500/50 opacity-50' : 'border-slate-700'} p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="ph-duotone ${up.icon} text-3xl ${isOwned ? 'text-emerald-400' : 'text-slate-300'}"></i>
+                            <div>
+                                <h4 class="font-bold text-sm sm:text-base">${up.name}</h4>
+                                <p class="text-xs text-slate-400">${up.desc}</p>
+                            </div>
+                        </div>
+                        <button onclick="buyUpgrade('${up.id}')" ${isOwned || !canAfford ? 'disabled' : ''} 
+                            class="${isOwned ? 'bg-emerald-600 text-white cursor-default' : (canAfford ? 'bg-blue-600 hover:bg-blue-500' : 'bg-slate-700 text-slate-500 cursor-not-allowed')} font-bold py-2 px-4 rounded-lg text-sm transition-colors">
+                            ${isOwned ? 'Comprado' : '$'+up.cost}
+                        </button>
+                    </div>
+                `;
+            });
+            navTo('screen-shop');
+        }
+
+        function buyUpgrade(id) {
+            const up = gameData.upgrades.find(u => u.id === id);
+            if(state.money >= up.cost && !state.upgrades.includes(id)) {
+                modifyStat('money', -up.cost);
+                state.upgrades.push(id);
+                
+                // Aplicar efectos
+                Object.entries(up.effect).forEach(([key, val]) => {
+                    if(state.stats[key] !== undefined) state.stats[key] += val;
+                    else modifyStat(key, val);
+                });
+                
+                renderShop();
+                renderDashboard();
+            }
+        }
+
+        // Project Generation
+        function generateProject() {
+            // Seleccionar proyecto al azar (que no sea el actual, aunque para el MVP da igual)
+            const p = gameData.projects[Math.floor(Math.random() * gameData.projects.length)];
+            // Clonar para poder modificar presupuesto si se negocia
+            state.currentProject = JSON.parse(JSON.stringify(p)); 
+            
+            document.getElementById('brief-industry').innerText = state.currentProject.industry;
+            document.getElementById('brief-client').innerText = state.currentProject.client;
+            document.getElementById('brief-type').innerText = state.currentProject.type;
+            document.getElementById('brief-budget').innerText = '$' + state.currentProject.budget;
+            document.getElementById('brief-deadline').innerText = 'Deadline: ' + state.currentProject.deadline + 'h';
+            document.getElementById('brief-text').innerText = state.currentProject.brief;
+            
+            const toxColors = ['text-emerald-400', 'text-yellow-400', 'text-orange-400', 'text-red-400', 'text-purple-500'];
+            document.getElementById('brief-toxic').innerHTML = `<span class="${toxColors[state.currentProject.toxicLevel-1] || 'text-red-500'} font-bold">Nivel ${state.currentProject.toxicLevel}</span>`;
+            document.getElementById('brief-diff').innerText = `Nivel ${state.currentProject.difficulty}`;
+            
+            navTo('screen-brief');
+        }
+
+        function rejectProject() {
+            modifyStat('money', -10); // Costo de oportunidad / buscar otro
+            modifyStat('energy', -5);
+            navTo('screen-dashboard');
+            setTimeout(() => alert("Buscaste otro cliente. Gastaste tiempo y energía."), 100);
+        }
+
+        function negotiateProject() {
+            sfx();
+            const chance = (state.stats.negotiation * 10) + (Math.random() * 30);
+            if(chance > 60) {
+                state.currentProject.budget = Math.floor(state.currentProject.budget * 1.3);
+                document.getElementById('brief-budget').innerText = '$' + state.currentProject.budget;
+                alert("¡Éxito! Lograste subir el presupuesto a $" + state.currentProject.budget);
+            } else {
+                state.currentProject.toxicLevel += 1;
+                document.getElementById('brief-toxic').innerHTML = `<span class="text-red-500 font-bold">Nivel ${state.currentProject.toxicLevel} (Enojado)</span>`;
+                alert("El cliente se ofendió. La toxicidad aumentó.");
+            }
+            // Deshabilitar botón de negociar
+            event.target.disabled = true;
+            event.target.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function acceptProject() {
+            selectedChoices = { style: null, typography: null, palette: null, time: null };
+            document.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected'));
+            document.getElementById('btn-submit-design').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('error-design').classList.add('hidden');
+            
+            document.getElementById('dec-client-name').innerText = state.currentProject.client;
+            navTo('screen-decision');
+        }
+
+        // Decision Handling
+        document.querySelectorAll('.btn-option').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                sfx();
+                const btn = e.currentTarget;
+                const parent = btn.parentElement;
+                parent.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                
+                const val = btn.dataset.val;
+                if(parent.id === 'opts-style') selectedChoices.style = val;
+                if(parent.id === 'opts-typo') selectedChoices.typography = val;
+                if(parent.id === 'opts-palette') selectedChoices.palette = val;
+                if(parent.id === 'opts-time') selectedChoices.time = parseInt(val);
+
+                checkSelections();
+            });
+        });
+
+        function checkSelections() {
+            const btn = document.getElementById('btn-submit-design');
+            if(selectedChoices.style && selectedChoices.typography && selectedChoices.palette && selectedChoices.time) {
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function submitProjectDesign() {
+            if(!selectedChoices.style || !selectedChoices.typography || !selectedChoices.palette || !selectedChoices.time) {
+                document.getElementById('error-design').classList.remove('hidden');
+                return;
+            }
+            
+            // Random chance for event before resolving
+            if(Math.random() > 0.6) {
+                triggerEvent();
+            } else {
+                resolveProject();
+            }
+        }
+
+        // Events
+        function triggerEvent() {
+            const event = gameData.events[Math.floor(Math.random() * gameData.events.length)];
+            document.getElementById('event-title').innerText = event.title;
+            document.getElementById('event-desc').innerText = `"${event.desc}"`;
+            
+            const choicesDiv = document.getElementById('event-choices');
+            choicesDiv.innerHTML = '';
+            
+            event.choices.forEach(ch => {
+                const reqMet = !ch.requires || (state.stats[ch.requires] >= ch.reqLvl);
+                let btnHtml = `<button onclick='resolveEventChoice(${JSON.stringify(ch.effects)})' class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl text-sm transition-colors text-left flex justify-between items-center">
+                    <span>${ch.text}</span>
+                </button>`;
+                
+                if(!reqMet) {
+                    btnHtml = `<button disabled class="w-full bg-slate-800 text-slate-500 font-bold py-3 px-4 rounded-xl text-sm border border-slate-700 text-left flex justify-between items-center opacity-50 cursor-not-allowed">
+                    <span>${ch.text} <span class="text-xs font-normal">(Req: ${ch.requires} lvl ${ch.reqLvl})</span></span> <i class="ph-fill ph-lock"></i>
+                </button>`;
+                }
+                choicesDiv.innerHTML += btnHtml;
+            });
+            
+            navTo('screen-event');
+        }
+
+        function resolveEventChoice(effects) {
+            if(effects.stress) modifyStat('stress', effects.stress);
+            if(effects.rep) modifyStat('reputation', effects.rep);
+            if(effects.energy) modifyStat('energy', effects.energy);
+            if(effects.creativity) modifyStat('creativity', effects.creativity);
+            if(effects.money) {
+                // If money is negative, subtract from project budget instead of pocket if possible
+                if(effects.money < 0) state.currentProject.budget += effects.money;
+                else modifyStat('money', effects.money);
+            }
+            resolveProject();
+        }
+
+        // Resolution & Math
+        function resolveProject() {
+            const p = state.currentProject;
+            let matchScore = 0;
+            
+            if(selectedChoices.style === p.pref.style) matchScore += 30;
+            if(selectedChoices.typography === p.pref.typography) matchScore += 30;
+            if(selectedChoices.palette === p.pref.palette) matchScore += 30;
+            
+            // Stats bonus
+            const skillBonus = (state.stats.branding * 2) + state.stats.composition + state.stats.color;
+            // Time bonus/penalty
+            const timeBonus = selectedChoices.time >= p.deadline ? 15 : (selectedChoices.time < p.deadline/2 ? -20 : 0);
+            
+            // Toxicity penalty
+            const toxicPen = p.toxicLevel * 5;
+            // Stress penalty
+            const stressPen = Math.floor(state.stress / 4);
+
+            const totalQuality = matchScore + skillBonus + timeBonus - toxicPen - stressPen + (state.creativity/5);
+            
+            let resultGrade = 'bad';
+            let resBadgeText = 'DESASTRE';
+            let badgeColor = 'bg-red-500 text-white';
+            
+            if(totalQuality >= 100) { resultGrade = 'excellent'; resBadgeText = 'OBRA MAESTRA'; badgeColor = 'bg-purple-500 text-white'; }
+            else if(totalQuality >= 70) { resultGrade = 'good'; resBadgeText = 'APROBADO'; badgeColor = 'bg-emerald-500 text-white'; }
+            else if(totalQuality >= 40) { resultGrade = 'average'; resBadgeText = 'MEDIOCRE'; badgeColor = 'bg-yellow-500 text-slate-900'; }
+
+            // Calculate actual rewards
+            let earnedMoney = 0;
+            let repDelta = 0;
+            let expDelta = p.rewards.exp;
+            let stressDelta = 0;
+            
+            if(resultGrade === 'excellent') {
+                earnedMoney = Math.floor(p.budget * 1.2); // Bono propina
+                repDelta = 10;
+                stressDelta = -5; // Alivio
+            } else if(resultGrade === 'good') {
+                earnedMoney = p.budget;
+                repDelta = 5;
+                stressDelta = p.toxicLevel * 2;
+            } else if(resultGrade === 'average') {
+                earnedMoney = Math.floor(p.budget * 0.7);
+                repDelta = -5;
+                stressDelta = 10 + (p.toxicLevel * 3);
+            } else {
+                earnedMoney = Math.floor(p.budget * 0.2); // Te pagan un adelanto roñoso
+                repDelta = -15;
+                stressDelta = 25 + (p.toxicLevel * 5);
+            }
+
+            const energyUsed = selectedChoices.time * (10 - state.stats.speed/2); // Formula energia
+            
+            // Apply logic to state
+            modifyStat('money', earnedMoney);
+            modifyStat('reputation', repDelta);
+            modifyStat('stress', stressDelta);
+            modifyStat('energy', -Math.floor(energyUsed));
+            modifyStat('creativity', -10); // Desgaste natural
+
+            state.projectsCompleted++;
+
+            // Render Result Screen
+            document.getElementById('res-badge').innerText = resBadgeText;
+            document.getElementById('res-badge').className = `inline-block px-4 py-1 rounded-full text-sm font-bold mt-2 ${badgeColor}`;
+            
+            const fbs = gameData.feedback[resultGrade];
+            document.getElementById('res-feedback').innerText = fbs[Math.floor(Math.random() * fbs.length)];
+            
+            document.getElementById('res-money').innerText = `+${earnedMoney}`;
+            document.getElementById('res-rep').innerText = repDelta >= 0 ? `+${repDelta}` : repDelta;
+            document.getElementById('res-stress').innerText = stressDelta >= 0 ? `+${Math.floor(stressDelta)}` : Math.floor(stressDelta);
+            document.getElementById('res-energy').innerText = `-${Math.floor(energyUsed)}`;
+            
+            // Check fail states immediately if extreme
+            if(state.stress >= 100 || state.energy <= 0) {
+                setTimeout(checkGameOver, 2000);
+            }
+
+            navTo('screen-result');
+        }
+
+        function endDay() {
+            state.day++;
+            
+            // Recuperación diaria
+            modifyStat('energy', 40);
+            modifyStat('stress', -15);
+            modifyStat('creativity', 30);
+            
+            if(checkGameOver()) return; // Si perdió o ganó
+            
+            renderDashboard();
+            navTo('screen-dashboard');
+            saveGame();
+        }
+
+        function checkGameOver() {
+            let over = false;
+            let title = "";
+            let subtitle = "";
+
+            if(state.stress >= 100) {
+                over = true; title = "BURNOUT TOTAL"; subtitle = `Colapsaste en el teclado en el día ${state.day}.`;
+                document.getElementById('go-icon').className = "ph-duotone ph-warning text-8xl text-red-500 animate-pulse";
+            } else if(state.energy <= 0) {
+                over = true; title = "AGOTAMIENTO"; subtitle = `Te quedaste dormido en la reunión de zoom del día ${state.day}.`;
+                document.getElementById('go-icon').className = "ph-duotone ph-battery-empty text-8xl text-yellow-500 animate-pulse";
+            } else if(state.reputation <= 0) {
+                over = true; title = "CANCELADO"; subtitle = `Nadie quiere trabajar contigo. Día ${state.day}.`;
+                document.getElementById('go-icon').className = "ph-duotone ph-thumbs-down text-8xl text-blue-500 animate-bounce";
+            } else if(state.money < 0) {
+                over = true; title = "BANCARROTA"; subtitle = `Volviste a casa de tus padres en el día ${state.day}.`;
+                document.getElementById('go-icon').className = "ph-duotone ph-money text-8xl text-red-500";
+            } else if(state.day > maxDays) {
+                over = true; title = "¡SOBREVIVISTE!"; subtitle = `Has superado la semana como freelance.`;
+                document.getElementById('go-icon').className = "ph-duotone ph-trophy text-8xl text-yellow-400 animate-bounce";
+            }
+
+            if(over) {
+                const score = (state.money * 2) + (state.reputation * 5) + (state.projectsCompleted * 50) - (state.stress * 2);
+                let rank = "Diseñador Explotado";
+                if(score > 400) rank = "Director Creativo del Caos";
+                else if(score > 250) rank = "Creativo Sólido";
+                else if(score > 100) rank = "Freelance Sobreviviente";
+
+                document.getElementById('go-title').innerText = title;
+                document.getElementById('go-subtitle').innerText = subtitle;
+                document.getElementById('go-score').innerText = score;
+                document.getElementById('go-money').innerText = `$${state.totalMoneyEarned}`;
+                document.getElementById('go-rank').innerText = rank;
+                
+                navTo('screen-gameover');
+                localStorage.removeItem("hazloMasGrandeSave"); // Borrar save en game over
+                return true;
+            }
+            return false;
+        }
+
+        /* --- 5. ALMACENAMIENTO Y COMPARTIR --- */
+        function saveGame() {
+            localStorage.setItem("hazloMasGrandeSave", JSON.stringify(state));
+            const btn = document.querySelector('button[onclick="saveGame()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="ph ph-check"></i> Guardado`;
+            btn.classList.replace('text-slate-500', 'text-emerald-400');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.replace('text-emerald-400', 'text-slate-500');
+            }, 2000);
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem("hazloMasGrandeSave");
+            if(saved) {
+                state = JSON.parse(saved);
+                renderDashboard();
+                navTo('screen-dashboard');
+            } else {
+                alert("No hay partida guardada.");
+            }
+        }
+
+        function shareScore() {
+            const score = document.getElementById('go-score').innerText;
+            const rank = document.getElementById('go-rank').innerText;
+            const text = `¡Sobreviví a Hazlo Más Grande!\n🏆 Rango: ${rank}\n⭐ Puntos: ${score}\n💸 Ganado: $${state.totalMoneyEarned}\n\n¿Puedes sobrevivir a los peores briefs?`;
+            
+            if (navigator.share) {
+                navigator.share({ title: 'Hazlo Más Grande', text: text }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("¡Resultados copiados al portapapeles para compartir en redes!");
+                });
+            }
+        }
+
+        // Init App
+        window.onload = () => {
+            initClassScreen();
+            navTo('screen-home'); // Forzar inicio en home
+        };
+
+    </script>
 </body>
 </html>
