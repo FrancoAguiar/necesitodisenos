@@ -342,46 +342,62 @@
         </div>
     </section>
 
-    <!-- RESEÑAS CORTAS -->
-    <section class="py-16 border-t border-white/5">
-        <div class="container mx-auto px-4 max-w-5xl text-center">
-            <h2 class="text-xl font-bold text-white mb-10 text-center" data-aos="fade-up">Lo que dicen los que ya no regalan su trabajo</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Review 1 -->
-                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up">
-                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Me salvó la vida con una marca de ropa que me pedía cambios todos los días por WhatsApp. Les mostré la cláusula 3 y al día siguiente me pagaron el saldo para cerrar."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295468757a_Diseosinttulo1.png" alt="Pablo A." class="w-10 h-10 rounded-full object-cover border border-white/10">
-                        <div>
-                            <p class="text-sm text-white font-bold">Pablo A.</p>
-                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Diseñador Gráfico</p>
+    <!-- RESEÑAS CORTAS (ESTILO WHATSAPP) -->
+    <section class="py-16 border-t border-white/5 bg-[#0b141a] relative overflow-hidden">
+        <!-- Fondo de WhatsApp (Doodles) sutil -->
+        <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: url('https://w0.peakpx.com/wallpaper/818/148/HD-wallpaper-whatsapp-background-cool-dark-green-new-theme-whatsapp.jpg'); background-size: cover; background-position: center; mix-blend-mode: screen;"></div>
+        
+        <div class="container mx-auto px-4 max-w-5xl text-center relative z-10">
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-white mb-10 md:mb-14 text-center" data-aos="fade-up">Lo que dicen los que ya no regalan su trabajo</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
+                <!-- Chat 1 -->
+                <div class="flex flex-col" data-aos="fade-up">
+                    <div class="bg-[#182229] text-[#8696a0] text-[10px] uppercase px-3 py-1 rounded-full self-center mb-4 shadow-sm font-medium">Hoy</div>
+                    
+                    <div class="bg-[#202c33] p-3 md:p-4 rounded-2xl rounded-tl-sm relative shadow-lg text-left w-[95%] sm:w-[85%] md:w-full ml-3 md:ml-0 border border-white/5">
+                        <!-- Flechita del globo (Cola) -->
+                        <div class="absolute top-0 -left-2.5 w-0 h-0 border-t-[12px] border-t-[#202c33] border-l-[12px] border-l-transparent"></div>
+                        
+                        <div class="text-[13px] font-bold text-[#53bdeb] mb-1">~ Pablo A.</div>
+                        <p class="text-[14px] text-[#e9edef] leading-snug mb-1">Me salvó la vida con una marca de ropa que me pedía cambios todos los días por WhatsApp. Les mostré la cláusula 3 y al día siguiente me pagaron el saldo para cerrar. 🙏🔥</p>
+                        <div class="flex justify-end items-center gap-1.5 mt-1">
+                            <span class="text-[11px] text-[#8696a0] leading-none">14:23</span>
+                            <i class="ph-bold ph-check-double text-[#53bdeb] text-sm leading-none"></i>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Review 2 -->
-                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Solo por tener un documento en PDF con firmas, mis clientes me perciben distinto. Ya nadie me regatea el anticipo del 50%."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/68229113ed534_images.jpg" alt="Laura V." class="w-10 h-10 rounded-full object-cover border border-white/10">
-                        <div>
-                            <p class="text-sm text-white font-bold">Laura V.</p>
-                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Community Manager</p>
+                <!-- Chat 2 -->
+                <div class="flex flex-col pt-2 md:pt-12" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-[#182229] text-[#8696a0] text-[10px] uppercase px-3 py-1 rounded-full self-center mb-4 shadow-sm font-medium md:hidden">Ayer</div>
+                    
+                    <div class="bg-[#202c33] p-3 md:p-4 rounded-2xl rounded-tl-sm relative shadow-lg text-left w-[95%] sm:w-[85%] md:w-full ml-3 md:ml-0 border border-white/5">
+                        <!-- Flechita del globo (Cola) -->
+                        <div class="absolute top-0 -left-2.5 w-0 h-0 border-t-[12px] border-t-[#202c33] border-l-[12px] border-l-transparent"></div>
+                        
+                        <div class="text-[13px] font-bold text-[#a66cff] mb-1">~ Laura V.</div>
+                        <p class="text-[14px] text-[#e9edef] leading-snug mb-1">Solo por tener un documento en PDF con firmas, mis clientes me perciben distinto. Ya nadie me regatea el anticipo del 50% 💅✨</p>
+                        <div class="flex justify-end items-center gap-1.5 mt-1">
+                            <span class="text-[11px] text-[#8696a0] leading-none">15:45</span>
+                            <i class="ph-bold ph-check-double text-[#53bdeb] text-sm leading-none"></i>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Review 3 -->
-                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5 text-left flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex text-green-500 text-sm mb-3"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    <p class="text-sm text-zinc-300 italic mb-6 flex-grow">"Por $0.99 resolví un dolor de cabeza que me costaba fines de semana enteros de trabajo gratis. La mejor inversión que hice para mi negocio."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://d1yei2z3i6k35z.cloudfront.net/9656841/682295a168892_Diseosinttulo2.png" alt="Lucas A." class="w-10 h-10 rounded-full object-cover border border-white/10">
-                        <div>
-                            <p class="text-sm text-white font-bold">Lucas D.</p>
-                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider">Web Developer</p>
+                <!-- Chat 3 -->
+                <div class="flex flex-col pt-2 md:pt-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-[#182229] text-[#8696a0] text-[10px] uppercase px-3 py-1 rounded-full self-center mb-4 shadow-sm font-medium md:hidden">Viernes</div>
+                    
+                    <div class="bg-[#202c33] p-3 md:p-4 rounded-2xl rounded-tl-sm relative shadow-lg text-left w-[95%] sm:w-[85%] md:w-full ml-3 md:ml-0 border border-white/5">
+                        <!-- Flechita del globo (Cola) -->
+                        <div class="absolute top-0 -left-2.5 w-0 h-0 border-t-[12px] border-t-[#202c33] border-l-[12px] border-l-transparent"></div>
+                        
+                        <div class="text-[13px] font-bold text-[#35cd96] mb-1">~ Lucas D.</div>
+                        <p class="text-[14px] text-[#e9edef] leading-snug mb-1">Por $1 resolví un dolor de cabeza que me costaba fines de semana enteros de trabajo gratis. La mejor inversión que hice para mi negocio 🚀</p>
+                        <div class="flex justify-end items-center gap-1.5 mt-1">
+                            <span class="text-[11px] text-[#8696a0] leading-none">17:12</span>
+                            <i class="ph-bold ph-check-double text-[#53bdeb] text-sm leading-none"></i>
                         </div>
                     </div>
                 </div>
