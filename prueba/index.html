@@ -1,2259 +1,316 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAZLO MÁS GRANDE — El Juego del Diseñador</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --surface2: #1a1a24;
-  --border: #2a2a3a;
-  --text: #e8e8f0;
-  --muted: #6b6b80;
-  --green: #00e676;
-  --red: #ff4455;
-  --yellow: #ffd600;
-  --blue: #4488ff;
-  --purple: #cc44ff;
-  --orange: #ff7722;
-  --accent: #00e676;
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-mono: 'Space Mono', monospace;
-  --font-body: 'DM Sans', sans-serif;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diseñador en Ruta</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+    :root {
+      --bg: #0d0d1a;
+      --panel: #1a1a2e;
+      --accent: #e8ff47;
+      --accent2: #ff6b6b;
+      --accent3: #6bffb8;
+      --accent4: #6baaff;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
 
-/* ===== SCREENS ===== */
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; }
+    body {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Press Start 2P', monospace;
+      overflow: hidden;
+    }
 
-/* ===== SCROLLBARS ===== */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    #gameWrapper {
+      position: relative;
+      width: 800px;
+      height: 520px;
+    }
 
-/* ===== BUTTONS ===== */
-.btn {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 10px 20px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: transparent;
-  color: var(--text);
-}
-.btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
-.btn-primary { background: var(--accent); color: #000; border-color: var(--accent); }
-.btn-primary:hover { background: #00ff88; border-color: #00ff88; color: #000; }
-.btn-danger { border-color: var(--red); color: var(--red); }
-.btn-danger:hover { background: var(--red); color: #fff; }
-.btn-warn { border-color: var(--yellow); color: var(--yellow); }
-.btn-warn:hover { background: var(--yellow); color: #000; }
-.btn-info { border-color: var(--blue); color: var(--blue); }
-.btn-info:hover { background: var(--blue); color: #fff; }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
 
-/* ===== CARDS ===== */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
-}
+    /* ── SCREENS ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      z-index: 10;
+    }
+    .screen.hidden { display: none; }
 
-/* ===== STAT BAR ===== */
-.stat-bar-wrap { display: flex; flex-direction: column; gap: 3px; }
-.stat-bar-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
-.stat-bar-track { background: var(--border); border-radius: 2px; height: 4px; overflow: hidden; }
-.stat-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+    /* ── TITLE SCREEN ── */
+    #titleScreen {
+      background: linear-gradient(160deg, #0d0d1a 0%, #1a1a2e 60%, #0d1a0d 100%);
+    }
+    .title-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,255,71,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,255,71,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .title-scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+    .title-content { position: relative; text-align: center; }
+    .title-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--accent3);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .title-main {
+      font-size: 28px;
+      color: var(--accent);
+      line-height: 1.4;
+      text-shadow: 4px 4px 0 rgba(232,255,71,0.2), 0 0 40px rgba(232,255,71,0.4);
+      margin-bottom: 4px;
+    }
+    .title-sub {
+      font-size: 12px;
+      color: var(--accent2);
+      margin-bottom: 32px;
+      text-shadow: 2px 2px 0 rgba(255,107,107,0.3);
+    }
+    .title-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      border: 1px solid rgba(232,255,71,0.15);
+      padding: 16px 20px;
+      background: rgba(232,255,71,0.03);
+    }
+    .btn-play {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      padding: 14px 36px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.1s;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+    }
+    .btn-play:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
+    .btn-play:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
+    .controls-hint {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+    .controls-hint span { color: var(--accent4); }
 
-/* ===== BADGE ===== */
-.badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-family: var(--font-mono); font-size: 10px;
-  padding: 3px 8px; border-radius: 3px;
-  border: 1px solid currentColor; font-weight: 700; text-transform: uppercase;
-}
+    /* ── LEVEL INTRO ── */
+    #levelIntro {
+      background: rgba(13,13,26,0.95);
+      backdrop-filter: blur(4px);
+    }
+    .level-badge {
+      font-size: 9px;
+      color: var(--accent3);
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+    .level-title { font-size: 20px; color: var(--accent); margin-bottom: 8px; }
+    .level-project {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--accent2);
+      margin-bottom: 24px;
+    }
+    .level-objectives {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--text);
+      line-height: 2;
+      text-align: left;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      margin-bottom: 28px;
+    }
+    .level-objectives li { list-style: none; }
+    .level-objectives li::before { content: "▸ "; color: var(--accent); }
+    .btn-start { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--bg); background: var(--accent3); border: none; padding: 12px 28px; cursor: pointer; box-shadow: 3px 3px 0 rgba(0,0,0,0.5); }
+    .btn-start:hover { filter: brightness(1.1); }
 
-/* ===== NOISE OVERLAY ===== */
-body::before {
-  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.3;
-}
+    /* ── GAME OVER / WIN ── */
+    #gameOverScreen, #levelWinScreen {
+      background: rgba(13,13,26,0.96);
+    }
+    .over-title { font-size: 22px; color: var(--accent2); margin-bottom: 16px; }
+    .win-title { font-size: 18px; color: var(--accent); margin-bottom: 16px; }
+    .over-msg, .win-msg {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.8;
+      text-align: center;
+    }
+    .btn-retry, .btn-next {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      border: none;
+      padding: 12px 28px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+      margin: 6px;
+    }
+    .btn-retry { color: var(--bg); background: var(--accent2); }
+    .btn-next  { color: var(--bg); background: var(--accent3); }
 
-/* ===== HOME SCREEN ===== */
-#home-screen {
-  align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.home-grid {
-  position: absolute; inset: 0;
-  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 60px 60px; opacity: 0.3;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-}
-.home-content {
-  position: relative; z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center;
-  padding: 40px;
-  animation: fadeUp 0.6s ease;
-}
-@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-.home-logo {
-  font-family: var(--font-display); font-size: clamp(48px, 10vw, 120px);
-  line-height: 0.9; letter-spacing: 0.02em;
-  color: var(--text);
-}
-.home-logo span { color: var(--accent); }
-.home-logo .arrow { color: var(--yellow); animation: pulse-arrow 1.2s ease-in-out infinite; }
-@keyframes pulse-arrow { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-.home-subtitle {
-  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.15em;
-}
-.home-buttons { display: flex; flex-direction: column; gap: 10px; width: 220px; }
-.home-buttons .btn { width: 100%; padding: 14px 20px; font-size: 13px; }
-.home-record { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
-.home-record span { color: var(--yellow); }
-
-/* ===== CLASS SCREEN ===== */
-#class-screen {
-  padding: 40px; align-items: center; justify-content: center;
-}
-.class-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px; max-width: 960px; width: 100%;
-  animation: fadeUp 0.5s ease;
-}
-.class-header { text-align: center; margin-bottom: 32px; max-width: 960px; width: 100%; }
-.class-header h2 { font-family: var(--font-display); font-size: 48px; }
-.class-header p { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 8px; }
-.class-card {
-  background: var(--surface); border: 2px solid var(--border);
-  border-radius: 10px; padding: 24px; cursor: pointer;
-  transition: all 0.2s; position: relative; overflow: hidden;
-}
-.class-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.class-card.selected { border-color: var(--accent); background: var(--surface2); }
-.class-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at top right, var(--class-color, var(--accent)) 0%, transparent 60%);
-  opacity: 0.05; transition: opacity 0.2s;
-}
-.class-card:hover::before { opacity: 0.1; }
-.class-emoji { font-size: 36px; margin-bottom: 12px; }
-.class-name { font-family: var(--font-display); font-size: 28px; color: var(--text); margin-bottom: 4px; }
-.class-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
-.class-stats { display: flex; flex-direction: column; gap: 6px; }
-.class-stat-row { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; }
-.class-stat-dots { display: flex; gap: 3px; }
-.class-stat-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--border); }
-.class-stat-dot.filled { background: var(--accent); }
-.plus-stat { color: var(--green); }
-.minus-stat { color: var(--red); }
-
-/* ===== INTRO SCREEN ===== */
-#intro-screen {
-  align-items: center; justify-content: center; padding: 40px;
-}
-.intro-content {
-  max-width: 600px; text-align: center;
-  animation: fadeUp 0.5s ease;
-}
-.intro-content h2 { font-family: var(--font-display); font-size: 48px; color: var(--yellow); margin-bottom: 24px; }
-.intro-text {
-  font-family: var(--font-mono); font-size: 14px; line-height: 1.8;
-  color: var(--muted); background: var(--surface); border: 1px solid var(--border);
-  padding: 24px; border-radius: 8px; text-align: left; margin-bottom: 24px;
-}
-.intro-text .highlight { color: var(--accent); }
-.typing-cursor { animation: blink 1s infinite; }
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-
-/* ===== DASHBOARD ===== */
-#dashboard-screen { flex-direction: column; }
-.dashboard-layout { display: grid; grid-template-rows: auto 1fr; min-height: 100vh; }
-
-.hud {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 12px 24px;
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
-}
-.hud-logo { font-family: var(--font-display); font-size: 22px; color: var(--accent); white-space: nowrap; }
-.hud-stats { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-.hud-stat {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--surface2); border: 1px solid var(--border);
-  padding: 6px 12px; border-radius: 4px;
-}
-.hud-stat-icon { font-size: 14px; }
-.hud-stat-info { display: flex; flex-direction: column; }
-.hud-stat-label { font-family: var(--font-mono); font-size: 8px; color: var(--muted); text-transform: uppercase; }
-.hud-stat-value { font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
-.hud-day { font-family: var(--font-display); font-size: 28px; white-space: nowrap; }
-.hud-day span { color: var(--muted); font-size: 16px; }
-
-.dash-body { padding: 24px; display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; width: 100%; margin: 0 auto; }
-
-.brief-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; overflow: hidden;
-  animation: slideIn 0.4s ease;
-}
-@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-.brief-header {
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
-}
-.client-avatar {
-  width: 44px; height: 44px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; flex-shrink: 0;
-}
-.client-info h3 { font-family: var(--font-display); font-size: 22px; line-height: 1; }
-.client-info .client-type { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
-.brief-body { padding: 20px; }
-.brief-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.brief-brief {
-  font-size: 14px; line-height: 1.7; color: var(--muted);
-  background: var(--surface2); border-left: 3px solid var(--accent);
-  padding: 12px 16px; border-radius: 0 6px 6px 0;
-  margin-bottom: 16px; font-style: italic;
-}
-.brief-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.brief-meta-item {
-  background: var(--surface2); border: 1px solid var(--border);
-  padding: 10px; border-radius: 6px;
-}
-.brief-meta-item label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); display: block; text-transform: uppercase; margin-bottom: 4px; }
-.brief-meta-item span { font-family: var(--font-mono); font-size: 15px; font-weight: 700; }
-.brief-actions { display: flex; gap: 10px; }
-.brief-actions .btn { flex: 1; }
-
-.side-panel { display: flex; flex-direction: column; gap: 16px; }
-.side-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-.side-card h4 { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.1em; }
-.stats-grid { display: flex; flex-direction: column; gap: 8px; }
-.upgrades-list { display: flex; flex-direction: column; gap: 6px; max-height: 120px; overflow-y: auto; }
-.upgrade-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 6px 10px; background: var(--surface2); border-radius: 4px;
-  font-family: var(--font-mono); font-size: 10px;
-}
-.log-list { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-.log-entry { font-family: var(--font-mono); font-size: 10px; color: var(--muted); padding: 4px 8px; border-left: 2px solid var(--border); }
-.log-entry.good { border-color: var(--green); color: var(--green); }
-.log-entry.bad { border-color: var(--red); color: var(--red); }
-.log-entry.warn { border-color: var(--yellow); color: var(--yellow); }
-
-/* ===== DECISION SCREEN ===== */
-#decision-screen { padding: 0; }
-.decision-layout { display: grid; grid-template-columns: 1fr 360px; min-height: 100vh; }
-.decision-main { padding: 32px; overflow-y: auto; }
-.decision-sidebar {
-  background: var(--surface); border-left: 1px solid var(--border);
-  padding: 24px; display: flex; flex-direction: column; gap: 16px;
-  position: sticky; top: 0; height: 100vh; overflow-y: auto;
-}
-.decision-title { font-family: var(--font-display); font-size: 40px; margin-bottom: 4px; }
-.decision-client { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 24px; }
-
-.choice-section { margin-bottom: 28px; }
-.choice-label {
-  font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
-  color: var(--muted); letter-spacing: 0.1em; margin-bottom: 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.choice-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.choice-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.choice-option {
-  background: var(--surface2); border: 2px solid var(--border);
-  border-radius: 8px; padding: 14px; cursor: pointer; transition: all 0.15s;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.choice-option:hover { border-color: var(--blue); }
-.choice-option.selected { border-color: var(--accent); background: rgba(0,230,118,0.08); }
-.choice-option-name { font-family: var(--font-body); font-weight: 700; font-size: 14px; }
-.choice-option-desc { font-size: 11px; color: var(--muted); }
-
-.time-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.time-option {
-  background: var(--surface2); border: 2px solid var(--border);
-  border-radius: 8px; padding: 14px 8px; cursor: pointer; transition: all 0.15s;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-}
-.time-option:hover { border-color: var(--yellow); }
-.time-option.selected { border-color: var(--yellow); background: rgba(255,214,0,0.08); }
-.time-option-hours { font-family: var(--font-display); font-size: 28px; color: var(--yellow); }
-.time-option-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); text-transform: uppercase; }
-
-.decision-preview {
-  background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
-  padding: 16px; display: flex; flex-direction: column; gap: 10px;
-}
-.preview-row { display: flex; justify-content: space-between; align-items: center; }
-.preview-key { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
-.preview-val { font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
-.quality-meter { margin-top: 8px; }
-.quality-bar-track { background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
-.quality-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--red), var(--yellow), var(--green)); transition: width 0.4s ease; }
-
-/* ===== EVENT SCREEN ===== */
-#event-screen {
-  align-items: center; justify-content: center; padding: 40px;
-  background: radial-gradient(ellipse at center, rgba(255,68,85,0.1) 0%, transparent 70%);
-}
-.event-card {
-  max-width: 560px; width: 100%;
-  background: var(--surface); border: 2px solid var(--red);
-  border-radius: 12px; overflow: hidden;
-  animation: shakeIn 0.4s ease;
-}
-@keyframes shakeIn {
-  0% { transform: scale(0.9) rotate(-1deg); opacity: 0; }
-  60% { transform: scale(1.02) rotate(0.5deg); }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-.event-header {
-  background: var(--red); padding: 16px 20px;
-  display: flex; align-items: center; gap: 12px;
-}
-.event-icon { font-size: 28px; }
-.event-type-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; opacity: 0.8; }
-.event-title { font-family: var(--font-display); font-size: 28px; color: #fff; }
-.event-body { padding: 24px; }
-.event-desc {
-  font-size: 15px; line-height: 1.7; color: var(--text);
-  margin-bottom: 24px; background: var(--surface2); padding: 16px; border-radius: 8px;
-  font-style: italic;
-}
-.event-choices { display: flex; flex-direction: column; gap: 8px; }
-.event-choice {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: all 0.15s;
-  display: flex; align-items: center; gap: 12px;
-}
-.event-choice:hover { border-color: var(--text); transform: translateX(4px); }
-.event-choice-text { flex: 1; font-size: 14px; }
-.event-choice-effects { display: flex; gap: 6px; flex-wrap: wrap; }
-.effect-tag {
-  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
-  padding: 2px 6px; border-radius: 3px;
-}
-.effect-pos { background: rgba(0,230,118,0.2); color: var(--green); }
-.effect-neg { background: rgba(255,68,85,0.2); color: var(--red); }
-
-/* Positive event override */
-.event-card.positive { border-color: var(--green); }
-.event-card.positive .event-header { background: var(--green); }
-.event-card.positive .event-header * { color: #000; }
-
-/* ===== RESULT SCREEN ===== */
-#result-screen {
-  align-items: center; justify-content: center; padding: 40px;
-}
-.result-card {
-  max-width: 600px; width: 100%;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; overflow: hidden;
-  animation: fadeUp 0.5s ease;
-}
-.result-banner {
-  padding: 24px; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.result-quality-label {
-  font-family: var(--font-display); font-size: 60px; line-height: 1;
-}
-.result-comment {
-  font-family: var(--font-mono); font-size: 12px; color: rgba(0,0,0,0.7);
-  max-width: 400px; text-align: center;
-}
-.result-body { padding: 24px; }
-.result-gains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-.gain-item {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 14px; text-align: center;
-}
-.gain-amount { font-family: var(--font-display); font-size: 32px; }
-.gain-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
-.result-actions { display: flex; gap: 10px; }
-.result-actions .btn { flex: 1; }
-
-/* ===== SHOP SCREEN ===== */
-#shop-screen {
-  padding: 32px; align-items: center;
-}
-.shop-layout { max-width: 900px; width: 100%; }
-.shop-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.shop-title { font-family: var(--font-display); font-size: 48px; }
-.shop-money { font-family: var(--font-mono); font-size: 18px; color: var(--green); }
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
-.shop-item {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 10px;
-  transition: all 0.2s;
-}
-.shop-item:hover { border-color: var(--muted); }
-.shop-item.owned { border-color: var(--green); opacity: 0.6; }
-.shop-item-header { display: flex; align-items: center; gap: 10px; }
-.shop-item-icon { font-size: 28px; }
-.shop-item-name { font-weight: 700; font-size: 15px; }
-.shop-item-desc { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
-.shop-item-effects { display: flex; gap: 6px; flex-wrap: wrap; }
-.shop-item-footer { display: flex; align-items: center; justify-content: space-between; }
-.shop-price { font-family: var(--font-display); font-size: 22px; color: var(--yellow); }
-.shop-btn { font-size: 11px; padding: 7px 14px; }
-
-/* ===== GAMEOVER SCREEN ===== */
-#gameover-screen {
-  align-items: center; justify-content: center; padding: 40px;
-}
-.gameover-content {
-  max-width: 600px; width: 100%; text-align: center;
-  animation: fadeUp 0.6s ease;
-}
-.gameover-emoji { font-size: 64px; margin-bottom: 16px; }
-.gameover-title { font-family: var(--font-display); font-size: 64px; line-height: 1; margin-bottom: 8px; }
-.gameover-subtitle { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 32px; }
-.final-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 28px; margin-bottom: 24px; text-align: left;
-}
-.final-score-display {
-  text-align: center; margin-bottom: 24px;
-}
-.final-score-number { font-family: var(--font-display); font-size: 80px; color: var(--yellow); line-height: 1; }
-.final-rank { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
-.final-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.final-stat {
-  background: var(--surface2); border: 1px solid var(--border);
-  padding: 12px; border-radius: 6px;
-}
-.final-stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); text-transform: uppercase; }
-.final-stat-value { font-family: var(--font-display); font-size: 26px; }
-.final-actions { display: flex; gap: 10px; justify-content: center; }
-.share-box {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 6px; padding: 14px; font-family: var(--font-mono); font-size: 11px;
-  line-height: 1.6; color: var(--muted); cursor: pointer; transition: border-color 0.2s;
-  text-align: left;
-}
-.share-box:hover { border-color: var(--accent); }
-
-/* ===== MODAL ===== */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-  z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px;
-}
-.modal-overlay.active { display: flex; }
-.modal {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 28px; max-width: 440px; width: 100%;
-  animation: fadeUp 0.3s ease;
-}
-.modal h3 { font-family: var(--font-display); font-size: 32px; margin-bottom: 8px; }
-.modal p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-.modal-actions { display: flex; gap: 10px; }
-.modal-actions .btn { flex: 1; }
-
-/* ===== HOW TO PLAY ===== */
-#howto-screen { padding: 40px; align-items: center; justify-content: center; }
-.howto-content { max-width: 680px; width: 100%; animation: fadeUp 0.4s ease; }
-.howto-content h2 { font-family: var(--font-display); font-size: 48px; margin-bottom: 24px; }
-.howto-sections { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
-.howto-section {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px;
-}
-.howto-section h4 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-.howto-section p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .dash-body { grid-template-columns: 1fr; }
-  .decision-layout { grid-template-columns: 1fr; }
-  .decision-sidebar { display: none; }
-  .hud-stats { gap: 8px; }
-  .hud-stat { padding: 4px 8px; }
-  .choice-options { grid-template-columns: 1fr; }
-  .time-options { grid-template-columns: repeat(2, 1fr); }
-}
-
-/* Animations */
-.fade-in { animation: fadeUp 0.4s ease; }
-
-/* Color utilities */
-.text-green { color: var(--green); }
-.text-red { color: var(--red); }
-.text-yellow { color: var(--yellow); }
-.text-blue { color: var(--blue); }
-.text-purple { color: var(--purple); }
-.text-orange { color: var(--orange); }
-</style>
+    /* ── HUD overlay ── */
+    #hud {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13,13,26,0.88);
+      border-bottom: 2px solid rgba(232,255,71,0.2);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 20px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    #hud.hidden { display: none; }
+    .hud-block { display: flex; flex-direction: column; gap: 2px; }
+    .hud-label { font-size: 6px; color: var(--muted); letter-spacing: 1px; }
+    .hud-value { font-size: 9px; color: var(--accent); }
+    .hud-sep { width: 1px; height: 30px; background: rgba(255,255,255,0.1); }
+    #hudLives { color: var(--accent2); }
+    #hudCollect { color: var(--accent3); }
+    #hudPowerup { color: var(--accent4); }
+    #hudProject { color: var(--accent); font-size: 7px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .health-bar {
+      width: 80px; height: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,107,107,0.3);
+    }
+    .health-fill {
+      height: 100%;
+      background: var(--accent2);
+      transition: width 0.2s;
+    }
+  </style>
 </head>
 <body>
 
-<!-- ===== HOME SCREEN ===== -->
-<section id="home-screen" class="screen active">
-  <div class="home-grid"></div>
-  <div class="home-content">
-    <div>
-      <div class="home-logo">
-        HAZLO<br><span class="arrow">↑</span> MÁS<br><span>GRANDE</span>
-      </div>
-      <div class="home-subtitle">El simulador del diseñador freelance</div>
-    </div>
-    <div class="home-buttons">
-      <button class="btn btn-primary" onclick="showScreen('class-screen')">⚡ JUGAR</button>
-      <button class="btn" onclick="tryLoadGame()">💾 CONTINUAR</button>
-      <button class="btn" onclick="showScreen('howto-screen')">? CÓMO JUGAR</button>
-    </div>
-    <div class="home-record" id="home-record"></div>
-  </div>
-</section>
+<div id="gameWrapper">
 
-<!-- ===== HOW TO PLAY ===== -->
-<section id="howto-screen" class="screen">
-  <div class="howto-content">
-    <h2>CÓMO JUGAR</h2>
-    <div class="howto-sections">
-      <div class="howto-section">
-        <h4>🎯 Objetivo</h4>
-        <p>Sobrevivir 7 días como diseñador freelance sin quebrar, burnout ni perder toda tu reputación. Cada día recibís un cliente, tomás decisiones creativas y gestionás las consecuencias.</p>
-      </div>
-      <div class="howto-section">
-        <h4>⚡ Recursos</h4>
-        <p><strong>💰 Dinero</strong> — Tu sustento. Gastalo en mejoras.<br>
-        <strong>⚡ Energía</strong> — Se gasta con cada proyecto. Descansá.<br>
-        <strong>⭐ Reputación</strong> — Define qué clientes llegan. No la pierdas.<br>
-        <strong>🔥 Estrés</strong> — Si llega a 100, burnout total. Game over.<br>
-        <strong>💡 Creatividad</strong> — Mejora tus decisiones de diseño.</p>
-      </div>
-      <div class="howto-section">
-        <h4>🎨 Decisiones</h4>
-        <p>Cada proyecto tiene preferencias ocultas. Elegí bien el estilo, tipografía, paleta y tiempo. Si tus elecciones matchean con lo que el cliente realmente quiere, mejor resultado.</p>
-      </div>
-      <div class="howto-section">
-        <h4>⚠️ Eventos</h4>
-        <p>Eventos aleatorios interrumpen tu trabajo. Pueden ser positivos o muy tóxicos. Elegí bien cómo responder: a veces conviene cobrar extra, otras veces explicar y otras ignorar.</p>
-      </div>
-      <div class="howto-section">
-        <h4>🏪 Tienda</h4>
-        <p>Entre días podés comprar upgrades con tu dinero. Mejoran tus stats permanentemente. Una buena inversión puede cambiar el juego.</p>
-      </div>
-    </div>
-    <button class="btn btn-primary" onclick="showScreen('home-screen')">← VOLVER</button>
-  </div>
-</section>
+  <!-- CANVAS -->
+  <canvas id="gameCanvas" width="800" height="520"></canvas>
 
-<!-- ===== CLASS SCREEN ===== -->
-<section id="class-screen" class="screen">
-  <div class="class-header">
-    <h2>ELEGÍ TU PERFIL</h2>
-    <p>Cada clase tiene fortalezas distintas y afecta cómo el juego se desarrolla</p>
-  </div>
-  <div class="class-grid" id="class-grid"></div>
-</section>
-
-<!-- ===== INTRO SCREEN ===== -->
-<section id="intro-screen" class="screen">
-  <div class="intro-content">
-    <h2>DÍA UNO</h2>
-    <div class="intro-text" id="intro-text">
-      <span id="typed-text"></span><span class="typing-cursor">|</span>
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-block">
+      <div class="hud-label">ENERGÍA</div>
+      <div class="health-bar"><div class="health-fill" id="hudHealth" style="width:100%"></div></div>
     </div>
-    <button class="btn btn-primary" id="intro-btn" onclick="startActualGame()" style="display:none; margin: 0 auto;">EMPEZAR →</button>
-  </div>
-</section>
-
-<!-- ===== DASHBOARD SCREEN ===== -->
-<section id="dashboard-screen" class="screen">
-  <div class="hud">
-    <div class="hud-logo">HMG</div>
-    <div class="hud-stats" id="hud-stats"></div>
-    <div class="hud-day" id="hud-day"></div>
-  </div>
-  <div class="dash-body">
-    <div>
-      <div class="brief-card" id="brief-card"></div>
+    <div class="hud-sep"></div>
+    <div class="hud-block">
+      <div class="hud-label">VIDAS</div>
+      <div class="hud-value" id="hudLives">♥♥♥</div>
     </div>
-    <div class="side-panel">
-      <div class="side-card">
-        <h4>⚡ Stats del jugador</h4>
-        <div class="stats-grid" id="player-stats-display"></div>
+    <div class="hud-sep"></div>
+    <div class="hud-block">
+      <div class="hud-label">PROYECTO</div>
+      <div class="hud-value" id="hudProject">–</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-block">
+      <div class="hud-label">OBJETIVO</div>
+      <div class="hud-value" id="hudCollect">0/0</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-block">
+      <div class="hud-label">POWER-UP</div>
+      <div class="hud-value" id="hudPowerup">–</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-block">
+      <div class="hud-label">TIEMPO</div>
+      <div class="hud-value" id="hudTimer">–</div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div id="titleScreen" class="screen">
+    <div class="title-grid"></div>
+    <div class="title-scanlines"></div>
+    <div class="title-content">
+      <div class="title-eyebrow">// un platformer sobre la vida real del diseñador</div>
+      <div class="title-main">DISEÑADOR<br>EN RUTA</div>
+      <div class="title-sub">survive deadlines. ship work. get paid.</div>
+      <div class="title-desc">
+        No sos un héroe de fantasía.<br>
+        Sos un diseñador con deadlines, clientes<br>
+        y distracciones. Recolectá ideas, esquivá<br>
+        revisiones inesperadas y entregá a tiempo.
       </div>
-      <div class="side-card">
-        <h4>🏪 Mejoras activas</h4>
-        <div class="upgrades-list" id="upgrades-active-list">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Ninguna todavía</div>
-        </div>
-      </div>
-      <div class="side-card">
-        <h4>📋 Log de eventos</h4>
-        <div class="log-list" id="event-log"></div>
+      <button class="btn-play" id="btnPlay">▶ JUGAR</button>
+      <div class="controls-hint">
+        <span>← →</span> mover &nbsp;|&nbsp; <span>Z / ↑</span> saltar &nbsp;|&nbsp; <span>X</span> dash &nbsp;|&nbsp; <span>Z×2</span> doble salto
       </div>
     </div>
   </div>
-</section>
 
-<!-- ===== DECISION SCREEN ===== -->
-<section id="decision-screen" class="screen">
-  <div class="decision-layout">
-    <div class="decision-main" id="decision-main"></div>
-    <div class="decision-sidebar" id="decision-sidebar"></div>
+  <!-- LEVEL INTRO -->
+  <div id="levelIntro" class="screen hidden">
+    <div class="level-badge" id="liLabel">NIVEL 1</div>
+    <div class="level-title" id="liTitle">PRIMER PEDIDO</div>
+    <div class="level-project" id="liProject">Proyecto: Logo para cafetería</div>
+    <ul class="level-objectives" id="liObjectives"></ul>
+    <button class="btn-start" id="btnStart">COMENZAR</button>
   </div>
-</section>
 
-<!-- ===== EVENT SCREEN ===== -->
-<section id="event-screen" class="screen">
-  <div id="event-content"></div>
-</section>
-
-<!-- ===== RESULT SCREEN ===== -->
-<section id="result-screen" class="screen">
-  <div id="result-content"></div>
-</section>
-
-<!-- ===== SHOP SCREEN ===== -->
-<section id="shop-screen" class="screen">
-  <div class="shop-layout">
-    <div class="shop-header">
-      <div>
-        <div class="shop-title">TIENDA</div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Invertí en tu setup</div>
-      </div>
-      <div>
-        <div class="shop-money" id="shop-money"></div>
-        <button class="btn" onclick="proceedToNextDay()" style="margin-top:8px;width:100%">Siguiente día →</button>
-      </div>
-    </div>
-    <div class="shop-grid" id="shop-grid"></div>
+  <!-- GAME OVER -->
+  <div id="gameOverScreen" class="screen hidden">
+    <div class="over-title">DEADLINE PERDIDO</div>
+    <div class="over-msg" id="overMsg">El cliente se fue con otra agencia.<br>Pero sos diseñador. Te levantás.</div>
+    <button class="btn-retry" id="btnRetry">REINTENTAR</button>
+    <button class="btn-retry" id="btnMenu" style="background:#555">MENÚ</button>
   </div>
-</section>
 
-<!-- ===== GAMEOVER SCREEN ===== -->
-<section id="gameover-screen" class="screen">
-  <div class="gameover-content" id="gameover-content"></div>
-</section>
+  <!-- LEVEL WIN -->
+  <div id="levelWinScreen" class="screen hidden">
+    <div class="win-title" id="winTitle">✓ ENTREGA APROBADA</div>
+    <div class="win-msg" id="winMsg">Cliente satisfecho.<br>Reputación +1</div>
+    <button class="btn-next" id="btnNext">SIGUIENTE NIVEL ▸</button>
+  </div>
 
-<!-- ===== MODAL ===== -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal-content"></div>
 </div>
 
-<script>
-// ============================================================
-// DATA
-// ============================================================
-const CLASSES = [
-  {
-    id: 'visual_designer',
-    name: 'Diseñador Visual',
-    emoji: '🎨',
-    desc: 'Maestro del color y la composición. Ojo clínico para lo estético, pero le cuesta cobrar lo que vale.',
-    color: '#cc44ff',
-    bonus: ['+Color', '+Composición', '+Tipografía'],
-    malus: ['-Negociación', '-Velocidad'],
-    stats: { typography: 7, color: 9, composition: 9, negotiation: 3, speed: 4, branding: 5, patience: 6 },
-    start: { money: 80, energy: 85, reputation: 50, stress: 10, creativity: 80 }
-  },
-  {
-    id: 'freelance_hustler',
-    name: 'Freelance Callejero',
-    emoji: '🔥',
-    desc: 'Sobrevivió a todo. Negocia, adapta y entrega. El diseño no siempre es lo más bonito, pero siempre llega.',
-    color: '#ff7722',
-    bonus: ['+Negociación', '+Velocidad', '+Paciencia'],
-    malus: ['-Color', '-Composición'],
-    stats: { typography: 5, color: 4, composition: 5, negotiation: 9, speed: 8, branding: 5, patience: 9 },
-    start: { money: 140, energy: 90, reputation: 40, stress: 15, creativity: 60 }
-  },
-  {
-    id: 'brand_designer',
-    name: 'Brand Designer',
-    emoji: '💎',
-    desc: 'Piensa en sistemas, no en piezas. Cobra caro, trabaja lento, pero cuando entrega... la rompe.',
-    color: '#4488ff',
-    bonus: ['+Branding', '+Reputación inicial', '+Tipografía'],
-    malus: ['-Velocidad', '-Paciencia'],
-    stats: { typography: 8, color: 6, composition: 7, negotiation: 5, speed: 3, branding: 10, patience: 4 },
-    start: { money: 100, energy: 75, reputation: 65, stress: 5, creativity: 75 }
-  },
-  {
-    id: 'content_creator',
-    name: 'Creador de Contenido',
-    emoji: '📱',
-    desc: 'Natale digital. Entiende tendencias, mueve redes, genera virales. Los clientes corporativos lo ignoran, el algoritmo lo ama.',
-    color: '#00e676',
-    bonus: ['+Color', '+Velocidad', '+Viralidad'],
-    malus: ['-Branding', '-Negociación'],
-    stats: { typography: 5, color: 8, composition: 6, negotiation: 4, speed: 9, branding: 3, patience: 7 },
-    start: { money: 90, energy: 95, reputation: 45, stress: 20, creativity: 90 }
-  }
-];
-
-const PROJECTS = [
-  {
-    id: 'cafe_brand',
-    clientName: 'Café Sur',
-    clientEmoji: '☕',
-    industry: 'Cafetería',
-    type: 'Branding',
-    clientType: 'Cliente Ideal',
-    clientTypeId: 'ideal',
-    budget: 120,
-    deadline: 6,
-    difficulty: 1,
-    toxicLevel: 2,
-    brief: '"Queremos algo premium, cálido y moderno. Especialidad, no Starbucks."',
-    preferences: { style: 'minimal', typography: 'serif', palette: 'earthy', composition: 'clean' },
-    rewards: { money: 120, reputation: 12, experience: 15 }
-  },
-  {
-    id: 'barbershop',
-    clientName: 'Barba Negra',
-    clientEmoji: '💈',
-    industry: 'Barbería',
-    type: 'Logo + Redes',
-    clientType: 'Emprendedor Perdido',
-    clientTypeId: 'lost',
-    budget: 80,
-    deadline: 4,
-    difficulty: 2,
-    toxicLevel: 4,
-    brief: '"Queremos algo urbano, masculino, pero también premium. Como Nike pero para corte de pelo."',
-    preferences: { style: 'bold', typography: 'display', palette: 'mono', composition: 'dynamic' },
-    rewards: { money: 80, reputation: 8, experience: 12 }
-  },
-  {
-    id: 'fintech_startup',
-    clientName: 'Criptoros',
-    clientEmoji: '🚀',
-    industry: 'Fintech',
-    type: 'Identidad Completa',
-    clientType: 'Startup Apurada',
-    clientTypeId: 'startup',
-    budget: 200,
-    deadline: 3,
-    difficulty: 3,
-    toxicLevel: 5,
-    brief: '"Lo necesitamos para el lunes. Es urgente. La identidad, el pitch, el landing, todo."',
-    preferences: { style: 'futuristic', typography: 'sans', palette: 'neon', composition: 'dynamic' },
-    rewards: { money: 200, reputation: 15, experience: 25 }
-  },
-  {
-    id: 'pastry',
-    clientName: 'Dulce Caos',
-    clientEmoji: '🧁',
-    industry: 'Pastelería',
-    type: 'Redes Sociales',
-    clientType: 'Cliente Ideal',
-    clientTypeId: 'ideal',
-    budget: 60,
-    deadline: 5,
-    difficulty: 1,
-    toxicLevel: 1,
-    brief: '"Algo alegre, artesanal, femenino pero no kitsch. Referencias: Pinterest aesthetic."',
-    preferences: { style: 'vintage', typography: 'script', palette: 'pastel', composition: 'organic' },
-    rewards: { money: 60, reputation: 10, experience: 10 }
-  },
-  {
-    id: 'law_firm',
-    clientName: 'Ríos & Asociados',
-    clientEmoji: '⚖️',
-    industry: 'Estudio Jurídico',
-    type: 'Presentación Corporativa',
-    clientType: 'Empresa Formal',
-    clientTypeId: 'corporate',
-    budget: 150,
-    deadline: 7,
-    difficulty: 2,
-    toxicLevel: 3,
-    brief: '"Algo serio, profesional. Nada de colores llamativos. Que transmita confianza institucional."',
-    preferences: { style: 'corporate', typography: 'serif', palette: 'mono', composition: 'clean' },
-    rewards: { money: 150, reputation: 10, experience: 18 }
-  },
-  {
-    id: 'fitness_creator',
-    clientName: 'MaxFit Pro',
-    clientEmoji: '💪',
-    industry: 'Fitness',
-    type: 'Pack de Contenido',
-    clientType: 'Influencer Indeciso',
-    clientTypeId: 'indecisive',
-    budget: 90,
-    deadline: 4,
-    difficulty: 2,
-    toxicLevel: 6,
-    brief: '"Quiero algo energético. Pero también minimalista. Y que sea viral. Con mi foto. Sin mi foto."',
-    preferences: { style: 'bold', typography: 'display', palette: 'neon', composition: 'dynamic' },
-    rewards: { money: 90, reputation: 7, experience: 14 }
-  },
-  {
-    id: 'restaurant_japanese',
-    clientName: 'Umami House',
-    clientEmoji: '🍣',
-    industry: 'Restaurante',
-    type: 'Menú + Identidad',
-    clientType: 'Cliente Exigente',
-    clientTypeId: 'demanding',
-    budget: 110,
-    deadline: 5,
-    difficulty: 3,
-    toxicLevel: 4,
-    brief: '"Japonés auténtico, no fusion. Elegancia, minimalismo. El menú debe respirar."',
-    preferences: { style: 'minimal', typography: 'sans', palette: 'earthy', composition: 'clean' },
-    rewards: { money: 110, reputation: 14, experience: 20 }
-  },
-  {
-    id: 'clothing_brand',
-    clientName: 'Oversized Club',
-    clientEmoji: '👕',
-    industry: 'Moda',
-    type: 'Branding Completo',
-    clientType: 'Startup Apurada',
-    clientTypeId: 'startup',
-    budget: 160,
-    deadline: 4,
-    difficulty: 3,
-    toxicLevel: 5,
-    brief: '"Streetwear premium. Urban pero editorial. Como Palace pero local. Algo que explote en Instagram."',
-    preferences: { style: 'bold', typography: 'display', palette: 'mono', composition: 'dynamic' },
-    rewards: { money: 160, reputation: 13, experience: 22 }
-  },
-  {
-    id: 'podcast',
-    clientName: 'Marketing Real',
-    clientEmoji: '🎙️',
-    industry: 'Podcast',
-    type: 'Imagen de Marca',
-    clientType: 'Creador Digital',
-    clientTypeId: 'creator',
-    budget: 70,
-    deadline: 6,
-    difficulty: 1,
-    toxicLevel: 2,
-    brief: '"Algo profesional pero no aburrido. Que diga que somos serios pero también cercanos."',
-    preferences: { style: 'corporate', typography: 'sans', palette: 'earthy', composition: 'clean' },
-    rewards: { money: 70, reputation: 8, experience: 12 }
-  },
-  {
-    id: 'wedding_planner',
-    clientName: 'Eterno',
-    clientEmoji: '💐',
-    industry: 'Wedding Planner',
-    type: 'Identidad Visual',
-    clientType: 'Cliente Ideal',
-    clientTypeId: 'ideal',
-    budget: 130,
-    deadline: 7,
-    difficulty: 2,
-    toxicLevel: 2,
-    brief: '"Romántico, atemporal, lujoso sin ser ostentoso. El logo tiene que hacer llorar de emoción."',
-    preferences: { style: 'minimal', typography: 'script', palette: 'pastel', composition: 'organic' },
-    rewards: { money: 130, reputation: 12, experience: 18 }
-  },
-  {
-    id: 'friend_cheap',
-    clientName: 'Mi Amigo Tano',
-    clientEmoji: '😅',
-    industry: 'Varios',
-    type: 'Logo',
-    clientType: 'Amigo Rata',
-    clientTypeId: 'cheap',
-    budget: 0,
-    deadline: 2,
-    difficulty: 2,
-    toxicLevel: 7,
-    brief: '"Che, haceme el logo de mi emprendimiento. Te invito un café. Son dos minutes para vos."',
-    preferences: { style: 'bold', typography: 'sans', palette: 'neon', composition: 'dynamic' },
-    rewards: { money: 0, reputation: -2, experience: 5 },
-    special: 'cheap'
-  }
-];
-
-const EVENTS = [
-  {
-    id: 'bigger',
-    title: 'HAZLO MÁS GRANDE',
-    icon: '🔍',
-    type: 'revision',
-    positive: false,
-    desc: '"Todo está muy bien, pero... ¿y si el logo lo hacemos un poco más grande? Mucho más grande, en realidad."',
-    choices: [
-      { text: 'Aceptar el cambio (a veces hay que sobrevivir)', effects: { stress: 8, reputation: -2, energy: -5 }, label: 'Aceptar' },
-      { text: 'Explicar que rompe la composición', effects: { stress: 3, reputation: 4, creativity: 2 }, label: 'Educar' },
-      { text: 'Cobrar revisión extra ($30)', effects: { money: 30, stress: 5, reputation: -3 }, label: 'Cobrar' }
-    ]
-  },
-  {
-    id: 'nephew',
-    title: 'MI SOBRINO TAMBIÉN DISEÑA',
-    icon: '👦',
-    type: 'crisis',
-    positive: false,
-    desc: '"Mi sobrino me mostró algo que hizo en Canva en 5 minutos y... honestamente quedó lindo. ¿Podemos comparar los dos?"',
-    choices: [
-      { text: 'Aguantar y comparar (qué horror)', effects: { stress: 15, reputation: -1, energy: -10 }, label: 'Aguantar' },
-      { text: 'Explicar la diferencia de valor profesional', effects: { stress: 5, reputation: 5, energy: -5 }, label: 'Defender' },
-      { text: 'Cancelar el proyecto educadamente', effects: { stress: -10, reputation: -5, money: -20 }, label: 'Cancelar' }
-    ]
-  },
-  {
-    id: 'color_change',
-    title: '¿Y SI PROBAMOS OTRO COLOR?',
-    icon: '🎨',
-    type: 'revision',
-    positive: false,
-    desc: '"Todo bien pero mi señora dice que el verde no le da buen feeling. ¿Podemos probar en azul, rojo, amarillo y morado también?"',
-    choices: [
-      { text: 'Hacer las variaciones (soy esclavo)', effects: { stress: 12, energy: -15, reputation: -1 }, label: 'Aceptar' },
-      { text: 'Ofrecer 2 alternativas nada más', effects: { stress: 5, energy: -8, reputation: 2 }, label: 'Negociar' },
-      { text: 'Cobrar por variaciones adicionales', effects: { money: 40, stress: 6, reputation: -2 }, label: 'Cobrar' }
-    ]
-  },
-  {
-    id: 'today',
-    title: 'LO NECESITO PARA HOY',
-    icon: '🚨',
-    type: 'urgency',
-    positive: false,
-    desc: '"Olvidé contarte que esto era para el evento de mañana. Hoy necesito todo. Todo, ¿eh?"',
-    choices: [
-      { text: 'Rush mode activado (mi vida por un cliente)', effects: { stress: 20, money: 30, energy: -20 }, label: 'Rush' },
-      { text: 'Cobrar tarifa de urgencia', effects: { stress: 10, money: 60, reputation: -3 }, label: 'Cobrar urgencia' },
-      { text: 'No es posible, definir nuevo plazo', effects: { stress: -5, reputation: 3, money: -15 }, label: 'Negociar' }
-    ]
-  },
-  {
-    id: 'exposure',
-    title: 'TE PAGAMOS CON EXPOSICIÓN',
-    icon: '💀',
-    type: 'insult',
-    positive: false,
-    desc: '"No tenemos presupuesto ahora, pero somos una marca que está creciendo. La exposición que te damos vale muchísimo."',
-    choices: [
-      { text: 'Aceptar (¿para qué comer?)', effects: { stress: 20, reputation: -5, energy: -10 }, label: 'Aceptar' },
-      { text: 'Rechazar con clase', effects: { stress: -5, reputation: 5, money: -30 }, label: 'Rechazar' },
-      { text: 'Contraoferta mínima', effects: { stress: 5, money: 20, reputation: 0 }, label: 'Negociar' }
-    ]
-  },
-  {
-    id: 'full_change',
-    title: 'CAMBIAMOS EL CONCEPTO',
-    icon: '💣',
-    type: 'crisis',
-    positive: false,
-    desc: '"Estuvimos pensando y en realidad queremos ir por otro lado. Totalmente distinto. ¿Podemos empezar de cero?"',
-    choices: [
-      { text: 'Empezar de cero (perdí la voluntad de vivir)', effects: { stress: 25, energy: -20, reputation: -3 }, label: 'Aceptar' },
-      { text: 'Cobrar el trabajo ya hecho + nueva cotización', effects: { money: 50, stress: 8, reputation: 1 }, label: 'Cobrar' },
-      { text: 'Explicar que el brief original era claro', effects: { stress: 10, reputation: 6, energy: -5 }, label: 'Defender' }
-    ]
-  },
-  {
-    id: 'partner',
-    title: 'MI SOCIO NO ESTÁ CONVENCIDO',
-    icon: '🤷',
-    type: 'revision',
-    positive: false,
-    desc: '"A mí me encanta, de verdad. Pero mi socio pide ver 3 opciones más distintas. El no está muy convencido."',
-    choices: [
-      { text: 'Hacer 3 opciones nuevas (FML)', effects: { stress: 15, energy: -15, reputation: -2 }, label: 'Aceptar' },
-      { text: 'Cobrar las opciones extra', effects: { money: 45, stress: 7, reputation: -1 }, label: 'Cobrar' },
-      { text: 'Agendar reunión con el socio también', effects: { stress: 5, energy: -8, reputation: 4 }, label: 'Reunión' }
-    ]
-  },
-  {
-    id: 'like_apple',
-    title: 'ALGO COMO APPLE PERO DISTINTO',
-    icon: '🍎',
-    type: 'brief_change',
-    positive: false,
-    desc: '"¿Viste la identidad de Apple? Algo así, pero nuestro. Diferente, claro. Con nuestra esencia. Ya sabés."',
-    choices: [
-      { text: 'Asentir y seguir (nope)', effects: { stress: 10, energy: -10, creativity: -5 }, label: 'Aceptar' },
-      { text: 'Pedir referencias más concretas', effects: { stress: 2, energy: -5, reputation: 3 }, label: 'Preguntar' },
-      { text: 'Explicar que Apple tardó 40 años', effects: { stress: 3, reputation: 5, creativity: 5 }, label: 'Educar' }
-    ]
-  },
-  {
-    id: 'wifi_down',
-    title: 'SE CAYÓ EL WIFI',
-    icon: '📡',
-    type: 'technical',
-    positive: false,
-    desc: 'Murphy se hizo presente. El WiFi colapsó en el momento crítico de la entrega.',
-    choices: [
-      { text: 'Trabajar desde el celular (mis datos)', effects: { stress: 10, energy: -10, money: -5 }, label: 'Improvisar' },
-      { text: 'Ir a una cafetería a terminar', effects: { stress: 5, energy: -5, money: -10 }, label: 'Moverme' },
-      { text: 'Avisar al cliente y pedir más tiempo', effects: { stress: -5, reputation: -3, energy: -3 }, label: 'Comunicar' }
-    ]
-  },
-  {
-    id: 'daughters_color',
-    title: 'MI HIJA PREFIERE EL ROSADO',
-    icon: '🌸',
-    type: 'revision',
-    positive: false,
-    desc: '"Le mostré los diseños a mi hija de 8 años y dice que prefiere el rosado. Dice que el azul da frío."',
-    choices: [
-      { text: 'Aceptar el feedback de la pequeña diseñadora', effects: { stress: 12, reputation: -3, energy: -8 }, label: 'Aceptar' },
-      { text: 'Explicar (con cariño) que es un logo, no un cuaderno', effects: { stress: 4, reputation: 4, creativity: 3 }, label: 'Explicar' },
-      { text: 'Hacer una versión rosada + enviarla como alternativa', effects: { stress: 8, energy: -10, money: 15 }, label: 'Alternativa' }
-    ]
-  },
-  // POSITIVE EVENTS
-  {
-    id: 'client_loves',
-    title: 'AMOR A PRIMERA VISTA',
-    icon: '✨',
-    type: 'approval',
-    positive: true,
-    desc: '"Abrí el archivo y empecé a llorar. Es exactamente lo que imaginé pero nunca supe describir. Sos un genio."',
-    choices: [
-      { text: 'Agradecer profesionalmente', effects: { reputation: 10, stress: -10, energy: 10 }, label: 'Agradecer' },
-      { text: 'Aprovechar y ofrecer servicio adicional', effects: { money: 60, reputation: 8, stress: -5 }, label: 'Expandir' },
-      { text: 'Pedirle que te recomiende', effects: { reputation: 15, stress: -8, energy: 5 }, label: 'Recomendar' }
-    ]
-  },
-  {
-    id: 'early_payment',
-    title: 'TE PAGAN ANTES',
-    icon: '💸',
-    type: 'positive',
-    positive: true,
-    desc: '"Antes de que empieces, acá va el 100% del pago. Confiamos en vos, trabajá tranquilo."',
-    choices: [
-      { text: 'Agradecer y confirmar el proyecto', effects: { money: 40, stress: -15, energy: 10 }, label: 'Confirmar' },
-      { text: 'Ofrecer un entregable extra de regalo', effects: { reputation: 12, stress: -10, energy: 5 }, label: 'Bonus' }
-    ]
-  },
-  {
-    id: 'referral',
-    title: 'TE RECOMENDARON',
-    icon: '🤝',
-    type: 'referral',
-    positive: true,
-    desc: '"Hablé con mi amigo que hiciste su marca y me dijo que sos el mejor. Entro con confianza total."',
-    choices: [
-      { text: 'Aceptar con gratitud', effects: { reputation: 8, money: 20, stress: -8 }, label: 'Aceptar' },
-      { text: 'Subir el precio por tu reputación ganada', effects: { money: 50, reputation: 5, stress: -5 }, label: 'Cobrar más' }
-    ]
-  },
-  {
-    id: 'creative_freedom',
-    title: 'LIBERTAD CREATIVA TOTAL',
-    icon: '🎭',
-    type: 'positive',
-    positive: true,
-    desc: '"Te dejo total libertad. Sorprendeme. No tengo referencias, no tengo restricciones. Confianza ciega."',
-    choices: [
-      { text: 'Explotar la creatividad al máximo', effects: { creativity: 20, reputation: 5, stress: -10 }, label: 'Crear libremente' },
-      { text: 'Igual pedir algunas guías básicas', effects: { stress: -5, reputation: 3, energy: 5 }, label: 'Preguntar igual' }
-    ]
-  }
-];
-
-const UPGRADES = [
-  {
-    id: 'dual_monitor',
-    name: 'Monitor Extra',
-    icon: '🖥️',
-    desc: 'Más pantalla, más flujo. Menos Alt+Tab desesperado.',
-    cost: 150,
-    effect: { speed: 2, energy: 5, label: 'Vel +2, Energía +5' }
-  },
-  {
-    id: 'premium_fonts',
-    name: 'Biblioteca Tipográfica Premium',
-    icon: '🔤',
-    desc: 'Adios Google Fonts. Ahora sí tenés las tipografías que los grandes usan.',
-    cost: 120,
-    effect: { typography: 3, label: 'Tipografía +3' }
-  },
-  {
-    id: 'brief_template',
-    name: 'Plantilla de Brief Pro',
-    icon: '📋',
-    desc: 'Un brief bien armado evita el 80% de las revisiones absurdas. Estadística inventada, pero cierta.',
-    cost: 90,
-    effect: { branding: 2, negotiation: 2, label: 'Branding +2, Negoc +2' }
-  },
-  {
-    id: 'coffee_machine',
-    name: 'Cafetera Industrial',
-    icon: '☕',
-    desc: 'El combustible del diseñador. Más energía, menos excusas.',
-    cost: 80,
-    effect: { energyBonus: 10, label: 'Energía diaria +10' }
-  },
-  {
-    id: 'contract_system',
-    name: 'Sistema de Contrato',
-    icon: '📄',
-    desc: 'Revisiones ilimitadas terminaron. Tenés papel que dice otra cosa.',
-    cost: 140,
-    effect: { negotiation: 3, stressReduction: 10, label: 'Negoc +3, Estrés -10/día' }
-  },
-  {
-    id: 'noise_headphones',
-    name: 'Auriculares Noise Cancelling',
-    icon: '🎧',
-    desc: 'El cliente llama, pero vos no escuchás. Paz mental instantánea.',
-    cost: 110,
-    effect: { patience: 3, stressReduction: 5, label: 'Paciencia +3, Estrés -5/día' }
-  },
-  {
-    id: 'premium_mockups',
-    name: 'Pack de Mockups Premium',
-    icon: '📦',
-    desc: 'Presentaciones que venden el diseño antes que el cliente lo entienda.',
-    cost: 70,
-    effect: { composition: 2, reputation: 5, label: 'Composición +2, Reputación +5' }
-  },
-  {
-    id: 'therapy',
-    name: 'Terapia',
-    icon: '🛋️',
-    desc: 'Procesar los clientes del día anterior para poder enfrentar los del día siguiente.',
-    cost: 100,
-    effect: { stressReduction: 15, patience: 2, label: 'Estrés -15/día, Pac +2' }
-  }
-];
-
-const CLIENT_COMMENTS = {
-  excellent: [
-    '"Perfecto. Capturaste nuestra esencia al 100%."',
-    '"Esto es exactamente lo que imaginé pero no sabía cómo pedir."',
-    '"Primera vez que no pido revisiones. Histórico."',
-    '"¿Podés trabajar con nosotros en todo lo que viene?"',
-    '"Mi socia lloró. De emoción, aclaramos."'
-  ],
-  good: [
-    '"Muy bien. Hay un par de cositas pero en general estamos contentos."',
-    '"Quedó bien. No era lo que esperábamos pero nos gustó igual."',
-    '"Sólido. Quizás el logo un poquito más grande, pero bien."',
-    '"Buena dirección. Podemos trabajar con esto."'
-  ],
-  average: [
-    '"Umm. Hay que darle otra vuelta. Pero el concepto puede servir."',
-    '"No era del todo lo que imaginábamos, pero podemos ver qué salvamos."',
-    '"Mi equipo tiene comentarios. Muchos comentarios."',
-    '"¿Podrías mostrarnos otra dirección? Por las dudas."'
-  ],
-  bad: [
-    '"Esto... no es lo que pedimos. Para nada."',
-    '"Mi sobrino lo hubiera hecho diferente. Y tiene 12 años."',
-    '"Vamos a necesitar repensar el proyecto desde cero."',
-    '"Seré honesto: no nos convenció. Para nada."'
-  ]
-};
-
-// ============================================================
-// GAME STATE
-// ============================================================
-let gameState = {
-  player: null,
-  currentProject: null,
-  currentChoices: {},
-  currentEvent: null,
-  pendingEvent: null,
-  availableProjects: [],
-  usedProjectIds: [],
-  gameStatus: 'menu',
-  log: []
-};
-
-// ============================================================
-// UTILS
-// ============================================================
-function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function addLog(msg, type = '') {
-  gameState.log.unshift({ msg, type });
-  if (gameState.log.length > 20) gameState.log.pop();
-}
-
-function showModal(title, content, actions) {
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `<h3>${title}</h3><p>${content}</p><div class="modal-actions">${actions}</div>`;
-  document.getElementById('modal-overlay').classList.add('active');
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-}
-
-function formatEffect(key, val) {
-  const icons = { money: '💰', energy: '⚡', reputation: '⭐', stress: '🔥', creativity: '💡' };
-  const icon = icons[key] || '';
-  const positive = (key === 'stress') ? val < 0 : val > 0;
-  const sign = val > 0 ? '+' : '';
-  return `<span class="effect-tag ${positive ? 'effect-pos' : 'effect-neg'}">${icon}${sign}${val}</span>`;
-}
-
-// ============================================================
-// RENDER CLASSES
-// ============================================================
-function renderClassScreen() {
-  const grid = document.getElementById('class-grid');
-  grid.innerHTML = CLASSES.map(c => `
-    <div class="class-card" onclick="selectClass('${c.id}')" style="--class-color:${c.color}">
-      <div class="class-emoji">${c.emoji}</div>
-      <div class="class-name">${c.name}</div>
-      <div class="class-desc">${c.desc}</div>
-      <div class="class-stats">
-        ${Object.entries(c.stats).map(([stat, val]) => `
-          <div class="class-stat-row">
-            <span style="color:var(--muted);min-width:80px">${stat}</span>
-            <div class="class-stat-dots">
-              ${Array.from({length:10}, (_,i) => `<div class="class-stat-dot ${i < val ? 'filled' : ''}"></div>`).join('')}
-            </div>
-          </div>
-        `).join('')}
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-          ${c.bonus.map(b => `<span class="badge plus-stat" style="border-color:var(--green)">${b}</span>`).join('')}
-          ${c.malus.map(m => `<span class="badge minus-stat" style="border-color:var(--red)">${m}</span>`).join('')}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function selectClass(classId) {
-  document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-  
-  setTimeout(() => {
-    const cls = CLASSES.find(c => c.id === classId);
-    gameState.player = createPlayer(cls);
-    gameState.gameStatus = 'playing';
-    showIntro(cls);
-  }, 300);
-}
-
-// ============================================================
-// PLAYER
-// ============================================================
-function createPlayer(cls) {
-  return {
-    name: 'Fran',
-    classType: cls.id,
-    className: cls.name,
-    day: 1,
-    ...cls.start,
-    stats: { ...cls.stats },
-    upgrades: [],
-    completedProjects: [],
-    failedProjects: [],
-    totalMoneyEarned: cls.start.money,
-    toxicClientsDealt: 0
-  };
-}
-
-// ============================================================
-// INTRO
-// ============================================================
-function showIntro(cls) {
-  showScreen('intro-screen');
-  const texts = [
-    `Empezás como ${cls.name}. `,
-    `Una notebook ${cls.id === 'brand_designer' ? 'gama media que ya tiene 3 años' : 'que sobrevivió a todo'}, `,
-    `$${cls.start.money} en la cuenta `,
-    `y varios clientes esperando.\n\n`,
-    `Tu objetivo: sobrevivir 7 días sin `,
-    `colapsar, quebrar ni perder la reputación que tanto te costó construir.\n\n`,
-    `Bienvenido al freelance life. Que empiece el show.`
-  ];
-
-  let full = texts.join('');
-  let i = 0;
-  const el = document.getElementById('typed-text');
-  const btn = document.getElementById('intro-btn');
-  
-  function type() {
-    if (i < full.length) {
-      el.textContent += full[i] === '\n' ? '' : full[i];
-      if (full[i] === '\n') el.innerHTML += '<br><br>';
-      i++;
-      setTimeout(type, 25);
-    } else {
-      btn.style.display = 'block';
-    }
-  }
-  type();
-}
-
-function startActualGame() {
-  generateProject();
-  renderDashboard();
-  showScreen('dashboard-screen');
-}
-
-// ============================================================
-// PROJECT GENERATION
-// ============================================================
-function generateProject() {
-  const available = PROJECTS.filter(p => !gameState.usedProjectIds.includes(p.id));
-  
-  // Weight by reputation
-  const rep = gameState.player.reputation;
-  let pool = available;
-  
-  if (rep < 30) {
-    pool = available.filter(p => p.toxicLevel >= 4 || p.difficulty <= 2);
-  } else if (rep > 70) {
-    pool = available.filter(p => p.difficulty >= 2 && p.toxicLevel <= 4);
-  }
-  
-  if (pool.length === 0) pool = available;
-  if (pool.length === 0) {
-    // Reset used projects
-    gameState.usedProjectIds = [];
-    pool = PROJECTS;
-  }
-  
-  const proj = { ...pick(pool) };
-  
-  // Adjust budget by day
-  if (gameState.player.day >= 4) {
-    proj.budget = Math.floor(proj.budget * 1.2);
-    proj.rewards = { ...proj.rewards, money: Math.floor(proj.rewards.money * 1.2) };
-  }
-  
-  gameState.currentProject = proj;
-  gameState.usedProjectIds.push(proj.id);
-  gameState.currentChoices = {};
-}
-
-// ============================================================
-// HUD
-// ============================================================
-function renderHUD() {
-  const p = gameState.player;
-  const hudStats = document.getElementById('hud-stats');
-  const stats = [
-    { icon: '💰', label: 'Dinero', value: `$${p.money}`, color: 'var(--green)' },
-    { icon: '⚡', label: 'Energía', value: `${p.energy}%`, color: 'var(--yellow)', bar: p.energy },
-    { icon: '⭐', label: 'Reputación', value: `${p.reputation}`, color: 'var(--blue)', bar: p.reputation },
-    { icon: '🔥', label: 'Estrés', value: `${p.stress}%`, color: 'var(--red)', bar: p.stress, invert: true },
-    { icon: '💡', label: 'Creatividad', value: `${p.creativity}%`, color: 'var(--purple)', bar: p.creativity }
-  ];
-  
-  hudStats.innerHTML = stats.map(s => {
-    const barColor = s.invert 
-      ? (s.bar > 70 ? 'var(--red)' : s.bar > 40 ? 'var(--yellow)' : 'var(--green)')
-      : s.color;
-    return `
-      <div class="hud-stat">
-        <div class="hud-stat-icon">${s.icon}</div>
-        <div class="hud-stat-info">
-          <span class="hud-stat-label">${s.label}</span>
-          <span class="hud-stat-value" style="color:${s.color}">${s.value}</span>
-        </div>
-        ${s.bar !== undefined ? `
-          <div style="width:40px">
-            <div class="stat-bar-track" style="height:3px">
-              <div class="stat-bar-fill" style="width:${s.bar}%;background:${barColor}"></div>
-            </div>
-          </div>
-        ` : ''}
-      </div>`;
-  }).join('');
-  
-  document.getElementById('hud-day').innerHTML = `Día <span>${p.day}</span>/7`;
-}
-
-// ============================================================
-// DASHBOARD
-// ============================================================
-function renderDashboard() {
-  renderHUD();
-  
-  const p = gameState.player;
-  const proj = gameState.currentProject;
-  
-  // Brief card
-  const toxicColor = proj.toxicLevel >= 6 ? 'var(--red)' : proj.toxicLevel >= 4 ? 'var(--yellow)' : 'var(--green)';
-  const toxicLabel = proj.toxicLevel >= 6 ? 'MUY TÓXICO' : proj.toxicLevel >= 4 ? 'COMPLICADO' : 'RAZONABLE';
-  
-  document.getElementById('brief-card').innerHTML = `
-    <div class="brief-header">
-      <div class="client-avatar" style="background:var(--surface2)">${proj.clientEmoji}</div>
-      <div class="client-info">
-        <h3>${proj.clientName}</h3>
-        <div class="client-type">${proj.clientType} · ${proj.industry}</div>
-      </div>
-      <span class="badge" style="color:${toxicColor};border-color:${toxicColor};margin-left:auto">${toxicLabel}</span>
-    </div>
-    <div class="brief-body">
-      <div class="brief-tags">
-        <span class="badge text-blue" style="border-color:var(--blue)">${proj.type}</span>
-        <span class="badge text-purple" style="border-color:var(--purple)">Dif. ${'★'.repeat(proj.difficulty)}</span>
-      </div>
-      <div class="brief-brief">${proj.brief}</div>
-      <div class="brief-meta">
-        <div class="brief-meta-item">
-          <label>Presupuesto</label>
-          <span class="text-green">${proj.special === 'cheap' ? '"Un café"' : '$' + proj.budget}</span>
-        </div>
-        <div class="brief-meta-item">
-          <label>Deadline</label>
-          <span class="text-yellow">${proj.deadline}h disponibles</span>
-        </div>
-        <div class="brief-meta-item">
-          <label>Recompensa</label>
-          <span class="text-blue">+${proj.rewards.reputation} rep</span>
-        </div>
-        <div class="brief-meta-item">
-          <label>Experiencia</label>
-          <span class="text-purple">+${proj.rewards.experience} XP</span>
-        </div>
-      </div>
-      <div class="brief-actions">
-        <button class="btn btn-primary" onclick="goToDecisions()">✍️ Aceptar y trabajar</button>
-        ${p.stats.negotiation >= 5 ? `<button class="btn btn-warn" onclick="negotiateProject()">🤝 Negociar</button>` : ''}
-        <button class="btn btn-danger" onclick="rejectProject()">✖ Rechazar</button>
-      </div>
-    </div>
-  `;
-  
-  // Player stats
-  const statsEl = document.getElementById('player-stats-display');
-  statsEl.innerHTML = Object.entries(p.stats).map(([k, v]) => `
-    <div class="stat-bar-wrap">
-      <div class="stat-bar-label"><span>${k}</span><span>${v}/10</span></div>
-      <div class="stat-bar-track">
-        <div class="stat-bar-fill" style="width:${v*10}%;background:var(--accent)"></div>
-      </div>
-    </div>
-  `).join('');
-  
-  // Upgrades
-  const upgradesEl = document.getElementById('upgrades-active-list');
-  if (p.upgrades.length === 0) {
-    upgradesEl.innerHTML = '<div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Ninguna todavía</div>';
-  } else {
-    upgradesEl.innerHTML = p.upgrades.map(uid => {
-      const u = UPGRADES.find(u => u.id === uid);
-      return u ? `<div class="upgrade-item">${u.icon} <span>${u.name}</span></div>` : '';
-    }).join('');
-  }
-  
-  // Log
-  const logEl = document.getElementById('event-log');
-  if (gameState.log.length === 0) {
-    logEl.innerHTML = '<div class="log-entry">Esperando primer evento...</div>';
-  } else {
-    logEl.innerHTML = gameState.log.slice(0, 8).map(l => 
-      `<div class="log-entry ${l.type}">${l.msg}</div>`
-    ).join('');
-  }
-}
-
-// ============================================================
-// NEGOTIATE / REJECT
-// ============================================================
-function negotiateProject() {
-  const p = gameState.player;
-  const proj = gameState.currentProject;
-  const chance = p.stats.negotiation * 10 + Math.random() * 20;
-  
-  if (chance > 65) {
-    const bonus = rand(20, 60);
-    proj.budget += bonus;
-    proj.rewards.money += bonus;
-    addLog(`Negociaste +$${bonus} en el presupuesto`, 'good');
-    showModal('¡Negociación exitosa!', 
-      `Lograste aumentar el presupuesto en $${bonus}. El cliente aceptó con algo de fastidio, pero aceptó.`,
-      `<button class="btn btn-primary" onclick="closeModal();renderDashboard()">Continuar</button>`
-    );
-  } else {
-    proj.toxicLevel = Math.min(proj.toxicLevel + 1, 10);
-    addLog('Intento de negociación fallido', 'bad');
-    showModal('No funcionó',
-      'El cliente no se movió. Ahora está un poco molesto. El nivel de toxicidad subió.',
-      `<button class="btn btn-primary" onclick="closeModal();renderDashboard()">Continuar</button>`
-    );
-  }
-}
-
-function rejectProject() {
-  showModal('Rechazar proyecto',
-    `¿Seguro que rechazás el proyecto de ${gameState.currentProject.clientName}? Perdés la oportunidad pero quizás era lo mejor.`,
-    `<button class="btn btn-danger" onclick="confirmReject()">Sí, rechazar</button>
-     <button class="btn" onclick="closeModal()">Cancelar</button>`
-  );
-}
-
-function confirmReject() {
-  closeModal();
-  gameState.player.reputation -= 3;
-  gameState.player.stress = Math.max(0, gameState.player.stress - 5);
-  addLog(`Rechazaste a ${gameState.currentProject.clientName}`, 'warn');
-  gameState.player.failedProjects.push(gameState.currentProject.id);
-  
-  // Go to shop then next day
-  renderShopScreen();
-  showScreen('shop-screen');
-}
-
-// ============================================================
-// DECISIONS
-// ============================================================
-const STYLES = [
-  { id: 'minimal', name: 'Minimal', desc: 'Menos es más. Espacio, respiro.' },
-  { id: 'bold', name: 'Bold', desc: 'Impacto visual. No pasa desapercibido.' },
-  { id: 'vintage', name: 'Vintage', desc: 'Nostalgia curada. Atemporal.' },
-  { id: 'futuristic', name: 'Futurista', desc: 'Ahead of time. Tech vibes.' },
-  { id: 'corporate', name: 'Corporativo', desc: 'Confianza, seriedad, institucional.' },
-  { id: 'organic', name: 'Orgánico', desc: 'Natural, humano, cercano.' }
-];
-
-const TYPOGRAPHY = [
-  { id: 'serif', name: 'Serif', desc: 'Elegancia, tradición, autoridad.' },
-  { id: 'sans', name: 'Sans', desc: 'Limpio, moderno, funcional.' },
-  { id: 'script', name: 'Script', desc: 'Calidez, personalidad, artesanal.' },
-  { id: 'display', name: 'Display', desc: 'Impacto, actitud, memorable.' }
-];
-
-const PALETTES = [
-  { id: 'earthy', name: 'Tierra', desc: 'Beige, café, verde oliva.' },
-  { id: 'neon', name: 'Neón', desc: 'Eléctrico, digital, disruptivo.' },
-  { id: 'pastel', name: 'Pastel', desc: 'Suave, femenino, delicado.' },
-  { id: 'mono', name: 'Monocromo', desc: 'BW + acento. Atemporal.' }
-];
-
-const COMPOSITIONS = [
-  { id: 'clean', name: 'Limpio', desc: 'Grid, alineación, orden.' },
-  { id: 'dynamic', name: 'Dinámico', desc: 'Diagonal, movimiento, energía.' },
-  { id: 'organic', name: 'Orgánico', desc: 'Formas libres, asimetría.' },
-  { id: 'symmetric', name: 'Simétrico', desc: 'Balance, estabilidad, formalidad.' }
-];
-
-function goToDecisions() {
-  renderDecisionScreen();
-  showScreen('decision-screen');
-}
-
-function renderDecisionScreen() {
-  const proj = gameState.currentProject;
-  const p = gameState.player;
-  
-  document.getElementById('decision-main').innerHTML = `
-    <div class="decision-title">TOMAR DECISIONES</div>
-    <div class="decision-client">📋 ${proj.clientName} — ${proj.type}</div>
-    
-    <div class="choice-section">
-      <div class="choice-label">Estilo visual</div>
-      <div class="choice-options" id="style-options">
-        ${STYLES.map(s => `
-          <div class="choice-option" onclick="selectChoice('style','${s.id}',this)">
-            <div class="choice-option-name">${s.name}</div>
-            <div class="choice-option-desc">${s.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    
-    <div class="choice-section">
-      <div class="choice-label">Tipografía</div>
-      <div class="choice-options" id="typo-options">
-        ${TYPOGRAPHY.map(t => `
-          <div class="choice-option" onclick="selectChoice('typography','${t.id}',this)">
-            <div class="choice-option-name">${t.name}</div>
-            <div class="choice-option-desc">${t.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    
-    <div class="choice-section">
-      <div class="choice-label">Paleta de color</div>
-      <div class="choice-options" id="palette-options">
-        ${PALETTES.map(pl => `
-          <div class="choice-option" onclick="selectChoice('palette','${pl.id}',this)">
-            <div class="choice-option-name">${pl.name}</div>
-            <div class="choice-option-desc">${pl.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    
-    <div class="choice-section">
-      <div class="choice-label">Composición</div>
-      <div class="choice-options" id="composition-options">
-        ${COMPOSITIONS.map(c => `
-          <div class="choice-option" onclick="selectChoice('composition','${c.id}',this)">
-            <div class="choice-option-name">${c.name}</div>
-            <div class="choice-option-desc">${c.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    
-    <div class="choice-section">
-      <div class="choice-label">Tiempo a dedicar</div>
-      <div class="time-options">
-        ${[2,4,6,8].map(h => `
-          <div class="time-option" onclick="selectTime(${h},this)">
-            <div class="time-option-hours">${h}h</div>
-            <div class="time-option-label">${h === 2 ? 'Rápido' : h === 4 ? 'Normal' : h === 6 ? 'Cuidado' : 'Detalle'}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    
-    <div style="margin-top:24px">
-      <button class="btn btn-primary" id="submit-btn" onclick="submitProject()" disabled style="width:100%;padding:16px">
-        ENTREGAR PROYECTO →
-      </button>
-    </div>
-  `;
-  
-  renderDecisionSidebar();
-}
-
-function renderDecisionSidebar() {
-  const proj = gameState.currentProject;
-  const choices = gameState.currentChoices;
-  
-  const matchScore = calculateProjectMatch(proj, choices);
-  const choiceCount = Object.keys(choices).length;
-  
-  document.getElementById('decision-sidebar').innerHTML = `
-    <div>
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Preview del resultado</div>
-      <div class="decision-preview">
-        <div class="preview-row">
-          <span class="preview-key">Estilo</span>
-          <span class="preview-val">${choices.style || '—'}</span>
-        </div>
-        <div class="preview-row">
-          <span class="preview-key">Tipografía</span>
-          <span class="preview-val">${choices.typography || '—'}</span>
-        </div>
-        <div class="preview-row">
-          <span class="preview-key">Paleta</span>
-          <span class="preview-val">${choices.palette || '—'}</span>
-        </div>
-        <div class="preview-row">
-          <span class="preview-key">Composición</span>
-          <span class="preview-val">${choices.composition || '—'}</span>
-        </div>
-        <div class="preview-row">
-          <span class="preview-key">Tiempo</span>
-          <span class="preview-val">${choices.time ? choices.time + 'h' : '—'}</span>
-        </div>
-        <div class="quality-meter" style="margin-top:12px">
-          <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-bottom:6px">Match estimado</div>
-          <div class="quality-bar-track">
-            <div class="quality-bar-fill" style="width:${matchScore}%"></div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:12px;text-align:right;margin-top:4px">${matchScore}%</div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="margin-top:16px">
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Brief del cliente</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;background:var(--surface2);padding:12px;border-radius:6px">
-        ${proj.brief}
-      </div>
-    </div>
-    
-    <div style="margin-top:16px">
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Recompensa potencial</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="badge text-green" style="border-color:var(--green)">💰 $${proj.rewards.money}</span>
-        <span class="badge text-blue" style="border-color:var(--blue)">⭐ +${proj.rewards.reputation}</span>
-        <span class="badge text-purple" style="border-color:var(--purple)">💡 +${proj.rewards.experience}xp</span>
-      </div>
-    </div>
-    
-    <div style="margin-top:auto;padding-top:16px;font-family:var(--font-mono);font-size:10px;color:var(--muted)">
-      ${choiceCount}/5 decisiones tomadas
-    </div>
-  `;
-}
-
-function selectChoice(type, value, el) {
-  const parent = el.parentElement;
-  parent.querySelectorAll('.choice-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  gameState.currentChoices[type] = value;
-  checkSubmitReady();
-  renderDecisionSidebar();
-}
-
-function selectTime(hours, el) {
-  document.querySelectorAll('.time-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  gameState.currentChoices.time = hours;
-  checkSubmitReady();
-  renderDecisionSidebar();
-}
-
-function checkSubmitReady() {
-  const c = gameState.currentChoices;
-  const ready = c.style && c.typography && c.palette && c.composition && c.time;
-  document.getElementById('submit-btn').disabled = !ready;
-}
-
-// ============================================================
-// MATCH CALCULATION
-// ============================================================
-function calculateProjectMatch(proj, choices) {
-  let score = 0;
-  const prefs = proj.preferences;
-  
-  if (choices.style === prefs.style) score += 25;
-  if (choices.typography === prefs.typography) score += 25;
-  if (choices.palette === prefs.palette) score += 25;
-  if (choices.composition === prefs.composition) score += 25;
-  
-  return score;
-}
-
-function resolveProject(proj, choices, player) {
-  const matchScore = calculateProjectMatch(proj, choices);
-  
-  const skillBonus = 
-    player.stats.branding * 2 +
-    player.stats.typography * 1.5 +
-    player.stats.composition * 1.5 +
-    player.stats.color * 1;
-  
-  const timeBonus = choices.time >= proj.deadline ? 15 : (choices.time >= proj.deadline * 0.6 ? 5 : -10);
-  const stressPenalty = Math.floor(player.stress / 5);
-  const creativityBonus = Math.floor((player.creativity - 50) / 10);
-  
-  const totalQuality = matchScore + skillBonus + timeBonus - stressPenalty + creativityBonus;
-  const normalized = clamp(Math.round(totalQuality), 0, 150);
-  
-  let result = 'bad';
-  if (normalized >= 110) result = 'excellent';
-  else if (normalized >= 75) result = 'good';
-  else if (normalized >= 45) result = 'average';
-  
-  return { quality: normalized, result, matchScore };
-}
-
-// ============================================================
-// SUBMIT PROJECT
-// ============================================================
-function submitProject() {
-  const result = resolveProject(
-    gameState.currentProject,
-    gameState.currentChoices,
-    gameState.player
-  );
-  
-  applyProjectResult(result);
-  
-  // Check for event
-  const eventChance = Math.random();
-  if (eventChance > 0.3) {
-    // Filter event type
-    const pool = gameState.currentProject.toxicLevel >= 5
-      ? EVENTS.filter(e => !e.positive)
-      : EVENTS;
-    gameState.pendingEvent = pick(pool);
-  }
-  
-  // Show event first, then result
-  if (gameState.pendingEvent) {
-    renderEventScreen(gameState.pendingEvent);
-    showScreen('event-screen');
-  } else {
-    renderResultScreen(result);
-    showScreen('result-screen');
-  }
-  
-  saveGame();
-}
-
-// ============================================================
-// APPLY RESULT
-// ============================================================
-function applyProjectResult(result) {
-  const p = gameState.player;
-  const proj = gameState.currentProject;
-  const r = proj.rewards;
-  
-  const multipliers = { excellent: 1, good: 0.8, average: 0.5, bad: 0.15 };
-  const mult = multipliers[result.result];
-  
-  const moneyGained = Math.floor(r.money * mult);
-  const repGained = result.result === 'bad' ? -rand(5,12) : Math.floor(r.reputation * mult);
-  const expGained = Math.floor(r.experience * mult);
-  const stressGained = { excellent: 3, good: 6, average: 12, bad: 20 }[result.result];
-  const energyCost = gameState.currentChoices.time * 2;
-  
-  p.money += moneyGained;
-  p.reputation = clamp(p.reputation + repGained, 0, 100);
-  p.experience = (p.experience || 0) + expGained;
-  p.stress = clamp(p.stress + stressGained, 0, 100);
-  p.energy = clamp(p.energy - energyCost, 0, 100);
-  p.totalMoneyEarned = (p.totalMoneyEarned || 0) + moneyGained;
-  
-  if (proj.toxicLevel >= 5) p.toxicClientsDealt = (p.toxicClientsDealt || 0) + 1;
-  
-  if (result.result === 'bad' || result.result === 'average') {
-    p.failedProjects.push(proj.id);
-  } else {
-    p.completedProjects.push(proj.id);
-  }
-  
-  result.moneyGained = moneyGained;
-  result.repGained = repGained;
-  result.expGained = expGained;
-  result.stressGained = stressGained;
-  
-  addLog(
-    `${proj.clientName}: ${result.result === 'excellent' ? '✅ Excelente' : result.result === 'good' ? '👍 Bueno' : result.result === 'average' ? '😐 Regular' : '❌ Fallido'}`,
-    result.result === 'excellent' || result.result === 'good' ? 'good' : result.result === 'average' ? 'warn' : 'bad'
-  );
-}
-
-// ============================================================
-// EVENT SCREEN
-// ============================================================
-function renderEventScreen(evt) {
-  const isPositive = evt.positive;
-  document.getElementById('event-content').innerHTML = `
-    <div class="event-card ${isPositive ? 'positive' : ''}">
-      <div class="event-header">
-        <div class="event-icon">${evt.icon}</div>
-        <div>
-          <div class="event-type-label">EVENTO ${isPositive ? 'POSITIVO' : 'INESPERADO'}</div>
-          <div class="event-title">${evt.title}</div>
-        </div>
-      </div>
-      <div class="event-body">
-        <div class="event-desc">${evt.desc}</div>
-        <div class="event-choices">
-          ${evt.choices.map((ch, i) => `
-            <div class="event-choice" onclick="applyEventChoice(${i})">
-              <div class="event-choice-text">${ch.text}</div>
-              <div class="event-choice-effects">
-                ${Object.entries(ch.effects).map(([k,v]) => formatEffect(k, v)).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function applyEventChoice(idx) {
-  const evt = gameState.pendingEvent;
-  const choice = evt.choices[idx];
-  const p = gameState.player;
-  
-  Object.entries(choice.effects).forEach(([k, v]) => {
-    if (k === 'money') p.money = Math.max(0, p.money + v);
-    else if (k === 'energy') p.energy = clamp(p.energy + v, 0, 100);
-    else if (k === 'reputation') p.reputation = clamp(p.reputation + v, 0, 100);
-    else if (k === 'stress') p.stress = clamp(p.stress + v, 0, 100);
-    else if (k === 'creativity') p.creativity = clamp(p.creativity + v, 0, 100);
-  });
-  
-  addLog(`[${evt.title}] → ${choice.label}`, evt.positive ? 'good' : 'warn');
-  
-  gameState.pendingEvent = null;
-  
-  // Now show result
-  const result = resolveProject(
-    gameState.currentProject,
-    gameState.currentChoices,
-    p
-  );
-  // Recalculate gains
-  const r = gameState.currentProject.rewards;
-  const multipliers = { excellent: 1, good: 0.8, average: 0.5, bad: 0.15 };
-  result.moneyGained = Math.floor(r.money * multipliers[result.result]);
-  result.repGained = result.result === 'bad' ? -rand(5,12) : Math.floor(r.reputation * multipliers[result.result]);
-  result.expGained = Math.floor(r.experience * multipliers[result.result]);
-  result.stressGained = { excellent: 3, good: 6, average: 12, bad: 20 }[result.result];
-  
-  renderResultScreen(result);
-  showScreen('result-screen');
-}
-
-// ============================================================
-// RESULT SCREEN
-// ============================================================
-function renderResultScreen(result) {
-  const resultData = {
-    excellent: { label: 'EXCELENTE', bg: 'linear-gradient(135deg, #00e676 0%, #00897b 100%)', textColor: '#000' },
-    good: { label: 'BUENO', bg: 'linear-gradient(135deg, #4488ff 0%, #0044cc 100%)', textColor: '#fff' },
-    average: { label: 'REGULAR', bg: 'linear-gradient(135deg, #ffd600 0%, #ff8800 100%)', textColor: '#000' },
-    bad: { label: 'FALLIDO', bg: 'linear-gradient(135deg, #ff4455 0%, #cc0022 100%)', textColor: '#fff' }
-  }[result.result];
-  
-  const comment = pick(CLIENT_COMMENTS[result.result]);
-  const moneyColor = result.moneyGained > 0 ? 'var(--green)' : 'var(--red)';
-  const repColor = result.repGained >= 0 ? 'var(--blue)' : 'var(--red)';
-  
-  document.getElementById('result-content').innerHTML = `
-    <div class="result-card">
-      <div class="result-banner" style="background:${resultData.bg}">
-        <div class="result-quality-label" style="color:${resultData.textColor}">${resultData.label}</div>
-        <div class="result-comment" style="color:${resultData.textColor};opacity:0.85">${comment}</div>
-      </div>
-      <div class="result-body">
-        <div class="result-gains">
-          <div class="gain-item">
-            <div class="gain-amount" style="color:${moneyColor}">${result.moneyGained >= 0 ? '+' : ''}$${result.moneyGained}</div>
-            <div class="gain-label">Dinero</div>
-          </div>
-          <div class="gain-item">
-            <div class="gain-amount" style="color:${repColor}">${result.repGained >= 0 ? '+' : ''}${result.repGained}</div>
-            <div class="gain-label">Reputación</div>
-          </div>
-          <div class="gain-item">
-            <div class="gain-amount" style="color:var(--red)">+${result.stressGained}</div>
-            <div class="gain-label">Estrés</div>
-          </div>
-        </div>
-        
-        <div style="background:var(--surface2);border:1px solid var(--border);padding:12px;border-radius:8px;margin-bottom:16px">
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Análisis</div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.6">
-            Match con brief: <strong style="color:var(--text)">${result.matchScore}%</strong> · 
-            Calidad total: <strong style="color:var(--text)">${result.quality}</strong> puntos
-          </div>
-        </div>
-        
-        <div class="result-actions">
-          <button class="btn" onclick="goToShop()">🏪 Ver tienda</button>
-          <button class="btn btn-primary" onclick="proceedToNextDay()">Siguiente día →</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// ============================================================
-// SHOP
-// ============================================================
-function goToShop() {
-  renderShopScreen();
-  showScreen('shop-screen');
-}
-
-function renderShopScreen() {
-  const p = gameState.player;
-  document.getElementById('shop-money').textContent = `💰 $${p.money}`;
-  
-  document.getElementById('shop-grid').innerHTML = UPGRADES.map(u => {
-    const owned = p.upgrades.includes(u.id);
-    const canAfford = p.money >= u.cost;
-    
-    return `
-      <div class="shop-item ${owned ? 'owned' : ''}">
-        <div class="shop-item-header">
-          <div class="shop-item-icon">${u.icon}</div>
-          <div>
-            <div class="shop-item-name">${u.name}</div>
-            ${owned ? '<span class="badge text-green" style="border-color:var(--green)">COMPRADO</span>' : ''}
-          </div>
-        </div>
-        <div class="shop-item-desc">${u.desc}</div>
-        <div class="shop-item-effects">
-          <span class="badge text-purple" style="border-color:var(--purple)">${u.effect.label}</span>
-        </div>
-        <div class="shop-item-footer">
-          <div class="shop-price">$${u.cost}</div>
-          ${!owned ? `<button class="btn shop-btn ${canAfford ? 'btn-primary' : ''}" ${!canAfford ? 'disabled' : ''} onclick="buyUpgrade('${u.id}')">
-            ${canAfford ? 'Comprar' : 'Sin fondos'}
-          </button>` : '<span style="font-family:var(--font-mono);font-size:11px;color:var(--green)">✓ Activo</span>'}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function buyUpgrade(id) {
-  const p = gameState.player;
-  const upgrade = UPGRADES.find(u => u.id === id);
-  
-  if (!upgrade || p.upgrades.includes(id) || p.money < upgrade.cost) return;
-  
-  p.money -= upgrade.cost;
-  p.upgrades.push(id);
-  
-  // Apply effects
-  const ef = upgrade.effect;
-  if (ef.typography) p.stats.typography = Math.min(10, p.stats.typography + ef.typography);
-  if (ef.color) p.stats.color = Math.min(10, p.stats.color + ef.color);
-  if (ef.composition) p.stats.composition = Math.min(10, p.stats.composition + ef.composition);
-  if (ef.negotiation) p.stats.negotiation = Math.min(10, p.stats.negotiation + ef.negotiation);
-  if (ef.speed) p.stats.speed = Math.min(10, p.stats.speed + ef.speed);
-  if (ef.branding) p.stats.branding = Math.min(10, p.stats.branding + ef.branding);
-  if (ef.patience) p.stats.patience = Math.min(10, p.stats.patience + ef.patience);
-  if (ef.reputation) p.reputation = Math.min(100, p.reputation + ef.reputation);
-  
-  addLog(`Compraste: ${upgrade.name}`, 'good');
-  saveGame();
-  renderShopScreen();
-}
-
-// ============================================================
-// NEXT DAY
-// ============================================================
-function proceedToNextDay() {
-  const p = gameState.player;
-  p.day += 1;
-  
-  // Daily recovery
-  let energyRecovery = 20;
-  let stressReduction = 8;
-  let creativityRecovery = 15;
-  
-  // Apply upgrade effects
-  p.upgrades.forEach(uid => {
-    const u = UPGRADES.find(u => u.id === uid);
-    if (u) {
-      if (u.effect.energyBonus) energyRecovery += u.effect.energyBonus;
-      if (u.effect.stressReduction) stressReduction += u.effect.stressReduction;
-    }
-  });
-  
-  p.energy = clamp(p.energy + energyRecovery, 0, 100);
-  p.stress = clamp(p.stress - stressReduction, 0, 100);
-  p.creativity = clamp(p.creativity + creativityRecovery, 0, 100);
-  
-  checkGameStatus();
-  
-  if (gameState.gameStatus === 'lost') {
-    renderGameOver(false);
-    showScreen('gameover-screen');
-    return;
-  }
-  
-  if (p.day > 7) {
-    renderGameOver(true);
-    showScreen('gameover-screen');
-    return;
-  }
-  
-  addLog(`--- Día ${p.day} ---`, '');
-  generateProject();
-  renderDashboard();
-  showScreen('dashboard-screen');
-  saveGame();
-}
-
-// ============================================================
-// GAME STATUS CHECK
-// ============================================================
-function checkGameStatus() {
-  const p = gameState.player;
-  
-  if (p.stress >= 100) {
-    gameState.gameStatus = 'lost';
-    gameState.lostReason = '🔥 Burnout total. El estrés llegó al límite.';
-  } else if (p.reputation <= 0) {
-    gameState.gameStatus = 'lost';
-    gameState.lostReason = '💀 Reputación destruida. Nadie te va a contratar.';
-  } else if (p.energy <= 0 && p.money < 10) {
-    gameState.gameStatus = 'lost';
-    gameState.lostReason = '💤 Sin energía y sin plata. Game over.';
-  }
-}
-
-// ============================================================
-// SCORE & GAMEOVER
-// ============================================================
-function calculateScore(p) {
-  return Math.max(0, Math.floor(
-    p.money * 2 + 
-    p.reputation * 5 + 
-    (p.experience || 0) * 3 - 
-    p.stress * 2 +
-    p.completedProjects.length * 20
-  ));
-}
-
-function getScoreRank(score) {
-  if (score >= 400) return { title: 'Director Creativo del Caos', emoji: '👑' };
-  if (score >= 300) return { title: 'Diseñador Premium', emoji: '💎' };
-  if (score >= 200) return { title: 'Creativo Sólido', emoji: '⚡' };
-  if (score >= 100) return { title: 'Freelance Sobreviviente', emoji: '🔥' };
-  return { title: 'Diseñador Explotado', emoji: '😵' };
-}
-
-function renderGameOver(won) {
-  const p = gameState.player;
-  const score = calculateScore(p);
-  const rank = getScoreRank(score);
-  const daysPlayed = p.day - 1;
-  
-  // Save record
-  const prevRecord = parseInt(localStorage.getItem('hmg_record') || '0');
-  if (score > prevRecord) {
-    localStorage.setItem('hmg_record', score.toString());
-    updateHomeRecord();
-  }
-  
-  const shareText = `🎨 Terminé HAZLO MÁS GRANDE como "${rank.title}" ${rank.emoji}\n💰 $${p.totalMoneyEarned} ganados\n⭐ ${p.completedProjects.length} clientes satisfechos\n🏆 Score: ${score}\njugá en hazlomasgrande.com`;
-  
-  document.getElementById('gameover-content').innerHTML = `
-    <div class="gameover-emoji">${rank.emoji}</div>
-    <div class="gameover-title" style="color:${won ? 'var(--green)' : 'var(--red)'}">
-      ${won ? 'SOBREVIVISTE' : 'GAME OVER'}
-    </div>
-    <div class="gameover-subtitle">${won ? 'Llegaste al final. No cualquiera lo logra.' : (gameState.lostReason || 'El freelance te ganó esta vez.')}</div>
-    
-    <div class="final-card">
-      <div class="final-score-display">
-        <div class="final-score-number">${score}</div>
-        <div class="final-rank">${rank.title}</div>
-      </div>
-      
-      <div class="final-stats">
-        <div class="final-stat">
-          <div class="final-stat-label">Días sobrevividos</div>
-          <div class="final-stat-value text-yellow">${daysPlayed}/7</div>
-        </div>
-        <div class="final-stat">
-          <div class="final-stat-label">Dinero ganado</div>
-          <div class="final-stat-value text-green">$${p.totalMoneyEarned}</div>
-        </div>
-        <div class="final-stat">
-          <div class="final-stat-label">Clientes satisfechos</div>
-          <div class="final-stat-value text-blue">${p.completedProjects.length}</div>
-        </div>
-        <div class="final-stat">
-          <div class="final-stat-label">Clientes tóxicos</div>
-          <div class="final-stat-value text-red">${p.toxicClientsDealt}</div>
-        </div>
-        <div class="final-stat">
-          <div class="final-stat-label">Estrés final</div>
-          <div class="final-stat-value" style="color:${p.stress > 70 ? 'var(--red)' : 'var(--yellow)'}">${p.stress}%</div>
-        </div>
-        <div class="final-stat">
-          <div class="final-stat-label">Reputación final</div>
-          <div class="final-stat-value text-purple">${p.reputation}</div>
-        </div>
-      </div>
-      
-      <div class="share-box" onclick="copyShareText('${shareText.replace(/'/g, '\\\'').replace(/\n/g, '\\n')}')" title="Click para copiar">
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);margin-bottom:6px;text-transform:uppercase">▶ COMPARTIR EN REDES (click para copiar)</div>
-        ${shareText.replace(/\n/g, '<br>')}
-      </div>
-    </div>
-    
-    <div class="final-actions">
-      <button class="btn btn-primary" onclick="newGame()">⚡ JUGAR DE NUEVO</button>
-      <button class="btn" onclick="showScreen('home-screen')">← INICIO</button>
-    </div>
-  `;
-}
-
-function copyShareText(text) {
-  const decoded = text.replace(/\\n/g, '\n');
-  navigator.clipboard.writeText(decoded).then(() => {
-    showModal('¡Copiado!', 'El resultado está en tu portapapeles. Pegalo donde quieras.', 
-      '<button class="btn btn-primary" onclick="closeModal()">OK</button>');
-  });
-}
-
-// ============================================================
-// STORAGE
-// ============================================================
-function saveGame() {
-  try {
-    localStorage.setItem('hmg_save', JSON.stringify(gameState));
-  } catch(e) {}
-}
-
-function loadGame() {
-  try {
-    const saved = localStorage.getItem('hmg_save');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.player && parsed.gameStatus === 'playing') {
-        Object.assign(gameState, parsed);
-        return true;
-      }
-    }
-  } catch(e) {}
-  return false;
-}
-
-function tryLoadGame() {
-  if (loadGame()) {
-    renderDashboard();
-    showScreen('dashboard-screen');
-  } else {
-    showModal('Sin partida guardada', 'No encontramos una partida en curso. ¡Empezá una nueva!',
-      '<button class="btn btn-primary" onclick="closeModal();showScreen(\'class-screen\')">Nueva partida</button>');
-  }
-}
-
-function newGame() {
-  gameState = {
-    player: null, currentProject: null, currentChoices: {},
-    currentEvent: null, pendingEvent: null,
-    availableProjects: [], usedProjectIds: [],
-    gameStatus: 'menu', log: []
-  };
-  localStorage.removeItem('hmg_save');
-  showScreen('class-screen');
-  renderClassScreen();
-}
-
-function updateHomeRecord() {
-  const record = localStorage.getItem('hmg_record');
-  const el = document.getElementById('home-record');
-  if (el && record) {
-    const rank = getScoreRank(parseInt(record));
-    el.innerHTML = `Récord: <span>${record} pts — ${rank.title}</span>`;
-  }
-}
-
-// ============================================================
-// INIT
-// ============================================================
-renderClassScreen();
-updateHomeRecord();
-
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-</script>
+<script src="game.js"></script>
 </body>
 </html>
