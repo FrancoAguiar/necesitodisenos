@@ -257,6 +257,58 @@
         </div>
     </section>
 
+    <!-- 1.2 SNEAK PEEK & SOCIAL PROOF -->
+    <section class="py-12 relative z-10 overflow-hidden">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <!-- Social Proof -->
+            <div class="flex items-center justify-center gap-3 mb-6" data-aos="fade-up">
+                <div class="flex -space-x-3">
+                    <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] object-cover" src="https://i.pravatar.cc/100?img=11" alt="User">
+                    <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] object-cover" src="https://i.pravatar.cc/100?img=32" alt="User">
+                    <img class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] object-cover" src="https://i.pravatar.cc/100?img=33" alt="User">
+                    <div class="w-8 h-8 rounded-full border-2 border-[#0A0A0A] bg-green-500/20 text-green-500 flex items-center justify-center text-[10px] font-bold z-10 backdrop-blur-sm">+500</div>
+                </div>
+                <p class="text-sm md:text-base text-zinc-300 font-medium">
+                    Más de <span class="text-green-400 font-bold">500 diseñadores</span> ya lo usan.
+                </p>
+            </div>
+
+            <!-- Video Player Local -->
+            <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_-15px_rgba(34,197,94,0.15)] aspect-video bg-zinc-900 group" data-aos="fade-up" data-aos-delay="100">
+                <!-- Badge "Por dentro" -->
+                <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-2 z-10 shadow-lg">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                    Un vistazo por dentro
+                </div>
+                
+                <!-- Video Element -->
+                <!-- NOTA: Reemplaza './video-preview.mp4' con la ruta real de tu archivo de video -->
+                <video 
+                    src="prueba/video.mp4" 
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline>
+                    Tu navegador no soporta reproducción de video.
+                </video>
+                
+                <!-- Overlay gradiente inferior para fundir con el fondo -->
+                <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-zinc-900 to-transparent pointer-events-none"></div>
+            </div>
+            <!-- CTA Debajo del Video -->
+            <div class="mt-8 md:mt-10 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="#offer" class="inline-flex items-center justify-center gap-2 px-6 sm:px-10 py-3.5 md:py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.5)] hover:-translate-y-1 w-full sm:w-auto sm:min-w-[320px] text-center leading-tight">
+                    <i class="ph-bold ph-download-simple text-lg"></i>
+                    <span>SÍ, QUIERO LA PLANTILLA</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- 1.5 DISCLAIMER: EL FILTRO -->
     <section class="py-12 bg-brand-surface border-t border-white/5 overflow-hidden">
         <div class="container mx-auto px-4 max-w-4xl text-center">
@@ -508,7 +560,7 @@
     <!-- Footer -->
     <footer class="py-8 bg-[#0A0A0A] border-t border-white/5 text-center text-xs text-zinc-600">
         <div class="container mx-auto px-4">
-            <p>© 2026 @necesitodisenos. </br>Todos los derechos reservados.</p>
+            <p>© 2026 @necesitodisenos. <br>Todos los derechos reservados.</p>
             <div class="mt-6 flex justify-center relative">
                 <!-- Efecto de shadow blur de fondo -->
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-10 bg-white/10 blur-[20px] rounded-full pointer-events-none"></div>
