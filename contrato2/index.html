@@ -117,7 +117,7 @@
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </div>
-                <span class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">OFERTA ESPECIAL</span>
+                <span id="dynamic-day-offer" class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">SOLO HOY A $1</span>
             </div>
             
             <div class="flex items-center gap-2 md:gap-6 shrink-0">
@@ -588,6 +588,14 @@
         }
         setInterval(updateTimer, 1000);
         updateTimer();
+
+        // Oferta de día dinámico (Ej: "SOLO HOY MARTES A $1")
+        const diasSemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+        const diaActual = diasSemana[new Date().getDay()];
+        const dynamicOfferBadge = document.getElementById('dynamic-day-offer');
+        if (dynamicOfferBadge) {
+            dynamicOfferBadge.innerText = `SOLO HOY ${diaActual} A $1`;
+        }
     </script>
 </body>
 </html>
