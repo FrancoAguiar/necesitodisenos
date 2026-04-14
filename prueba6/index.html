@@ -451,25 +451,42 @@
                 setIsExporting(true);
                 setIsExportModalOpen(true); // Abre el modal de carga falsa
                 
-                // Pequeño delay de 1.5s para la carga falsa y dejar que el modal renderice
+                // Pequeño delay para la carga falsa y dejar que el modal renderice
                 setTimeout(() => {
-                    const element = document.getElementById('document-to-export');
-                    
-                    const w = element.offsetWidth;
-                    const h = element.offsetHeight;
+                    try {
+                        const element = document.getElementById('document-to-export');
+                        if (!element) throw new Error("Elemento a exportar no encontrado");
+                        
+                        // GARANTÍA MOBILE: Forzamos la asignación correcta del ancho/alto para que jsPDF no crashee si en mobile el "main" se oculta parcial o totalmente.
+                        const w = Math.max(element.offsetWidth || 800, 800);
+                        const h = Math.max(element.offsetHeight || 1131, 1000);
 
-                    const opt = {
-                        margin:       0,
-                        filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-                        image:        { type: 'jpeg', quality: 0.98 },
-                        html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
-                        jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
-                    };
-                    
-                    html2pdf().set(opt).from(element).save().then(() => {
+                        const opt = {
+                            margin:       0,
+                            filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            // Añadimos windowWidth simulado a 800px para que html2canvas genere bien la imagen aunque el celular mida 375px
+                            html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h, windowWidth: w }, 
+                            jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                        };
+                        
+                        html2pdf().set(opt).from(element).save()
+                            .then(() => {
+                                setIsExporting(false);
+                                setIsExportModalOpen(false); // Cierra el modal tras exportar exitosamente
+                            })
+                            .catch((err) => {
+                                // BLOQUE CATCH AGREGADO: Evita bucles infinitos de carga en mobile si hay problemas de render
+                                console.error("Error al exportar PDF:", err);
+                                setIsExporting(false);
+                                setIsExportModalOpen(false);
+                                alert("Hubo un error al generar el documento. Verifica no usar imágenes excesivamente pesadas.");
+                            });
+                    } catch (error) {
+                        console.error("Error crítico de ejecución:", error);
                         setIsExporting(false);
-                        setIsExportModalOpen(false); // Cierra el modal de carga
-                    });
+                        setIsExportModalOpen(false);
+                    }
                 }, 1500);
             };
 
