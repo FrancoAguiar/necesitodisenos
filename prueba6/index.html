@@ -429,26 +429,24 @@
 
             // Descargar PDF como UNA SOLA IMAGEN / PÁGINA
             const handleExportPDF = () => {
-    setIsExporting(true);
-    const element = document.getElementById('document-to-export');
-    
-    const w = element.offsetWidth;
-    const h = element.offsetHeight;
+                setIsExporting(true);
+                const element = document.getElementById('document-to-export');
+                
+                const w = element.offsetWidth;
+                const h = element.offsetHeight;
 
-    const opt = {
-        margin:       0,
-        filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-        // CAMBIO 1: Usar 'png' (elimina los artefactos borrosos del texto)
-        image:        { type: 'png' }, 
-        // CAMBIO 2: Aumentar scale a 3 o 4 (multiplica los píxeles generados)
-        html2canvas:  { scale: 4, useCORS: true, logging: false, width: w, height: h, letterRendering: true },
-        jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
-    };
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-        setIsExporting(false);
-    });
-};
+                const opt = {
+                    margin:       0,
+                    filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
+                    jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                };
+                
+                html2pdf().set(opt).from(element).save().then(() => {
+                    setIsExporting(false);
+                });
+            };
 
             // Progreso
             const calculateProgress = () => {
