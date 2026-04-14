@@ -56,6 +56,8 @@
                         'pulse-primary': 'pulsePrimary 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 5s ease-in-out infinite',
                         'ring': 'ring 2s ease-in-out infinite',
+                        'fadeIn': 'fadeIn 0.2s ease-out',
+                        'scaleIn': 'scaleIn 0.2s ease-out',
                     },
                     keyframes: {
                         pulsePrimary: {
@@ -71,6 +73,14 @@
                             '10%, 30%, 50%': { transform: 'rotate(15deg)' },
                             '20%, 40%': { transform: 'rotate(-15deg)' },
                             '60%': { transform: 'rotate(0deg)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
                         }
                     }
                 }
@@ -342,6 +352,8 @@
             });
 
             const [isExporting, setIsExporting] = useState(false);
+            const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+            const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
             useEffect(() => {
                 try {
@@ -420,32 +432,45 @@
                 setData(prev => ({ ...prev, referencias: newRefs }));
             };
 
-            const handleReset = () => {
-                if (window.confirm('¿Seguro que deseas limpiar todo el brief? Esta acción no se puede deshacer.')) {
-                    localStorage.removeItem('briefPro_data_v6');
-                    setData(DEFAULT_DATA);
-                }
+            const handleResetClick = () => {
+                setIsResetModalOpen(true);
+            };
+
+            const executeReset = () => {
+                localStorage.removeItem('briefPro_data_v6');
+                setData(DEFAULT_DATA);
+                setIsResetModalOpen(false);
+            };
+
+            const closeResetModal = () => {
+                setIsResetModalOpen(false);
             };
 
             // Descargar PDF como UNA SOLA IMAGEN / PÁGINA
             const handleExportPDF = () => {
                 setIsExporting(true);
-                const element = document.getElementById('document-to-export');
+                setIsExportModalOpen(true); // Abre el modal de carga falsa
                 
-                const w = element.offsetWidth;
-                const h = element.offsetHeight;
+                // Pequeño delay de 1.5s para la carga falsa y dejar que el modal renderice
+                setTimeout(() => {
+                    const element = document.getElementById('document-to-export');
+                    
+                    const w = element.offsetWidth;
+                    const h = element.offsetHeight;
 
-                const opt = {
-                    margin:       0,
-                    filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
-                    jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
-                };
-                
-                html2pdf().set(opt).from(element).save().then(() => {
-                    setIsExporting(false);
-                });
+                    const opt = {
+                        margin:       0,
+                        filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
+                        jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                    };
+                    
+                    html2pdf().set(opt).from(element).save().then(() => {
+                        setIsExporting(false);
+                        setIsExportModalOpen(false); // Cierra el modal de carga
+                    });
+                }, 1500);
             };
 
             // Progreso
@@ -650,7 +675,7 @@
                             </div>
 
                             <div className="flex items-center gap-3">
-                                <button onClick={handleReset} className="p-2.5 bg-black/40 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 rounded-lg transition-all" title="Limpiar todo el documento">
+                                <button onClick={handleResetClick} className="p-2.5 bg-black/40 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 rounded-lg transition-all" title="Limpiar todo el documento">
                                     <i className="ph-bold ph-trash text-lg"></i>
                                 </button>
                                 <button 
@@ -880,6 +905,43 @@
                             </div>
                         </div>
                     </main>
+
+                    {/* Modal Confirmación de Reseteo (React Component) */}
+                    {isResetModalOpen && (
+                        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fadeIn">
+                            <div className="bg-brand-card border border-brand-border rounded-xl p-6 max-w-sm w-[90%] shadow-2xl animate-scaleIn">
+                                <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2 font-display">
+                                    <i className="ph-fill ph-warning-circle text-brand-primary"></i> ¿Limpiar documento?
+                                </h3>
+                                <p className="text-sm text-gray-400 mb-6">Se borrarán todos tus datos ingresados y referencias. Esta acción no se puede deshacer.</p>
+                                <div className="flex justify-end gap-3">
+                                    <button onClick={closeResetModal} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors">
+                                        Cancelar
+                                    </button>
+                                    <button onClick={executeReset} className="px-4 py-2 rounded-lg text-sm font-bold bg-brand-primary text-white hover:bg-brand-hover shadow-glow transition-all">
+                                        Sí, limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Modal de Carga Falsa (Exportación PDF) */}
+                    {isExportModalOpen && (
+                        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn p-4">
+                            <div className="bg-brand-card border border-brand-border rounded-2xl w-full max-w-[500px] shadow-2xl animate-scaleIn overflow-hidden relative">
+                                <div className="flex flex-col items-center justify-center p-12 text-center">
+                                    <div className="w-16 h-16 relative flex items-center justify-center mb-6">
+                                        <div className="absolute inset-0 border-[3px] border-white/5 rounded-full"></div>
+                                        <div className="absolute inset-0 border-[3px] border-brand-primary rounded-full border-t-transparent animate-spin"></div>
+                                        <i className="ph-fill ph-file-pdf text-brand-primary text-xl absolute"></i>
+                                    </div>
+                                    <h3 className="text-xl font-display font-bold text-white mb-2">Generando Brief...</h3>
+                                    <p className="text-gray-400 text-sm">Por favor esperá unos segundos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             );
