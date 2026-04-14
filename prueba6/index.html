@@ -457,17 +457,17 @@
                         const originalElement = document.getElementById('document-to-export');
                         if (!originalElement) throw new Error("Elemento a exportar no encontrado");
                         
-                        // FIX SAFARI MOBILE: Clonar el contenedor visible en memoria sin dependencias de scroll u ocultamientos parentales
+                        // FIX DEFINITIVO SAFARI: Clonar en la parte SUPERIOR visible (no en -9999px)
+                        // Quedará tapado por el modal de carga (z-index: 100000), pero Safari lo renderizará bien.
                         const wrapper = document.createElement('div');
                         wrapper.style.position = 'absolute';
-                        wrapper.style.top = '-9999px'; // Ocultar fuera de la pantalla
+                        wrapper.style.top = '0'; 
                         wrapper.style.left = '0';
-                        wrapper.style.width = '800px'; // Forzar desktop width
-                        wrapper.style.background = '#ffffff'; // Fondo blanco sólido
-                        wrapper.style.zIndex = '-1';
+                        wrapper.style.width = '800px'; 
+                        wrapper.style.background = '#ffffff';
+                        wrapper.style.zIndex = '99990'; // Visible para Safari, pero debajo del modal
                         
                         const clone = originalElement.cloneNode(true);
-                        // Limpiar restricciones del layout original
                         clone.style.margin = '0';
                         clone.style.minWidth = '800px';
                         clone.style.maxWidth = '800px';
@@ -477,7 +477,7 @@
                         wrapper.appendChild(clone);
                         document.body.appendChild(wrapper);
 
-                        // Esperar un instante para asegurar que el navegador aplicó el CSS al clon
+                        // Breve espera para que el DOM aplique estilos
                         setTimeout(() => {
                             const isMobile = window.innerWidth < 768;
                             const w = 800;
@@ -486,12 +486,10 @@
                             const opt = {
                                 margin:       0,
                                 filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-                                // Bajamos levemente la calidad de imagen en mobile para ahorrar memoria
-                                image:        { type: 'jpeg', quality: isMobile ? 0.90 : 0.98 },
+                                image:        { type: 'jpeg', quality: isMobile ? 0.85 : 0.98 },
                                 html2canvas:  { 
-                                    // LA CLAVE MAGICA: Reducir scale a 1.2 en celular. Safari tiene límite de área de canvas (~16MB max). 
-                                    // Scale 2 en un documento largo colapsaba la RAM del iPhone.
-                                    scale: isMobile ? 1.2 : 2, 
+                                    // ESCALA 1 en mobile: Evita que Safari colapse por falta de RAM al generar el Canvas
+                                    scale: isMobile ? 1 : 2, 
                                     useCORS: true, 
                                     logging: false, 
                                     width: w, 
@@ -502,27 +500,26 @@
                             
                             html2pdf().set(opt).from(wrapper).save()
                                 .then(() => {
-                                    document.body.removeChild(wrapper); // Limpiamos el clon
+                                    if(document.body.contains(wrapper)) document.body.removeChild(wrapper); 
                                     setIsExporting(false);
-                                    setIsExportModalOpen(false); // Cierra el modal tras exportar exitosamente
+                                    setIsExportModalOpen(false); 
                                 })
                                 .catch((err) => {
-                                    // SI ALGO FALLA (ej. demasiadas imágenes para la RAM), AVISAMOS Y NO COLGAMOS LA APP
-                                    document.body.removeChild(wrapper);
+                                    if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
                                     console.error("Error al exportar PDF:", err);
                                     setIsExporting(false);
                                     setIsExportModalOpen(false);
-                                    alert("Hubo un error al generar el documento. Si estás en Safari móvil, intenta remover alguna imagen pesada o usa una PC.");
+                                    alert("Tuvimos un problema al generar el PDF. Por favor, intenta nuevamente.");
                                 });
-                        }, 250); // 250ms de gracia para el render del DOM
+                        }, 250); 
 
                     } catch (error) {
                         console.error("Error crítico de ejecución:", error);
                         setIsExporting(false);
                         setIsExportModalOpen(false);
-                        alert("Hubo un error interno al preparar el documento.");
+                        alert("Ocurrió un error al preparar el documento. Por favor, recarga la página.");
                     }
-                }, 1500); // 1.5s para la carga falsa visual
+                }, 1500); 
             };
 
             // Progreso
@@ -1000,7 +997,7 @@
                                         <div className="absolute inset-0 border-[3px] border-brand-primary rounded-full border-t-transparent animate-spin"></div>
                                         <i className="ph-fill ph-file-pdf text-brand-primary text-xl absolute"></i>
                                     </div>
-                                    <h3 className="text-xl font-display font-bold text-white mb-2">Generando Brief...</h3>
+                                    <h3 className="text-xl font-display font-bold text-white mb-2">Generando contrato...</h3>
                                     <p className="text-gray-400 text-sm">Por favor esperá unos segundos.</p>
                                 </div>
                             </div>
