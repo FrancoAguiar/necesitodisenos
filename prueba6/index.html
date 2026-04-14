@@ -5,28 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <title>BriefEditable™ | @necesitodisenos</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
-    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- html2pdf.js para exportación directa a PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800;900&family=Kalam:wght@700&family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
-    <!-- CONFIGURACIÓN TAILWIND (Estética SaaS Azul) -->
     <script>
         tailwind.config = {
             theme: {
@@ -446,75 +439,31 @@
                 setIsResetModalOpen(false);
             };
 
-            // Descargar PDF como UNA SOLA IMAGEN / PÁGINA CON FIX PARA MOBILE SAFARI
+            // Descargar PDF como UNA SOLA IMAGEN / PÁGINA
             const handleExportPDF = () => {
                 setIsExporting(true);
-                setIsExportModalOpen(true); 
+                setIsExportModalOpen(true); // Abre el modal de carga falsa
                 
+                // Pequeño delay de 1.5s para la carga falsa y dejar que el modal renderice
                 setTimeout(() => {
-                    try {
-                        const originalElement = document.getElementById('document-to-export');
-                        if (!originalElement) throw new Error("Elemento a exportar no encontrado");
-                        
-                        const wrapper = document.createElement('div');
-                        wrapper.style.position = 'absolute';
-                        wrapper.style.top = '0'; 
-                        wrapper.style.left = '0';
-                        wrapper.style.width = '800px'; 
-                        wrapper.style.background = '#ffffff';
-                        wrapper.style.zIndex = '99990'; 
-                        
-                        const clone = originalElement.cloneNode(true);
-                        clone.style.margin = '0';
-                        clone.style.minWidth = '800px';
-                        clone.style.maxWidth = '800px';
-                        clone.style.boxShadow = 'none';
-                        clone.style.transform = 'none';
+                    const element = document.getElementById('document-to-export');
+                    
+                    const w = element.offsetWidth;
+                    const h = element.offsetHeight;
 
-                        wrapper.appendChild(clone);
-                        document.body.appendChild(wrapper);
-
-                        setTimeout(() => {
-                            const isMobile = window.innerWidth < 768;
-                            const w = 800;
-                            const h = wrapper.offsetHeight;
-
-                            const opt = {
-                                margin:       0,
-                                filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-                                image:        { type: 'jpeg', quality: isMobile ? 0.85 : 0.98 },
-                                html2canvas:  { 
-                                    scale: isMobile ? 1 : 2, 
-                                    useCORS: true, 
-                                    logging: false, 
-                                    width: w, 
-                                    windowWidth: w 
-                                }, 
-                                jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
-                            };
-                            
-                            html2pdf().set(opt).from(wrapper).save()
-                                .then(() => {
-                                    if(document.body.contains(wrapper)) document.body.removeChild(wrapper); 
-                                    setIsExporting(false);
-                                    setIsExportModalOpen(false); 
-                                })
-                                .catch((err) => {
-                                    if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
-                                    console.error("Error al exportar PDF:", err);
-                                    setIsExporting(false);
-                                    setIsExportModalOpen(false);
-                                    alert("Tuvimos un problema al generar el PDF. Por favor, intenta nuevamente.");
-                                });
-                        }, 250); 
-
-                    } catch (error) {
-                        console.error("Error crítico de ejecución:", error);
+                    const opt = {
+                        margin:       0,
+                        filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
+                        jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                    };
+                    
+                    html2pdf().set(opt).from(element).save().then(() => {
                         setIsExporting(false);
-                        setIsExportModalOpen(false);
-                        alert("Ocurrió un error al preparar el documento. Por favor, recarga la página.");
-                    }
-                }, 1500); 
+                        setIsExportModalOpen(false); // Cierra el modal de carga
+                    });
+                }, 1500);
             };
 
             // Progreso
@@ -531,34 +480,38 @@
                     {/* PANTALLA DE BLOQUEO MOBILE (Solo visible en dispositivos móviles) */}
                     <div className="md:hidden fixed inset-0 z-[200000] bg-[#0A0A0A] flex flex-col items-center justify-center p-6 text-center">
                         <div className="bg-brand-card border border-brand-border rounded-2xl p-8 max-w-[340px] w-full shadow-2xl relative overflow-hidden animate-scaleIn">
+                            {/* Línea superior decorativa */}
                             <div className="absolute top-0 left-0 right-0 h-1 bg-brand-primary shadow-glow"></div>
                             
+                            {/* Icono central */}
                             <div className="w-16 h-16 bg-brand-primary/10 border border-brand-primary/20 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                                 <i className="ph-fill ph-desktop text-brand-primary text-3xl relative z-10"></i>
                             </div>
                             
+                            {/* Textos */}
                             <h2 className="text-2xl font-display font-bold text-white mb-3 tracking-tight">Usá una computadora</h2>
                             
                             <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                                 BriefEditable™ genera documentos en PDF de alta calidad y precisión. Para garantizar la mejor experiencia y rendimiento, esta herramienta <strong className="text-white">solo está disponible en PC o Mac</strong>.
                             </p>
                             
+                            {/* Badge de estado */}
                             <div className="inline-flex items-center gap-2 text-[10px] font-bold text-brand-primary bg-brand-primary/10 px-4 py-2.5 rounded-lg border border-brand-primary/20 uppercase tracking-widest shadow-glow">
                                 <i className="ph-bold ph-lock-key text-sm"></i> Acceso Restringido
                             </div>
                         </div>
                         
+                        {/* Marca de agua inferior */}
                         <div className="mt-10 flex justify-center items-center select-none opacity-80">
                             <span className="text-[#737373] text-[11px] font-semibold tracking-[0.15em] font-poppins">CREADO POR</span>
                             <span className="text-brand-primary text-[11px] font-bold tracking-[0.15em] ml-1.5 font-poppins">@NECESITODISENOS</span>
                         </div>
                     </div>
 
-                    {/* APP PRINCIPAL (Oculta en mobile, visible en desktop md:flex) */}
                     <div className="hidden md:flex h-screen overflow-hidden bg-transparent">
                         
                         {/* PANEL IZQUIERDO: FORMULARIO DEL DISEÑADOR */}
-                        <aside className="w-[480px] border-r border-brand-border flex flex-col relative z-20 bg-brand-surface/80 backdrop-blur-md shadow-sheet shrink-0">
+                        <aside className="w-full md:w-[480px] border-r border-brand-border flex flex-col relative z-20 bg-brand-surface/80 backdrop-blur-md shadow-sheet">
                             
                             {/* Header Panel Lateral: Estilo BriefEditable™ */}
                             <div className="p-5 border-b border-brand-border sticky top-0 z-10 bg-brand-bg/90 backdrop-blur">
@@ -571,12 +524,13 @@
                                             <span className="font-display font-bold text-white text-xl leading-none tracking-tight">
                                                 Brief<span className="text-brand-primary">Editable™</span>
                                             </span>
-                                            <span className="text-[10px] text-gray-400 font-medium mt-1">Generador online de briefs</span>
+                                            <span className="text-[10px] text-gray-400 font-medium hidden sm:block mt-1">Generador online de briefs</span>
                                         </div>
                                     </div>
                                     <span className="text-[10px] text-brand-primary font-bold tracking-wider uppercase bg-brand-primary/10 border border-brand-primary/20 px-2 py-1 rounded">{calculateProgress()}%</span>
                                 </div>
                                 <div className="h-1 bg-brand-card rounded-full overflow-hidden">
+                                    {/* AQUÍ SE CAMBIÓ LA BARRA DE PROGRESO POR LA CLASE bg-brand-primary (AZUL) */}
                                     <div className="h-full bg-brand-primary transition-all duration-500 ease-out shadow-glow" style={{ width: `${calculateProgress()}%` }}></div>
                                 </div>
                             </div>
@@ -727,7 +681,7 @@
                                 </SectionCard>
 
                                 {/* --- MARCA DE AGUA INFERIOR (FORMULARIO) --- */}
-                                <div className="mt-6 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
+                                <div className="mt-8 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
                                     <span className="text-[#737373] text-[11px] font-semibold tracking-[0.15em] font-poppins">CREADO POR</span>
                                     <span className="text-brand-primary text-[11px] font-bold tracking-[0.15em] ml-1.5 font-poppins">@NECESITODISENOS</span>
                                 </div>
@@ -763,7 +717,7 @@
                             {/* El Documento (A4 style / One Page) */}
                             <div className="flex-1 overflow-y-auto py-10 px-4 lg:px-10 custom-scrollbar">
                                 
-                                <div id="document-to-export" className="document-container min-w-[800px] max-w-[850px] mx-auto bg-white border border-gray-200 rounded-xl shadow-xl min-h-[1000px] overflow-hidden text-gray-900 print:bg-white print:border-none print:shadow-none print:m-0 print:p-0">
+                                <div id="document-to-export" className="document-container max-w-[850px] mx-auto bg-white border border-gray-200 rounded-xl shadow-xl min-h-[1000px] overflow-hidden text-gray-900 print:bg-white print:border-none print:shadow-none print:m-0 print:p-0">
                                     
                                     {/* CABECERA DOCUMENTO */}
                                     <div className="bg-gray-50 border-b border-gray-200 p-10 md:p-14">
