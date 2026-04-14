@@ -628,8 +628,9 @@
                                             <p className="text-gray-500 font-mono text-sm break-words">Creado por {data.agencyName || '@tuagencia'}</p>
                                         </div>
                                         <div className="text-right flex flex-col items-end gap-4">
+                                            {/* SOLUCIÓN DE IMAGEN ESTIRADA (LOGOTIPO) */}
                                             {data.agencyLogo && (
-                                                <img src={data.agencyLogo} alt="Logo Agencia" className="max-h-12 max-w-[150px] object-contain" />
+                                                <div className="h-12 w-32 bg-no-repeat bg-right bg-contain" style={{ backgroundImage: `url(${data.agencyLogo})` }}></div>
                                             )}
                                             <div>
                                                 <p className="text-[10px] font-poppins font-bold uppercase tracking-widest text-gray-400 mb-1">Cliente</p>
@@ -788,9 +789,11 @@
                                         <div>
                                             <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b border-gray-200 pb-2 mb-6">Referencias (Moodboard)</h3>
                                             <div className="grid grid-cols-2 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
+                                                {/* SOLUCIÓN DE IMAGEN ESTIRADA (MOODBOARD) */}
                                                 {data.referencias.map((ref, idx) => ref && (
-                                                    <div key={idx} className="rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50 flex items-center justify-center">
-                                                        <img src={ref} alt={`Referencia ${idx+1}`} className="w-full h-full object-cover" />
+                                                    <div key={idx} 
+                                                         className="rounded-xl border border-gray-200 shadow-sm bg-gray-50 bg-cover bg-center bg-no-repeat h-full w-full" 
+                                                         style={{ backgroundImage: `url(${ref})` }}>
                                                     </div>
                                                 ))}
                                             </div>
@@ -812,9 +815,10 @@
                                                 <p className="font-bold text-white mb-0.5 break-words">{data.agencyName || '@tuagencia'}</p>
                                                 {data.agencyWeb && <p className="text-xs text-gray-400 font-mono break-words">{data.agencyWeb}</p>}
                                             </div>
+                                            {/* SOLUCIÓN DE IMAGEN ESTIRADA (LOGOTIPO FOOTER) */}
                                             {data.agencyLogo && (
-                                                <div className="h-12 w-12 bg-white/10 rounded-lg flex items-center justify-center p-1.5 shrink-0">
-                                                    <img src={data.agencyLogo} alt="Logo Agencia" className="max-h-full max-w-full object-contain" />
+                                                <div className="h-12 w-12 bg-white/10 rounded-lg shrink-0 bg-no-repeat bg-center bg-contain" 
+                                                     style={{ backgroundImage: `url(${data.agencyLogo})`, backgroundOrigin: 'content-box', padding: '6px' }}>
                                                 </div>
                                             )}
                                         </div>
