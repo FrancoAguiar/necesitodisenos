@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BriefSaaS - Editor</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel (para compilar JSX en el navegador) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Phosphor Icons (Alternativa a Lucide para CDN) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos globales y de impresión -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inter Tight', sans-serif;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #262626;
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #525252;
+        }
+
+        @media print {
+            body { background: white !important; overflow: auto !important; }
+            .print\:text-black { color: #000 !important; }
+            .print\:text-gray-600 { color: #4B5563 !important; }
+            .print\:text-gray-500 { color: #6B7280 !important; }
+            .print\:text-gray-300 { color: #D1D5DB !important; }
+            .print\:bg-white { background-color: #FFF !important; }
+            .print\:bg-gray-50 { background-color: #F9FAFB !important; }
+            .print\:border-gray-200 { border-color: #E5E7EB !important; border-width: 1px !important; border-style: solid !important; }
+            .print\:border-none { border: none !important; }
+            .print\:shadow-none { box-shadow: none !important; }
+            .print\:h-screen { height: 100vh !important; }
+            .print\:flex { display: flex !important; }
+            .print\:flex-col { flex-direction: column !important; }
+            .print\:justify-center { justify-content: center !important; }
+            .print\:break-before-page { break-before: page !important; page-break-before: always !important; }
+            aside, header:not(.mb-24) { display: none !important; }
+            main { background: none !important; padding: 0 !important; overflow: visible !important; height: auto !important; }
+            .max-w-4xl { max-width: 100% !important; margin: 0 !important; }
+            #root { overflow: visible !important; height: auto !important; display: block !important; }
+            .flex.h-screen { display: block !important; height: auto !important; overflow: visible !important;}
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const theme = {
+            bg: '#0A0A0A',
+            surface: '#121212',
+            card: '#161616',
+            border: '#262626',
+            primary: '#A78BFA',
+            hover: '#8B5CF6',
+            text: '#FFFFFF',
+            textMuted: '#A3A3A3',
+        };
+
+        const DEFAULT_FORM_DATA = {
+            brandName: 'Acme Studio',
+            slogan: 'Diseñando el futuro digital.',
+            shortDesc: 'Somos una agencia de innovación enfocada en crear productos digitales que transforman industrias.',
+            longDesc: 'Nuestro enfoque combina diseño centrado en el usuario, ingeniería de software avanzada y estrategias de negocio para lanzar productos escalables y memorables al mercado.',
+            values: 'Transparencia, Innovación, Diseño Atemporal',
+            benefits: 'Mayor conversión, Retención de usuarios, Percepción premium',
+            starProduct: 'Desarrollo de SaaS End-to-End',
+            features: ['Diseño UX/UI', 'Arquitectura Cloud', 'Desarrollo Frontend', 'Estrategia de Producto', 'Branding Digital', 'Análisis de Datos'],
+            colors: ['#A78BFA', '#0A0A0A', '#FFFFFF'],
+            services: [
+                { id: 1, name: 'Product Design', desc: 'Interfaces modernas y experiencias de usuario sin fricción para aplicaciones complejas.' },
+                { id: 2, name: 'Ingeniería Web', desc: 'Desarrollo full-stack utilizando las últimas tecnologías (React, Node, Postgres).' }
+            ],
+            whoAreWe: 'Un equipo de soñadores y creadores.',
+            whatWeOffer: 'Soluciones tecnológicas que resuelven problemas reales.',
+            mission: 'Elevar el estándar del software global.',
+            vision: 'Ser el referente latinoamericano en diseño de producto.',
+            references: [
+                'https://images.unsplash.com/photo-1618220179428-22790b46a0eb?auto=format&fit=crop&q=80&w=600',
+                'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=600',
+                'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=600',
+                'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600'
+            ]
+        };
+
+        const DEFAULT_CONFIG = { moodboardActive: true };
+
+        function App() {
+            // --- STATE WITH LOCAL STORAGE ---
+            const [config, setConfig] = useState(() => {
+                const saved = localStorage.getItem('briefSaaS_config');
+                return saved ? JSON.parse(saved) : DEFAULT_CONFIG;
+            });
+
+            const [formData, setFormData] = useState(() => {
+                const saved = localStorage.getItem('briefSaaS_data');
+                return saved ? JSON.parse(saved) : DEFAULT_FORM_DATA;
+            });
+
+            // --- EFFECTS FOR AUTOSAVE ---
+            useEffect(() => {
+                localStorage.setItem('briefSaaS_config', JSON.stringify(config));
+            }, [config]);
+
+            useEffect(() => {
+                localStorage.setItem('briefSaaS_data', JSON.stringify(formData));
+            }, [formData]);
+
+            // --- HANDLERS ---
+            const handleChange = (e, field) => {
+                setFormData({ ...formData, [field]: e.target.value });
+            };
+
+            const handleFeatureChange = (index, value) => {
+                const newFeatures = [...formData.features];
+                newFeatures[index] = value;
+                setFormData({ ...formData, features: newFeatures });
+            };
+
+            const addService = () => {
+                setFormData({
+                    ...formData,
+                    services: [...formData.services, { id: Date.now(), name: '', desc: '' }]
+                });
+            };
+
+            const updateService = (id, field, value) => {
+                setFormData({
+                    ...formData,
+                    services: formData.services.map(s => s.id === id ? { ...s, [field]: value } : s)
+                });
+            };
+
+            const removeService = (id) => {
+                setFormData({
+                    ...formData,
+                    services: formData.services.filter(s => s.id !== id)
+                });
+            };
+
+            // RESTART / TRASH HANDLER
+            const handleReset = () => {
+                if(window.confirm('¿Estás seguro de que quieres borrar todo y empezar de cero? Esto no se puede deshacer.')) {
+                    localStorage.removeItem('briefSaaS_data');
+                    localStorage.removeItem('briefSaaS_config');
+                    setFormData(DEFAULT_FORM_DATA);
+                    setConfig(DEFAULT_CONFIG);
+                }
+            };
+
+            const calculateProgress = () => {
+                const fields = [formData.brandName, formData.slogan, formData.shortDesc, formData.mission];
+                const filled = fields.filter(f => f && f.length > 0).length;
+                return (filled / fields.length) * 100;
+            };
+
+            // --- UI COMPONENTS ---
+            const Input = ({ label, value, onChange, placeholder, isTextarea = false }) => (
+                <div className="mb-4">
+                    <label className="block text-xs font-medium uppercase tracking-wider text-[#A3A3A3] mb-1.5">{label}</label>
+                    {isTextarea ? (
+                        <textarea 
+                            value={value} onChange={onChange} placeholder={placeholder} rows="3"
+                            className="w-full bg-[#121212] border border-[#262626] rounded-lg p-3 text-sm text-white placeholder-[#525252] focus:outline-none focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA] transition-all resize-none"
+                        />
+                    ) : (
+                        <input 
+                            type="text" value={value} onChange={onChange} placeholder={placeholder}
+                            className="w-full bg-[#121212] border border-[#262626] rounded-lg p-3 text-sm text-white placeholder-[#525252] focus:outline-none focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA] transition-all"
+                        />
+                    )}
+                </div>
+            );
+
+            const Section = ({ title, iconClass, children }) => (
+                <div className="bg-[#161616] border border-[#262626] rounded-xl p-6 mb-6">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#262626]">
+                        <i className={`ph ${iconClass} text-lg`} style={{ color: theme.primary }}></i>
+                        <h2 className="text-sm font-semibold text-white tracking-wide">{title}</h2>
+                    </div>
+                    {children}
+                </div>
+            );
+
+            const UploadZone = ({ title }) => (
+                <div className="border border-dashed border-[#262626] hover:border-[#A78BFA] rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-[#121212] group">
+                    <div className="w-10 h-10 rounded-full bg-[#161616] border border-[#262626] flex items-center justify-center mb-3 group-hover:bg-[#A78BFA]/10 transition-colors">
+                        <i className="ph ph-upload-simple text-[#A3A3A3] group-hover:text-[#A78BFA]"></i>
+                    </div>
+                    <p className="text-sm text-white mb-1">{title}</p>
+                    <p className="text-xs text-[#525252]">Arrastra tus archivos aquí o haz clic</p>
+                </div>
+            );
+
+            // --- RENDER ---
+            return (
+                <div className="flex h-screen overflow-hidden selection:bg-[#A78BFA]/30 selection:text-white" style={{ backgroundColor: theme.bg }}>
+                    
+                    {/* LEFT SIDEBAR (FORM) */}
+                    <aside className="w-full md:w-[450px] border-r border-[#262626] flex flex-col relative z-20 shadow-[10px_0_30px_rgba(0,0,0,0.5)]" style={{ backgroundColor: theme.bg }}>
+                        
+                        <div className="p-6 border-b border-[#262626] bg-[#0A0A0A]/90 backdrop-blur-md sticky top-0 z-10">
+                            <div className="flex items-center justify-between mb-4">
+                                <h1 className="text-white font-semibold flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full shadow-[0_0_8px_#A78BFA]" style={{ backgroundColor: theme.primary }}></div>
+                                    Editor de Brief
+                                </h1>
+                                <span className="text-xs text-[#A3A3A3] font-mono">{Math.round(calculateProgress())}% Completado</span>
+                            </div>
+                            <div className="h-1 bg-[#161616] rounded-full overflow-hidden">
+                                <div className="h-full transition-all duration-500 ease-out" style={{ width: `${calculateProgress()}%`, backgroundColor: theme.primary, boxShadow: '0 0 10px #A78BFA' }}></div>
+                            </div>
+                        </div>
+
+                        <div className="p-6 overflow-y-auto pb-32 scrollbar-hide">
+                            <Section title="Información General" iconClass="ph-text-t">
+                                <Input label="Nombre de la Marca" value={formData.brandName} onChange={e => handleChange(e, 'brandName')} placeholder="Ej: Linear" />
+                                <Input label="Slogan" value={formData.slogan} onChange={e => handleChange(e, 'slogan')} placeholder="Tu propuesta en una frase" />
+                                <Input label="Descripción Corta" value={formData.shortDesc} onChange={e => handleChange(e, 'shortDesc')} isTextarea placeholder="Elevator pitch" />
+                                <Input label="Descripción de Servicios/Productos" value={formData.longDesc} onChange={e => handleChange(e, 'longDesc')} isTextarea />
+                                <Input label="Producto o Servicio Estrella" value={formData.starProduct} onChange={e => handleChange(e, 'starProduct')} />
+                                
+                                <div className="mt-6 mb-4">
+                                    <label className="block text-xs font-medium uppercase tracking-wider text-[#A3A3A3] mb-2">6 Características Diferenciales</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {[0,1,2,3,4,5].map(i => (
+                                            <input key={i} type="text" value={formData.features[i]} onChange={e => handleFeatureChange(i, e.target.value)} placeholder={`Característica ${i+1}`}
+                                                className="w-full bg-[#121212] border border-[#262626] rounded-lg p-2.5 text-xs text-white focus:border-[#A78BFA] focus:outline-none transition-colors" />
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                <Input label="Valores de la Empresa" value={formData.values} onChange={e => handleChange(e, 'values')} placeholder="Innovación, Rapidez, Calidad..." />
+                                <Input label="Beneficios Principales" value={formData.benefits} onChange={e => handleChange(e, 'benefits')} />
+                            </Section>
+
+                            <Section title="Identidad Visual" iconClass="ph-image">
+                                <UploadZone title="Subir Logo (SVG, PNG)" />
+                                <div className="mt-6">
+                                    <label className="block text-xs font-medium uppercase tracking-wider text-[#A3A3A3] mb-2">Colores Principales</label>
+                                    <div className="flex gap-3">
+                                        {formData.colors.map((color, i) => (
+                                            <div key={i} className="w-10 h-10 rounded-full border border-[#262626] shadow-sm flex items-center justify-center relative overflow-hidden group cursor-pointer">
+                                                <div className="absolute inset-0" style={{ backgroundColor: color }}></div>
+                                            </div>
+                                        ))}
+                                        <div className="w-10 h-10 rounded-full border border-dashed border-[#525252] flex items-center justify-center text-[#525252] hover:border-[#A78BFA] hover:text-[#A78BFA] cursor-pointer transition-colors">
+                                            <i className="ph ph-plus"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Section>
+
+                            <Section title="Servicios" iconClass="ph-briefcase">
+                                {formData.services.map((svc, index) => (
+                                    <div key={svc.id} className="mb-4 p-4 border border-[#262626] bg-[#121212] rounded-lg group relative">
+                                        <button onClick={() => removeService(svc.id)} className="absolute top-3 right-3 text-[#525252] hover:text-red-400 transition-colors">
+                                            <i className="ph ph-trash"></i>
+                                        </button>
+                                        <p className="text-xs text-[#525252] mb-3">SERVICIO {index + 1}</p>
+                                        <Input label="Nombre" value={svc.name} onChange={e => updateService(svc.id, 'name', e.target.value)} />
+                                        <Input label="Descripción" value={svc.desc} onChange={e => updateService(svc.id, 'desc', e.target.value)} isTextarea />
+                                    </div>
+                                ))}
+                                <button onClick={addService} className="w-full py-3 rounded-lg border border-dashed border-[#525252] text-[#A3A3A3] hover:border-[#A78BFA] hover:text-[#A78BFA] flex items-center justify-center gap-2 text-sm transition-colors">
+                                    <i className="ph ph-plus"></i> Agregar Servicio
+                                </button>
+                            </Section>
+
+                            <Section title="Nosotros (ADN)" iconClass="ph-file-text">
+                                <Input label="¿Quiénes somos?" value={formData.whoAreWe} onChange={e => handleChange(e, 'whoAreWe')} isTextarea />
+                                <Input label="¿Qué ofrecemos?" value={formData.whatWeOffer} onChange={e => handleChange(e, 'whatWeOffer')} isTextarea />
+                                <Input label="Misión" value={formData.mission} onChange={e => handleChange(e, 'mission')} isTextarea />
+                                <Input label="Visión" value={formData.vision} onChange={e => handleChange(e, 'vision')} isTextarea />
+                            </Section>
+
+                            <Section title="Referencias y Archivos" iconClass="ph-image">
+                                <UploadZone title="Subir Imágenes de Referencia" />
+                                <div className="mt-4">
+                                    <UploadZone title="Archivos Generales (PDF, ZIP)" />
+                                </div>
+                            </Section>
+                        </div>
+                    </aside>
+
+
+                    {/* RIGHT PANEL (LIVE PREVIEW) */}
+                    <main className="flex-1 flex flex-col relative" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, #161616 0%, #0A0A0A 100%)' }}>
+                        
+                        <header className="h-[72px] px-8 flex items-center justify-between border-b border-[#262626]/50 bg-[#0A0A0A]/50 backdrop-blur-md absolute top-0 left-0 w-full z-10">
+                            <div className="flex items-center bg-[#161616] border border-[#262626] rounded-lg p-1">
+                                <button 
+                                    onClick={() => setConfig({...config, moodboardActive: true})}
+                                    className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-2 transition-all ${config.moodboardActive ? 'bg-[#262626] text-white shadow-sm' : 'text-[#A3A3A3] hover:text-white'}`}
+                                >
+                                    <i className="ph ph-squares-four"></i> Moodboard
+                                </button>
+                                <button 
+                                    onClick={() => setConfig({...config, moodboardActive: false})}
+                                    className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-2 transition-all ${!config.moodboardActive ? 'bg-[#262626] text-white shadow-sm' : 'text-[#A3A3A3] hover:text-white'}`}
+                                >
+                                    <i className="ph ph-list"></i> Lista
+                                </button>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                {/* NEW: TRASH / RESET BUTTON */}
+                                <button 
+                                    onClick={handleReset}
+                                    className="px-4 py-2 rounded-lg text-sm font-medium text-[#A3A3A3] bg-[#161616] border border-[#262626] hover:bg-red-950/30 hover:text-red-400 hover:border-red-900/50 transition-colors flex items-center gap-2"
+                                    title="Reiniciar y borrar todo"
+                                >
+                                    <i className="ph ph-trash text-lg"></i>
+                                </button>
+
+                                <button className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-[#161616] border border-[#262626] hover:bg-[#262626] transition-colors flex items-center gap-2">
+                                    <i className="ph ph-check-circle text-[#A3A3A3]"></i> Guardado
+                                </button>
+
+                                <button 
+                                    onClick={() => window.print()}
+                                    className="px-4 py-2 rounded-lg text-sm font-medium text-[#0A0A0A] transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(167,139,250,0.2)] hover:shadow-[0_0_25px_rgba(167,139,250,0.4)]"
+                                    style={{ backgroundColor: theme.primary }}
+                                >
+                                    <i className="ph ph-download-simple"></i> Exportar PDF
+                                </button>
+                            </div>
+                        </header>
+
+                        <div className="flex-1 overflow-y-auto pt-[100px] pb-32 px-8 custom-scrollbar">
+                            
+                            <div className="max-w-4xl mx-auto bg-[#121212] border border-[#262626] rounded-2xl p-12 md:p-20 shadow-2xl print:bg-white print:border-none print:shadow-none print:p-0">
+                                
+                                <header className="mb-24 print:h-screen print:flex print:flex-col print:justify-center print:mb-0">
+                                    <div className="inline-block px-3 py-1 rounded-full border border-[#262626] bg-[#161616] text-xs font-mono text-[#A3A3A3] mb-8 print:border-gray-200 print:bg-gray-50 print:text-gray-500">
+                                        Documento Generado Automáticamente
+                                    </div>
+                                    <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-6 leading-[1.1] print:text-black">
+                                        {formData.brandName || 'Sin Título'}
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-[#A3A3A3] font-light print:text-gray-500">
+                                        {formData.slogan || 'Agrega un slogan para tu marca...'}
+                                    </p>
+                                </header>
+
+                                <section className="mb-20 print:break-before-page">
+                                    <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-[#A78BFA] mb-8 border-b border-[#262626] pb-4 print:border-gray-200">
+                                        01. El Contexto
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                        <div>
+                                            <h3 className="text-xl text-white font-medium mb-4 print:text-black">Resumen Ejecutivo</h3>
+                                            <p className="text-[#A3A3A3] leading-relaxed font-light print:text-gray-600">
+                                                {formData.shortDesc || '...'}
+                                            </p>
+                                            
+                                            <div className="mt-8 space-y-6">
+                                                <div>
+                                                    <h4 className="text-sm font-semibold text-white mb-2 print:text-black">Nuestra Misión</h4>
+                                                    <p className="text-[#A3A3A3] text-sm leading-relaxed print:text-gray-600">{formData.mission}</p>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-semibold text-white mb-2 print:text-black">Nuestra Visión</h4>
+                                                    <p className="text-[#A3A3A3] text-sm leading-relaxed print:text-gray-600">{formData.vision}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="bg-[#161616] rounded-xl p-8 border border-[#262626] print:bg-gray-50 print:border-gray-200">
+                                            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2 print:text-black">
+                                                <div className="w-2 h-2 rounded-full bg-[#A78BFA]"></div>
+                                                Valores Fundamentales
+                                            </h4>
+                                            <p className="text-[#A3A3A3] text-sm leading-relaxed mb-8 print:text-gray-600">
+                                                {formData.values}
+                                            </p>
+                                            
+                                            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2 print:text-black">
+                                                <div className="w-2 h-2 rounded-full bg-[#A78BFA]"></div>
+                                                Beneficios Clave
+                                            </h4>
+                                            <p className="text-[#A3A3A3] text-sm leading-relaxed print:text-gray-600">
+                                                {formData.benefits}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section className="mb-20">
+                                    <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-[#A78BFA] mb-8 border-b border-[#262626] pb-4 print:border-gray-200">
+                                        02. Diferenciales
+                                    </h2>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        {formData.features.map((feature, idx) => feature && (
+                                            <div key={idx} className="bg-[#161616] border border-[#262626] rounded-lg p-6 hover:border-[#A78BFA]/50 transition-colors print:bg-white print:border-gray-200">
+                                                <span className="text-3xl font-light text-[#262626] mb-4 block print:text-gray-300">0{idx + 1}</span>
+                                                <p className="text-white text-sm font-medium print:text-black">{feature}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                <section className="mb-20 print:break-before-page">
+                                    <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-[#A78BFA] mb-8 border-b border-[#262626] pb-4 print:border-gray-200">
+                                        03. Arquitectura de Servicios
+                                    </h2>
+                                    <div className="space-y-4">
+                                        {formData.services.map((svc, idx) => (
+                                            <div key={idx} className="flex gap-6 p-6 rounded-xl border border-[#262626] bg-[#161616] print:bg-white print:border-gray-200">
+                                                <div className="w-12 h-12 rounded-lg bg-[#121212] border border-[#262626] flex items-center justify-center shrink-0 print:bg-gray-50 print:border-gray-200">
+                                                    <i className="ph ph-caret-right text-xl text-[#A78BFA]"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-lg text-white font-medium mb-2 print:text-black">{svc.name || 'Servicio sin nombre'}</h4>
+                                                    <p className="text-[#A3A3A3] text-sm leading-relaxed print:text-gray-600">{svc.desc || '...'}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                <section className="print:break-before-page">
+                                    <div className="flex justify-between items-end mb-8 border-b border-[#262626] pb-4 print:border-gray-200">
+                                        <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-[#A78BFA]">
+                                            04. Dirección Visual
+                                        </h2>
+                                        <div className="flex gap-2">
+                                            {formData.colors.map((color, i) => (
+                                                <div key={i} className="w-6 h-6 rounded-full border border-[#262626] print:border-gray-300" style={{ backgroundColor: color }}></div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {config.moodboardActive ? (
+                                        <div className="grid grid-cols-12 gap-4 auto-rows-[120px] md:auto-rows-[160px]">
+                                            <div className="col-span-12 md:col-span-8 row-span-2 overflow-hidden rounded-xl border border-[#262626] group print:border-gray-200">
+                                                <img src={formData.references[0]} alt="Ref 1" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                            </div>
+                                            <div className="col-span-6 md:col-span-4 row-span-1 overflow-hidden rounded-xl border border-[#262626] group print:border-gray-200">
+                                                <img src={formData.references[1]} alt="Ref 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                            </div>
+                                            <div className="col-span-6 md:col-span-4 row-span-2 overflow-hidden rounded-xl border border-[#262626] group print:border-gray-200">
+                                                <img src={formData.references[2]} alt="Ref 3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                            </div>
+                                            <div className="col-span-12 md:col-span-8 row-span-1 overflow-hidden rounded-xl border border-[#262626] group print:border-gray-200">
+                                                <img src={formData.references[3]} alt="Ref 4" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {formData.references.map((ref, idx) => (
+                                                <div key={idx} className="flex gap-6 items-center p-4 bg-[#161616] border border-[#262626] rounded-xl print:bg-white print:border-gray-200">
+                                                    <div className="w-32 h-24 overflow-hidden rounded-lg shrink-0">
+                                                        <img src={ref} alt={`Ref ${idx}`} className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-white text-sm font-medium mb-1 print:text-black">Referencia de Estilo {idx + 1}</h4>
+                                                        <p className="text-xs text-[#525252] font-mono print:text-gray-500">{ref}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </section>
+
+                            </div>
+                        </div>
+                    </main>
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
