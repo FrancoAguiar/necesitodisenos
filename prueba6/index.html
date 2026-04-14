@@ -140,8 +140,6 @@
             .print\:bg-white { background-color: #FFF !important; }
             .print\:bg-gray-50 { background-color: #F9FAFB !important; }
             .print\:border-gray-200 { border-color: #E5E7EB !important; }
-            .print\:break-before-page { break-before: page !important; page-break-before: always !important; }
-            .print\:break-inside-avoid { break-inside: avoid !important; page-break-inside: avoid !important; }
             #root { overflow: visible !important; height: auto !important; display: block !important; }
             .flex.h-screen { display: block !important; height: auto !important; overflow: visible !important;}
         }
@@ -389,46 +387,28 @@
                 }
             };
 
-            // Descargar PDF usando html2pdf.js
-            const handleExportPDF = async () => {
-    try {
-        setIsExporting(true);
+            // Descargar PDF como UNA SOLA IMAGEN / PÁGINA
+            const handleExportPDF = () => {
+                setIsExporting(true);
+                const element = document.getElementById('document-to-export');
+                
+                // Calculamos dimensiones actuales para que sea de 1 sola página
+                const w = element.offsetWidth;
+                const h = element.offsetHeight;
 
-        const element = document.getElementById('document-to-export');
-
-        const worker = html2pdf()
-            .set({
-                margin: 0,
-                filename: `Brief_${data.cliente || 'Cliente'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                }
-            })
-            .from(element)
-            .toCanvas();
-
-        const canvas = await worker.get('canvas');
-        const imgData = canvas.toDataURL('image/jpeg', 0.98);
-
-        const { jsPDF } = window.jspdf;
-
-        const pdf = new jsPDF({
-            orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-            unit: 'px',
-            format: [canvas.width, canvas.height]
-        });
-
-        pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
-        pdf.save(`Brief_${data.cliente || 'Cliente'}.pdf`);
-    } catch (error) {
-        console.error('Error al exportar PDF:', error);
-    } finally {
-        setIsExporting(false);
-    }
-};
+                const opt = {
+                    margin:       0,
+                    filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
+                    // Unidad en pixeles y formato ajustado al ancho y alto del contenedor
+                    jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                };
+                
+                html2pdf().set(opt).from(element).save().then(() => {
+                    setIsExporting(false);
+                });
+            };
 
             // Progreso
             const calculateProgress = () => {
@@ -627,12 +607,12 @@
                                     className="flex items-center gap-2 bg-brand-primary text-white hover:bg-brand-hover px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-glow hover:shadow-glow-hover disabled:opacity-50"
                                 >
                                     <i className={`ph-bold ${isExporting ? 'ph-spinner animate-spin' : 'ph-export'}`}></i> 
-                                    {isExporting ? 'Procesando...' : 'Descargar PDF'}
+                                    {isExporting ? 'Generando...' : 'Exportar PDF'}
                                 </button>
                             </div>
                         </header>
 
-                        {/* El Documento (A4 style) */}
+                        {/* El Documento (A4 style / One Page) */}
                         <div className="flex-1 overflow-y-auto py-10 px-4 lg:px-10 custom-scrollbar">
                             
                             <div id="document-to-export" className="document-container max-w-[850px] mx-auto bg-white border border-gray-200 rounded-xl shadow-xl min-h-[1000px] overflow-hidden text-gray-900 print:bg-white print:border-none print:shadow-none print:m-0 print:p-0">
@@ -671,7 +651,7 @@
                                 <div className="p-10 md:p-14 space-y-12">
                                     
                                     {/* Nueva Sección: Contexto & Dolores */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:break-inside-avoid">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div>
                                             <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b-2 border-gray-200 pb-2 mb-4 inline-block">Contexto / Historia</h3>
                                             <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line break-words break-all">{data.historia || '...'}</p>
@@ -683,7 +663,7 @@
                                     </div>
 
                                     {/* Grid: Objetivos & Diferenciador */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:break-inside-avoid">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div>
                                             <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b-2 border-brand-primary pb-2 mb-4 inline-block">Objetivos del Diseño</h3>
                                             <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line break-words break-all">{data.objetivos || '...'}</p>
@@ -695,7 +675,7 @@
                                     </div>
 
                                     {/* Background Card: Audiencia & Competencia */}
-                                    <div className="bg-gray-50 rounded-xl p-8 border border-gray-100 print:break-inside-avoid">
+                                    <div className="bg-gray-50 rounded-xl p-8 border border-gray-100">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                             <div>
                                                 <div className="flex items-center gap-2 mb-3">
@@ -715,7 +695,7 @@
                                     </div>
 
                                     {/* Identidad */}
-                                    <div className="print:break-inside-avoid border-t border-gray-200 pt-8 mt-8 page-break">
+                                    <div className="border-t border-gray-200 pt-8 mt-8">
                                         <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b border-gray-200 pb-2 mb-6">Identidad & Dirección</h3>
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                                             
@@ -755,7 +735,7 @@
                                     </div>
 
                                     {/* Entregables */}
-                                    <div className="print:break-before-page page-break">
+                                    <div>
                                         <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b border-gray-200 pb-2 mb-6">Alcance y Entregables</h3>
                                         
                                         {/* Burbujas Canales */}
@@ -805,7 +785,7 @@
 
                                     {/* Moodboard */}
                                     {hasReferences && (
-                                        <div className="print:break-before-page page-break">
+                                        <div>
                                             <h3 className="text-xs font-poppins font-bold uppercase tracking-widest text-black border-b border-gray-200 pb-2 mb-6">Referencias (Moodboard)</h3>
                                             <div className="grid grid-cols-2 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
                                                 {data.referencias.map((ref, idx) => ref && (
@@ -820,7 +800,7 @@
                                 </div>
 
                                 {/* Footer Documento */}
-                                <div className="bg-gray-900 text-white p-8 mt-12 print:mt-auto print:break-inside-avoid rounded-b-xl print:rounded-none">
+                                <div className="bg-gray-900 text-white p-8 mt-12 rounded-b-xl print:rounded-none">
                                     <div className="flex justify-between items-center">
                                         <div>
                                             <p className="font-bold text-lg font-display mb-1 break-words">Documento Confidencial</p>
