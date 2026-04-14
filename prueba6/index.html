@@ -446,48 +446,83 @@
                 setIsResetModalOpen(false);
             };
 
-            // Descargar PDF como UNA SOLA IMAGEN / PÁGINA
+            // Descargar PDF como UNA SOLA IMAGEN / PÁGINA CON FIX PARA MOBILE SAFARI
             const handleExportPDF = () => {
                 setIsExporting(true);
                 setIsExportModalOpen(true); // Abre el modal de carga falsa
                 
-                // Pequeño delay para la carga falsa y dejar que el modal renderice
+                // Delay para mostrar el modal de carga y permitir que el navegador respire
                 setTimeout(() => {
                     try {
-                        const element = document.getElementById('document-to-export');
-                        if (!element) throw new Error("Elemento a exportar no encontrado");
+                        const originalElement = document.getElementById('document-to-export');
+                        if (!originalElement) throw new Error("Elemento a exportar no encontrado");
                         
-                        // GARANTÍA MOBILE: Forzamos la asignación correcta del ancho/alto para que jsPDF no crashee si en mobile el "main" se oculta parcial o totalmente.
-                        const w = Math.max(element.offsetWidth || 800, 800);
-                        const h = Math.max(element.offsetHeight || 1131, 1000);
+                        // FIX SAFARI MOBILE: Clonar el contenedor visible en memoria sin dependencias de scroll u ocultamientos parentales
+                        const wrapper = document.createElement('div');
+                        wrapper.style.position = 'absolute';
+                        wrapper.style.top = '-9999px'; // Ocultar fuera de la pantalla
+                        wrapper.style.left = '0';
+                        wrapper.style.width = '800px'; // Forzar desktop width
+                        wrapper.style.background = '#ffffff'; // Fondo blanco sólido
+                        wrapper.style.zIndex = '-1';
+                        
+                        const clone = originalElement.cloneNode(true);
+                        // Limpiar restricciones del layout original
+                        clone.style.margin = '0';
+                        clone.style.minWidth = '800px';
+                        clone.style.maxWidth = '800px';
+                        clone.style.boxShadow = 'none';
+                        clone.style.transform = 'none';
 
-                        const opt = {
-                            margin:       0,
-                            filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
-                            image:        { type: 'jpeg', quality: 0.98 },
-                            // Añadimos windowWidth simulado a 800px para que html2canvas genere bien la imagen aunque el celular mida 375px
-                            html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h, windowWidth: w }, 
-                            jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
-                        };
-                        
-                        html2pdf().set(opt).from(element).save()
-                            .then(() => {
-                                setIsExporting(false);
-                                setIsExportModalOpen(false); // Cierra el modal tras exportar exitosamente
-                            })
-                            .catch((err) => {
-                                // BLOQUE CATCH AGREGADO: Evita bucles infinitos de carga en mobile si hay problemas de render
-                                console.error("Error al exportar PDF:", err);
-                                setIsExporting(false);
-                                setIsExportModalOpen(false);
-                                alert("Hubo un error al generar el documento. Verifica no usar imágenes excesivamente pesadas.");
-                            });
+                        wrapper.appendChild(clone);
+                        document.body.appendChild(wrapper);
+
+                        // Esperar un instante para asegurar que el navegador aplicó el CSS al clon
+                        setTimeout(() => {
+                            const isMobile = window.innerWidth < 768;
+                            const w = 800;
+                            const h = wrapper.offsetHeight;
+
+                            const opt = {
+                                margin:       0,
+                                filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
+                                // Bajamos levemente la calidad de imagen en mobile para ahorrar memoria
+                                image:        { type: 'jpeg', quality: isMobile ? 0.90 : 0.98 },
+                                html2canvas:  { 
+                                    // LA CLAVE MAGICA: Reducir scale a 1.2 en celular. Safari tiene límite de área de canvas (~16MB max). 
+                                    // Scale 2 en un documento largo colapsaba la RAM del iPhone.
+                                    scale: isMobile ? 1.2 : 2, 
+                                    useCORS: true, 
+                                    logging: false, 
+                                    width: w, 
+                                    windowWidth: w 
+                                }, 
+                                jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
+                            };
+                            
+                            html2pdf().set(opt).from(wrapper).save()
+                                .then(() => {
+                                    document.body.removeChild(wrapper); // Limpiamos el clon
+                                    setIsExporting(false);
+                                    setIsExportModalOpen(false); // Cierra el modal tras exportar exitosamente
+                                })
+                                .catch((err) => {
+                                    // SI ALGO FALLA (ej. demasiadas imágenes para la RAM), AVISAMOS Y NO COLGAMOS LA APP
+                                    document.body.removeChild(wrapper);
+                                    console.error("Error al exportar PDF:", err);
+                                    setIsExporting(false);
+                                    setIsExportModalOpen(false);
+                                    alert("Hubo un error al generar el documento. Si estás en Safari móvil, intenta remover alguna imagen pesada o usa una PC.");
+                                });
+                        }, 250); // 250ms de gracia para el render del DOM
+
                     } catch (error) {
                         console.error("Error crítico de ejecución:", error);
                         setIsExporting(false);
                         setIsExportModalOpen(false);
+                        alert("Hubo un error interno al preparar el documento.");
                     }
-                }, 1500);
+                }, 1500); // 1.5s para la carga falsa visual
             };
 
             // Progreso
@@ -522,7 +557,6 @@
                                 <span className="text-[10px] text-brand-primary font-bold tracking-wider uppercase bg-brand-primary/10 border border-brand-primary/20 px-2 py-1 rounded">{calculateProgress()}%</span>
                             </div>
                             <div className="h-1 bg-brand-card rounded-full overflow-hidden">
-                                {/* AQUÍ SE CAMBIÓ LA BARRA DE PROGRESO POR LA CLASE bg-brand-primary (AZUL) */}
                                 <div className="h-full bg-brand-primary transition-all duration-500 ease-out shadow-glow" style={{ width: `${calculateProgress()}%` }}></div>
                             </div>
                         </div>
