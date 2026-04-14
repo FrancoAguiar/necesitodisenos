@@ -486,7 +486,7 @@
                 <div className="flex h-screen overflow-hidden bg-transparent">
                     
                     {/* PANEL IZQUIERDO: FORMULARIO DEL DISEÑADOR */}
-                    <aside className="w-full md:w-[480px] border-r border-brand-border flex flex-col relative z-20 bg-brand-surface/80 backdrop-blur-md shadow-sheet">
+                    <aside className="w-full md:w-[480px] border-r border-brand-border flex flex-col relative z-20 bg-brand-surface/80 backdrop-blur-md shadow-sheet shrink-0">
                         
                         {/* Header Panel Lateral: Estilo BriefEditable™ */}
                         <div className="p-5 border-b border-brand-border sticky top-0 z-10 bg-brand-bg/90 backdrop-blur">
@@ -655,8 +655,20 @@
                                 </div>
                             </SectionCard>
 
+                            {/* --- BOTÓN DESCARGAR (SOLO MÓVIL) --- */}
+                            <div className="mt-8 md:hidden">
+                                <button 
+                                    onClick={handleExportPDF} 
+                                    disabled={isExporting}
+                                    className="w-full flex items-center justify-center gap-2 bg-brand-primary text-white hover:bg-brand-hover px-5 py-3.5 rounded-xl text-sm font-bold transition-all shadow-glow hover:shadow-glow-hover disabled:opacity-50"
+                                >
+                                    <i className={`ph-bold ${isExporting ? 'ph-spinner animate-spin' : 'ph-download-simple'} text-lg`}></i> 
+                                    {isExporting ? 'Generando PDF...' : 'Descargar Documento'}
+                                </button>
+                            </div>
+
                             {/* --- MARCA DE AGUA INFERIOR (FORMULARIO) --- */}
-                            <div className="mt-8 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
+                            <div className="mt-6 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
                                 <span className="text-[#737373] text-[11px] font-semibold tracking-[0.15em] font-poppins">CREADO POR</span>
                                 <span className="text-brand-primary text-[11px] font-bold tracking-[0.15em] ml-1.5 font-poppins">@NECESITODISENOS</span>
                             </div>
@@ -692,7 +704,8 @@
                         {/* El Documento (A4 style / One Page) */}
                         <div className="flex-1 overflow-y-auto py-10 px-4 lg:px-10 custom-scrollbar">
                             
-                            <div id="document-to-export" className="document-container max-w-[850px] mx-auto bg-white border border-gray-200 rounded-xl shadow-xl min-h-[1000px] overflow-hidden text-gray-900 print:bg-white print:border-none print:shadow-none print:m-0 print:p-0">
+                            {/* Ajuste importante para móvil: Se fuerza min-w-[800px] para asegurar aspecto de hoja A4 en PDF */}
+                            <div id="document-to-export" className="document-container min-w-[800px] md:min-w-0 max-w-[850px] mx-auto bg-white border border-gray-200 rounded-xl shadow-xl min-h-[1000px] overflow-hidden text-gray-900 print:bg-white print:border-none print:shadow-none print:m-0 print:p-0">
                                 
                                 {/* CABECERA DOCUMENTO */}
                                 <div className="bg-gray-50 border-b border-gray-200 p-10 md:p-14">
