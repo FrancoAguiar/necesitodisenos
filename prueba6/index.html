@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
-    <title>BriefPro | @necesitodisenos</title>
+    <title>BriefEditable™ | @necesitodisenos</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,17 +24,17 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800;900&family=Kalam:wght@700&family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
-    <!-- CONFIGURACIÓN TAILWIND (Estética FacturaPro Azul) -->
+    <!-- CONFIGURACIÓN TAILWIND (Estética FacturaPro) -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            primary: '#0066FF',
-                            hover: '#0052CC',
+                            primary: '#A98CFA',
+                            hover: '#9061F9',
                             bg: '#0A0A0A',
                             surface: '#121212',
                             card: '#161616',
@@ -45,9 +45,10 @@
                         sans: ['Inter', 'sans-serif'],
                         display: ['Inter Tight', 'sans-serif'],
                         poppins: ['Poppins', 'sans-serif'],
+                        hand: ['Kalam', 'cursive'],
                     },
                     boxShadow: {
-                        'glow': '0 0 40px -10px rgba(0, 102, 255, 0.4)',
+                        'glow': '0 0 40px -10px rgba(169, 140, 250, 0.4)',
                         'sheet': '0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.6)',
                     }
                 }
@@ -66,7 +67,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        ::selection { background: rgba(0, 102, 255, 0.3); color: white; }
+        ::selection { background: rgba(169, 140, 250, 0.3); color: white; }
         h1, h2, h3, h4 { font-family: 'Inter Tight', sans-serif; }
 
         /* Patrón de fondo y brillos */
@@ -82,7 +83,7 @@
         .bg-ambient-glow {
             position: fixed; top: 10%; left: 50%;
             width: 80vw; height: 80vw; max-width: 800px; max-height: 800px;
-            background: radial-gradient(circle, rgba(0, 102, 255, 0.06) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(169, 140, 250, 0.06) 0%, rgba(0,0,0,0) 70%);
             transform: translate(-50%, -50%); pointer-events: none; z-index: 0;
         }
 
@@ -101,7 +102,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 0.75rem; transition: border-color 0.3s ease;
         }
-        .glass-card:focus-within { border-color: rgba(0, 102, 255, 0.3); }
+        .glass-card:focus-within { border-color: rgba(169, 140, 250, 0.3); }
 
         .input-field { 
             background-color: rgba(0,0,0,0.3); border: 1px solid #262626; color: #F4F4F5; 
@@ -109,8 +110,8 @@
             transition: all 0.2s; width: 100%; 
         }
         .input-field:focus { 
-            outline: none; border-color: #0066FF; 
-            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
+            outline: none; border-color: #A98CFA; 
+            box-shadow: 0 0 0 2px rgba(169, 140, 250, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
             background-color: rgba(0,0,0,0.5);
         }
         .input-field::placeholder { color: #52525B; }
@@ -122,15 +123,15 @@
             transition: all 0.2s; width: 100%; display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; min-height: 46px;
         }
         .input-field-wrapper:focus-within {
-            outline: none; border-color: #0066FF; 
-            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
+            outline: none; border-color: #A98CFA; 
+            box-shadow: 0 0 0 2px rgba(169, 140, 250, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
             background-color: rgba(0,0,0,0.5);
         }
 
         /* Ajustes precisos para impresión/exportación PDF */
         @media print {
             body { background: #f3f4f6 !important; overflow: auto !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .bg-grid-pattern, .bg-ambient-glow { display: none !important; }
+            .bg-grid-pattern, .bg-ambient-glow, .web-watermark { display: none !important; }
             aside, header.print-hidden { display: none !important; }
             main { background: none !important; padding: 0 !important; overflow: visible !important; height: auto !important; width: 100% !important; }
             .document-container { max-width: 100% !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
@@ -148,6 +149,7 @@
 <body class="bg-brand-bg text-gray-300 font-sans relative min-h-[100dvh]">
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
     <div class="bg-ambient-glow"></div>
+    <div class="web-watermark font-display tracking-tighter hidden md:block z-0">@necesitodisenos</div>
 
     <div id="root" class="relative z-10"></div>
 
@@ -156,7 +158,7 @@
 
         // --- DATOS POR DEFECTO ---
         const DEFAULT_DATA = {
-            // 0. Configuración de Agencia (NUEVO)
+            // 0. Configuración de Agencia
             agencyName: '@necesitodisenos',
             agencyWeb: 'www.necesitodisenos.com',
             agencyLogo: null,
@@ -178,7 +180,7 @@
             valores: [], 
             tono: [],    
             noHacer: '', 
-            colores: ['#0066FF', '#121212', '#FFFFFF'],
+            colores: ['#A98CFA', '#121212', '#FFFFFF'],
             
             // 4. Entregables & Logística
             entregables: [
@@ -208,7 +210,7 @@
         // Input de Etiquetas (Burbujas) con botón de "+" explícito
         const TagInput = ({ label, tags, onAddTag, onRemoveTag, placeholder, helperText }) => {
             const [inputValue, setInputValue] = useState('');
-            const safeTags = Array.isArray(tags) ? tags : []; // Prevención de errores de caché
+            const safeTags = Array.isArray(tags) ? tags : [];
             
             const handleAdd = () => {
                 if (inputValue.trim() !== '') {
@@ -286,9 +288,8 @@
 
         // --- APP PRINCIPAL ---
         function App() {
-            // Estado y LocalStorage 
             const [data, setData] = useState(() => {
-                const saved = localStorage.getItem('briefPro_data_v4');
+                const saved = localStorage.getItem('briefPro_data_v5');
                 if (saved) {
                     try {
                         return JSON.parse(saved);
@@ -301,14 +302,13 @@
 
             const [isExporting, setIsExporting] = useState(false);
 
-            // FIX DE BUG DE IMÁGENES: Try/Catch para evitar crasheos si el base64 es muy grande
             useEffect(() => {
                 try {
-                    localStorage.setItem('briefPro_data_v4', JSON.stringify(data));
+                    localStorage.setItem('briefPro_data_v5', JSON.stringify(data));
                 } catch (e) {
                     console.warn("Exceso de cuota en localStorage. Guardando datos sin imágenes...");
                     const safeData = { ...data, referencias: [null, null, null, null] };
-                    localStorage.setItem('briefPro_data_v4', JSON.stringify(safeData));
+                    localStorage.setItem('briefPro_data_v5', JSON.stringify(safeData));
                 }
             }, [data]);
 
@@ -379,10 +379,9 @@
                 setData(prev => ({ ...prev, referencias: newRefs }));
             };
 
-            // Reiniciar TODO
             const handleReset = () => {
                 if (window.confirm('¿Seguro que deseas limpiar todo el brief? Esta acción no se puede deshacer.')) {
-                    localStorage.removeItem('briefPro_data_v4');
+                    localStorage.removeItem('briefPro_data_v5');
                     setData(DEFAULT_DATA);
                 }
             };
@@ -392,7 +391,6 @@
                 setIsExporting(true);
                 const element = document.getElementById('document-to-export');
                 
-                // Calculamos dimensiones actuales para que sea de 1 sola página
                 const w = element.offsetWidth;
                 const h = element.offsetHeight;
 
@@ -401,7 +399,6 @@
                     filename:     `Brief_${data.cliente || 'Cliente'}.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
                     html2canvas:  { scale: 2, useCORS: true, logging: false, width: w, height: h },
-                    // Unidad en pixeles y formato ajustado al ancho y alto del contenedor
                     jsPDF:        { unit: 'px', format: [w, h], orientation: 'portrait' }
                 };
                 
@@ -417,7 +414,6 @@
                 return Math.round((filled / requiredFields.length) * 100);
             };
 
-            // Helpers para UI
             const hasReferences = data.referencias.some(ref => ref !== null);
 
             return (
@@ -426,22 +422,24 @@
                     {/* PANEL IZQUIERDO: FORMULARIO DEL DISEÑADOR */}
                     <aside className="w-full md:w-[480px] border-r border-brand-border flex flex-col relative z-20 bg-brand-surface/80 backdrop-blur-md shadow-sheet">
                         
-                        {/* Header Panel Lateral */}
+                        {/* Header Panel Lateral: Estilo BriefEditable™ */}
                         <div className="p-5 border-b border-brand-border sticky top-0 z-10 bg-brand-bg/90 backdrop-blur">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex flex-col">
-                                    <h1 className="text-white font-display font-bold flex items-center gap-2 text-lg tracking-tight">
-                                        <div className="p-1.5 bg-brand-primary rounded-md shadow-glow">
-                                            <i className="ph-bold ph-notebook text-white text-sm"></i>
-                                        </div>
-                                        Briefing Creator
-                                    </h1>
-                                    <span className="text-[10px] text-gray-500 font-poppins mt-1">{data.agencyName || '@agencia'} • Herramienta Interna</span>
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-brand-primary p-1.5 rounded-lg shadow-glow animate-float">
+                                        <i className="ph-bold ph-pen-nib text-white text-lg"></i>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="font-display font-bold text-white text-xl leading-none tracking-tight">
+                                            Brief<span className="text-brand-primary">Editable™</span>
+                                        </span>
+                                        <span className="text-[10px] text-gray-400 font-medium hidden sm:block mt-1">Generador online de briefs</span>
+                                    </div>
                                 </div>
                                 <span className="text-[10px] text-brand-primary font-bold tracking-wider uppercase bg-brand-primary/10 border border-brand-primary/20 px-2 py-1 rounded">{calculateProgress()}%</span>
                             </div>
                             <div className="h-1 bg-brand-card rounded-full overflow-hidden">
-                                <div className="h-full transition-all duration-500 ease-out shadow-glow" style={{ width: `${calculateProgress()}%`, backgroundColor: '#0066FF' }}></div>
+                                <div className="h-full transition-all duration-500 ease-out shadow-glow" style={{ width: `${calculateProgress()}%`, backgroundColor: '#A98CFA' }}></div>
                             </div>
                         </div>
 
@@ -606,8 +604,8 @@
                                     disabled={isExporting}
                                     className="flex items-center gap-2 bg-brand-primary text-white hover:bg-brand-hover px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-glow hover:shadow-glow-hover disabled:opacity-50"
                                 >
-                                    <i className={`ph-bold ${isExporting ? 'ph-spinner animate-spin' : 'ph-export'}`}></i> 
-                                    {isExporting ? 'Generando...' : 'Exportar PDF'}
+                                    <i className={`ph-bold ${isExporting ? 'ph-spinner animate-spin' : 'ph-download-simple'}`}></i> 
+                                    {isExporting ? 'Generando...' : 'Descargar PDF'}
                                 </button>
                             </div>
                         </header>
