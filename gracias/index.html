@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado | nd.</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons para íconos minimalistas -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* Estilos base ultra limpios */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+            background-color: #0A0A0A; /* Negro puro para mayor contraste */
+            color: #EDEDED;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        ::selection {
+            background: rgba(16, 185, 129, 0.2);
+            color: white;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* Animación suave de entrada general */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.15s; }
+        .delay-2 { animation-delay: 0.3s; }
+
+        /* Tarjetas de Producto Clean */
+        .card-clean {
+            background: #121212;
+            border: 1px solid #262626;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+        
+        .card-clean:hover {
+            border-color: #404040;
+            background-color: #171717;
+        }
+
+        /* Degradado sutil sobre la imagen para que el texto de abajo respire */
+        .img-gradient {
+            background: linear-gradient(to bottom, transparent 50%, #121212 100%);
+        }
+        
+        .card-clean:hover .img-gradient {
+            background: linear-gradient(to bottom, transparent 50%, #171717 100%);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col items-center">
+
+    <!-- Barra Superior -->
+    <nav class="w-full border-b border-[#262626] bg-[#0A0A0A]">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo Imagen -->
+            <img src="logond.png" alt="nd. logo" class="h-6 object-contain">
+            
+            <div class="flex items-center gap-2 text-xs text-gray-400 font-medium bg-[#121212] px-3 py-1.5 rounded-md border border-[#262626]">
+                <i class="ph-fill ph-lock-key text-[#10B981]"></i>
+                <span>Transacción Segura</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="w-full max-w-5xl px-6 lg:px-8 pt-16 pb-24 mx-auto flex flex-col">
+        
+        <!-- Sección Hero de Agradecimiento -->
+        <header class="text-center mb-20 animate-fade-in flex flex-col items-center">
+            
+            <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#10B981]/10 text-[#10B981] text-xs font-bold tracking-widest uppercase mb-6 border border-[#10B981]/20">
+                Pago procesado con éxito
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-white leading-[1.1]">
+                ¡GRACIAS POR CONFIAR <br class="hidden md:block"/>EN NOSOTROS! <span class="inline-block animate-bounce" style="animation-duration: 2s;">🙌</span>
+            </h1>
+            
+            <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                Tu compra fue realizada de forma segura. Revisa tu bandeja de entrada, enviamos los accesos y todo lo que necesitás para arrancar ahí mismo.
+            </p>
+
+            <!-- Badges de estado -->
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 text-sm text-gray-300">
+                <div class="flex items-center gap-2 bg-[#121212] px-5 py-3 rounded-xl border border-[#262626]">
+                    <i class="ph-fill ph-lightning text-[#10B981] text-lg"></i> Acceso inmediato
+                </div>
+                <div class="flex items-center gap-2 bg-[#121212] px-5 py-3 rounded-xl border border-[#262626]">
+                    <i class="ph-fill ph-envelope-simple text-[#10B981] text-lg"></i> Enviado a tu email
+                </div>
+                <div class="flex items-center gap-2 bg-[#121212] px-5 py-3 rounded-xl border border-[#262626]">
+                    <i class="ph-fill ph-headset text-[#10B981] text-lg"></i> Soporte prioritario
+                </div>
+            </div>
+
+            <p class="text-white font-medium mb-8 tracking-wide">¡TODO LISTO EN TU CORREO!</p>
+            
+            <a href="#recomendados" class="inline-flex items-center justify-center w-14 h-14 rounded-full border border-[#262626] text-gray-500 hover:text-white hover:border-white hover:bg-white/5 transition-all mt-2">
+                <i class="ph ph-arrow-down text-2xl animate-bounce"></i>
+            </a>
+        </header>
+
+        <!-- Separador -->
+        <div class="w-full h-px bg-[#262626] mb-16 animate-fade-in delay-1"></div>
+
+        <!-- Sección de Recomendados -->
+        <section id="recomendados" class="w-full animate-fade-in delay-2">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">Potenciá tus próximos proyectos</h2>
+                <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                    Aprovechá estas herramientas que diseñé para que tu proceso de trabajo sea mucho más fluido y profesional.
+                </p>
+            </div>
+
+            <!-- Grid de 3 Productos Limpio -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                
+                <!-- Producto 1: Plantilla Brief -->
+                <div class="card-clean">
+                    <!-- Etiqueta de Destacado / Más vendido -->
+                    <div class="absolute top-4 right-4 z-10 bg-amber-400 text-amber-950 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                        <i class="ph-fill ph-star"></i> Más vendido
+                    </div>
+
+                    <!-- Imagen Estática Normal -->
+                    <div class="w-full h-48 relative bg-[#1A1A1A]">
+                        <img src="brief.png" alt="Plantilla Brief" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-200"></div>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-xl text-white mb-2">Plantilla de Brief</h3>
+                        <p class="text-sm text-gray-400 mb-8 leading-relaxed flex-grow">
+                            El cuestionario estratégico que necesitás para recolectar toda la información vital antes de empezar a diseñar.
+                        </p>
+                        <a href="https://pay.hotmart.com/V105400898L?checkoutMode=10" class="checkout-link w-full py-3.5 rounded-xl bg-white text-black text-sm font-bold transition-colors hover:bg-gray-200 flex justify-between items-center px-5">
+                            <span>Obtener acceso</span>
+                            <span class="opacity-80">$3.99</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Producto 2: Plantilla de Retículas -->
+                <div class="card-clean">
+                    <!-- Imagen Estática Normal -->
+                    <div class="w-full h-48 relative bg-[#1A1A1A]">
+                        <img src="reticulas.png" alt="Plantilla de Retículas" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-200"></div>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-xl text-white mb-2">Plantillas de Retículas</h3>
+                        <p class="text-sm text-gray-400 mb-8 leading-relaxed flex-grow">
+                            Estructuras prearmadas para organizar el espacio y acelerar drásticamente la maquetación de tus composiciones visuales.
+                        </p>
+                        <a href="https://pay.hotmart.com/N105368051E?off=h0f64rcp&checkoutMode=10" class="checkout-link w-full py-3.5 rounded-xl bg-[#262626] text-white hover:bg-[#333] text-sm font-bold transition-colors flex justify-between items-center px-5 border border-transparent hover:border-[#404040]">
+                            <span>Obtener acceso</span>
+                            <span class="text-gray-400">$1.99</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Producto 3: Checklist de Cotización -->
+                <div class="card-clean">
+                    <!-- Imagen Estática Normal -->
+                    <div class="w-full h-48 relative bg-[#1A1A1A]">
+                        <img src="checklist.png" alt="Checklist Cotización" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-200"></div>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 class="font-bold text-xl text-white mb-2">Checklist de Cotización</h3>
+                        <p class="text-sm text-gray-400 mb-8 leading-relaxed flex-grow">
+                            Una lista rápida para verificar que no te olvidaste de cobrar ningún adicional importante antes de enviar tu número final.
+                        </p>
+                        <a href="https://pay.hotmart.com/K105394184W?off=i85g5s9c&checkoutMode=10" class="checkout-link w-full py-3.5 rounded-xl bg-[#262626] text-white hover:bg-[#333] text-sm font-bold transition-colors flex justify-between items-center px-5 border border-transparent hover:border-[#404040]">
+                            <span>Obtener acceso</span>
+                            <span class="text-gray-400">$1.99</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-24 pt-8 text-center border-t border-[#262626] w-full flex flex-col items-center justify-center opacity-50">
+            <!-- Logo Imagen Footer -->
+            <img src="logond.png" alt="nd. logo" class="h-5 object-contain grayscale">
+        </footer>
+
+    </main>
+
+    <script>
+        // Script de redirección suave a Hotmart
+        document.querySelectorAll('.checkout-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Evitamos la navegación inmediata
+                
+                const targetUrl = this.getAttribute('href');
+                const originalContent = this.innerHTML;
+                
+                // Efecto de carga visualmente limpio
+                this.innerHTML = '<span class="flex items-center justify-center w-full gap-2"><i class="ph-bold ph-spinner animate-spin"></i> Redirigiendo...</span>';
+                
+                // Redirigir después de una breve animación
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 800);
+            });
+        });
+
+        // Scroll suave para la flecha
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
