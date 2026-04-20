@@ -165,6 +165,17 @@
                     El embudo exacto de Instagram que nos permitió escalar de $350 a <span class="text-white font-bold">+$4,000 USD/mes</span> Siendo diseñadores y sin pagar anuncios.
                 </p>
 
+                <!-- Mockup Mobile: Arriba del botón y tamaño mediano -->
+                <div class="block lg:hidden w-[60%] sm:w-[50%] max-w-[260px] mx-auto py-4 animate-float" data-aos="zoom-in">
+                    <div class="relative w-full">
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[90%] bg-brand-red/30 blur-[40px] rounded-full pointer-events-none z-0"></div>
+                        <img src="https://i.ibb.co/5hLv0C7S/Book-Mockup-2.png" 
+                             alt="Sistema Cómo Atraer Clientes" 
+                             class="relative z-10 w-full h-auto object-contain filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)]"
+                             onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';">
+                    </div>
+                </div>
+
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
                     <div class="flex flex-col items-center lg:items-start gap-2">
                         <a href="#offer" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-hover text-white rounded-lg font-bold text-sm uppercase tracking-widest transition-all shadow-glow hover:-translate-y-1">
@@ -187,8 +198,8 @@
                 </div>
             </div>
 
-            <!-- Mockup Libro -->
-            <div data-aos="fade-left" data-aos-delay="200" class="mt-12 lg:mt-0 w-full mx-auto flex justify-center">
+            <!-- Mockup Libro Desktop -->
+            <div data-aos="fade-left" data-aos-delay="200" class="hidden lg:flex mt-12 lg:mt-0 w-full mx-auto justify-center">
                 <div class="relative w-full max-w-[440px] mx-auto animate-float">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[90%] bg-brand-red/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
                     <img src="https://i.ibb.co/5hLv0C7S/Book-Mockup-2.png" 
@@ -325,13 +336,6 @@
                     </div>
                 </div>
 
-                <!-- Mid-timeline CTA -->
-                <div class="relative flex justify-center py-6 z-20" data-aos="zoom-in">
-                     <a href="#offer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg font-bold text-xs uppercase tracking-widest transition-all hover:scale-105 backdrop-blur-md hover:border-brand-red/50">
-                         DESBLOQUEAR ESTOS MÓDULOS <i class="ph-bold ph-lock-key-open"></i>
-                     </a>
-                </div>
-
                 <!-- HITO 3 -->
                 <div class="relative flex flex-col md:flex-row items-center mb-12 md:mb-16 group mt-6" data-aos="fade-up">
                     <div class="md:w-1/2 w-full md:pr-14 pl-16 md:pl-0 flex flex-col md:items-end">
@@ -458,11 +462,12 @@
         <div class="container mx-auto px-4 max-w-5xl flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-16">
             
             <div class="w-full md:w-1/2 flex justify-center md:justify-end" data-aos="fade-right">
-                <div class="relative w-full max-w-[380px] animate-float">
+                <div class="relative w-[60%] md:w-full max-w-[380px] animate-float">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-brand-red/20 blur-[60px] rounded-full pointer-events-none z-0"></div>
-                    <img src="mapa/imagen.png" 
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" 
                          alt="Ebook Completo" 
-                         class="relative z-10 w-full h-auto object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)]">
+                         class="relative z-10 w-full h-auto object-cover rounded-xl drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)] aspect-[4/5]"
+                         onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop';">
                 </div>
             </div>
             
@@ -496,10 +501,10 @@
 
             <div class="relative group mt-5 lg:mt-8 px-0 md:px-4" data-aos="zoom-in" data-aos-delay="100">
                 <!-- Botones Navegación -->
-                <button id="prevBtn" class="flex absolute left-2 md:-left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
+                <button id="prevBtn" aria-label="Anterior resultado" class="flex absolute left-2 md:-left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
                     <i class="ph-bold ph-caret-left text-xl"></i>
                 </button>
-                <button id="nextBtn" class="flex absolute right-2 md:-right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
+                <button id="nextBtn" aria-label="Siguiente resultado" class="flex absolute right-2 md:-right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full items-center justify-center text-white hover:bg-brand-red hover:border-brand-red transition-all shadow-lg">
                     <i class="ph-bold ph-caret-right text-xl"></i>
                 </button>
 
@@ -744,12 +749,13 @@
     <script>
         AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
 
-        // Timer de Urgencia en Navbar
+        // Timer de Urgencia en Navbar (Calculado hasta medianoche del día actual/siguiente de forma segura)
         function updateTimer() {
             const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setHours(24, 0, 0, 0);
+            // Calcula medianoche del día siguiente
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
             let diff = tomorrow - now;
+            
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
             const seconds = Math.floor((diff / 1000) % 60);
@@ -761,7 +767,7 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Lógica Carrusel de Resultados (Reducido a lo funcional)
+        // Lógica Carrusel de Resultados
         const track = document.getElementById('sliderTrack');
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -772,6 +778,7 @@
             cards.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.className = `h-2 rounded-full transition-all duration-300 w-2 bg-zinc-600`;
+                dot.ariaLabel = `Ir al resultado ${i + 1}`;
                 dot.addEventListener('click', () => {
                     const cardWidth = cards[0].offsetWidth;
                     const gap = window.innerWidth < 768 ? 16 : 24;
@@ -786,6 +793,7 @@
                 const cardWidth = cards[0].offsetWidth;
                 const gap = window.innerWidth < 768 ? 16 : 24;
                 let activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+                
                 dots.forEach((dot, i) => {
                     if (i === activeIndex) {
                         dot.classList.add('w-4', 'bg-brand-red');
@@ -809,14 +817,12 @@
             setTimeout(updateSliderState, 100);
         }
 
-        // Lógica de la Sticky Bar (Se muestra al llegar a FAQ o al pasar el Offer)
+        // Lógica de la Sticky Bar (Se muestra al pasar el Offer)
         window.addEventListener('scroll', () => {
             const stickyBar = document.getElementById('sticky-offer-bar');
-            const faqSec = document.getElementById('faq');
             const offerSec = document.getElementById('offer');
             
-            if (faqSec && offerSec && stickyBar) {
-                // Mostrar al pasar la sección de oferta
+            if (offerSec && stickyBar) {
                 const offerRect = offerSec.getBoundingClientRect();
                 const isPastOffer = offerRect.bottom < 0;
                 
