@@ -766,7 +766,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // ==============================================================================
         // 🛠️ TU "BACKEND" - CONFIGURACIÓN DE PRECIOS Y MONEDAS 🛠️
@@ -780,19 +780,16 @@
                 "CL": { moneda: "CLP", tasa: 950, simbolo: "$" },  // Chile
                 "PE": { moneda: "PEN", tasa: 3.8, simbolo: "S/" }, // Perú
                 "ES": { moneda: "EUR", tasa: 0.92, simbolo: "€" }, // España
-                "UY": { moneda: "UYU", tasa: 40, simbolo: "$U" }   // Uruguay agregado
+                "UY": { moneda: "UYU", tasa: 40, simbolo: "$U " }  // Uruguay
             },
-            // País por defecto si falla la conexión o el usuario es de otro país
             default: { pais: "US", moneda: "USD", tasa: 1, simbolo: "$" }
         };
         // ==============================================================================
-
 
         AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
 
         // --- SISTEMA DE GEOLOCALIZACIÓN Y PRECIOS DINÁMICOS ---
         
-        // 1. Conseguir el Emoji de la Bandera a partir del código de país
         function getFlagEmoji(countryCode) {
             if (countryCode === 'US' || countryCode === 'DEFAULT') return '🌎';
             const codePoints = countryCode
@@ -802,13 +799,11 @@
             return String.fromCodePoint(...codePoints);
         }
 
-        // 2. Inicializar el selector de países dinámicamente
         function initCountrySelect() {
             const select = document.getElementById('country-select');
             if(!select) return;
             select.innerHTML = '';
             
-            // Añadir opciones de la configuración
             for (const [code, config] of Object.entries(CONFIG_PRECIOS.tasas_de_cambio)) {
                 const opt = document.createElement('option');
                 opt.value = code;
@@ -816,19 +811,37 @@
                 select.appendChild(opt);
             }
             
-            // Añadir opción general en USD
             const defOpt = document.createElement('option');
             defOpt.value = 'US';
             defOpt.text = `🌎 USD`;
             select.appendChild(defOpt);
 
-            // Escuchar cambios
             select.addEventListener('change', (e) => {
                 aplicarPreciosLocales(e.target.value);
             });
         }
 
-        // 3. Aplicar los precios locales en toda la web
+        // LÓGICA DE REDONDEO MARKETINERO
+        function redondeoPsicologico(valor, moneda) {
+            // USD y EUR se quedan exactos (ej: 4.99 o 47.00)
+            if (moneda === 'USD' || moneda === 'EUR') {
+                return valor;
+            }
+            
+            // Para monedas grandes (ARS, COP, CLP) redondea al centenar más cercano (hacia arriba)
+            // Ej: 5235 -> 5300
+            if (valor > 1000) {
+                return Math.ceil(valor / 100) * 100;
+            } 
+            // Para monedas intermedias (UYU, MXN) redondea a la decena más cercana (hacia arriba)
+            // Ej: 197 -> 200
+            else if (valor > 50) {
+                return Math.ceil(valor / 10) * 10;
+            }
+            
+            return Math.ceil(valor);
+        }
+
         function aplicarPreciosLocales(countryCode) {
             const config = CONFIG_PRECIOS.tasas_de_cambio[countryCode] || CONFIG_PRECIOS.default;
             
@@ -847,11 +860,17 @@
                 const usdValue = parseFloat(el.getAttribute('data-usd'));
                 let localValue = usdValue * config.tasa;
                 
+                // Aplicamos el redondeo marketinero acá
+                localValue = redondeoPsicologico(localValue, config.moneda);
+                
                 let formattedValue;
-                if (localValue > 100) {
-                    formattedValue = Math.round(localValue).toLocaleString('es-AR');
+                if (localValue >= 100) {
+                    formattedValue = localValue.toLocaleString('es-AR'); // Separa miles con punto
                 } else {
-                    formattedValue = localValue.toLocaleString('en-US', {minimumFractionDigits: usdValue % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2});
+                    formattedValue = localValue.toLocaleString('en-US', {
+                        minimumFractionDigits: (usdValue % 1 !== 0 && config.moneda === 'USD') ? 2 : 0, 
+                        maximumFractionDigits: 2
+                    });
                 }
 
                 el.innerHTML = `${config.simbolo}${formattedValue}`;
@@ -863,9 +882,8 @@
             });
         }
 
-        // 4. Detectar la IP del usuario al entrar
         async function detectarUbicacion() {
-            initCountrySelect(); // Rellenar selector primero
+            initCountrySelect(); 
             const indicatorDiv = document.getElementById('country-indicator');
 
             try {
@@ -875,7 +893,6 @@
                 if(data && data.country_code) {
                     const country = data.country_code;
                     
-                    // Si el país tiene moneda configurada, se muestra y aplica
                     if (CONFIG_PRECIOS.tasas_de_cambio[country]) {
                         aplicarPreciosLocales(country);
                         if(indicatorDiv) {
@@ -884,7 +901,6 @@
                             setTimeout(() => indicatorDiv.classList.remove('opacity-0'), 100);
                         }
                     } else {
-                        // Si no tiene moneda, se deja en USD y se oculta el botón entero
                         aplicarPreciosLocales("US");
                         if(indicatorDiv) {
                             indicatorDiv.classList.add('hidden');
@@ -900,9 +916,7 @@
             }
         }
 
-        // Ejecutar detección al cargar
         document.addEventListener('DOMContentLoaded', detectarUbicacion);
-
 
         // --- TIMER DE URGENCIA ---
         function updateTimer() {
