@@ -208,7 +208,7 @@
         /* ESTILOS PARA IMPRESIÓN DIRECTA / PDF NATIVO */
         @media print {
             body, html { background: white !important; height: auto !important; overflow: auto !important; }
-            aside, .bg-grid-pattern, .bg-ambient-glow, .web-watermark, .toolbar-actions, #toast, .mobile-fab, #confirmModal, #adminReviewView, .banner-integrado, #exportModal, #topPromoBanner { display: none !important; }
+            aside, .bg-grid-pattern, .bg-ambient-glow, .web-watermark, .toolbar-actions, #toast, .mobile-fab, #confirmModal, #adminReviewView, .banner-integrado, #exportModal, #topPromoBanner, #statusBanner { display: none !important; }
             main { background: white !important; height: auto !important; overflow: visible !important; display: block !important; }
             .document-wrapper { padding: 0 !important; margin: 0 !important; display: block !important; }
             #documentPreview {
@@ -363,6 +363,20 @@
                 <button onclick="executeReset()" class="px-4 py-2 rounded-lg text-sm font-bold bg-brand-primary text-black hover:bg-brand-hover shadow-glow transition-all">Sí, restaurar</button>
             </div>
         </div>
+    </div>
+
+    <!-- BANNER DE AVISO (CUENTA SUSPENDIDA) -->
+    <div id="statusBanner" class="bg-[#111] border-b border-white/5 text-gray-300 py-2.5 px-4 z-[500] flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 shrink-0 w-full relative transition-all duration-300">
+        <span class="flex items-center gap-2 text-xs font-medium tracking-wide">
+            <i class="ph-fill ph-warning-circle text-brand-primary text-base"></i>
+            Estamos restableciendo nuestra cuenta principal de Instagram (@necesitodisenos).
+        </span>
+        <span class="text-xs text-gray-400 font-medium tracking-wide">
+            ¿Necesitás soporte? <a href="mailto:soporte@necesitodisenos.com" class="text-white hover:text-brand-primary underline decoration-white/30 transition-colors ml-1 font-bold">Escribinos por mail</a>.
+        </span>
+        <button onclick="document.getElementById('statusBanner').style.display='none'" class="absolute right-3 sm:right-6 text-gray-500 hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full p-1">
+            <i class="ph-bold ph-x text-xs"></i>
+        </button>
     </div>
 
     <!-- WRAPPER PRINCIPAL APP (Envuelve Sidebar + Preview para no romper el flex-row) -->
@@ -773,6 +787,7 @@
                 // Modo Generador de Imagen Activado
                 document.getElementById('sidebarPanel').style.display = 'none';
                 document.getElementById('mainPreviewArea').style.display = 'none';
+                document.getElementById('statusBanner').style.display = 'none';
                 
                 const adminView = document.getElementById('adminReviewView');
                 adminView.classList.remove('hidden');
