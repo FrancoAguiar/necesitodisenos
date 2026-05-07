@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sticker Cup 2026</title>
+    <title>FiguritApp</title>
     <link id="manifest-link" rel="manifest" href="">
     <meta name="theme-color" content="#07111F">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
     
     <style>
         /* =========================================
@@ -28,8 +30,8 @@
             --glass-border: rgba(255, 255, 255, 0.12);
             --glass-blur: blur(18px);
 
-            --font-heading: 'Bebas Neue', 'Anton', 'Archivo Black', 'Impact', sans-serif;
-            --font-body: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+            --font-heading: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             
             --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
@@ -112,9 +114,9 @@
 
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
 
-        .btn-primary { background: var(--lime); color: var(--navy); padding: 16px 24px; border-radius: 16px; font-weight: bold; font-size: 1.1rem; width: 100%; margin-bottom: 15px; transition: transform 0.1s, filter 0.2s; }
+        .btn-primary { background: var(--lime); color: var(--navy); padding: 16px 24px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; width: 100%; margin-bottom: 15px; transition: transform 0.1s, filter 0.2s; }
         .btn-primary:active { transform: scale(0.96); filter: brightness(0.9); }
-        .btn-secondary { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--white); padding: 14px 24px; border-radius: 16px; font-weight: 500; width: 100%; margin-bottom: 15px; backdrop-filter: var(--glass-blur); transition: background 0.2s; }
+        .btn-secondary { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--white); padding: 14px 24px; border-radius: 12px; font-weight: 500; width: 100%; margin-bottom: 15px; backdrop-filter: var(--glass-blur); transition: background 0.2s; }
         .btn-secondary:active { background: rgba(255,255,255,0.15); }
 
         /* =========================================
@@ -182,19 +184,21 @@
         .filter-pill { padding: 8px 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; color: var(--gray); font-size: 0.9rem; white-space: nowrap; transition: all 0.2s; }
         .filter-pill.active { background: var(--white); color: var(--navy); font-weight: bold; }
 
-        .search-bar { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; color: white; margin-bottom: 20px; font-size: 1rem; transition: border-color 0.3s; }
+        .search-bar { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; color: white; margin-bottom: 20px; font-size: 1rem; transition: border-color 0.3s; }
         .search-bar:focus { border-color: var(--lime); }
 
-        .section-group { margin-bottom: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
+        .section-group { margin-bottom: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 6px; overflow: hidden; }
         .section-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(0,0,0,0.2); }
-        .section-title { font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .section-title { font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .section-stats { font-size: 0.85rem; color: var(--gray); display: flex; align-items: center; gap: 10px; }
         .section-progress { width: 60px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
         .section-progress-fill { height: 100%; background: var(--lime); width: 0%; transition: width 0.3s; }
         
-        .section-content { display: none; padding: 15px; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; }
-        .section-group.open .section-content { display: grid; }
+        .section-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; max-height: 0; opacity: 0; overflow: hidden; padding: 0 15px; transform: translateY(-6px); transition: max-height .32s ease, opacity .22s ease, padding .26s ease, transform .26s ease; }
+        .section-group.open .section-content { max-height: 1600px; opacity: 1; padding: 15px; transform: translateY(0); }
         .section-group.open .section-header { border-bottom: 1px solid var(--glass-border); }
+        .section-header::after { content: '▾'; font-size: .95rem; color: rgba(255,255,255,.65); margin-left: 12px; transition: transform .26s ease, color .2s ease; }
+        .section-group.open .section-header::after { transform: rotate(180deg); color: var(--lime); }
 
         /* Sticker Card */
         .sticker-card {
@@ -296,35 +300,701 @@
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    
+
+        /* =========================================
+           FIGURITAPP GEOMETRIC WORLD STYLE
+           Inspirado en formas geométricas mundialistas, sin logos oficiales.
+           ========================================= */
+        :root {
+            --brand-red: #E61D25;
+            --brand-orange: #FF4B00;
+            --brand-green: #00C853;
+            --brand-lime: #B6FF00;
+            --brand-blue: #3155FF;
+            --brand-sky: #74A9FF;
+            --brand-burgundy: #7A1010;
+            --brand-navy: #07111F;
+            --brand-white: #F8FAFC;
+            --glass-bg: rgba(7, 17, 31, 0.68);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        body.figurit-theme {
+            background-color: var(--brand-navy);
+            background-image:
+                radial-gradient(circle at 12% 6%, rgba(255, 75, 0, .42), transparent 24%),
+                radial-gradient(circle at 88% 4%, rgba(0, 200, 83, .36), transparent 26%),
+                radial-gradient(circle at 30% 100%, rgba(49, 85, 255, .36), transparent 30%),
+                linear-gradient(180deg, #07111F 0%, #101827 100%);
+        }
+
+        body.figurit-theme::before {
+            content: "";
+            position: fixed;
+            inset: -18%;
+            z-index: -2;
+            pointer-events: none;
+            opacity: .28;
+            background:
+                repeating-radial-gradient(
+                    circle at 50% 45%,
+                    transparent 0 32px,
+                    #7A1010 33px 51px,
+                    #F8FAFC 52px 66px,
+                    #74A9FF 67px 90px,
+                    #3155FF 91px 118px,
+                    #B6FF00 119px 144px,
+                    #00C853 145px 174px,
+                    #FF4B00 175px 205px,
+                    #E61D25 206px 238px
+                );
+            filter: saturate(1.18) blur(.2px);
+            transform: rotate(-12deg) scale(1.15);
+            animation: geoFlow 22s ease-in-out infinite alternate;
+        }
+
+        body.figurit-theme::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(7,17,31,.18), rgba(7,17,31,.92) 78%),
+                radial-gradient(circle at 50% 0%, rgba(255,255,255,.10), transparent 38%);
+        }
+
+        @keyframes geoFlow {
+            from { transform: rotate(-14deg) scale(1.12) translate3d(-2.5%, -1%, 0); }
+            to { transform: rotate(-4deg) scale(1.24) translate3d(2.5%, 1%, 0); }
+        }
+
+        .app-container {
+            background: linear-gradient(180deg, rgba(7,17,31,.56), rgba(7,17,31,.84));
+            border-inline: 1px solid rgba(255,255,255,.08);
+        }
+
+        #loading-screen {
+            overflow: hidden;
+            isolation: isolate;
+            background: #07111F;
+        }
+
+        .loading-geo {
+            position: absolute;
+            inset: -28%;
+            z-index: 0;
+            opacity: .98;
+            background:
+                repeating-radial-gradient(
+                    circle at 50% 50%,
+                    #F8FAFC 0 36px,
+                    #7A1010 37px 58px,
+                    #74A9FF 59px 88px,
+                    #3155FF 89px 122px,
+                    #B6FF00 123px 154px,
+                    #00C853 155px 190px,
+                    #FF4B00 191px 226px,
+                    #E61D25 227px 262px
+                );
+            transform: rotate(45deg) scale(1.18);
+            animation: loadingTunnel 6.5s cubic-bezier(.45,0,.2,1) infinite alternate;
+        }
+
+        .loading-geo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0 16%, rgba(7,17,31,.12) 28%, rgba(7,17,31,.88) 68%);
+        }
+
+        .geo-band {
+            position: absolute;
+            width: 34vw;
+            height: 34vw;
+            min-width: 180px;
+            min-height: 180px;
+            border-radius: 42px;
+            border: 24px solid rgba(255,255,255,.22);
+            transform: rotate(45deg);
+            filter: blur(.15px);
+            animation: bandDrift 7s ease-in-out infinite alternate;
+        }
+        .band-1 { left: 8%; top: 18%; border-color: rgba(49,85,255,.72); }
+        .band-2 { right: 3%; top: 24%; border-color: rgba(182,255,0,.76); animation-delay: -.8s; }
+        .band-3 { left: 20%; bottom: 8%; border-color: rgba(255,75,0,.74); animation-delay: -1.5s; }
+        .band-4 { right: 22%; bottom: 16%; border-color: rgba(0,200,83,.74); animation-delay: -2.2s; }
+
+        @keyframes loadingTunnel {
+            0% { transform: rotate(44deg) scale(1.12) translate3d(-2%, -1%, 0); }
+            100% { transform: rotate(34deg) scale(1.28) translate3d(2%, 1%, 0); }
+        }
+        @keyframes bandDrift {
+            from { transform: rotate(45deg) translate3d(-8px, 4px, 0) scale(.96); }
+            to { transform: rotate(45deg) translate3d(10px, -6px, 0) scale(1.04); }
+        }
+
+        #loading-screen > *:not(.loading-geo) {
+            position: relative;
+            z-index: 2;
+        }
+
+        .figurit-mark {
+            width: 112px;
+            height: 138px;
+            border-radius: 34px;
+            display: grid;
+            place-items: center;
+            background:
+                linear-gradient(#fff, #fff) padding-box,
+                linear-gradient(135deg, #7A1010, #E61D25, #FF4B00, #B6FF00, #3155FF) border-box;
+            border: 8px solid transparent;
+            box-shadow: 0 28px 90px rgba(0,0,0,.42), 0 0 44px rgba(214,169,58,.42);
+            margin-bottom: 18px;
+            animation: cardFloat 2.8s ease-in-out infinite;
+            overflow: hidden;
+        }
+        .mark-card {
+            font-family: var(--font-heading);
+            font-size: 3.4rem;
+            line-height: 1;
+            letter-spacing: -1px;
+            color: #07111F;
+            text-shadow: 0 2px 0 rgba(214,169,58,.38);
+        }
+        .mark-shine {
+            position: absolute;
+            inset: -60%;
+            background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.72) 48%, transparent 60%);
+            animation: shineSweep 2.4s ease-in-out infinite;
+        }
+        .loading-brand {
+            font-size: 2.2rem;
+            color: #fff;
+            text-shadow: 0 4px 18px rgba(0,0,0,.45);
+            letter-spacing: .9px;
+        }
+        @keyframes cardFloat { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(1.5deg); } }
+        @keyframes shineSweep { 0% { transform: translateX(-45%) rotate(12deg); opacity: 0; } 35% { opacity: .9; } 70%,100% { transform: translateX(45%) rotate(12deg); opacity: 0; } }
+
+        .loader-bar-bg {
+            width: min(280px, 72vw);
+            height: 10px;
+            border: 1px solid rgba(255,255,255,.38);
+            background: rgba(7,17,31,.55);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,.25), 0 12px 35px rgba(0,0,0,.25);
+        }
+        .loader-bar-fill {
+            background: linear-gradient(90deg, #E61D25, #FF4B00, #B6FF00, #00C853, #3155FF, #74A9FF);
+            background-size: 220% 100%;
+            box-shadow: 0 0 22px rgba(182,255,0,.52);
+            animation: progressSweep 1.2s linear infinite;
+        }
+        @keyframes progressSweep { from { background-position: 0% 0; } to { background-position: 220% 0; } }
+        .loader-text {
+            color: rgba(255,255,255,.92);
+            text-shadow: 0 2px 12px rgba(0,0,0,.55);
+            font-weight: 700;
+        }
+
+        .app-header {
+            background:
+                linear-gradient(90deg, rgba(230,29,37,.08), rgba(49,85,255,.10), rgba(0,200,83,.06)),
+                rgba(2,5,10,.995);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 18px 38px rgba(0,0,0,.50);
+        }
+        .header-title {
+            font-size: 1.75rem;
+            text-shadow: 0 4px 14px rgba(0,0,0,.35);
+        }
+        .header-title span {
+            color: var(--brand-lime);
+            text-shadow: 0 0 20px rgba(182,255,0,.38);
+        }
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            min-width: 0;
+        }
+        .brand-logo {
+            width: 180px;
+            height: auto;
+            object-fit: contain;
+            flex: 0 0 auto;
+            display: block;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,.42));
+        }
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            line-height: 1;
+            text-transform: none !important;
+        }
+        @media (max-width: 420px) {
+            .brand-logo { width: 180px; height: auto; }
+            .header-title { font-size: 1.5rem; }
+            #header-stats { font-size: .82rem !important; padding: 4px 9px !important; }
+        }
+        #header-stats {
+            color: #07111F !important;
+            background: linear-gradient(135deg, #B6FF00, #F8FAFC) !important;
+            border: 0 !important;
+            box-shadow: 0 0 24px rgba(182,255,0,.28);
+        }
+
+        .dash-summary, .exchange-box, .section-group, .modal-content {
+            background: rgba(7,17,31,.74);
+            border: 1px solid rgba(255,255,255,.18);
+            box-shadow: 0 18px 45px rgba(0,0,0,.25);
+        }
+        .dash-summary {
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255,75,0,.22), transparent 34%),
+                radial-gradient(circle at 100% 0%, rgba(49,85,255,.24), transparent 34%),
+                rgba(7,17,31,.76);
+        }
+        .progress-bar-bg, .section-progress {
+            background: rgba(255,255,255,.10);
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #3155FF, #74A9FF, #B6FF00);
+            box-shadow: 0 0 18px rgba(116,169,255,.22);
+        }
+        .section-progress-fill {
+            background: linear-gradient(90deg, #3155FF, #74A9FF);
+            box-shadow: 0 0 12px rgba(116,169,255,.18);
+        }
+
+        .filter-pill {
+            background: rgba(7,17,31,.62);
+            border-color: rgba(255,255,255,.20);
+            color: rgba(255,255,255,.82);
+        }
+        .filter-pill.active {
+            background: linear-gradient(135deg, #F8FAFC, #B6FF00);
+            color: #07111F;
+            box-shadow: 0 8px 24px rgba(182,255,0,.22);
+        }
+        .search-bar, .textarea-input {
+            background: rgba(7,17,31,.76);
+            border-color: rgba(255,255,255,.20);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+        }
+        .search-bar:focus, .textarea-input:focus {
+            border-color: #74A9FF;
+            box-shadow: 0 0 0 4px rgba(116,169,255,.12);
+        }
+
+        .section-header {
+            background:
+                linear-gradient(90deg, rgba(49,85,255,.18), rgba(182,255,0,.07), rgba(255,75,0,.12)),
+                rgba(0,0,0,.22);
+        }
+        .section-title {
+            font-weight: 900;
+            letter-spacing: .1px;
+        }
+
+        .sticker-card {
+            border-radius: 16px;
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025)),
+                rgba(7,17,31,.88);
+            border: 1px dashed rgba(255,255,255,.22);
+            color: rgba(255,255,255,.42);
+            box-shadow: 0 12px 28px rgba(0,0,0,.28);
+        }
+        .sticker-card::after {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .sticker-card.special::before {
+            background: linear-gradient(45deg, transparent, rgba(214,169,58,.24), rgba(255,255,255,.20), transparent);
+            animation: specialFoil 2.7s ease-in-out infinite;
+        }
+        @keyframes specialFoil { from { transform: translateX(-25%) rotate(45deg); } to { transform: translateX(25%) rotate(45deg); } }
+        .sticker-card.tengo {
+            background:
+                radial-gradient(circle at top, rgba(182,255,0,.26), transparent 54%),
+                linear-gradient(145deg, rgba(0,200,83,.34), rgba(7,17,31,.88));
+            border-color: #B6FF00;
+            box-shadow: 0 0 0 1px rgba(182,255,0,.22), 0 16px 30px rgba(0,200,83,.16);
+        }
+        .sticker-card.tengo .st-status-lbl {
+            background: linear-gradient(135deg, #B6FF00, #F8FAFC);
+            color: #07111F;
+        }
+        .sticker-card.repetida {
+            border-color: #FF4B00;
+            box-shadow: 0 0 0 1px rgba(255,75,0,.35), 0 16px 30px rgba(255,75,0,.18);
+        }
+        .sticker-card.reservada {
+            border-color: #74A9FF;
+            box-shadow: 0 0 0 1px rgba(116,169,255,.42), 0 16px 30px rgba(49,85,255,.18);
+        }
+        .st-code {
+            font-size: 1.38rem;
+            color: currentColor;
+        }
+        .st-name {
+            font-weight: 700;
+            color: rgba(255,255,255,.72);
+        }
+        .sticker-card.tengo .st-name, .sticker-card.tengo .st-code {
+            color: #F8FAFC;
+        }
+        .badge-rep, .btn-plus-dup {
+            background: linear-gradient(135deg, #FF4B00, #E61D25);
+        }
+        .badge-res {
+            background: linear-gradient(90deg, #3155FF, #74A9FF);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #B6FF00, #F8FAFC);
+            box-shadow: 0 14px 30px rgba(182,255,0,.18);
+        }
+        .btn-secondary, .btn-action {
+            background: rgba(7,17,31,.68);
+            border-color: rgba(255,255,255,.18);
+        }
+        .btn-secondary { font-size: 1rem; font-weight: 600; line-height: 1.2; min-height: 52px; }
+        .action-grid button { min-width: 0; white-space: normal; text-wrap: balance; line-height: 1.15; min-height: 56px; padding-inline: 16px; }
+        .action-grid .btn-primary { font-size: clamp(.92rem, 3.8vw, 1.02rem); }
+        .action-grid .btn-secondary { font-size: clamp(.92rem, 3.6vw, 1rem); }
+        .bottom-nav {
+            background: rgba(2,5,10,.995);
+            border-top: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 -22px 50px rgba(0,0,0,.52);
+        }
+        .nav-item.active {
+            color: #B6FF00;
+        }
+
+
+
+        /* Loader logo oficial mini zoom */
+        .official-loader-mark {
+            width: min(214px, 60vw);
+            height: min(296px, 80vw);
+            padding: 22px 18px 40px;
+            border-radius: 28px;
+            background: rgba(7,17,31,.96);
+            border: 1px solid rgba(255,255,255,.18);
+            box-shadow: 0 26px 70px rgba(0,0,0,.36), 0 0 44px rgba(214,169,58,.28);
+            overflow: hidden;
+            animation: logoMiniZoom 2s cubic-bezier(.18,.82,.22,1) both, floatSoft 2.8s ease-in-out 2s infinite;
+        }
+        .loader-official-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+            transform: scale(1);
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,.28));
+            padding-bottom: 0;
+            animation: logoInnerSettle 2s cubic-bezier(.18,.82,.22,1) both;
+        }
+        .official-loader-mark .mark-shine {
+            border-radius: 28px;
+        }
+        @keyframes logoMiniZoom {
+            0% { opacity: 0; transform: scale(.78) translateY(12px); filter: blur(2px); }
+            62% { opacity: 1; transform: scale(1.03) translateY(0); filter: blur(0); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+        @keyframes logoInnerSettle {
+            0% { transform: scale(.86); }
+            62% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        @keyframes floatSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+
+
+        /* Modal propio para resetear progreso */
+        .confirm-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+            background: rgba(0,0,0,.72);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s ease;
+        }
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .confirm-modal-card {
+            width: min(100%, 430px);
+            background: linear-gradient(180deg, rgba(16,24,39,.98), rgba(7,17,31,.98));
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 30px 90px rgba(0,0,0,.55);
+            transform: translateY(12px) scale(.96);
+            transition: transform .24s cubic-bezier(.18,.82,.22,1);
+        }
+        .confirm-modal-overlay.active .confirm-modal-card {
+            transform: translateY(0) scale(1);
+        }
+        .confirm-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 14px;
+            background: rgba(230,29,37,.14);
+            border: 1px solid rgba(230,29,37,.35);
+            color: #ff6b6b;
+            font-size: 1.55rem;
+        }
+        .confirm-title {
+            font-family: var(--font-heading);
+            color: var(--white);
+            font-size: 1.75rem;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .confirm-copy {
+            color: rgba(255,255,255,.72);
+            font-size: .96rem;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+        .confirm-warning {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 16px;
+            padding: 12px 14px;
+            color: rgba(255,255,255,.82);
+            font-size: .88rem;
+            margin-bottom: 18px;
+        }
+        .confirm-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .btn-confirm-danger {
+            width: 100%;
+            padding: 15px 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #E61D25, #FF4B00);
+            color: white;
+            font-weight: 900;
+            font-size: 1rem;
+        }
+        .btn-confirm-cancel {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.14);
+            color: white;
+            font-weight: 800;
+        }
+        .btn-confirm-danger:active,
+        .btn-confirm-cancel:active {
+            transform: scale(.98);
+        }
+
+
+        /* Ajustes finales: nombre, sonido visual y barras limpias */
+        .loading-brand, .header-title, .header-title span, .footer-legal {
+            text-transform: none !important;
+            letter-spacing: .2px;
+        }
+        .loading-brand {
+            font-family: var(--font-body);
+            font-weight: 900;
+        }
+        .header-title {
+            font-family: var(--font-body);
+            font-weight: 900;
+        }
+        #dash-bar-fill.progress-bar-fill,
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #3155FF 0%, #38BDF8 52%, #00C853 100%) !important;
+            box-shadow: 0 0 14px rgba(56,189,248,.22) !important;
+        }
+        .section-progress-fill {
+            background: linear-gradient(90deg, #38BDF8 0%, #00C853 100%) !important;
+            box-shadow: 0 0 8px rgba(56,189,248,.18) !important;
+        }
+        .loader-bar-fill {
+            background: linear-gradient(90deg, #3155FF 0%, #38BDF8 48%, #00C853 100%) !important;
+            box-shadow: 0 0 18px rgba(56,189,248,.28) !important;
+        }
+
+
+
+        /* =========================================
+           CÁMARA / OCR ASISTIDO
+           ========================================= */
+        .camera-box {
+            background: rgba(7,17,31,.74);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 18px 45px rgba(0,0,0,.25);
+            margin-bottom: 16px;
+        }
+        .camera-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background: rgba(0,0,0,.38);
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 14px 0;
+        }
+        #camera-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background: #02050A;
+        }
+        .camera-scan-line {
+            position: absolute;
+            left: 8%; right: 8%; top: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--lime), transparent);
+            box-shadow: 0 0 18px rgba(198,255,61,.52);
+            animation: scanLine 1.8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .camera-target {
+            position: absolute;
+            inset: 20%;
+            border: 1px solid rgba(255,255,255,.22);
+            border-radius: 10px;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+            pointer-events: none;
+        }
+        @keyframes scanLine { from { transform: translateY(-90px); opacity: .55; } to { transform: translateY(90px); opacity: 1; } }
+        .camera-status {
+            color: rgba(255,255,255,.82);
+            font-size: .92rem;
+            line-height: 1.45;
+            min-height: 22px;
+        }
+        .camera-status strong { color: var(--lime); }
+        .camera-status.warn strong { color: var(--orange); }
+        .camera-status.err strong { color: var(--red); }
+        .camera-result-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .camera-result {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(0,0,0,.20);
+        }
+        .camera-result-main { min-width: 0; }
+        .camera-code { font-weight: 900; color: var(--white); font-size: 1.05rem; }
+        .camera-name { color: var(--gray); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+        .camera-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: .72rem;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+        .camera-pill.new { background: rgba(198,255,61,.16); color: var(--lime); }
+        .camera-pill.owned { background: rgba(255,122,26,.16); color: var(--orange); }
+        .camera-mini-btn {
+            flex: 0 0 auto;
+            padding: 9px 10px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #B6FF00, #F8FAFC);
+            color: #07111F;
+            font-weight: 800;
+            font-size: .82rem;
+        }
+        .camera-help {
+            color: var(--gray);
+            font-size: .86rem;
+            line-height: 1.45;
+            margin-bottom: 12px;
+        }
+        .camera-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 420px) {
+            .camera-actions { grid-template-columns: 1fr; }
+            .camera-name { max-width: 160px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
     </style>
 </head>
-<body>
+<body class="figurit-theme">
 
-<!-- ARCHIVO DE DATOS EXTERNO -->
+<!-- BASE DE DATOS REAL EXTERNA -->
 <script src="albumData.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <div class="app-container" id="app-container">
     <canvas id="confetti-canvas"></canvas>
     <div id="toast-container" class="toast-container"></div>
 
     <div id="loading-screen" class="screen">
-        <svg class="loader-logo" viewBox="0 0 24 24" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <defs>
-                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#D6A93A" />
-                    <stop offset="100%" stop-color="#FFF" />
-                </linearGradient>
-            </defs>
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-        </svg>
-        <h2>Sticker Cup 2026</h2>
+        <div class="loading-geo" aria-hidden="true">
+            <span class="geo-band band-1"></span>
+            <span class="geo-band band-2"></span>
+            <span class="geo-band band-3"></span>
+            <span class="geo-band band-4"></span>
+        </div>
+        <div class="loader-logo figurit-mark official-loader-mark" aria-label="FiguritApp">
+            <img class="loader-official-logo" src="https://i.ibb.co/p6J5B1kV/mundial-2026.png" alt="Logo mundial 2026">
+            <span class="mark-shine"></span>
+        </div>
+        <h2 class="loading-brand">FiguritApp</h2>
         <div class="loader-bar-bg"><div class="loader-bar-fill" id="loader-fill"></div></div>
-        <p class="loader-text">Verificando base de datos...</p>
+        <p class="loader-text">Iniciando base de datos...</p>
     </div>
 
     <div id="main-app" class="screen hidden">
         <header class="app-header">
-            <h2 class="header-title">Sticker<span>Cup</span></h2>
+            <div class="brand-wrap">
+                <img src="logo.png" alt="Logo FiguritApp" class="brand-logo">
+            </div>
             <div id="header-stats" style="font-size:0.9rem; color:var(--lime); font-weight:bold; background:rgba(60,172,59,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid var(--lime);">0%</div>
         </header>
 
@@ -387,6 +1057,45 @@
                 </button>
             </div>
 
+
+            <!-- VIEW: CÁMARA -->
+            <div id="view-camera" class="view-section">
+                <h3 style="margin-bottom: 10px; color: var(--gold);">Cámara</h3>
+                <p class="camera-help">Apuntá al código impreso de la figurita, tipo <strong>ARG-01</strong>, <strong>MEX15</strong> o <strong>FWC-1</strong>. Si la app lo lee, te avisa si ya la tenés o si es nueva.</p>
+
+                <div class="camera-box">
+                    <div class="camera-actions">
+                        <button class="btn-primary" onclick="app.startCameraScanner()" style="margin-bottom:0;">📷 Abrir cámara</button>
+                        <button class="btn-secondary" onclick="app.stopCameraScanner()" style="margin-bottom:0;">Cerrar cámara</button>
+                    </div>
+                    <div class="camera-frame">
+                        <video id="camera-video" playsinline muted></video>
+                        <div class="camera-target"></div>
+                        <div class="camera-scan-line"></div>
+                    </div>
+                    <div id="camera-status" class="camera-status">Cámara detenida.</div>
+                </div>
+
+                <div class="camera-box">
+                    <h3 style="font-size:1.05rem; margin-bottom:10px;">Ingreso asistido</h3>
+                    <p class="camera-help">Si el OCR no lee bien, escribí el código visto en cámara y lo procesamos igual.</p>
+                    <textarea id="camera-manual-input" class="textarea-input" placeholder="ARG-01, MEX15, FWC-1" style="height:90px;"></textarea>
+                    <div class="camera-actions">
+                        <button class="btn-primary" onclick="app.addManualCameraCodes()" style="margin-bottom:0;">Agregar a lectura</button>
+                        <button class="btn-secondary" onclick="app.clearCameraScans()" style="margin-bottom:0;">Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="camera-box">
+                    <div class="exchange-title" style="margin-bottom:8px;">Lecturas</div>
+                    <div id="camera-results" class="camera-result-list"><p style="color:var(--gray);">Todavía no hay códigos detectados.</p></div>
+                    <div class="camera-actions" style="margin-top:14px;">
+                        <button class="btn-primary" onclick="app.applyCameraScans('tengo')" style="margin-bottom:0;">Marcar nuevas como tengo</button>
+                        <button class="btn-secondary" onclick="app.applyCameraScans('repetida')" style="margin-bottom:0; border-color:var(--orange); color:var(--orange);">Sumar como repetidas</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- VIEW: AJUSTES -->
             <div id="view-settings" class="view-section">
                 <h3 style="margin-bottom: 20px; color: var(--gold);">Preferencias</h3>
@@ -410,8 +1119,8 @@
                 <button class="btn-secondary btn-danger" onclick="app.resetProgress()" style="margin-top: 20px;">⚠️ Resetear Progreso</button>
 
                 <div class="footer-legal">
-                    Sticker Cup 2026 v5.0<br>
-                    Tracker seguro y offline. Los datos del álbum se cargan de tu archivo local albumData.js y tu progreso se guarda en tu dispositivo.
+                    FiguritApp v1.0<br>
+                    by Franco Aguiar
                 </div>
             </div>
         </div>
@@ -421,6 +1130,7 @@
             <div class="nav-item" onclick="app.switchView('dashboard')" id="nav-dashboard"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>Stats</span></div>
             <div class="nav-item" onclick="app.switchView('swap')" id="nav-swap"><svg viewBox="0 0 24 24"><path d="M16 11V5.5l-6 4.5 6 4.5V11zM8 13v5.5l6-4.5-6-4.5V13z"/></svg><span>Listas</span></div>
             <div class="nav-item" onclick="app.switchView('quick')" id="nav-quick"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg><span>Rápido</span></div>
+            <div class="nav-item" onclick="app.switchView('camera')" id="nav-camera"><svg viewBox="0 0 24 24"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4zm8-10.2h-3.17l-1.84-2H9.01L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg><span>Cámara</span></div>
             <div class="nav-item" onclick="app.switchView('settings')" id="nav-settings"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg><span>Ajustes</span></div>
         </nav>
 
@@ -457,6 +1167,22 @@
             </div>
         </div>
 
+
+        <!-- MODAL RESET PROGRESO -->
+        <div class="confirm-modal-overlay" id="reset-modal" onclick="if(event.target===this) app.closeResetModal()">
+            <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="reset-title">
+                <div class="confirm-icon">⚠️</div>
+                <h3 class="confirm-title" id="reset-title">Resetear progreso</h3>
+                <p class="confirm-copy">Vas a borrar todas las figuritas marcadas como tengo, repetidas y reservadas.</p>
+                <div class="confirm-warning">Tip: exportá un backup antes si querés guardar tu avance.</div>
+                <div class="confirm-actions">
+                    <button class="btn-confirm-danger" onclick="app.confirmResetProgress()">Sí, borrar progreso</button>
+                    <button class="btn-confirm-cancel" onclick="app.closeResetModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
@@ -473,7 +1199,7 @@ const app = {
         settings: { sound: true, vibration: true, animations: true }
     },
     openSections: new Set(), // Registro para no cerrar los países
-    currentFilter: 'all', currentSearch: '', selectedStickerId: null, audioCtx: null,
+    currentFilter: 'all', currentSearch: '', selectedStickerId: null, audioCtx: null, cameraStream: null, cameraTimer: null, cameraBusy: false, cameraScans: [],
     touchTimer: null, isLongPress: false,
     keys: { user: 'stickerCup2026_state_v1', settings: 'stickerCup2026_settings_v1' },
 
@@ -481,23 +1207,24 @@ const app = {
         this.loadSettings();
         this.initData();
         this.loadUserProgress();
-
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += 20;
-            document.getElementById('loader-fill').style.width = `${progress}%`;
-            if (progress >= 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    document.getElementById('loading-screen').classList.add('hidden');
-                    // Solo iniciamos la app si se logró cargar la base de datos
-                    if (this.state.albumData.length > 0) {
-                        document.getElementById('main-app').classList.remove('hidden');
-                        this.startApp();
-                    }
-                }, 200);
+        const loaderStart = performance.now();
+        const loaderDuration = 2000;
+        const animateLoader = (now) => {
+            const progress = Math.min((now - loaderStart) / loaderDuration, 1);
+            document.getElementById('loader-fill').style.width = `${Math.round(progress * 100)}%`;
+            if (progress < 1) {
+                requestAnimationFrame(animateLoader);
+                return;
             }
-        }, 80);
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                if (this.state.albumData.length > 0) {
+                    document.getElementById('main-app').classList.remove('hidden');
+                    this.startApp();
+                }
+            }, 120);
+        };
+        requestAnimationFrame(animateLoader);
 
         this.initPWA();
     },
@@ -505,23 +1232,20 @@ const app = {
     startApp() {
         this.renderAlbum();
         this.updateDashboard();
+        this.showToast(`Base cargada: ${this.state.albumData.length} figuritas`);
     },
 
     // =========================================
     // INICIALIZACIÓN DE DATOS
     // =========================================
     initData() {
-        // Carga Segura y estricta desde albumData.js
-        if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
-            if (window.albumData.length > 0 && window.albumData[0].stickers) {
-                this.state.albumData = window.albumData.flatMap(g => g.stickers);
-            } else {
-                this.state.albumData = window.albumData;
-            }
-            console.log("Stickers cargados exitosamente desde archivo externo.");
+        if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData) && window.albumData.length > 0) {
+            this.state.albumData = window.albumData[0] && window.albumData[0].stickers
+                ? window.albumData.flatMap(g => g.stickers)
+                : window.albumData;
+            console.log(`✅ ${this.state.albumData.length} figuritas cargadas desde albumData.js`, window.albumMeta || '');
         } else {
-            // El fallback se eliminó; mostramos error nativo directo y vaciamos estado
-            alert("No se encontró albumData.js. Por favor, asegúrate de colocarlo en la misma carpeta que index.html.");
+            alert("No se encontró albumData.js o está vacío. Subí albumData.js en la misma carpeta que index.html.");
             this.state.albumData = [];
         }
     },
@@ -529,8 +1253,10 @@ const app = {
     loadUserProgress() {
         const rawUser = localStorage.getItem(this.keys.user);
         if (rawUser) {
-            this.state.user = JSON.parse(rawUser);
+            try { this.state.user = JSON.parse(rawUser) || {}; } catch(e) { this.state.user = {}; }
         }
+        const validIds = new Set(this.state.albumData.map(s => s.id));
+        Object.keys(this.state.user).forEach(id => { if (!validIds.has(id)) delete this.state.user[id]; });
     },
 
     saveUser() {
@@ -558,6 +1284,7 @@ const app = {
     // RENDERING DE VISTAS
     // =========================================
     switchView(viewId) {
+        if (viewId !== 'camera') this.stopCameraScanner(false);
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         
@@ -589,8 +1316,10 @@ const app = {
     },
 
     renderAlbum() {
-        if (this.state.albumData.length === 0) return; // Prevención si no hay data
+        if (this.state.albumData.length === 0) return;
 
+        const scroller = document.getElementById('views-container');
+        const previousScroll = scroller ? scroller.scrollTop : 0;
         const container = document.getElementById('album-container');
         container.innerHTML = '';
         let hasResults = false;
@@ -613,7 +1342,6 @@ const app = {
 
             if (this.currentSearch) {
                 const term = this.currentSearch;
-                // Búsqueda extendida a múltiples propiedades
                 const fullText = `${st.code} ${st.name} ${st.section} ${st.prefix} ${st.number}`.toLowerCase();
                 if (!fullText.includes(term)) return;
             }
@@ -632,7 +1360,6 @@ const app = {
             const gDiv = document.createElement('div');
             gDiv.className = 'section-group';
             
-            // Lógica para mantener los grupos abiertos (Resuelve el bug "me quita del país")
             if (this.currentSearch || this.currentFilter !== 'all' || this.openSections.has(sectionName)) {
                 gDiv.classList.add('open');
             }
@@ -688,6 +1415,7 @@ const app = {
             `;
             container.appendChild(gDiv);
         }
+        if (scroller) requestAnimationFrame(() => { scroller.scrollTop = previousScroll; });
     },
 
     updateDashboard() {
@@ -696,7 +1424,6 @@ const app = {
 
         let tengo = 0, repetidas = 0, reservadas = 0;
         
-        // El dashboard SOLO cuenta figuritas que existen en el álbum
         this.state.albumData.forEach(st => {
             const u = this.state.user[st.id];
             if (u) {
@@ -731,18 +1458,13 @@ const app = {
         let u = this.getUserObj(id);
 
         if (u.owned) {
-            // Regla: Si la figurita ya está marcada como "La tengo", tap = abre el menú avanzado.
-            // NO volver a "Me falta" para evitar borrar figuritas por accidente.
             this.openMiniMenu(id);
         } else {
-            // Regla: Si la figurita está faltante, tap = marcar como "La tengo".
             u.owned = true;
             u.updatedAt = new Date().toISOString();
             this.saveUser();
             this.playVibration(20);
             this.playSound('tengo');
-            
-            // Re-renderizamos para impactar visualmente (gracias a openSections, el grupo no se cierra)
             this.renderAlbum();
         }
     },
@@ -755,6 +1477,7 @@ const app = {
         this.saveUser();
         this.playVibration([15, 30, 15]);
         this.playSound('dup');
+        this.showToast('➕ Repetida sumada');
         this.renderAlbum();
     },
 
@@ -828,7 +1551,6 @@ const app = {
     },
 
     menuRevertMissing() {
-        // Opción explícita en menú avanzado para volver a "Me falta" y evitar borrados accidentales
         if (!this.selectedStickerId) return;
         let u = this.getUserObj(this.selectedStickerId);
         u.owned = false;
@@ -845,19 +1567,40 @@ const app = {
     // LISTAS Y MODO RÁPIDO
     // =========================================
     normalizeInputCode(input) {
-        let upper = input.toUpperCase().replace(/\s+/g, '');
-        // Normaliza "ARG1", "ARG-1" a "ARG01", pero preserva FWC-1 y CC-10
-        let match = upper.match(/^([A-Z]+)-?(\d+)$/);
-        if (match) {
-            let prefix = match[1];
-            let num = parseInt(match[2], 10);
-            if (['FWC', 'CC'].includes(prefix)) {
-                return `${prefix}-${num}`;
-            } else {
-                return `${prefix}${num.toString().padStart(2, '0')}`;
-            }
-        }
+        let upper = String(input || '').toUpperCase().replace(/\s+/g, '').replace(/[–—]/g, '-');
+        if (upper === '00') return '00';
+        let match = upper.match(/^([A-Z]+)-?0*(\d{1,3})$/);
+        if (match) return `${match[1]}-${parseInt(match[2], 10)}`;
         return upper;
+    },
+
+    getCodeVariants(input) {
+        const normalized = this.normalizeInputCode(input);
+        const variants = new Set([normalized, String(input || '').toUpperCase().replace(/\s+/g,'')]);
+        const m = normalized.match(/^([A-Z]+)-(\d{1,3})$/);
+        if (m) {
+            const n = parseInt(m[2], 10);
+            variants.add(`${m[1]}-${n}`);
+            variants.add(`${m[1]}-${String(n).padStart(2,'0')}`);
+            variants.add(`${m[1]}${n}`);
+            variants.add(`${m[1]}${String(n).padStart(2,'0')}`);
+        }
+        return [...variants].map(v => v.toUpperCase());
+    },
+
+    findStickerByToken(token) {
+        const variants = this.getCodeVariants(token);
+        return this.state.albumData.find(s => {
+            const values = [s.id, s.code, s.rawText].filter(Boolean).map(v => String(v).toUpperCase().replace(/\s+/g,''));
+            const normalizedValues = values.flatMap(v => this.getCodeVariants(v));
+            return variants.some(v => normalizedValues.includes(v));
+        });
+    },
+
+    extractCodesFromText(text) {
+        const clean = String(text || '').toUpperCase().replace(/[–—]/g, '-');
+        const matches = clean.match(/\b(?:[A-Z]{2,4}\s*-?\s*0?\d{1,3}|00)\b/g) || [];
+        return [...new Set(matches.map(m => this.normalizeInputCode(m)).filter(Boolean))];
     },
 
     processQuickAdd(action) {
@@ -868,7 +1611,7 @@ const app = {
         let count = 0; let notFound = [];
 
         rawTokens.forEach(token => {
-            let match = this.state.albumData.find(s => s.id === token || s.code.toUpperCase() === token);
+            let match = this.findStickerByToken(token);
             if (!match && !isNaN(token)) {
                 const numMatches = this.state.albumData.filter(s => s.number == parseInt(token));
                 if (numMatches.length === 1) match = numMatches[0];
@@ -918,7 +1661,7 @@ const app = {
 
     copyToClipboard(type) {
         const text = document.getElementById(`list-${type}`).innerText;
-        navigator.clipboard.writeText(`Mis ${type} (Sticker Cup 2026):\n\n${text}`).then(() => {
+        navigator.clipboard.writeText(`Mis ${type} (FiguritApp):\n\n${text}`).then(() => {
             this.showToast("Copiado al portapapeles");
         });
     },
@@ -948,7 +1691,7 @@ const app = {
         const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `StickerCup_Backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `FiguritApp_Backup_${new Date().toISOString().split('T')[0]}.json`;
         a.click();
     },
 
@@ -972,14 +1715,21 @@ const app = {
     },
 
     resetProgress() {
-        if (confirm("⚠️ ¿Seguro? Se borrarán todas tus figuritas marcadas. Exportá backup antes.")) {
-            if (confirm("Última advertencia. Se borrará tu progreso.")) {
-                this.state.user = {};
-                this.saveUser();
-                this.showToast("Progreso reseteado a cero.");
-                this.startApp();
-            }
-        }
+        const modal = document.getElementById('reset-modal');
+        if (modal) modal.classList.add('active');
+    },
+
+    closeResetModal() {
+        const modal = document.getElementById('reset-modal');
+        if (modal) modal.classList.remove('active');
+    },
+
+    confirmResetProgress() {
+        this.state.user = {};
+        this.saveUser();
+        this.closeResetModal();
+        this.showToast("Progreso reseteado a cero.");
+        this.startApp();
     },
 
     showToast(msg) {
@@ -1001,24 +1751,33 @@ const app = {
         try {
             if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
-            
-            const osc = this.audioCtx.createOscillator();
-            const gain = this.audioCtx.createGain();
-            osc.connect(gain); gain.connect(this.audioCtx.destination);
-            const now = this.audioCtx.currentTime;
-            
+
+            const ctx = this.audioCtx;
+            const now = ctx.currentTime;
+            const tone = (freq, duration, vol, wave = 'sine', delay = 0) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = wave;
+                osc.frequency.setValueAtTime(freq, now + delay);
+                gain.gain.setValueAtTime(0.0001, now + delay);
+                gain.gain.exponentialRampToValueAtTime(vol, now + delay + 0.012);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now + delay);
+                osc.stop(now + delay + duration + 0.03);
+            };
+
             if (type === 'tengo') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
-                gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-                osc.start(now); osc.stop(now + 0.1);
+                // Pip amigable al agregar figurita: corto, claro y no molesto
+                tone(980, 0.075, 0.075, 'sine', 0);
+                tone(1320, 0.085, 0.050, 'triangle', 0.055);
             } else if (type === 'dup') {
-                osc.type = 'square'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
-                gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-                osc.start(now); osc.stop(now + 0.1);
-            } else { 
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(800, now);
-                gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-                osc.start(now); osc.stop(now + 0.05);
+                // Repetida: distinto pero suave
+                tone(620, 0.065, 0.060, 'sine', 0);
+                tone(820, 0.075, 0.040, 'triangle', 0.045);
+            } else {
+                tone(760, 0.055, 0.035, 'sine', 0);
             }
         } catch(e) {}
     },
@@ -1051,9 +1810,12 @@ const app = {
 
     initPWA() {
         const manifestData = {
-            name: "Sticker Cup 2026", short_name: "StickerCup", start_url: ".", display: "standalone",
-            background_color: "#07111F", theme_color: "#07111F", description: "Tracker Manual de Álbum",
-            icons: [{ src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%2307111F"/><text x="50" y="60" font-size="40" fill="%23D6A93A" text-anchor="middle">SC</text></svg>', sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" }]
+            name: "FiguritApp", short_name: "FiguritApp", start_url: ".", display: "standalone",
+            background_color: "#07111F", theme_color: "#07111F", description: "Tracker Manual de Álbum con cámara asistida",
+            icons: [
+                { src: 'icon.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+                { src: 'icon.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+            ]
         };
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
