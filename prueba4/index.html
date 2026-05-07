@@ -1,722 +1,1360 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth overflow-x-hidden">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport estricto para evitar zoom automático al tocar inputs en iOS y prevenir rebotes -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
-    <title>FacturaPro | @necesitodisenos</title>
-    <meta name="description" content="Generador online de facturas profesionales.">
-
-    <!-- Google Fonts: Inter Tight & Inter (SaaS Style) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=Kalam:wght@700&family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-    <!-- Scripts CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- CONFIGURACIÓN TAILWIND (Estética SaaS Azul) -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            primary: '#0066FF', /* Azul Neón */
-                            hover: '#0052CC',   /* Azul Oscuro */
-                            bg: '#0A0A0A',
-                            surface: '#121212',
-                            card: '#161616',
-                            border: '#262626' 
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Inter Tight', 'sans-serif'],
-                        hand: ['Kalam', 'cursive'],
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                    },
-                    boxShadow: {
-                        'glow': '0 0 40px -10px rgba(0, 102, 255, 0.4)',
-                        'glow-hover': '0 0 50px -5px rgba(0, 102, 255, 0.6)',
-                        'sheet': '0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.6)',
-                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
-                    },
-                    animation: {
-                        'pulse-primary': 'pulsePrimary 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 5s ease-in-out infinite',
-                        'ring': 'ring 2s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        pulsePrimary: {
-                            '0%, 100%': { opacity: '1' },
-                            '50%': { opacity: '.5' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0) rotate(-2deg)' },
-                            '50%': { transform: 'translateY(-5px) rotate(0deg)' },
-                        },
-                        ring: {
-                            '0%, 100%': { transform: 'rotate(0deg)' },
-                            '10%, 30%, 50%': { transform: 'rotate(15deg)' },
-                            '20%, 40%': { transform: 'rotate(-15deg)' },
-                            '60%': { transform: 'rotate(0deg)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- ESTILOS CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sticker Cup 2026</title>
+    <!-- El manifest se inyectará dinámicamente desde JS -->
+    <link id="manifest-link" rel="manifest" href="">
+    <meta name="theme-color" content="#07111F">
+    
     <style>
+        /* =========================================
+           VARIABLES Y CONFIGURACIÓN GLOBAL
+           ========================================= */
+        :root {
+            --navy: #07111F;
+            --navy-light: #101827;
+            --gold: #D6A93A;
+            --green: #3CAC3B;
+            --red: #E61D25;
+            --blue: #2A398D;
+            --white: #F8FAFC;
+            --gray: #D1D4D1;
+            --dark-gray: #474A4A;
+            --lime: #C6FF3D;
+            --orange: #FF7A1A;
+            
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-blur: blur(18px);
+
+            --font-heading: 'Bebas Neue', 'Anton', 'Archivo Black', 'Impact', sans-serif;
+            --font-body: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
+            
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            background-color: #0A0A0A;
-            color: #E5E5E5;
-            -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: none;
-            overflow-x: hidden !important;
-            max-width: 100vw;
-            width: 100%;
-        }
-
-        ::selection { background: rgba(0, 102, 255, 0.3); color: white; }
-
-        /* Patrón de fondo SaaS actualizado */
-        .bg-grid-pattern {
-            background-size: 50px 50px;
+            font-family: var(--font-body);
+            background-color: var(--navy);
+            color: var(--white);
+            overflow-x: hidden;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 100%);
+                radial-gradient(circle at top left, rgba(230,29,37,0.15), transparent 32%),
+                radial-gradient(circle at top right, rgba(42,57,141,0.25), transparent 35%),
+                linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-heading); letter-spacing: 0.5px; }
+
+        /* =========================================
+           ESTRUCTURA DE PANTALLAS
+           ========================================= */
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            background: inherit;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .hidden {
+            opacity: 0;
             pointer-events: none;
+            transform: scale(0.98);
+            z-index: -1;
         }
 
-        .bg-ambient-glow {
-            position: fixed; top: 10%; left: 50%;
-            width: 80vw; height: 80vw; max-width: 800px; max-height: 800px;
-            background: radial-gradient(circle, rgba(0, 102, 255, 0.06) 0%, rgba(0,0,0,0) 70%);
-            transform: translate(-50%, -50%); pointer-events: none; z-index: 0;
+        #main-app { z-index: 5; }
+
+        /* Contenedor centralizado para PC simulando móvil */
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0,0,0,0.2);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
 
-        /* Scrollbars actualizados */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0A0A0A; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Componentes UI */
-        .glass-card {
-            background: rgba(22, 22, 24, 0.4);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 0.75rem; transition: border-color 0.3s ease;
+        /* =========================================
+           1. LOADING SCREEN
+           ========================================= */
+        #loading-screen {
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
         }
-        .glass-card:focus-within { border-color: rgba(0, 102, 255, 0.3); }
-
-        .input-group { display: flex; flex-direction: column; gap: 0.35rem; scroll-margin-top: 20px; }
-        .input-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #A1A1AA; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-        .input-field { 
-            background-color: rgba(0,0,0,0.3); border: 1px solid #262626; color: #F4F4F5; 
-            padding: 0.65rem 0.85rem; border-radius: 0.5rem; font-size: 0.875rem; 
-            transition: all 0.2s; width: 100%; 
-        }
-        .input-field:focus:not(:disabled) { 
-            outline: none; border-color: #0066FF; 
-            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2), inset 0 1px 2px rgba(0,0,0,0.5); 
-            background-color: rgba(0,0,0,0.5);
-        }
-        .input-field::placeholder { color: #52525B; }
-
-        /* Marca de agua */
-        .web-watermark {
-            position: fixed; bottom: 30px; right: -20px; font-size: 4rem; font-weight: 900;
-            color: rgba(255, 255, 255, 0.02); pointer-events: none; z-index: 0;
-            transform: rotate(-10deg); white-space: nowrap; user-select: none;
-        }
-
-        /* FAB Buttons Mobile */
-        .mobile-fab {
-            position: fixed; bottom: 20px; right: 20px; z-index: 50;
-            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-            padding: 0.8rem 1.2rem; border-radius: 9999px; font-weight: bold;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .mobile-fab:active { transform: scale(0.95); }
         
-        @media (min-width: 1024px) {
-            .mobile-fab { display: none !important; }
-        }
+        .loader-logo { width: 100px; height: 100px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+        .loader-bar-bg { width: 200px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 20px;}
+        .loader-bar-fill { height: 100%; width: 0%; background: var(--lime); border-radius: 10px; transition: width 0.3s ease; box-shadow: 0 0 10px var(--lime); }
+        .loader-text { margin-top: 15px; font-size: 0.9rem; color: var(--gray); }
 
-        /* ESTILOS PARA IMPRESIÓN DIRECTA / PDF NATIVO EN FACTURAPRO */
-        @media print {
-            body, html { background: white !important; height: auto !important; overflow: auto !important; }
-            header, aside, .bg-grid-pattern, .bg-ambient-glow, .mobile-tabs, button, #confirmModal { display: none !important; }
-            #editor-panel { display: none !important; }
-            #preview-panel { display: block !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            #invoice-preview { box-shadow: none !important; margin: 0 auto !important; width: 100% !important; max-width: none !important; color: black !important; background: white !important; }
-            #invoice-preview::before { display: none !important; }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+
+        /* =========================================
+           2. ONBOARDING
+           ========================================= */
+        #onboarding-screen {
+            padding: 30px 20px;
+            justify-content: center;
+            text-align: center;
+            z-index: 50;
+            overflow-y: auto;
         }
+        .hero-title { font-size: 3rem; color: var(--gold); text-shadow: 0 4px 15px rgba(214, 169, 58, 0.3); margin-bottom: 10px; }
+        .hero-subtitle { color: var(--gray); font-size: 1rem; margin-bottom: 40px; line-height: 1.5; }
+        
+        .btn-primary { background: var(--lime); color: var(--navy); padding: 16px 24px; border-radius: 16px; font-weight: bold; font-size: 1.1rem; width: 100%; margin-bottom: 15px; transition: transform 0.1s, filter 0.2s; }
+        .btn-primary:active { transform: scale(0.96); filter: brightness(0.9); }
+        .btn-secondary { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--white); padding: 14px 24px; border-radius: 16px; font-weight: 500; width: 100%; margin-bottom: 15px; backdrop-filter: var(--glass-blur); transition: background 0.2s; }
+        .btn-secondary:active { background: rgba(255,255,255,0.15); }
+
+        .chips-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 30px; }
+        .chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: var(--gray); }
+
+        /* Input File Oculto */
+        #csv-file-input { display: none; }
+
+        /* =========================================
+           3. UI PRINCIPAL (HEADER, VIEWS, NAV)
+           ========================================= */
+        .app-header {
+            padding: 20px 20px 15px;
+            background: linear-gradient(180deg, var(--navy) 0%, rgba(7,17,31,0.8) 100%);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title { font-size: 1.5rem; color: var(--white); }
+        .header-title span { color: var(--gold); }
+
+        .views-container { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: calc(80px + var(--safe-bottom)); scroll-behavior: smooth; }
+        
+        .view-section { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: calc(70px + var(--safe-bottom));
+            background: rgba(16, 24, 39, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: var(--safe-bottom);
+            z-index: 20;
+        }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--dark-gray); transition: color 0.3s; padding-top: 10px; }
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; fill: currentColor; transition: transform 0.3s; }
+        .nav-item span { font-size: 0.7rem; font-weight: 500; }
+        .nav-item.active { color: var(--lime); }
+        .nav-item.active svg { transform: scale(1.1); filter: drop-shadow(0 0 5px rgba(198, 255, 61, 0.5)); }
+
+        /* =========================================
+           4. DASHBOARD
+           ========================================= */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: center; backdrop-filter: var(--glass-blur); }
+        .stat-card.large { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; text-align: left; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(214,169,58,0.1)); border-color: rgba(214,169,58,0.3); }
+        .stat-value { font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 5px; }
+        .stat-label { font-size: 0.85rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .progress-ring-container { position: relative; width: 80px; height: 80px; }
+        .progress-ring { transform: rotate(-90deg); width: 100%; height: 100%; }
+        .progress-ring-circle { fill: transparent; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+        .progress-ring-fill { fill: transparent; stroke: var(--lime); stroke-width: 8; stroke-dasharray: 220; stroke-dashoffset: 220; transition: stroke-dashoffset 1s ease-in-out; stroke-linecap: round; }
+        .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 1.1rem; }
+
+        .stat-tengo .stat-value { color: var(--lime); }
+        .stat-faltan .stat-value { color: var(--gray); }
+        .stat-repetidas .stat-value { color: var(--orange); }
+        .stat-reservadas .stat-value { color: var(--blue); }
+
+        .progress-message { margin-top: 20px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.05); text-align: center; font-style: italic; color: var(--gold); }
+
+        /* =========================================
+           5. ÁLBUM & FILTROS
+           ========================================= */
+        .filters-scroll { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
+        .filters-scroll::-webkit-scrollbar { display: none; }
+        .filter-pill { padding: 8px 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; color: var(--gray); font-size: 0.9rem; white-space: nowrap; transition: all 0.2s; }
+        .filter-pill.active { background: var(--white); color: var(--navy); font-weight: bold; }
+
+        .search-bar { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; color: white; margin-bottom: 20px; font-size: 1rem; transition: border-color 0.3s; }
+        .search-bar:focus { border-color: var(--lime); }
+
+        .section-group { margin-bottom: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
+        .section-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(0,0,0,0.2); }
+        .section-title { font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .section-stats { font-size: 0.85rem; color: var(--gray); display: flex; align-items: center; gap: 10px; }
+        .section-progress { width: 60px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
+        .section-progress-fill { height: 100%; background: var(--lime); width: 0%; transition: width 0.3s; }
+        
+        .section-content { display: none; padding: 15px; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+        .section-group.open .section-content { display: grid; }
+        .section-group.open .section-header { border-bottom: 1px solid var(--glass-border); }
+
+        /* Sticker Card */
+        .sticker-card {
+            aspect-ratio: 2.5 / 3.5;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.3s, border 0.3s;
+            overflow: hidden;
+            user-select: none;
+        }
+        .sticker-card:active { transform: scale(0.92); }
+        
+        .st-code { font-family: var(--font-heading); font-size: 1.2rem; color: rgba(255,255,255,0.4); z-index: 2; }
+        .st-name { font-size: 0.55rem; text-align: center; color: rgba(255,255,255,0.5); padding: 0 4px; margin-top: 5px; z-index: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* Estados */
+        .sticker-card.tengo { background: rgba(60, 172, 59, 0.15); border: 1px solid var(--lime); }
+        .sticker-card.tengo .st-code { color: var(--white); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .sticker-card.tengo .st-name { color: rgba(255,255,255,0.9); }
+        .sticker-card.tengo::after { content: '✓'; position: absolute; top: 4px; right: 4px; background: var(--lime); color: var(--navy); border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 3;}
+        
+        .sticker-card.repetida { border-color: var(--orange); box-shadow: inset 0 0 15px rgba(255, 122, 26, 0.2); }
+        .badge-rep { position: absolute; bottom: 4px; right: 4px; background: var(--orange); color: white; font-size: 0.6rem; font-weight: bold; padding: 2px 6px; border-radius: 10px; z-index: 3; }
+        
+        .sticker-card.reservada { border-color: var(--blue); background: rgba(42, 57, 141, 0.3); }
+        .sticker-card.reservada::before { content: '🔒'; position: absolute; top: 4px; left: 4px; font-size: 12px; z-index: 3;}
+
+        .sticker-card.special { background: linear-gradient(135deg, rgba(214,169,58,0.1), rgba(255,255,255,0.05)); border-color: rgba(214,169,58,0.5); }
+        .sticker-card.tengo.special { background: linear-gradient(135deg, rgba(214,169,58,0.4), rgba(60,172,59,0.3)); border-color: var(--gold); box-shadow: 0 0 10px rgba(214,169,58,0.3); }
+
+        /* Animaciones card */
+        .pop-anim { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+        /* =========================================
+           6. MODOS: RÁPIDO & INTERCAMBIO
+           ========================================= */
+        .textarea-input { width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; color: white; padding: 15px; font-family: var(--font-body); font-size: 1rem; resize: none; margin-bottom: 15px; }
+        .textarea-input:focus { border-color: var(--lime); outline: none; }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .exchange-box { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .exchange-title { font-size: 1.1rem; color: var(--gold); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .exchange-content { font-size: 0.9rem; color: var(--gray); max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; font-family: monospace; line-height: 1.5; white-space: pre-wrap; word-break: break-all;}
+        
+        .btn-icon { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: white; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: background 0.2s;}
+        .btn-icon:active { background: rgba(255,255,255,0.2); }
+
+        /* =========================================
+           7. AJUSTES
+           ========================================= */
+        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--glass-border); }
+        .settings-label { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        
+        /* Toggle Switch */
+        .toggle { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--lime); }
+        input:checked + .slider:before { transform: translateX(22px); background-color: var(--navy); }
+
+        .btn-danger { background: rgba(230,29,37,0.1); color: var(--red); border: 1px solid var(--red); }
+        .footer-legal { text-align: center; font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 40px; padding-bottom: 20px; line-height: 1.4; }
+
+        /* =========================================
+           8. MODALS & TOASTS
+           ========================================= */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { background: var(--navy-light); width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); border-top: 1px solid var(--glass-border); }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.5rem; color: var(--white); }
+        .modal-close { background: none; color: var(--gray); font-size: 1.5rem; }
+
+        .sticker-modal-info { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 16px; }
+        .sm-code { font-family: var(--font-heading); font-size: 2rem; color: var(--gold); }
+        .sm-details { display: flex; flex-direction: column; }
+        .sm-name { font-weight: bold; font-size: 1.1rem; }
+        .sm-section { color: var(--gray); font-size: 0.9rem; }
+
+        .modal-actions { display: grid; gap: 10px; }
+        .btn-action { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-radius: 12px; background: var(--glass-bg); color: white; font-weight: 500; font-size: 1rem; border: 1px solid var(--glass-border); transition: background 0.2s;}
+        .btn-action:active { background: rgba(255,255,255,0.15); }
+        
+        .qty-control { display: flex; align-items: center; gap: 15px; }
+        .btn-round { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold; }
+        .btn-round:active { background: var(--lime); color: var(--navy); }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: calc(90px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: rgba(255,255,255,0.95); color: var(--navy); padding: 12px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+
+        /* Confetti Canvas */
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
     </style>
 </head>
-<body class="bg-brand-bg text-gray-300 font-sans relative min-h-[100dvh]">
+<body>
 
-    <!-- Modal Confirmación de Reseteo -->
-    <div id="confirmModal" class="fixed inset-0 z-[10000] hidden items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-brand-card border border-brand-border rounded-xl p-6 max-w-sm w-[90%] shadow-2xl transform scale-95 transition-transform duration-300">
-            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2 font-display">
-                <i class="ph-fill ph-warning-circle text-red-500"></i> ¿Limpiar Factura?
-            </h3>
-            <p class="text-sm text-gray-400 mb-6">Se borrarán todos tus datos, el logotipo y los items que hayas agregado. Esta acción no se puede deshacer.</p>
-            <div class="flex justify-end gap-3">
-                <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors">Cancelar</button>
-                <button onclick="executeReset()" class="px-4 py-2 rounded-lg text-sm font-bold bg-red-500 text-white hover:bg-red-600 shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all">Sí, limpiar</button>
-            </div>
+<div class="app-container" id="app-container">
+    
+    <!-- CANVAS CONFETTI -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- 1. LOADING SCREEN -->
+    <div id="loading-screen" class="screen">
+        <svg class="loader-logo" viewBox="0 0 24 24" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#D6A93A" />
+                    <stop offset="100%" stop-color="#FFF" />
+                </linearGradient>
+            </defs>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <h2>Sticker Cup 2026</h2>
+        <div class="loader-bar-bg">
+            <div class="loader-bar-fill" id="loader-fill"></div>
+        </div>
+        <p class="loader-text">Preparando tu álbum...</p>
+    </div>
+
+    <!-- 2. ONBOARDING SCREEN -->
+    <div id="onboarding-screen" class="screen hidden">
+        <h1 class="hero-title">Sticker Cup<br>2026</h1>
+        <p class="hero-subtitle">Marcá las que tenés, controlá repetidas y armá tus intercambios en segundos sin volverte loco.</p>
+        
+        <div style="background: var(--glass-bg); padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.3);" id="drop-zone">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:10px; color:var(--gold);">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+            </svg>
+            <h3>Importar CSV</h3>
+            <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">Seleccioná o arrastrá el archivo figuritas-mundial-2026-completo.csv</p>
+            <input type="file" id="csv-file-input" accept=".csv">
+            <button class="btn-primary" style="margin-top: 15px;" onclick="document.getElementById('csv-file-input').click()">Buscar Archivo</button>
+        </div>
+
+        <button class="btn-secondary" onclick="app.loadDemoData()">Usar Demo (Prueba rápida)</button>
+        <button class="btn-secondary" style="background: transparent; border: none; font-size: 0.9rem;" onclick="document.getElementById('backup-input-onboard').click()">Ya tengo un backup JSON</button>
+        <input type="file" id="backup-input-onboard" accept=".json" style="display:none" onchange="app.importBackup(event)">
+
+        <div class="chips-container">
+            <span class="chip">✓ Offline</span>
+            <span class="chip">✓ Repetidas</span>
+            <span class="chip">✓ WhatsApp</span>
+            <span class="chip">✓ JSON Backup</span>
         </div>
     </div>
 
-    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
-    <div class="bg-ambient-glow"></div>
-    <div class="web-watermark font-display tracking-tighter hidden md:block z-0">@necesitodisenos</div>
-
-    <header class="border-b border-brand-border bg-brand-surface/90 backdrop-blur sticky top-0 z-50 print:hidden">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-brand-primary p-1.5 rounded-lg shadow-glow animate-float">
-                    <i class="ph-bold ph-pen-nib text-white text-lg"></i>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-display font-bold text-white text-lg leading-none tracking-tight">
-                        Factura<span class="text-brand-primary">Editable™</span>
-                    </span>
-                    <span class="text-[10px] text-gray-400 font-medium hidden sm:block">Generador online de facturas</span>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-2 sm:gap-3">
-                <div class="flex lg:hidden bg-black/40 border border-white/10 rounded-lg p-1 mr-0 mobile-tabs">
-                    <button id="btn-tab-edit" onclick="switchTab('edit')" class="px-3 py-1.5 rounded-md text-xs font-bold transition-colors bg-brand-primary text-white shadow-glow">Editar</button>
-                    <button id="btn-tab-prev" onclick="switchTab('preview')" class="px-3 py-1.5 rounded-md text-xs font-bold transition-colors text-gray-400 hover:text-white">Vista Previa</button>
-                </div>
-
-                <!-- Botón de Reset (Papelera) modificado -->
-                <button onclick="openConfirmModal()" class="p-2 sm:px-3 sm:py-2 bg-black/40 hover:bg-red-500/20 border border-white/10 hover:border-red-500/50 text-gray-400 hover:text-red-400 rounded-lg transition-all flex items-center justify-center" title="Limpiar y restaurar documento">
-                    <i class="ph-bold ph-trash text-lg"></i>
-                </button>
-
-                <button onclick="window.print()" class="flex items-center gap-2 bg-brand-primary text-white hover:bg-brand-hover px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-sm font-bold transition-all shadow-glow hover:shadow-glow-hover">
-                    <i class="ph-bold ph-printer text-lg"></i>
-                    <span class="hidden sm:inline">Imprimir PDF</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:h-[calc(100vh-4rem)] relative z-10">
+    <!-- 3. MAIN UI -->
+    <div id="main-app" class="screen hidden">
         
-        <!-- PANEL IZQUIERDO: Editor -->
-        <div id="editor-panel" class="flex-col gap-6 overflow-y-auto pr-2 hide-scrollbar pb-24 lg:pb-6 print:hidden flex">
+        <header class="app-header">
+            <h2 class="header-title">Sticker<span>Cup</span></h2>
+            <div id="header-stats" style="font-size:0.9rem; color:var(--lime); font-weight:bold; background:rgba(60,172,59,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid var(--lime);">
+                0%
+            </div>
+        </header>
+
+        <div class="views-container" id="views-container">
             
-            <section class="glass-card p-4 lg:p-5">
-                <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                    <i class="ph-fill ph-user text-brand-primary text-base"></i> Tu Información (Emisor)
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="md:col-span-2 mb-2">
-                        <div class="input-group">
-                            <label class="input-label font-poppins">Logotipo</label>
-                            <div class="flex items-center gap-3 bg-black/30 border border-brand-border p-2 rounded-lg mt-1">
-                                <div id="logo-preview-container" class="w-12 h-12 bg-neutral-800 rounded flex items-center justify-center text-neutral-500 overflow-hidden border border-white/5">
-                                    <i id="logo-placeholder-icon" class="ph-fill ph-image text-xl"></i>
-                                    <img id="logo-img" src="" class="w-full h-full object-contain hidden" />
-                                </div>
-                                <div class="flex gap-2">
-                                    <label class="cursor-pointer bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary text-xs font-bold px-3 py-2 rounded transition-colors shadow-glow border border-brand-primary/30">
-                                        <span id="logo-btn-text">Subir Imagen</span>
-                                        <input type="file" id="logo-upload" accept="image/png, image/jpeg" class="hidden" onchange="handleLogo(event)">
-                                    </label>
-                                    <button id="logo-remove-btn" type="button" onclick="removeLogo()" class="text-gray-500 hover:text-red-500 px-2 py-2 transition-colors hidden">
-                                        <i class="ph-bold ph-trash text-base"></i>
-                                    </button>
-                                </div>
-                            </div>
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="view-section">
+                <div class="stats-grid">
+                    <div class="stat-card large">
+                        <div>
+                            <div class="stat-value" id="dash-total">0/0</div>
+                            <div class="stat-label">Progreso General</div>
+                        </div>
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring">
+                                <circle class="progress-ring-circle" cx="40" cy="40" r="35"></circle>
+                                <circle class="progress-ring-fill" cx="40" cy="40" r="35" id="dash-ring"></circle>
+                            </svg>
+                            <div class="progress-text" id="dash-perc">0%</div>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Nombre / Estudio</label>
-                        <input type="text" id="f_emisor_nombre" data-target="p_emisor_nombre" data-default="Nombre Emisor" class="input-field sync-input" placeholder="ej. Juan Pérez o nd. studio">
+                    
+                    <div class="stat-card stat-tengo">
+                        <div class="stat-value" id="dash-tengo">0</div>
+                        <div class="stat-label">Tengo</div>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">RFC / ID Fiscal</label>
-                        <input type="text" id="f_emisor_id" data-target="p_emisor_id" data-default="" class="input-field sync-input" placeholder="ej. XAXX010101000">
+                    <div class="stat-card stat-faltan">
+                        <div class="stat-value" id="dash-faltan">0</div>
+                        <div class="stat-label">Faltan</div>
                     </div>
-                    <div class="input-group md:col-span-2">
-                        <label class="input-label font-poppins">Email</label>
-                        <input type="text" id="f_emisor_email" data-target="p_emisor_email" data-default="" class="input-field sync-input" placeholder="contacto@estudio.com">
+                    <div class="stat-card stat-repetidas">
+                        <div class="stat-value" id="dash-repetidas">0</div>
+                        <div class="stat-label">Repetidas</div>
                     </div>
-                </div>
-            </section>
-
-            <section class="glass-card p-4 lg:p-5">
-                <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                    <i class="ph-fill ph-briefcase text-brand-primary text-base"></i> ¿Para quién diseñamos?
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Nombre Cliente</label>
-                        <input type="text" id="f_cliente_nombre" data-target="p_cliente_nombre" data-default="Nombre Cliente" class="input-field sync-input" placeholder="Empresa S.A. de C.V.">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">RFC / ID Fiscal</label>
-                        <input type="text" id="f_cliente_id" data-target="p_cliente_id" data-default="" class="input-field sync-input" placeholder="ID Fiscal del cliente">
-                    </div>
-                    <div class="input-group md:col-span-2">
-                        <label class="input-label font-poppins">Dirección</label>
-                        <input type="text" id="f_cliente_dir" data-target="p_cliente_dir" data-default="" class="input-field sync-input" placeholder="Calle, Número, Ciudad">
+                    <div class="stat-card stat-reservadas">
+                        <div class="stat-value" id="dash-reservadas">0</div>
+                        <div class="stat-label">Reservadas</div>
                     </div>
                 </div>
-            </section>
-
-            <section class="glass-card p-4 lg:p-5">
-                 <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                    <i class="ph-fill ph-calendar-blank text-brand-primary text-base"></i> Detalles Generales
-                </h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Folio</label>
-                        <input type="text" id="f_folio" data-target="p_folio" data-default="001" value="001" class="input-field sync-input">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Moneda</label>
-                        <select id="f_currency" onchange="renderItems()" class="input-field">
-                            <option value="USD">USD ($)</option>
-                            <option value="MXN">MXN ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="ARS">ARS ($)</option>
-                            <option value="COP">COP ($)</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Fecha Emisión</label>
-                        <input type="date" id="f_fecha" data-target="p_fecha" class="input-field sync-input">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Impuestos (%)</label>
-                        <input type="number" id="f_tax" value="16" oninput="renderItems()" class="input-field">
-                    </div>
-                </div>
-            </section>
-
-            <section class="glass-card p-4 lg:p-5">
-                <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-3">
-                    <h2 class="text-sm font-bold text-white flex items-center gap-2 font-display">
-                        <i class="ph-fill ph-list-dashes text-brand-primary text-base"></i> Desglose Creativo
-                    </h2>
-                    <button type="button" onclick="addItem()" class="text-[10px] font-bold bg-[#18181B] text-brand-primary border border-brand-primary/30 px-2 py-1 rounded hover:bg-brand-primary hover:text-white transition-all uppercase tracking-wider flex items-center gap-1 shadow-[0_0_15px_rgba(0,102,255,0.2)]">
-                        <i class="ph-bold ph-plus text-xs"></i> Añadir
-                    </button>
-                </div>
-                
-                <div id="items-editor-container" class="flex flex-col gap-3 mt-4">
-                    <!-- Items renderizados via JS -->
-                </div>
-            </section>
-
-            <section class="glass-card p-4 lg:p-5 mb-10">
-                <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-3 font-display">
-                    <i class="ph-fill ph-file-text text-brand-primary text-base"></i> Condiciones & Pago
-                </h2>
-                <div class="grid gap-4">
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Método de Pago</label>
-                        <input type="text" id="f_metodo" data-target="p_metodo" data-default="Transferencia Bancaria" value="Transferencia Bancaria" class="input-field sync-input" placeholder="ej. Transferencia, PayPal">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Datos Bancarios (Opcional)</label>
-                        <input type="text" id="f_banco" data-target="p_banco" data-default="" class="input-field sync-input" placeholder="Banco, CLABE, SWIFT...">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label font-poppins">Notas Adicionales</label>
-                        <textarea id="f_notas" data-target="p_notas" data-default="" class="input-field sync-input resize-none" rows="3">Gracias por confiar en mi trabajo. El pago debe realizarse dentro de los 15 días posteriores a la recepción de esta factura.</textarea>
-                    </div>
-                </div>
-                            <!-- Agregado: Marca de agua Creado por -->
-            <div class="mt-4 pt-4 border-t border-brand-border flex justify-center items-center select-none w-full opacity-80 pb-2">
-                <span class="text-[#737373] text-[11px] font-semibold tracking-[0.15em] font-poppins">CREADO POR</span>
-                <span class="text-brand-primary text-[11px] font-bold tracking-[0.15em] ml-1.5 font-poppins">@NECESITODISENOS</span>
+                <div class="progress-message" id="dash-msg">Recién arranca el camino.</div>
             </div>
-            </section>
-        </div>
 
-        <!-- PANEL DERECHO: Vista Previa -->
-        <div id="preview-panel" class="hidden lg:flex justify-center print:block print:p-0 overflow-y-auto hide-scrollbar">
-            <!-- AQUÍ HEMOS RESTAURADO LA FACTURA EN BLANCO Y LOS TEXTOS EN NEGRO -->
-            <div id="invoice-preview" class="bg-white text-black shadow-sheet rounded-sm w-full max-w-lg min-h-[600px] p-8 sm:p-10 flex flex-col justify-between relative print:shadow-none print:w-full print:max-w-none print:m-0 print:p-8 print:h-auto" style="aspect-ratio: 1/1.4142;">
+            <!-- VIEW: ALBUM -->
+            <div id="view-album" class="view-section active">
+                <input type="text" id="search-input" class="search-bar" placeholder="Buscar por código, número o nombre..." oninput="app.filterAlbum()">
                 
-                <div>
-                    <div class="flex justify-between items-start mb-8">
-                        <div>
-                            <div id="p_logo_container" class="w-10 h-10 bg-black text-white flex items-center justify-center font-bold text-lg mb-4 overflow-hidden rounded">
-                                <span id="p_logo_text">nd.</span>
-                                <img id="p_logo_img" src="" class="w-full h-full object-contain hidden" />
-                            </div>
-                            <h1 class="text-3xl font-bold tracking-tight mb-1 text-black">FACTURA</h1>
-                            <p class="text-sm text-gray-500 font-mono">#<span id="p_folio">001</span></p>
-                        </div>
-                        <div class="text-right">
-                            <p id="p_emisor_nombre" class="font-bold text-lg text-black">Nombre Emisor</p>
-                            <p id="p_emisor_email" class="text-sm text-gray-500 whitespace-pre-wrap"></p>
-                            <p id="p_emisor_id" class="text-sm text-gray-500"></p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-8 mb-10 border-t border-b border-gray-200 py-6">
-                        <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Cobrar a</p>
-                            <p id="p_cliente_nombre" class="font-bold text-black">Nombre Cliente</p>
-                            <p id="p_cliente_id" class="text-sm text-gray-600"></p>
-                            <p id="p_cliente_dir" class="text-sm text-gray-600"></p>
-                        </div>
-                        <div class="text-right">
-                            <div class="mb-3">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Fecha</p>
-                                <p id="p_fecha" class="text-sm font-medium text-black"></p>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Método</p>
-                                <p id="p_metodo" class="text-sm font-medium text-black">Transferencia Bancaria</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <table class="w-full mb-8">
-                        <thead>
-                            <tr class="border-b-2 border-black">
-                                <th class="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wider py-2">Servicio</th>
-                                <th class="text-center text-[10px] font-bold text-gray-500 uppercase tracking-wider py-2 w-16">Cant.</th>
-                                <th class="text-right text-[10px] font-bold text-gray-500 uppercase tracking-wider py-2 w-24">Precio</th>
-                                <th class="text-right text-[10px] font-bold text-gray-500 uppercase tracking-wider py-2 w-24">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="items-preview-container" class="text-sm">
-                            <!-- Items inyectados via JS -->
-                        </tbody>
-                    </table>
+                <div class="filters-scroll">
+                    <button class="filter-pill active" onclick="app.setFilter('all', this)">Todas</button>
+                    <button class="filter-pill" onclick="app.setFilter('tengo', this)">Tengo</button>
+                    <button class="filter-pill" onclick="app.setFilter('falta', this)">Faltan</button>
+                    <button class="filter-pill" onclick="app.setFilter('repetida', this)">Repetidas</button>
+                    <button class="filter-pill" onclick="app.setFilter('reservada', this)">Reservadas</button>
+                    <button class="filter-pill" onclick="app.setFilter('special', this)">Especiales</button>
                 </div>
 
-                <div>
-                    <div class="flex justify-end mb-8">
-                        <div class="w-48">
-                            <div class="flex justify-between py-1 text-sm text-gray-600">
-                                <span>Subtotal</span>
-                                <span id="p_subtotal">$0.00</span>
-                            </div>
-                            <div class="flex justify-between py-1 text-sm text-gray-600">
-                                <span>Impuestos (<span id="p_tax_rate">16</span>%)</span>
-                                <span id="p_tax_amount">$0.00</span>
-                            </div>
-                            <div class="flex justify-between py-2 border-t-2 border-black mt-2 text-lg font-black text-black">
-                                <span>Total</span>
-                                <span id="p_total">$0.00</span>
-                            </div>
-                        </div>
-                    </div>
+                <div id="album-container">
+                    <!-- Los grupos se renderizan aquí -->
+                </div>
+                <div id="empty-state" style="display:none; text-align:center; padding: 40px 20px; color:var(--gray);">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:10px; opacity:0.5;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <p>No encontramos resultados.</p>
+                </div>
+            </div>
 
-                    <div class="border-t border-gray-200 pt-4">
-                        <div id="p_banco_container" class="mb-4 text-xs hidden">
-                            <span class="font-bold text-black mr-2">Datos Bancarios:</span>
-                            <span id="p_banco" class="font-mono bg-gray-100 px-2 py-1 rounded text-black"></span>
-                        </div>
-                        <p id="p_notas" class="text-xs text-gray-500 italic leading-relaxed">
-                            Gracias por confiar en mi trabajo. El pago debe realizarse dentro de los 15 días posteriores a la recepción de esta factura.
-                        </p>
+            <!-- VIEW: RÁPIDO -->
+            <div id="view-quick" class="view-section">
+                <h3 style="margin-bottom: 10px;">Ingreso Rápido</h3>
+                <p style="color:var(--gray); font-size:0.9rem; margin-bottom:15px;">Pegá o escribí los códigos separados por coma, espacio o salto de línea. Ej: ARG01, MEX15, 12, FWC-1</p>
+                
+                <textarea id="quick-input" class="textarea-input" placeholder="ARG01, MEX02..."></textarea>
+                
+                <div class="action-grid">
+                    <button class="btn-primary" onclick="app.processQuickAdd('tengo')" style="margin-bottom:0;">Marcar Tengo</button>
+                    <button class="btn-secondary" onclick="app.processQuickAdd('repetida')" style="margin-bottom:0; border-color:var(--orange); color:var(--orange);">+ Repetidas</button>
+                    <button class="btn-secondary" onclick="app.processQuickAdd('falta')" style="margin-bottom:0;">Faltantes (Borrar)</button>
+                    <button class="btn-secondary" onclick="document.getElementById('quick-input').value=''" style="margin-bottom:0;">Limpiar</button>
+                </div>
+            </div>
+
+            <!-- VIEW: INTERCAMBIO -->
+            <div id="view-swap" class="view-section">
+                <div class="exchange-box">
+                    <div class="exchange-title">
+                        Mis Faltantes
+                        <button class="btn-icon" onclick="app.copyToClipboard('faltantes')">📋 Copiar</button>
+                    </div>
+                    <div class="exchange-content" id="list-faltantes">Generando...</div>
+                </div>
+
+                <div class="exchange-box">
+                    <div class="exchange-title">
+                        Mis Repetidas
+                        <button class="btn-icon" onclick="app.copyToClipboard('repetidas')">📋 Copiar</button>
+                    </div>
+                    <div class="exchange-content" id="list-repetidas">Generando...</div>
+                </div>
+
+                <button class="btn-primary" onclick="app.shareWhatsApp()" style="background:#25D366; color:white;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle; margin-right:8px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Compartir por WhatsApp
+                </button>
+            </div>
+
+            <!-- VIEW: AJUSTES -->
+            <div id="view-settings" class="view-section">
+                <h3 style="margin-bottom: 20px; color: var(--gold);">Preferencias</h3>
+                
+                <div class="settings-row">
+                    <div class="settings-label">🔊 Sonidos</div>
+                    <label class="toggle"><input type="checkbox" id="set-sound" checked onchange="app.toggleSetting('sound')"><span class="slider"></span></label>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">📳 Vibración</div>
+                    <label class="toggle"><input type="checkbox" id="set-vibration" checked onchange="app.toggleSetting('vibration')"><span class="slider"></span></label>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-label">✨ Animaciones</div>
+                    <label class="toggle"><input type="checkbox" id="set-animations" checked onchange="app.toggleSetting('animations')"><span class="slider"></span></label>
+                </div>
+
+                <h3 style="margin: 30px 0 20px; color: var(--gold);">Datos</h3>
+                
+                <button class="btn-secondary" onclick="app.exportBackup()">📥 Exportar Backup (JSON)</button>
+                <button class="btn-secondary" onclick="document.getElementById('backup-input').click()">📤 Importar Backup (JSON)</button>
+                <input type="file" id="backup-input" accept=".json" style="display:none" onchange="app.importBackup(event)">
+                
+                <button class="btn-secondary" onclick="document.getElementById('csv-reimport').click()">🔄 Re-importar CSV Base</button>
+                <input type="file" id="csv-reimport" accept=".csv" style="display:none" onchange="app.handleFileSelect(event)">
+                
+                <button class="btn-secondary btn-danger" onclick="app.resetProgress()" style="margin-top: 20px;">⚠️ Resetear Progreso</button>
+                <button class="btn-secondary btn-danger" onclick="app.factoryReset()" style="background:transparent; border:none; margin-top:5px; text-decoration:underline;">Borrar App Completa</button>
+
+                <div class="footer-legal">
+                    Sticker Cup 2026 v1.0<br>
+                    App offline creada para uso personal de coleccionistas. No afiliada a FIFA, Panini ni marcas registradas. Todos los datos se guardan localmente en tu dispositivo.
+                </div>
+            </div>
+
+        </div> <!-- Fin views-container -->
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="app.switchView('dashboard')" id="nav-dashboard">
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <span>Resumen</span>
+            </div>
+            <div class="nav-item active" onclick="app.switchView('album')" id="nav-album">
+                <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                <span>Álbum</span>
+            </div>
+            <div class="nav-item" onclick="app.switchView('quick')" id="nav-quick">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                <span>Rápido</span>
+            </div>
+            <div class="nav-item" onclick="app.switchView('swap')" id="nav-swap">
+                <svg viewBox="0 0 24 24"><path d="M16 11V5.5l-6 4.5 6 4.5V11zM8 13v5.5l6-4.5-6-4.5V13z"/></svg>
+                <span>Cambios</span>
+            </div>
+            <div class="nav-item" onclick="app.switchView('settings')" id="nav-settings">
+                <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                <span>Ajustes</span>
+            </div>
+        </nav>
+
+        <!-- MODAL ACTIONS -->
+        <div class="modal-overlay" id="action-modal" onclick="if(event.target===this) app.closeModal()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Detalle</h3>
+                    <button class="modal-close" onclick="app.closeModal()">×</button>
+                </div>
+                
+                <div class="sticker-modal-info">
+                    <div class="sm-code" id="modal-code">ARG01</div>
+                    <div class="sm-details">
+                        <div class="sm-name" id="modal-name">Lionel Messi</div>
+                        <div class="sm-section" id="modal-section">Argentina</div>
                     </div>
                 </div>
 
+                <div class="modal-actions">
+                    <div class="btn-action" style="background: rgba(60, 172, 59, 0.1); border-color: var(--lime);">
+                        <span>Tengo esta figurita</span>
+                        <label class="toggle"><input type="checkbox" id="modal-tengo" onchange="app.toggleModalTengo(this)"><span class="slider"></span></label>
+                    </div>
+
+                    <div class="btn-action">
+                        <span>Repetidas</span>
+                        <div class="qty-control">
+                            <button class="btn-round" onclick="app.updateModalDups(-1)">-</button>
+                            <span id="modal-dups" style="font-weight:bold; font-size:1.2rem; width:20px; text-align:center;">0</span>
+                            <button class="btn-round" onclick="app.updateModalDups(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="btn-action" style="background: rgba(42, 57, 141, 0.2); border-color: var(--blue);">
+                        <span>Reservada / En cambio</span>
+                        <label class="toggle"><input type="checkbox" id="modal-reservada" onchange="app.toggleModalReservada(this)"><span class="slider"></span></label>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
 
-    <script>
-        // 1. Estado inicial de los items
-        let items = [
-            { id: 1, description: 'Diseño de Identidad Visual', quantity: 1, price: 500 },
-            { id: 2, description: 'Desarrollo Web One-Page', quantity: 1, price: 800 }
-        ];
+    </div> <!-- Fin Main App -->
+</div>
 
-        // 2. Utilidad para moneda
-        function formatCurrency(amount, currencyCode = 'USD') {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: currencyCode,
-                minimumFractionDigits: 2
-            }).format(amount);
+<!-- =========================================
+     JAVASCRIPT: LÓGICA CORE & PWA
+     ========================================= -->
+<script>
+const app = {
+    // 1. STATE & CONSTANTS
+    state: {
+        albumData: [],
+        user: {}, // { "ARG01": { tengo: true, repetidas: 0, reservada: false } }
+        settings: {
+            sound: true,
+            vibration: true,
+            animations: true
         }
+    },
+    currentFilter: 'all',
+    currentSearch: '',
+    selectedStickerId: null,
+    audioCtx: null,
 
-        // 3. Renderizar Items en Editor y Preview
-        function renderItems() {
-            const editor = document.getElementById('items-editor-container');
-            const preview = document.getElementById('items-preview-container');
-            const currency = document.getElementById('f_currency').value;
-            const taxRate = parseFloat(document.getElementById('f_tax').value) || 0;
+    keys: {
+        data: 'stickerCup2026_albumData_v1',
+        user: 'stickerCup2026_state_v1',
+        settings: 'stickerCup2026_settings_v1'
+    },
 
-            editor.innerHTML = '';
-            preview.innerHTML = '';
-            let subtotal = 0;
-
-            items.forEach(item => {
-                let itemTotal = item.quantity * item.price;
-                subtotal += itemTotal;
-
-                // Armar HTML Editor (Modo Oscuro)
-                editor.innerHTML += `
-                    <div class="grid grid-cols-12 gap-2 items-start bg-black/30 p-3 rounded-lg border border-brand-border group hover:border-brand-primary/50 transition-colors">
-                        <div class="col-span-12 sm:col-span-6">
-                            <input class="bg-transparent text-white w-full text-sm placeholder-gray-600 focus:outline-none font-medium" placeholder="Descripción..." value="${item.description}" oninput="updateItem(${item.id}, 'description', this.value)">
-                        </div>
-                        <div class="col-span-4 sm:col-span-2">
-                            <input type="number" class="bg-transparent text-brand-primary font-bold w-full text-sm text-center focus:outline-none" placeholder="Cant." value="${item.quantity}" oninput="updateItem(${item.id}, 'quantity', this.value)">
-                        </div>
-                        <div class="col-span-4 sm:col-span-3">
-                            <input type="number" class="bg-transparent text-gray-300 w-full text-sm text-right focus:outline-none" placeholder="Precio" value="${item.price}" oninput="updateItem(${item.id}, 'price', this.value)">
-                        </div>
-                        <div class="col-span-4 sm:col-span-1 flex justify-end">
-                            <button type="button" onclick="removeItem(${item.id})" class="text-gray-600 hover:text-red-500 transition-colors">
-                                <i class="ph-bold ph-trash text-base"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-
-                // Armar HTML Preview (Modo Claro - Factura en Blanco)
-                preview.innerHTML += `
-                    <tr class="border-b border-gray-100 last:border-0">
-                        <td class="py-3 pr-2 font-medium text-black">${item.description || 'Descripción...'}</td>
-                        <td class="py-3 text-center text-gray-500">${item.quantity}</td>
-                        <td class="py-3 text-right text-gray-500">${formatCurrency(item.price, currency)}</td>
-                        <td class="py-3 text-right font-bold text-black">${formatCurrency(itemTotal, currency)}</td>
-                    </tr>
-                `;
-            });
-
-            // Calcular y actualizar Totales
-            const taxAmount = subtotal * (taxRate / 100);
-            const total = subtotal + taxAmount;
-
-            document.getElementById('p_subtotal').innerText = formatCurrency(subtotal, currency);
-            document.getElementById('p_tax_rate').innerText = taxRate;
-            document.getElementById('p_tax_amount').innerText = formatCurrency(taxAmount, currency);
-            document.getElementById('p_total').innerText = formatCurrency(total, currency);
-        }
-
-        // 4. Funciones de manipulación de items
-        function updateItem(id, field, value) {
-            const item = items.find(i => i.id === id);
-            if (field === 'quantity' || field === 'price') {
-                item[field] = parseFloat(value) || 0;
-            } else {
-                item[field] = value;
-            }
-            renderItems();
-        }
-
-        function addItem() {
-            items.push({ id: Date.now(), description: '', quantity: 1, price: 0 });
-            renderItems();
-        }
-
-        function removeItem(id) {
-            if (items.length > 1) {
-                items = items.filter(item => item.id !== id);
-                renderItems();
-            }
-        }
-
-        // 5. Sincronización en vivo de los inputs normales
-        document.querySelectorAll('.sync-input').forEach(input => {
-            input.addEventListener('input', (e) => {
-                const targetId = e.target.getAttribute('data-target');
-                const defaultValue = e.target.getAttribute('data-default') || '';
-                const targetEl = document.getElementById(targetId);
-                
-                if (targetEl) {
-                    targetEl.innerText = e.target.value.trim() !== '' ? e.target.value : defaultValue;
-                }
-
-                // Lógica especial para mostrar/ocultar el div de banco
-                if (e.target.id === 'f_banco') {
-                    const bancoContainer = document.getElementById('p_banco_container');
-                    if (e.target.value.trim() !== '') {
-                        bancoContainer.classList.remove('hidden');
+    // 2. INITIALIZATION
+    init() {
+        this.loadSettings();
+        const hasData = this.loadData();
+        
+        // Simular carga
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            document.getElementById('loader-fill').style.width = `${progress}%`;
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    document.getElementById('loading-screen').classList.add('hidden');
+                    if (hasData) {
+                        this.startApp();
                     } else {
-                        bancoContainer.classList.add('hidden');
+                        document.getElementById('onboarding-screen').classList.remove('hidden');
+                        this.setupDropZone();
                     }
-                }
-            });
-        });
-
-        // 6. Subida de Logo
-        function handleLogo(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const src = e.target.result;
-                    // Editor UI
-                    document.getElementById('logo-placeholder-icon').classList.add('hidden');
-                    const imgEditor = document.getElementById('logo-img');
-                    imgEditor.src = src;
-                    imgEditor.classList.remove('hidden');
-                    document.getElementById('logo-btn-text').innerText = "Cambiar Imagen";
-                    document.getElementById('logo-remove-btn').classList.remove('hidden');
-
-                    // Preview UI (Mantiene fondo original negro/transparente según logo)
-                    document.getElementById('p_logo_text').classList.add('hidden');
-                    const imgPreview = document.getElementById('p_logo_img');
-                    imgPreview.src = src;
-                    imgPreview.classList.remove('hidden');
-                    document.getElementById('p_logo_container').classList.remove('bg-black', 'text-white');
-                    document.getElementById('p_logo_container').classList.add('bg-transparent');
-                };
-                reader.readAsDataURL(file);
+                }, 300);
             }
-        }
+        }, 80);
 
-        function removeLogo() {
-            // Limpiar input file
-            document.getElementById('logo-upload').value = '';
+        this.setupEventListeners();
+        this.initPWA();
+    },
+
+    startApp() {
+        document.getElementById('onboarding-screen').classList.add('hidden');
+        document.getElementById('main-app').classList.remove('hidden');
+        this.renderAlbum();
+        this.updateDashboard();
+        this.updateExchangeLists();
+    },
+
+    // 3. DATA PERSISTENCE
+    loadData() {
+        try {
+            const rawData = localStorage.getItem(this.keys.data);
+            const rawUser = localStorage.getItem(this.keys.user);
             
-            // Restaurar Editor UI
-            document.getElementById('logo-placeholder-icon').classList.remove('hidden');
-            document.getElementById('logo-img').classList.add('hidden');
-            document.getElementById('logo-btn-text').innerText = "Subir Imagen";
-            document.getElementById('logo-remove-btn').classList.add('hidden');
-
-            // Restaurar Preview UI
-            document.getElementById('p_logo_text').classList.remove('hidden');
-            document.getElementById('p_logo_img').classList.add('hidden');
-            document.getElementById('p_logo_container').classList.add('bg-black', 'text-white');
-            document.getElementById('p_logo_container').classList.remove('bg-transparent');
+            if (rawData) this.state.albumData = JSON.parse(rawData);
+            if (rawUser) this.state.user = JSON.parse(rawUser);
+            
+            return this.state.albumData.length > 0;
+        } catch(e) {
+            console.error("Error loading data", e);
+            return false;
         }
+    },
+    saveUser() {
+        localStorage.setItem(this.keys.user, JSON.stringify(this.state.user));
+        this.updateDashboard();
+    },
+    saveSettings() {
+        localStorage.setItem(this.keys.settings, JSON.stringify(this.state.settings));
+    },
+    loadSettings() {
+        try {
+            const s = localStorage.getItem(this.keys.settings);
+            if (s) {
+                this.state.settings = { ...this.state.settings, ...JSON.parse(s) };
+                document.getElementById('set-sound').checked = this.state.settings.sound;
+                document.getElementById('set-vibration').checked = this.state.settings.vibration;
+                document.getElementById('set-animations').checked = this.state.settings.animations;
+            }
+        } catch(e) {}
+    },
 
-        // 7. Tabs Mobile
-        function switchTab(tab) {
-            const editor = document.getElementById('editor-panel');
-            const preview = document.getElementById('preview-panel');
-            const btnEdit = document.getElementById('btn-tab-edit');
-            const btnPrev = document.getElementById('btn-tab-prev');
+    // 4. CSV PARSER & IMPORT
+    setupDropZone() {
+        const dropZone = document.getElementById('drop-zone');
+        const input = document.getElementById('csv-file-input');
 
-            if (tab === 'edit') {
-                editor.classList.remove('hidden');
-                editor.classList.add('flex');
-                preview.classList.add('hidden');
-                preview.classList.remove('flex');
-                
-                btnEdit.className = "px-3 py-1.5 rounded-md text-xs font-bold transition-colors bg-brand-primary text-white shadow-glow";
-                btnPrev.className = "px-3 py-1.5 rounded-md text-xs font-bold transition-colors text-gray-400 hover:text-white";
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "var(--lime)"; });
+        dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.borderColor = "rgba(255,255,255,0.3)"; });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = "rgba(255,255,255,0.3)";
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) this.processCSV(e.dataTransfer.files[0]);
+        });
+        input.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) this.processCSV(e.target.files[0]);
+        });
+    },
+
+    handleFileSelect(e) {
+        if (e.target.files && e.target.files[0]) {
+            this.processCSV(e.target.files[0]);
+            e.target.value = ''; // reset
+        }
+    },
+
+    processCSV(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target.result;
+            const rows = this.parseCSVText(text);
+            if (rows.length > 0) {
+                this.buildAlbumData(rows);
+                localStorage.setItem(this.keys.data, JSON.stringify(this.state.albumData));
+                this.showToast(`¡Álbum cargado! ${this.state.albumData.length} figuritas detectadas.`);
+                this.startApp();
             } else {
-                editor.classList.add('hidden');
-                editor.classList.remove('flex');
-                preview.classList.remove('hidden');
-                preview.classList.add('flex');
-
-                btnPrev.className = "px-3 py-1.5 rounded-md text-xs font-bold transition-colors bg-brand-primary text-white shadow-glow";
-                btnEdit.className = "px-3 py-1.5 rounded-md text-xs font-bold transition-colors text-gray-400 hover:text-white";
+                alert("Error: El CSV parece estar vacío o tiene un formato incorrecto.");
             }
+        };
+        reader.readAsText(file);
+    },
+
+    parseCSVText(text) {
+        let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
+        for (l of text) {
+            if ('"' === l) {
+                if (s && l === p) row[i] += l;
+                s = !s;
+            } else if (',' === l && s) l = row[++i] = '';
+            else if ('\n' === l && s) {
+                if ('\r' === p) row[i] = row[i].slice(0, -1);
+                row = ret[++r] = [l = '']; i = 0;
+            } else row[i] += l;
+            p = l;
         }
+        return ret.filter(r => r.length >= 2 && r[0].trim() !== "" && r[0].toLowerCase() !== "codigo");
+    },
 
-        // 8. Lógica del Modal y Resetear Factura
-        function openConfirmModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.firstElementChild.classList.remove('scale-95');
-                modal.firstElementChild.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeConfirmModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.add('opacity-0');
-            modal.firstElementChild.classList.remove('scale-100');
-            modal.firstElementChild.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        function executeReset() {
-            closeConfirmModal();
-
-            // Limpiar inputs
-            const inputsToClear = [
-                'f_emisor_nombre', 'f_emisor_id', 'f_emisor_email',
-                'f_cliente_nombre', 'f_cliente_id', 'f_cliente_dir',
-                'f_banco'
-            ];
+    buildAlbumData(rows) {
+        const data = [];
+        rows.forEach(row => {
+            const codigo = row[0].trim();
+            const texto = row[1].trim();
             
-            inputsToClear.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) {
-                    el.value = '';
-                    el.dispatchEvent(new Event('input'));
-                }
+            const parts = texto.split('|').map(p => p.trim());
+            let section = parts.length > 1 ? parts[1] : 'Desconocido';
+            
+            let name = codigo;
+            const nameMatch = texto.split('·');
+            if (nameMatch.length > 1) name = nameMatch[1].trim();
+
+            let prefix = codigo;
+            let number = 0;
+            const match = codigo.match(/^([A-Za-z]+)-?(\d+)$/);
+            if (match) {
+                prefix = match[1];
+                number = parseInt(match[2], 10);
+            } else if (codigo === '00') {
+                prefix = '00';
+                number = 0;
+            }
+
+            let type = 'team';
+            if (texto.includes('ESPECIAL') || ['FWC', 'CC', '00', 'LOGO'].includes(prefix) || section.includes('ESPECIAL')) {
+                type = 'special';
+                section = 'Especiales';
+            }
+
+            data.push({
+                id: codigo, code: codigo, number: number, prefix: prefix,
+                section: section, name: name, type: type
             });
-
-            // Valores por defecto
-            const defaultInputs = {
-                'f_folio': '001',
-                'f_currency': 'USD',
-                'f_tax': '16',
-                'f_metodo': 'Transferencia Bancaria',
-                'f_notas': 'Gracias por confiar en mi trabajo. El pago debe realizarse dentro de los 15 días posteriores a la recepción de esta factura.'
-            };
-            
-            for (const [id, val] of Object.entries(defaultInputs)) {
-                const el = document.getElementById(id);
-                if(el) {
-                    el.value = val;
-                    if(el.classList.contains('sync-input')) {
-                        el.dispatchEvent(new Event('input'));
-                    }
-                }
-            }
-
-            // Restaurar fecha a hoy
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('f_fecha').value = today;
-            document.getElementById('p_fecha').innerText = today;
-
-            // Remover logo
-            removeLogo();
-
-            // Restaurar items iniciales
-            items = [
-                { id: 1, description: 'Diseño de Identidad Visual', quantity: 1, price: 500 },
-                { id: 2, description: 'Desarrollo Web One-Page', quantity: 1, price: 800 }
-            ];
-            renderItems();
-        }
-
-        // Configurar fecha de hoy al iniciar
-        document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('f_fecha').value = today;
-            document.getElementById('p_fecha').innerText = today;
-            renderItems();
         });
 
-    </script>
+        // Ordenar por prioridad de sección y luego por número
+        const getPriority = (s) => {
+            const upper = s.toUpperCase();
+            if (upper.includes('LOGO') || upper === '00' || upper.includes('FWC')) return 1;
+            if (upper.includes('ESPECIAL')) return 2;
+            if (upper === 'CC') return 4;
+            return 3;
+        };
+
+        data.sort((a, b) => {
+            const pA = getPriority(a.section);
+            const pB = getPriority(b.section);
+            if (pA !== pB) return pA - pB;
+            if (a.section !== b.section) return a.section.localeCompare(b.section);
+            return a.number - b.number;
+        });
+
+        this.state.albumData = data;
+    },
+
+    loadDemoData() {
+        const demoCSV = `codigo,texto
+00,00 | LOGO | 00 · Panini
+FWC-1,FWC-1 | ESPECIAL | FWC-1 · Official Emblem
+ARG-1,ARG-1 | Argentina | ARG-1 · Escudo
+ARG-2,ARG-2 | Argentina | ARG-2 · Dibu Martínez
+ARG-10,ARG-10 | Argentina | ARG-10 · Lionel Messi
+MEX-1,MEX-1 | México | MEX-1 · Escudo
+MEX-15,MEX-15 | México | MEX-15 · Hirving Lozano
+CC-10,CC-10 | ESPECIAL | CC-10 · Lamine Yamal`;
+        const rows = this.parseCSVText(demoCSV);
+        this.buildAlbumData(rows);
+        localStorage.setItem(this.keys.data, JSON.stringify(this.state.albumData));
+        this.showToast("Cargada versión Demo.");
+        this.startApp();
+    },
+
+    // 5. RENDERING & VIEWS
+    switchView(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(`view-${viewId}`).classList.add('active');
+        document.getElementById(`nav-${viewId}`).classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+
+        if(viewId === 'swap') this.updateExchangeLists();
+    },
+
+    setFilter(type, btnElement) {
+        document.querySelectorAll('.filter-pill').forEach(el => el.classList.remove('active'));
+        btnElement.classList.add('active');
+        this.currentFilter = type;
+        this.renderAlbum();
+    },
+
+    filterAlbum() {
+        this.currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+        this.renderAlbum();
+    },
+
+    renderAlbum() {
+        const container = document.getElementById('album-container');
+        container.innerHTML = '';
+        let hasResults = false;
+
+        // Agrupar por sección
+        const groups = {};
+        this.state.albumData.forEach(st => {
+            // Aplicar Filtros
+            const u = this.state.user[st.id] || { tengo: false, repetidas: 0, reservada: false };
+            
+            if (this.currentFilter === 'tengo' && !u.tengo) return;
+            if (this.currentFilter === 'falta' && u.tengo) return;
+            if (this.currentFilter === 'repetida' && u.repetidas === 0) return;
+            if (this.currentFilter === 'reservada' && !u.reservada) return;
+            if (this.currentFilter === 'special' && st.type !== 'special') return;
+
+            // Aplicar Búsqueda
+            if (this.currentSearch) {
+                const term = this.currentSearch;
+                if (!st.code.toLowerCase().includes(term) && 
+                    !st.name.toLowerCase().includes(term) && 
+                    !st.number.toString().includes(term)) return;
+            }
+
+            if (!groups[st.section]) groups[st.section] = { total: 0, tengo: 0, stickers: [] };
+            groups[st.section].stickers.push(st);
+            hasResults = true;
+        });
+
+        document.getElementById('empty-state').style.display = hasResults ? 'none' : 'block';
+
+        // Pre-calcular stats totales por grupo (ignorando filtros) para mostrar progreso real
+        const realGroups = {};
+        this.state.albumData.forEach(st => {
+            if (!realGroups[st.section]) realGroups[st.section] = { total: 0, tengo: 0 };
+            realGroups[st.section].total++;
+            if (this.state.user[st.id]?.tengo) realGroups[st.section].tengo++;
+        });
+
+        // Render HTML
+        for (const [sectionName, group] of Object.entries(groups)) {
+            const real = realGroups[sectionName];
+            const perc = Math.round((real.tengo / real.total) * 100) || 0;
+            
+            const gDiv = document.createElement('div');
+            gDiv.className = 'section-group';
+            // Auto expandir si hay búsqueda
+            if (this.currentSearch || this.currentFilter !== 'all') gDiv.classList.add('open');
+
+            let stHtml = '';
+            group.stickers.forEach(st => {
+                const u = this.state.user[st.id] || { tengo: false, repetidas: 0, reservada: false };
+                let classes = ['sticker-card'];
+                if (u.tengo) classes.push('tengo');
+                if (u.repetidas > 0) classes.push('repetida');
+                if (u.reservada) classes.push('reservada');
+                if (st.type === 'special') classes.push('special');
+
+                stHtml += `
+                    <div class="${classes.join(' ')}" onclick="app.handleStickerClick('${st.id}', this)">
+                        ${u.reservada ? '' : ''}
+                        <div class="st-code">${st.code}</div>
+                        <div class="st-name">${st.name}</div>
+                        ${u.repetidas > 0 ? `<div class="badge-rep">x${u.repetidas}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            gDiv.innerHTML = `
+                <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+                    <div class="section-title">${sectionName}</div>
+                    <div class="section-stats">
+                        <span>${real.tengo}/${real.total}</span>
+                        <div class="section-progress">
+                            <div class="section-progress-fill" style="width: ${perc}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-content">${stHtml}</div>
+            `;
+            container.appendChild(gDiv);
+        }
+    },
+
+    updateDashboard() {
+        const total = this.state.albumData.length;
+        if (total === 0) return;
+
+        let tengo = 0, repetidas = 0, reservadas = 0;
+        
+        Object.values(this.state.user).forEach(u => {
+            if (u.tengo) tengo++;
+            if (u.repetidas > 0) repetidas += u.repetidas;
+            if (u.reservada) reservadas++;
+        });
+
+        const faltan = total - tengo;
+        const perc = Math.round((tengo / total) * 100) || 0;
+
+        document.getElementById('dash-total').innerText = `${tengo}/${total}`;
+        document.getElementById('dash-tengo').innerText = tengo;
+        document.getElementById('dash-faltan').innerText = faltan;
+        document.getElementById('dash-repetidas').innerText = repetidas;
+        document.getElementById('dash-reservadas').innerText = reservadas;
+        
+        document.getElementById('dash-perc').innerText = `${perc}%`;
+        document.getElementById('header-stats').innerText = `${perc}%`;
+
+        // Stroke dashoffset: 220 is empty, 0 is full
+        const offset = 220 - (220 * perc) / 100;
+        document.getElementById('dash-ring').style.strokeDashoffset = offset;
+
+        // Mensaje dinámico
+        let msg = "";
+        if (perc === 0) msg = "Recién arranca el camino.";
+        else if (perc < 25) msg = "Primeros pasos, ¡a seguir abriendo paquetes!";
+        else if (perc < 50) msg = "Ya se empieza a ver el álbum tomar forma.";
+        else if (perc < 75) msg = "Estás más cerca. Mitad de camino superado.";
+        else if (perc < 100) msg = "Modo final: faltan las difíciles. ¡A cambiar!";
+        else { msg = "🏆 ¡ÁLBUM COMPLETO! Leyenda absoluta."; this.triggerConfetti(); }
+        document.getElementById('dash-msg').innerText = msg;
+    },
+
+    // 6. INTERACCIONES (CLICK & MODAL)
+    handleStickerClick(id, element) {
+        const st = this.state.albumData.find(s => s.id === id);
+        if (!st) return;
+
+        if (!this.state.user[id]) this.state.user[id] = { tengo: false, repetidas: 0, reservada: false };
+        
+        if (!this.state.user[id].tengo) {
+            // Marcar directo
+            this.state.user[id].tengo = true;
+            this.saveUser();
+            this.playVibration(20);
+            this.playSound('tengo');
+            
+            // UI Update local para velocidad
+            element.classList.add('tengo', 'pop-anim');
+            setTimeout(() => element.classList.remove('pop-anim'), 300);
+            this.updateDashboard();
+        } else {
+            // Ya la tiene, abrir modal de acciones
+            this.openModal(st);
+            this.playVibration(10);
+        }
+    },
+
+    openModal(st) {
+        this.selectedStickerId = st.id;
+        const u = this.state.user[st.id];
+        
+        document.getElementById('modal-code').innerText = st.code;
+        document.getElementById('modal-name').innerText = st.name;
+        document.getElementById('modal-section').innerText = st.section;
+        
+        document.getElementById('modal-tengo').checked = u.tengo;
+        document.getElementById('modal-dups').innerText = u.repetidas;
+        document.getElementById('modal-reservada').checked = u.reservada;
+
+        document.getElementById('action-modal').classList.add('active');
+    },
+
+    closeModal() {
+        document.getElementById('action-modal').classList.remove('active');
+        this.selectedStickerId = null;
+        this.renderAlbum(); // refrescar por si hubo cambios
+    },
+
+    toggleModalTengo(el) {
+        if (!this.selectedStickerId) return;
+        this.state.user[this.selectedStickerId].tengo = el.checked;
+        if (!el.checked) {
+            this.state.user[this.selectedStickerId].repetidas = 0;
+            document.getElementById('modal-dups').innerText = "0";
+        }
+        this.saveUser();
+        this.playSound('click');
+    },
+
+    updateModalDups(delta) {
+        if (!this.selectedStickerId) return;
+        let d = this.state.user[this.selectedStickerId].repetidas + delta;
+        if (d < 0) d = 0;
+        
+        this.state.user[this.selectedStickerId].repetidas = d;
+        if (d > 0) {
+            this.state.user[this.selectedStickerId].tengo = true; // Forzar tengo si hay repetida
+            document.getElementById('modal-tengo').checked = true;
+        }
+        
+        document.getElementById('modal-dups').innerText = d;
+        this.saveUser();
+        this.playVibration(20);
+        this.playSound(delta > 0 ? 'dup' : 'click');
+    },
+
+    toggleModalReservada(el) {
+        if (!this.selectedStickerId) return;
+        this.state.user[this.selectedStickerId].reservada = el.checked;
+        this.saveUser();
+        this.playSound('click');
+    },
+
+    // 7. MODO RÁPIDO
+    processQuickAdd(action) {
+        const input = document.getElementById('quick-input').value;
+        if (!input.trim()) return;
+
+        // Separar por comas, espacios o saltos
+        const rawTokens = input.split(/[\s,\n]+/).map(t => t.trim().toUpperCase()).filter(t => t);
+        let count = 0;
+        let notFound = [];
+
+        rawTokens.forEach(token => {
+            // Buscar coincidencia exacta por ID o código (quitando guiones opcionalmente)
+            let match = this.state.albumData.find(s => s.id.toUpperCase() === token || s.code.toUpperCase() === token || s.id.replace('-','') === token.replace('-',''));
+            
+            if (!match && !isNaN(token)) {
+                // Es un numero, intentar buscar si es único (riesgoso)
+                const numMatches = this.state.albumData.filter(s => s.number == parseInt(token));
+                if (numMatches.length === 1) match = numMatches[0];
+            }
+
+            if (match) {
+                const id = match.id;
+                if (!this.state.user[id]) this.state.user[id] = { tengo: false, repetidas: 0, reservada: false };
+                
+                if (action === 'tengo') this.state.user[id].tengo = true;
+                else if (action === 'repetida') { this.state.user[id].tengo = true; this.state.user[id].repetidas++; }
+                else if (action === 'falta') { this.state.user[id].tengo = false; this.state.user[id].repetidas = 0; }
+                
+                count++;
+            } else {
+                notFound.push(token);
+            }
+        });
+
+        if (count > 0) {
+            this.saveUser();
+            document.getElementById('quick-input').value = '';
+            this.playVibration([20, 50, 20]);
+            this.playSound('tengo');
+            let msg = `✅ ${count} procesadas.`;
+            if (notFound.length > 0) msg += ` ⚠️ No encontradas: ${notFound.join(', ')}`;
+            this.showToast(msg);
+        } else {
+            this.showToast("❌ No se encontró ningún código válido.");
+        }
+    },
+
+    // 8. INTERCAMBIO (SWAP)
+    updateExchangeLists() {
+        let faltanText = "";
+        let repeText = "";
+
+        // Agrupar por prefijo para hacerlo más corto
+        const faltanGroups = {};
+        const repeGroups = {};
+
+        this.state.albumData.forEach(st => {
+            const u = this.state.user[st.id] || { tengo: false, repetidas: 0, reservada: false };
+            if (!u.tengo) {
+                if(!faltanGroups[st.prefix]) faltanGroups[st.prefix] = [];
+                faltanGroups[st.prefix].push(st.number);
+            }
+            if (u.repetidas > 0 && !u.reservada) {
+                if(!repeGroups[st.prefix]) repeGroups[st.prefix] = [];
+                repeGroups[st.prefix].push(`${st.number}` + (u.repetidas > 1 ? `(x${u.repetidas})` : ''));
+            }
+        });
+
+        for (const [p, nums] of Object.entries(faltanGroups)) faltanText += `${p}: ${nums.join(', ')}\n`;
+        for (const [p, nums] of Object.entries(repeGroups)) repeText += `${p}: ${nums.join(', ')}\n`;
+
+        document.getElementById('list-faltantes').innerText = faltanText || "¡No te falta ninguna!";
+        document.getElementById('list-repetidas').innerText = repeText || "No tenés repetidas disponibles.";
+    },
+
+    copyToClipboard(type) {
+        const text = document.getElementById(`list-${type}`).innerText;
+        navigator.clipboard.writeText(`Mis ${type} (Sticker Cup 2026):\n\n${text}`).then(() => {
+            this.showToast("Copiado al portapapeles");
+        });
+    },
+
+    shareWhatsApp() {
+        const faltan = document.getElementById('list-faltantes').innerText;
+        const repe = document.getElementById('list-repetidas').innerText;
+        
+        let msg = `⚽ *Cambiamos figuritas?*\n\n`;
+        if (faltan && !faltan.includes('ninguna')) msg += `*Me faltan:*\n${faltan}\n`;
+        if (repe && !repe.includes('disponibles')) msg += `*Tengo repetidas:*\n${repe}\n`;
+        
+        const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+    },
+
+    // 9. AJUSTES, BACKUP, RESET
+    toggleSetting(key) {
+        this.state.settings[key] = document.getElementById(`set-${key}`).checked;
+        this.saveSettings();
+    },
+
+    exportBackup() {
+        const data = {
+            version: 1,
+            date: new Date().toISOString(),
+            user: this.state.user
+        };
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `StickerCup_Backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    },
+
+    importBackup(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.user) {
+                    this.state.user = data.user;
+                    this.saveUser();
+                    this.showToast("Backup restaurado con éxito.");
+                    if(document.getElementById('onboarding-screen').classList.contains('hidden') === false && this.state.albumData.length > 0) {
+                        this.startApp();
+                    } else if(this.state.albumData.length === 0) {
+                        alert("Backup cargado, pero necesitas cargar el CSV del álbum para verlas.");
+                    } else {
+                        this.startApp();
+                    }
+                }
+            } catch(err) {
+                alert("El archivo JSON no es válido.");
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    },
+
+    resetProgress() {
+        if (confirm("⚠️ ¿Estás seguro? Se borrarán todas tus figuritas marcadas. Exportá un backup antes por las dudas.")) {
+            if (confirm("Última advertencia. Se borrará tu progreso.")) {
+                this.state.user = {};
+                this.saveUser();
+                this.showToast("Progreso reseteado a cero.");
+                this.startApp();
+            }
+        }
+    },
+    
+    factoryReset() {
+        if(confirm("Borrará base de datos y progreso. Quedará como recién instalada. ¿Continuar?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    },
+
+    // 10. UTILIDADES (UI, SONIDO, HÁPTICA)
+    showToast(msg) {
+        const container = document.getElementById('toast-container');
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerText = msg;
+        container.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    },
+
+    playVibration(ms) {
+        if (this.state.settings.vibration && navigator.vibrate) {
+            try { navigator.vibrate(ms); } catch(e){}
+        }
+    },
+
+    playSound(type) {
+        if (!this.state.settings.sound) return;
+        try {
+            if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+            
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            
+            const now = this.audioCtx.currentTime;
+            
+            if (type === 'tengo') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'dup') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else { // click
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(800, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+        } catch(e) {}
+    },
+
+    triggerConfetti() {
+        if (!this.state.settings.animations) return;
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const pieces = [];
+        const colors = ['#C6FF3D', '#D6A93A', '#3CAC3B', '#E61D25', '#F8FAFC'];
+        for(let i=0; i<100; i++) {
+            pieces.push({
+                x: canvas.width/2, y: canvas.height/2 + 100,
+                vx: (Math.random()-0.5)*20, vy: (Math.random()-1)*20 - 5,
+                size: Math.random()*8+4, color: colors[Math.floor(Math.random()*colors.length)]
+            });
+        }
+        
+        const loop = () => {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            let active = false;
+            pieces.forEach(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.5; // gravity
+                if (p.y < canvas.height) active = true;
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            });
+            if (active) requestAnimationFrame(loop);
+            else ctx.clearRect(0,0,canvas.width,canvas.height);
+        };
+        loop();
+    },
+
+    // 11. PWA DINÁMICA (One-file strategy)
+    initPWA() {
+        // Generar Manifest Dinámico
+        const manifestData = {
+            name: "Sticker Cup 2026",
+            short_name: "StickerCup",
+            start_url: ".",
+            display: "standalone",
+            background_color: "#07111F",
+            theme_color: "#07111F",
+            description: "App para gestionar álbum de figuritas 2026",
+            icons: [{
+                src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%2307111F"/><text x="50" y="60" font-size="40" fill="%23D6A93A" text-anchor="middle">SC</text></svg>',
+                sizes: "192x192", type: "image/svg+xml", purpose: "any maskable"
+            }]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
+
+        // Generar Service Worker Dinámico para Cache Offline (solo la cáscara actual)
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE = 'stickercup-v1';
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+                self.addEventListener('fetch', e => {
+                    // Solo cacheamos peticiones get locales si fuera necesario.
+                    // Al ser un solo archivo, confía en cache del navegador o funciona in-memory.
+                });
+            `;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log("SW local ignorable", err));
+        }
+    },
+
+    setupEventListeners() {
+        // Nada específico que no esté inline en HTML
+    }
+};
+
+// Iniciar app al cargar dom
+window.addEventListener('DOMContentLoaded', () => app.init());
+
+</script>
 </body>
 </html>
