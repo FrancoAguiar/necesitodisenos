@@ -39,7 +39,7 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-            user-select: none; /* Evita selección de texto accidental al hacer doble tap */
+            user-select: none;
         }
 
         body {
@@ -102,7 +102,7 @@
         }
 
         /* =========================================
-           1. LOADING SCREEN
+           LOADING SCREEN
            ========================================= */
         #loading-screen { justify-content: center; align-items: center; z-index: 100; }
         .loader-logo { width: 100px; height: 100px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
@@ -118,7 +118,7 @@
         .btn-secondary:active { background: rgba(255,255,255,0.15); }
 
         /* =========================================
-           3. UI PRINCIPAL
+           UI PRINCIPAL
            ========================================= */
         .app-header {
             padding: 20px 20px 15px;
@@ -160,19 +160,14 @@
         .nav-item.active svg { transform: scale(1.1); filter: drop-shadow(0 0 5px rgba(198, 255, 61, 0.5)); }
 
         /* =========================================
-           4. DASHBOARD (Textos exactos)
+           DASHBOARD
            ========================================= */
         .dash-summary { 
-            background: var(--glass-bg); 
-            border: 1px solid var(--glass-border); 
-            border-radius: 20px; 
-            padding: 25px 20px; 
-            backdrop-filter: var(--glass-blur); 
-            margin-bottom: 20px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); 
+            border-radius: 20px; padding: 25px 20px; backdrop-filter: var(--glass-blur); margin-bottom: 20px;
         }
         .dash-title { font-size: 1.2rem; color: var(--white); font-weight: bold; margin-bottom: 15px; display: flex; justify-content: space-between;}
         .dash-title span { color: var(--lime); }
-        
         .dash-list { list-style: none; padding: 0; font-size: 1.05rem; line-height: 1.8; color: var(--gray); }
         .dash-list span.val { color: var(--white); font-weight: bold; }
         
@@ -180,7 +175,7 @@
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--lime)); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px rgba(198,255,61,0.4); }
 
         /* =========================================
-           5. ÁLBUM & FILTROS
+           ÁLBUM & FILTROS
            ========================================= */
         .filters-scroll { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
         .filters-scroll::-webkit-scrollbar { display: none; }
@@ -217,73 +212,56 @@
             border: 1px dashed rgba(255,255,255,0.2);
             color: rgba(255,255,255,0.3);
         }
-        .sticker-card:active { transform: scale(0.92); }
+        .sticker-card:active { transform: scale(0.95); }
         
         .st-code { font-family: var(--font-heading); font-size: 1.3rem; z-index: 2; margin-bottom: 2px;}
         .st-name { font-size: 0.55rem; text-align: center; padding: 0 4px; z-index: 2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .st-status-lbl { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; margin-top: 8px; z-index: 2; background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 8px; }
 
-        /* Estado: La tengo */
-        .sticker-card.tengo { 
-            background: rgba(60, 172, 59, 0.15); 
-            border: 1px solid var(--lime); 
-            color: var(--white);
-        }
+        /* Estados */
+        .sticker-card.tengo { background: rgba(60, 172, 59, 0.15); border: 1px solid var(--lime); color: var(--white); }
         .sticker-card.tengo .st-status-lbl { background: var(--lime); color: var(--navy); }
-        .sticker-card.tengo::after { 
-            content: '✓'; position: absolute; top: 6px; right: 6px; 
-            background: var(--lime); color: var(--navy); border-radius: 50%; 
-            width: 18px; height: 18px; font-size: 11px; display: flex; 
+        .sticker-card.tengo .badge-check { 
+            position: absolute; top: 6px; left: 6px; background: var(--lime); color: var(--navy); 
+            border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; 
             align-items: center; justify-content: center; font-weight: bold; z-index: 3;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
         
-        /* Estado: Repetida */
         .sticker-card.repetida { border-color: var(--orange); box-shadow: inset 0 0 15px rgba(255, 122, 26, 0.15); }
-        .badge-rep { 
-            position: absolute; bottom: 6px; right: 6px; 
-            background: linear-gradient(135deg, var(--orange), #ff4500); color: white; 
-            font-size: 0.75rem; font-weight: 900; padding: 2px 8px; border-radius: 12px; z-index: 3; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-        }
-        
-        /* Estado: Reservada */
+        .badge-rep { position: absolute; bottom: 6px; right: 6px; background: linear-gradient(135deg, var(--orange), #ff4500); color: white; font-size: 0.75rem; font-weight: 900; padding: 2px 8px; border-radius: 12px; z-index: 3; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
         .sticker-card.reservada { border-width: 2px; border-color: var(--blue); }
-        .badge-res { 
-            position: absolute; top: 0; left: 0; width: 100%; 
-            background: var(--blue); color: white; font-size: 0.5rem; 
-            font-weight: bold; text-align: center; padding: 2px 0; z-index: 3;
-            text-transform: uppercase;
-        }
-
-        /* Estado: Especial */
-        .sticker-card.special::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(214,169,58,0.15), transparent);
-            transform: rotate(45deg); z-index: 1; pointer-events: none;
-        }
+        .badge-res { position: absolute; top: 0; left: 0; width: 100%; background: var(--blue); color: white; font-size: 0.5rem; font-weight: bold; text-align: center; padding: 2px 0; z-index: 3; text-transform: uppercase; }
+        .sticker-card.special::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(214,169,58,0.15), transparent); transform: rotate(45deg); z-index: 1; pointer-events: none; }
 
         .pop-anim { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
+        /* Botón de repetidas rápido */
+        .btn-plus-dup {
+            position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%;
+            background: var(--orange); color: white; font-weight: bold; font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--navy); z-index: 5; cursor: pointer; transition: transform 0.1s;
+        }
+        .btn-plus-dup:active { transform: scale(0.85); }
+
         /* =========================================
-           6. INTERCAMBIO Y MODO RÁPIDO
+           INTERCAMBIO Y MODO RÁPIDO
            ========================================= */
         .textarea-input { width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; color: white; padding: 15px; font-family: var(--font-body); font-size: 1rem; resize: none; margin-bottom: 15px; }
         .textarea-input:focus { border-color: var(--lime); outline: none; }
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
         .exchange-box { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
         .exchange-title { font-size: 1.1rem; color: var(--gold); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .exchange-content { font-size: 0.95rem; color: var(--gray); max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-family: monospace; line-height: 1.6; white-space: pre-wrap; word-break: break-word;}
         .btn-icon { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: white; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: background 0.2s;}
 
         /* =========================================
-           7. MINI MENÚ (Bottom Sheet) & AJUSTES
+           MINI MENÚ (Bottom Sheet) & AJUSTES
            ========================================= */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        
         .modal-content { background: var(--navy-light); width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); border-top: 1px solid var(--glass-border); }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
@@ -300,10 +278,8 @@
         .modal-actions { display: grid; gap: 12px; }
         .btn-action { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 18px; border-radius: 16px; background: var(--glass-bg); color: white; font-weight: 600; font-size: 1.1rem; border: 1px solid var(--glass-border); transition: transform 0.1s, background 0.2s;}
         .btn-action:active { transform: scale(0.97); background: rgba(255,255,255,0.15); }
-        
         .btn-action.add { background: rgba(255, 122, 26, 0.15); border-color: rgba(255, 122, 26, 0.5); color: var(--orange); }
         .btn-action.res { background: rgba(42, 57, 141, 0.2); border-color: rgba(42, 57, 141, 0.5); color: #8ea0ff; }
-        .btn-action.del { background: transparent; border-color: rgba(255,255,255,0.1); color: var(--gray); font-size: 1rem; margin-top: 10px;}
 
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--glass-border); }
         .toggle { position: relative; display: inline-block; width: 50px; height: 28px; }
@@ -314,23 +290,23 @@
         input:checked + .slider:before { transform: translateX(22px); background-color: var(--navy); }
         .btn-danger { background: rgba(230,29,37,0.1); color: var(--red); border: 1px solid var(--red); }
 
-        /* Toast */
         .toast-container { position: fixed; bottom: calc(90px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
         .toast { background: rgba(255,255,255,0.95); color: var(--navy); padding: 12px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
-
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
     </style>
 </head>
 <body>
 
+<!-- ARCHIVO DE DATOS EXTERNO -->
+<!-- Si tienes albumData.js, colócalo en el mismo directorio. Si existe window.albumData, se priorizará. -->
+<script src="albumData.js"></script>
+
 <div class="app-container" id="app-container">
-    
     <canvas id="confetti-canvas"></canvas>
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- 1. LOADING SCREEN -->
     <div id="loading-screen" class="screen">
         <svg class="loader-logo" viewBox="0 0 24 24" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <defs>
@@ -343,34 +319,25 @@
         </svg>
         <h2>Sticker Cup 2026</h2>
         <div class="loader-bar-bg"><div class="loader-bar-fill" id="loader-fill"></div></div>
-        <p class="loader-text">Cargando base de datos pre-instalada...</p>
+        <p class="loader-text">Verificando base de datos...</p>
     </div>
 
-    <!-- 3. MAIN UI -->
     <div id="main-app" class="screen hidden">
-        
         <header class="app-header">
             <h2 class="header-title">Sticker<span>Cup</span></h2>
-            <div id="header-stats" style="font-size:0.9rem; color:var(--lime); font-weight:bold; background:rgba(60,172,59,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid var(--lime);">
-                0%
-            </div>
+            <div id="header-stats" style="font-size:0.9rem; color:var(--lime); font-weight:bold; background:rgba(60,172,59,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid var(--lime);">0%</div>
         </header>
 
         <div class="views-container" id="views-container">
-            
             <!-- VIEW: DASHBOARD -->
             <div id="view-dashboard" class="view-section">
                 <div class="dash-summary">
-                    <div class="dash-title">
-                        Progreso General <span id="dash-perc">0%</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="dash-bar-fill"></div>
-                    </div>
+                    <div class="dash-title">Progreso General <span id="dash-perc">0%</span></div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" id="dash-bar-fill"></div></div>
                     <ul class="dash-list" style="margin-top: 20px;">
                         <li>Álbum completo: <span class="val" id="dash-txt-perc">0%</span></li>
-                        <li>Tenés: <span class="val" id="dash-txt-tengo">0 / 994</span></li>
-                        <li>Te faltan: <span class="val" id="dash-txt-faltan">994</span></li>
+                        <li>Tenés: <span class="val" id="dash-txt-tengo">0 / 0</span></li>
+                        <li>Te faltan: <span class="val" id="dash-txt-faltan">0</span></li>
                         <li>Repetidas: <span class="val" id="dash-txt-rep">0</span></li>
                         <li>Reservadas: <span class="val" id="dash-txt-res">0</span></li>
                     </ul>
@@ -379,8 +346,7 @@
 
             <!-- VIEW: ALBUM -->
             <div id="view-album" class="view-section active">
-                <input type="text" id="search-input" class="search-bar" placeholder="Buscar por código, número o nombre..." oninput="app.filterAlbum()">
-                
+                <input type="text" id="search-input" class="search-bar" placeholder="Buscar por código, país o nombre..." oninput="app.filterAlbum()">
                 <div class="filters-scroll">
                     <button class="filter-pill active" onclick="app.setFilter('all', this)">Todas</button>
                     <button class="filter-pill" onclick="app.setFilter('tengo', this)">Tengo</button>
@@ -389,52 +355,34 @@
                     <button class="filter-pill" onclick="app.setFilter('reservada', this)">Reservadas</button>
                     <button class="filter-pill" onclick="app.setFilter('special', this)">Especiales</button>
                 </div>
-
                 <div id="album-container"></div>
-                
                 <div id="empty-state" style="display:none; text-align:center; padding: 40px 20px; color:var(--gray);">
-                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:10px; opacity:0.5;">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
                     <p>No encontramos resultados.</p>
                 </div>
             </div>
 
             <!-- VIEW: RÁPIDO -->
             <div id="view-quick" class="view-section">
-                <h3 style="margin-bottom: 10px;">Ingreso Rápido (Opcional)</h3>
-                <p style="color:var(--gray); font-size:0.9rem; margin-bottom:15px;">Ideal si tenés una pila de figuritas. Separalas por comas o espacios. Ej: ARG-1, MEX-15</p>
-                
-                <textarea id="quick-input" class="textarea-input" placeholder="ARG-1, MEX-2..."></textarea>
-                
+                <h3 style="margin-bottom: 10px;">Ingreso Rápido</h3>
+                <p style="color:var(--gray); font-size:0.9rem; margin-bottom:15px;">Ideal si tenés una pila de figuritas. Separalas por comas. Ej: ARG01, MEX15, FWC-1</p>
+                <textarea id="quick-input" class="textarea-input" placeholder="ARG01, MEX02..."></textarea>
                 <div class="action-grid">
                     <button class="btn-primary" onclick="app.processQuickAdd('tengo')" style="margin-bottom:0;">Marcar "La tengo"</button>
                     <button class="btn-secondary" onclick="app.processQuickAdd('repetida')" style="margin-bottom:0; border-color:var(--orange); color:var(--orange);">+ Repetidas</button>
-                    <button class="btn-secondary" onclick="app.processQuickAdd('falta')" style="margin-bottom:0; grid-column: 1 / -1;">Volver a "Me falta" (Borrar)</button>
                 </div>
             </div>
 
             <!-- VIEW: INTERCAMBIO -->
             <div id="view-swap" class="view-section">
                 <div class="exchange-box">
-                    <div class="exchange-title">
-                        Mis Faltantes
-                        <button class="btn-icon" onclick="app.copyToClipboard('faltantes')">📋 Copiar</button>
-                    </div>
+                    <div class="exchange-title">Mis Faltantes <button class="btn-icon" onclick="app.copyToClipboard('faltantes')">📋 Copiar</button></div>
                     <div class="exchange-content" id="list-faltantes">Generando...</div>
                 </div>
-
                 <div class="exchange-box">
-                    <div class="exchange-title">
-                        Mis Repetidas
-                        <button class="btn-icon" onclick="app.copyToClipboard('repetidas')">📋 Copiar</button>
-                    </div>
+                    <div class="exchange-title">Mis Repetidas <button class="btn-icon" onclick="app.copyToClipboard('repetidas')">📋 Copiar</button></div>
                     <div class="exchange-content" id="list-repetidas">Generando...</div>
                 </div>
-
                 <button class="btn-primary" onclick="app.shareWhatsApp()" style="background:#25D366; color:white;">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle; margin-right:8px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                     Compartir listas por WhatsApp
                 </button>
             </div>
@@ -459,73 +407,43 @@
                 <button class="btn-secondary" onclick="app.exportBackup()">📥 Exportar Backup (JSON)</button>
                 <button class="btn-secondary" onclick="document.getElementById('backup-input').click()">📤 Importar Backup (JSON)</button>
                 <input type="file" id="backup-input" accept=".json" style="display:none" onchange="app.importBackup(event)">
-                
                 <button class="btn-secondary btn-danger" onclick="app.resetProgress()" style="margin-top: 20px;">⚠️ Resetear Progreso</button>
-                <button class="btn-secondary btn-danger" onclick="app.factoryReset()" style="background:transparent; border:none; margin-top:5px; text-decoration:underline;">Borrar App Completa</button>
 
                 <div class="footer-legal">
-                    Sticker Cup 2026 v3.0 (Base Pre-cargada)<br>
-                    Tracker manual y visual con data embebida de 994 stickers. Todos los datos de marcado se guardan localmente.
+                    Sticker Cup 2026 v4.0<br>
+                    Tracker seguro y offline. Los datos del álbum se cargan de archivo seguro y tu progreso se guarda localmente en el dispositivo.
                 </div>
             </div>
-
         </div>
 
-        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="app.switchView('album')" id="nav-album">
-                <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
-                <span>Álbum</span>
-            </div>
-            <div class="nav-item" onclick="app.switchView('dashboard')" id="nav-dashboard">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>Stats</span>
-            </div>
-            <div class="nav-item" onclick="app.switchView('swap')" id="nav-swap">
-                <svg viewBox="0 0 24 24"><path d="M16 11V5.5l-6 4.5 6 4.5V11zM8 13v5.5l6-4.5-6-4.5V13z"/></svg>
-                <span>Listas</span>
-            </div>
-            <div class="nav-item" onclick="app.switchView('quick')" id="nav-quick">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                <span>Rápido</span>
-            </div>
-            <div class="nav-item" onclick="app.switchView('settings')" id="nav-settings">
-                <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-                <span>Ajustes</span>
-            </div>
+            <div class="nav-item active" onclick="app.switchView('album')" id="nav-album"><svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg><span>Álbum</span></div>
+            <div class="nav-item" onclick="app.switchView('dashboard')" id="nav-dashboard"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>Stats</span></div>
+            <div class="nav-item" onclick="app.switchView('swap')" id="nav-swap"><svg viewBox="0 0 24 24"><path d="M16 11V5.5l-6 4.5 6 4.5V11zM8 13v5.5l6-4.5-6-4.5V13z"/></svg><span>Listas</span></div>
+            <div class="nav-item" onclick="app.switchView('quick')" id="nav-quick"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg><span>Rápido</span></div>
+            <div class="nav-item" onclick="app.switchView('settings')" id="nav-settings"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg><span>Ajustes</span></div>
         </nav>
 
-        <!-- MODAL ACTIONS (Mini menú bottom sheet) -->
+        <!-- MODAL AVANZADO (Long Press) -->
         <div class="modal-overlay" id="action-modal" onclick="if(event.target===this) app.closeModal()">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Acciones rápidas</h3>
+                    <h3 class="modal-title">Avanzado</h3>
                     <button class="modal-close" onclick="app.closeModal()">×</button>
                 </div>
-                
                 <div class="sticker-modal-info">
                     <div class="sm-details">
-                        <div class="sm-code" id="modal-code">ARG-1</div>
+                        <div class="sm-code" id="modal-code">ARG01</div>
                         <div class="sm-name" id="modal-name">Lionel Messi</div>
                     </div>
-                    <div class="sm-dups-badge" id="modal-dups-badge" style="display:none;"></div>
                 </div>
-
                 <div class="modal-actions">
-                    <button class="btn-action add" onclick="app.menuChangeDuplicate(1)">
-                        <svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                        Sumar repetida
-                    </button>
-                    <button class="btn-action" onclick="app.menuChangeDuplicate(-1)">
-                        <svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M19 13H5v-2h14v2z"/></svg>
-                        Restar repetida
-                    </button>
                     <button class="btn-action res" onclick="app.menuToggleReserved()">
                         <svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
                         Reservar / Quitar
                     </button>
-                    <button class="btn-action del" onclick="app.menuRevertMissing()">
-                        Volver a "Me falta"
+                    <button class="btn-action add" onclick="app.menuChangeDuplicate(-1)">
+                        Restar repetida
                     </button>
                 </div>
             </div>
@@ -535,38 +453,26 @@
 </div>
 
 <script>
+// Utilidad para renderizar HTML seguro
+const escapeHTML = str => String(str).replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+}[tag] || tag));
+
 const app = {
     state: {
         albumData: [],
-        user: {},
-        settings: {
-            sound: true,
-            vibration: true,
-            animations: true
-        }
+        user: {}, // Solo progreso del usuario
+        settings: { sound: true, vibration: true, animations: true }
     },
-    currentFilter: 'all',
-    currentSearch: '',
-    selectedStickerId: null,
-    audioCtx: null,
-
-    touchTimer: null,
-    isLongPress: false,
-
-    keys: {
-        data: 'stickerCup2026_albumData_v2', // key actualizada
-        user: 'stickerCup2026_state_v1',
-        settings: 'stickerCup2026_settings_v1'
-    },
+    currentFilter: 'all', currentSearch: '', selectedStickerId: null, audioCtx: null,
+    touchTimer: null, isLongPress: false,
+    keys: { user: 'stickerCup2026_state_v1', settings: 'stickerCup2026_settings_v1' },
 
     init() {
         this.loadSettings();
-        
-        // 1. Cargar Base de datos pre-creada si no existe en local
-        this.loadOrGenerateDatabase();
+        this.initData();
         this.loadUserProgress();
 
-        // 2. Simular carga y arrancar
         let progress = 0;
         const interval = setInterval(() => {
             progress += 20;
@@ -590,26 +496,27 @@ const app = {
     },
 
     // =========================================
-    // BASE DE DATOS AUTO-GENERADA (994 exactas)
+    // INICIALIZACIÓN DE DATOS
     // =========================================
-    loadOrGenerateDatabase() {
-        const rawData = localStorage.getItem(this.keys.data);
-        if (rawData) {
-            this.state.albumData = JSON.parse(rawData);
+    initData() {
+        // Priorizar base de datos externa cargada mediante script (albumData.js)
+        if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
+            // Aplanar si viene agrupada, o asignar directo si ya es lista de figuritas.
+            this.state.albumData = window.albumData[0].stickers ? window.albumData.flatMap(g => g.stickers) : window.albumData;
+            console.log("Stickers cargados desde archivo externo.");
             return;
         }
-
+        
+        // Fallback exacto embebido si albumData.js no existe, usando tu nomenclatura exacta (ARG01, MEX15).
+        console.log("No se detectó albumData.js, cargando fallback exacto interno.");
         const data = [];
-        // LOGO PANINI
         data.push({ id: '00', code: '00', number: 0, prefix: '00', section: '⭐ Especiales & Oficial', name: 'Panini Logo', type: 'special' });
         
-        // FWC (13 stickers)
         const fwcNames = ["Official Emblem", "Official Emblem (Abajo)", "Mascotas", "Slogan", "Pelota", "Canadá - Sede", "México - Sede", "USA - Sede", "Italia 1934", "Brasil 1950", "Alemania 1954", "Chile 1962", "Alemania 1974"];
         for(let i=1; i<=13; i++) {
             data.push({ id: `FWC-${i}`, code: `FWC-${i}`, number: i, prefix: 'FWC', section: '⭐ Especiales & Oficial', name: fwcNames[i-1], type: 'special' });
         }
 
-        // 48 Selecciones x 20 stickers
         const teams = [
             {p: 'ARG', n: 'Argentina', f: '🇦🇷'}, {p: 'AUS', n: 'Australia', f: '🇦🇺'}, {p: 'AUT', n: 'Austria', f: '🇦🇹'},
             {p: 'BEL', n: 'Bélgica', f: '🇧🇪'}, {p: 'BOL', n: 'Bolivia', f: '🇧🇴'}, {p: 'BRA', n: 'Brasil', f: '🇧🇷'},
@@ -633,40 +540,27 @@ const app = {
 
         teams.forEach(t => {
             for(let i=1; i<=20; i++) {
+                let formattedNum = i.toString().padStart(2, '0'); // ARG01 format
                 let name = i === 1 ? `Escudo ${t.n}` : (i === 13 ? `Formación` : `Jugador ${i}`);
                 data.push({
-                    id: `${t.p}-${i}`, code: `${t.p}-${i}`, number: i, prefix: t.p,
+                    id: `${t.p}${formattedNum}`, code: `${t.p}${formattedNum}`, number: i, prefix: t.p,
                     section: `${t.f} ${t.n}`, name: name, type: 'team'
                 });
             }
         });
 
-        // CC Especiales (20 stickers)
         const ccNames = ["Lamine Yamal", "Joshua Kimmich", "Harry Kane", "Santiago Giménez", "Joško Gvardiol", "Jude Bellingham", "Vinícius Jr", "Lionel Messi", "Kylian Mbappé", "Kevin De Bruyne", "Phil Foden", "Rodri", "Alphonso Davies", "Christian Pulisic", "Emiliano Martínez", "Federico Valverde", "Rafael Leão", "Bukayo Saka", "Florian Wirtz", "Jamal Musiala"];
         for(let i=1; i<=20; i++) {
             data.push({ id: `CC-${i}`, code: `CC-${i}`, number: i, prefix: 'CC', section: '⭐ Leyendas / CC', name: ccNames[i-1] || `Leyenda ${i}`, type: 'special' });
         }
 
         this.state.albumData = data;
-        localStorage.setItem(this.keys.data, JSON.stringify(data));
     },
 
     loadUserProgress() {
         const rawUser = localStorage.getItem(this.keys.user);
         if (rawUser) {
-            const parsed = JSON.parse(rawUser);
-            Object.keys(parsed).forEach(k => {
-                let u = parsed[k];
-                if (u.tengo !== undefined) {
-                    u.owned = u.tengo;
-                    u.duplicates = u.repetidas || 0;
-                    u.reserved = u.reservada || false;
-                    delete u.tengo; delete u.repetidas; delete u.reservada;
-                }
-                if (u.duplicates > 0 && !u.owned) u.owned = true;
-                if (!u.updatedAt) u.updatedAt = new Date().toISOString();
-            });
-            this.state.user = parsed;
+            this.state.user = JSON.parse(rawUser);
         }
     },
 
@@ -692,7 +586,7 @@ const app = {
     },
 
     // =========================================
-    // RENDERING DE VISTAS
+    // RENDERING DE VISTAS (Protegido y Seguro)
     // =========================================
     switchView(viewId) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -701,7 +595,6 @@ const app = {
         document.getElementById(`view-${viewId}`).classList.add('active');
         document.getElementById(`nav-${viewId}`).classList.add('active');
         window.scrollTo({top:0, behavior:'smooth'});
-
         if(viewId === 'swap') this.updateExchangeLists();
     },
 
@@ -740,7 +633,9 @@ const app = {
 
             if (this.currentSearch) {
                 const term = this.currentSearch;
-                if (!st.code.toLowerCase().includes(term) && !st.name.toLowerCase().includes(term)) return;
+                // Búsqueda extendida a múltiples propiedades
+                const fullText = `${st.code} ${st.name} ${st.section} ${st.prefix} ${st.number}`.toLowerCase();
+                if (!fullText.includes(term)) return;
             }
 
             if (!groups[st.section]) groups[st.section] = [];
@@ -764,35 +659,41 @@ const app = {
                 let classes = ['sticker-card'];
                 let statusText = 'Me falta';
                 
-                if (u.owned) {
-                    classes.push('tengo');
-                    statusText = 'La tengo';
-                }
+                if (u.owned) { classes.push('tengo'); statusText = 'La tengo'; }
                 if (u.duplicates > 0) classes.push('repetida');
                 if (u.reserved) classes.push('reservada');
                 if (st.type === 'special') classes.push('special');
 
+                // Botón Plus Exclusivo (solo se muestra si la tengo)
+                let plusBtnHTML = u.owned 
+                    ? `<button class="btn-plus-dup" onclick="event.stopPropagation(); app.addDuplicate('${escapeHTML(st.id)}')">+</button>` 
+                    : '';
+
                 stHtml += `
                     <div class="${classes.join(' ')}" 
-                         data-id="${st.id}"
-                         onclick="app.handleCardClick('${st.id}', this)"
-                         oncontextmenu="app.handleContextMenu(event, '${st.id}')"
-                         ontouchstart="app.handleTouchStart('${st.id}')"
+                         data-id="${escapeHTML(st.id)}"
+                         onclick="app.handleCardTap('${escapeHTML(st.id)}', this)"
+                         oncontextmenu="app.handleContextMenu(event, '${escapeHTML(st.id)}')"
+                         ontouchstart="app.handleTouchStart('${escapeHTML(st.id)}')"
                          ontouchend="app.handleTouchEnd()"
                          ontouchmove="app.handleTouchEnd()">
                         
+                        ${u.owned ? `<div class="badge-check">✓</div>` : ''}
                         ${u.reserved ? '<div class="badge-res">Reservada</div>' : ''}
-                        <div class="st-code">${st.code}</div>
-                        <div class="st-name">${st.name}</div>
+                        
+                        <div class="st-code">${escapeHTML(st.code)}</div>
+                        <div class="st-name">${escapeHTML(st.name)}</div>
                         <div class="st-status-lbl">${statusText}</div>
+                        
                         ${u.duplicates > 0 ? `<div class="badge-rep">x${u.duplicates}</div>` : ''}
+                        ${plusBtnHTML}
                     </div>
                 `;
             });
 
             gDiv.innerHTML = `
                 <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
-                    <div class="section-title">${sectionName}</div>
+                    <div class="section-title">${escapeHTML(sectionName)}</div>
                     <div class="section-stats">
                         <span>${real.owned}/${real.total}</span>
                         <div class="section-progress">
@@ -811,10 +712,15 @@ const app = {
         if (total === 0) return;
 
         let tengo = 0, repetidas = 0, reservadas = 0;
-        Object.values(this.state.user).forEach(u => {
-            if (u.owned) tengo++;
-            if (u.duplicates > 0) repetidas += u.duplicates;
-            if (u.reserved) reservadas++;
+        
+        // El dashboard SOLO cuenta figuritas que existen en el álbum (evita basuras viejas del user)
+        this.state.albumData.forEach(st => {
+            const u = this.state.user[st.id];
+            if (u) {
+                if (u.owned) tengo++;
+                if (u.duplicates > 0) repetidas += u.duplicates;
+                if (u.reserved) reservadas++;
+            }
         });
 
         const faltan = total - tengo;
@@ -834,41 +740,51 @@ const app = {
     },
 
     // =========================================
-    // FLUJO MANUAL DE INTERACCIÓN
+    // FLUJO UX DE INTERACCIÓN (TAP)
     // =========================================
-    handleCardClick(id, element) {
+    handleCardTap(id, element) {
         if (this.isLongPress) { this.isLongPress = false; return; }
 
-        const now = Date.now();
-        const lastTap = parseInt(element.dataset.lastTap || '0', 10);
-        const u = this.getUserObj(id);
+        let u = this.getUserObj(id);
 
-        if (now - lastTap < 300 && u.owned) {
-            clearTimeout(element.clickTimer);
-            element.dataset.lastTap = 0;
-            this.addDuplicate(id, element);
+        if (u.owned) {
+            // Toggle a "Me falta"
+            u.owned = false;
+            u.duplicates = 0; // Se resetean si ya no la tiene
         } else {
-            element.dataset.lastTap = now;
-            if (!u.owned) {
-                this.markOwned(id, element);
-            } else {
-                element.clickTimer = setTimeout(() => {
-                    this.openMiniMenu(id);
-                }, 300);
-            }
+            // Toggle a "La tengo"
+            u.owned = true;
+            this.playVibration(20);
+            this.playSound('tengo');
         }
+
+        u.updatedAt = new Date().toISOString();
+        this.saveUser();
+        this.renderAlbum();
+    },
+
+    addDuplicate(id) {
+        let u = this.getUserObj(id);
+        u.owned = true;
+        u.duplicates += 1;
+        u.updatedAt = new Date().toISOString();
+        this.saveUser();
+        this.playVibration([15, 30, 15]);
+        this.playSound('dup');
+        this.renderAlbum();
     },
 
     handleContextMenu(e, id) {
         e.preventDefault();
-        this.toggleReserved(id);
+        this.openMiniMenu(id);
     },
 
     handleTouchStart(id) {
         this.isLongPress = false;
         this.touchTimer = setTimeout(() => {
             this.isLongPress = true;
-            this.toggleReserved(id);
+            this.playVibration(40);
+            this.openMiniMenu(id);
         }, 550);
     },
 
@@ -883,68 +799,17 @@ const app = {
         return this.state.user[id];
     },
 
-    markOwned(id, element) {
-        let u = this.getUserObj(id);
-        u.owned = true;
-        u.updatedAt = new Date().toISOString();
-        this.saveUser();
-        this.playVibration(20);
-        this.playSound('tengo');
-        
-        if(element) {
-            element.classList.remove('repetida', 'reservada');
-            element.classList.add('tengo', 'pop-anim');
-            element.querySelector('.st-status-lbl').innerText = 'La tengo';
-            if(!element.innerHTML.includes('✓')) {
-                element.insertAdjacentHTML('beforeend', `<div class="badge-check" style="position:absolute; top:6px; right:6px; background:var(--lime); color:var(--navy); border-radius:50%; width:18px; height:18px; font-size:11px; display:flex; align-items:center; justify-content:center; font-weight:bold; z-index:3;">✓</div>`);
-            }
-            setTimeout(() => element.classList.remove('pop-anim'), 300);
-        }
-        this.updateDashboard(); 
-    },
-
-    addDuplicate(id, element) {
-        let u = this.getUserObj(id);
-        u.owned = true;
-        u.duplicates += 1;
-        u.updatedAt = new Date().toISOString();
-        this.saveUser();
-        this.playVibration([15, 30, 15]);
-        this.playSound('dup');
-        this.renderAlbum();
-    },
-
-    toggleReserved(id) {
-        let u = this.getUserObj(id);
-        u.reserved = !u.reserved;
-        u.updatedAt = new Date().toISOString();
-        this.saveUser();
-        this.playVibration(40);
-        this.playSound('click');
-        this.renderAlbum();
-    },
-
     // =========================================
-    // MINI MENÚ
+    // MINI MENÚ AVANZADO
     // =========================================
     openMiniMenu(id) {
         this.selectedStickerId = id;
         const st = this.state.albumData.find(s => s.id === id);
-        const u = this.getUserObj(id);
+        if (!st) return;
         
         document.getElementById('modal-code').innerText = st.code;
         document.getElementById('modal-name').innerText = st.name;
-        
-        const badge = document.getElementById('modal-dups-badge');
-        if (u.duplicates > 0) {
-            badge.style.display = 'block';
-            badge.innerText = `x${u.duplicates}`;
-        } else {
-            badge.style.display = 'none';
-        }
-
         document.getElementById('action-modal').classList.add('active');
-        this.playVibration(10);
     },
 
     closeModal() {
@@ -957,11 +822,10 @@ const app = {
         let u = this.getUserObj(this.selectedStickerId);
         u.duplicates += delta;
         if (u.duplicates < 0) u.duplicates = 0;
-        if (u.duplicates > 0) u.owned = true;
         
         u.updatedAt = new Date().toISOString();
         this.saveUser();
-        this.playSound(delta > 0 ? 'dup' : 'click');
+        this.playSound('click');
         this.playVibration(20);
         this.closeModal();
         this.renderAlbum();
@@ -969,19 +833,12 @@ const app = {
 
     menuToggleReserved() {
         if (!this.selectedStickerId) return;
-        this.toggleReserved(this.selectedStickerId);
-        this.closeModal();
-    },
-
-    menuRevertMissing() {
-        if (!this.selectedStickerId) return;
         let u = this.getUserObj(this.selectedStickerId);
-        u.owned = false;
-        u.duplicates = 0;
-        u.reserved = false;
+        u.reserved = !u.reserved;
         u.updatedAt = new Date().toISOString();
         this.saveUser();
         this.playSound('click');
+        this.playVibration(20);
         this.closeModal();
         this.renderAlbum();
     },
@@ -989,15 +846,31 @@ const app = {
     // =========================================
     // LISTAS Y MODO RÁPIDO
     // =========================================
+    normalizeInputCode(input) {
+        let upper = input.toUpperCase().replace(/\s+/g, '');
+        // Normaliza "ARG1", "ARG-1" a "ARG01", pero preserva FWC-1 y CC-10
+        let match = upper.match(/^([A-Z]+)-?(\d+)$/);
+        if (match) {
+            let prefix = match[1];
+            let num = parseInt(match[2], 10);
+            if (['FWC', 'CC'].includes(prefix)) {
+                return `${prefix}-${num}`;
+            } else {
+                return `${prefix}${num.toString().padStart(2, '0')}`;
+            }
+        }
+        return upper;
+    },
+
     processQuickAdd(action) {
         const input = document.getElementById('quick-input').value;
         if (!input.trim()) return;
 
-        const rawTokens = input.split(/[\s,\n]+/).map(t => t.trim().toUpperCase()).filter(t => t);
+        const rawTokens = input.split(/[\s,\n]+/).map(t => this.normalizeInputCode(t)).filter(t => t);
         let count = 0; let notFound = [];
 
         rawTokens.forEach(token => {
-            let match = this.state.albumData.find(s => s.id.toUpperCase() === token || s.code.toUpperCase() === token || s.id.replace('-','') === token.replace('-',''));
+            let match = this.state.albumData.find(s => s.id === token || s.code.toUpperCase() === token);
             if (!match && !isNaN(token)) {
                 const numMatches = this.state.albumData.filter(s => s.number == parseInt(token));
                 if (numMatches.length === 1) match = numMatches[0];
@@ -1007,7 +880,6 @@ const app = {
                 let u = this.getUserObj(match.id);
                 if (action === 'tengo') u.owned = true;
                 else if (action === 'repetida') { u.owned = true; u.duplicates++; }
-                else if (action === 'falta') { u.owned = false; u.duplicates = 0; }
                 u.updatedAt = new Date().toISOString();
                 count++;
             } else {
@@ -1062,12 +934,11 @@ const app = {
             msg += `Tengo repetidas:\n${this._wsRepe.map(r => `${r.code} x${r.dups}`).join(', ')}\n\n`;
         }
         msg += `¿Intercambiamos?`;
-        
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     },
 
     // =========================================
-    // AJUSTES, BACKUP Y EXTRAS
+    // AJUSTES, BACKUP Y PWA
     // =========================================
     toggleSetting(key) {
         this.state.settings[key] = document.getElementById(`set-${key}`).checked;
@@ -1075,7 +946,7 @@ const app = {
     },
 
     exportBackup() {
-        const data = { version: 3, date: new Date().toISOString(), user: this.state.user };
+        const data = { version: 4, date: new Date().toISOString(), user: this.state.user };
         const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -1091,15 +962,7 @@ const app = {
             try {
                 const data = JSON.parse(e.target.result);
                 if (data.user) {
-                    this.state.user = {};
-                    Object.keys(data.user).forEach(k => {
-                        let u = data.user[k];
-                        if (u.tengo !== undefined) { 
-                            u.owned = u.tengo; u.duplicates = u.repetidas || 0; u.reserved = u.reservada || false;
-                            delete u.tengo; delete u.repetidas; delete u.reservada;
-                        }
-                        this.state.user[k] = u;
-                    });
+                    this.state.user = data.user;
                     this.saveUser();
                     this.showToast("Backup restaurado con éxito.");
                     this.startApp();
@@ -1118,13 +981,6 @@ const app = {
                 this.showToast("Progreso reseteado a cero.");
                 this.startApp();
             }
-        }
-    },
-    
-    factoryReset() {
-        if(confirm("Borrará progreso y caché. ¿Continuar?")) {
-            localStorage.clear();
-            location.reload();
         }
     },
 
@@ -1204,9 +1060,9 @@ const app = {
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
 
-        if ('serviceWorker' in navigator) {
-            const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
-            navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], {type: 'application/javascript'}))).catch(e=>{});
+        // Registro de Service Worker solo en contexto seguro (evita errores en archivo local file://)
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('./service-worker.js').catch(err => console.log('Info: SW omitido (requiere server).'));
         }
     }
 };
