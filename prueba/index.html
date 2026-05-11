@@ -601,5 +601,22 @@
             dynamicOfferBadge.innerText = `SOLO HOY ${diaActual} A $8000 ARS 🇦🇷`;
         }
     </script>
+    <script>
+    // Script para pasar parámetros UTM a los botones de Hotmart
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = window.location.search;
+        if (urlParams) {
+            const hotmartLinks = document.querySelectorAll('a[href*="pay.hotmart.com"]');
+            hotmartLinks.forEach(link => {
+                const currentUrl = link.getAttribute('href');
+                // Chequea si el link ya tiene un signo de pregunta
+                const separator = currentUrl.includes('?') ? '&' : '?';
+                // Evita duplicar el primer '?' de urlParams
+                const cleanParams = urlParams.replace('?', '');
+                link.setAttribute('href', currentUrl + separator + cleanParams);
+            });
+        }
+    });
+</script>
 </body>
 </html>
