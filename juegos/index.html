@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Apoyá a ND! 🍄</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Íconos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --bg-base: #000000;
+            --surface: #0a0a0a;
+            --surface-hover: #141414;
+            --border: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #8a8a8a;
+            --accent: #E52521;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, transparent 70%);
+        }
+
+        .font-pixel {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .card-ui {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .input-ui {
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        
+        .input-ui:focus {
+            outline: none;
+            border-color: #404040;
+            box-shadow: 0 0 0 1px #404040;
+        }
+
+        .btn-ui {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+        }
+        
+        .btn-ui:hover {
+            background: #e5e5e5;
+            transform: scale(0.98);
+        }
+
+        .view-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .view-section.active {
+            display: flex;
+            opacity: 1;
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       fadeOutDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 4s;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOutDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(20px); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen px-4 py-12 md:py-20">
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <main id="view-hero" class="view-section active flex-col w-full max-w-lg mx-auto z-10 relative">
+        
+        <header class="mb-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-pixel tracking-wider mb-6">
+                <i class="ph-fill ph-warning text-xs"></i>
+                ERROR 404
+            </div>
+            
+            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
+                Nos cerraron la cuenta <br> de Instagram 💔
+            </h1>
+            
+            <p class="text-zinc-400 text-sm md:text-base leading-relaxed">
+                Mientras intentamos recuperarla, necesitamos tu aguante. Dejanos un mensaje, leemos cada uno. 
+                <span class="text-zinc-200">A cambio, te dejamos un regalo.</span>
+            </p>
+        </header>
+
+        <!-- Formulario UI Premium -->
+        <form id="support-form" class="card-ui p-6 md:p-8">
+            <div class="space-y-5">
+                <div>
+                    <label for="userName" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Tu Nombre</label>
+                    <input type="text" id="userName" name="name" required placeholder="@usuario" 
+                           class="input-ui w-full px-4 py-3 rounded-lg text-sm">
+                </div>
+                
+                <div>
+                    <label for="userMessage" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Mensaje</label>
+                    <textarea id="userMessage" name="message" required rows="3" placeholder="¡Fuerza equipo!"
+                              class="input-ui w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="btn-ui w-full py-4 rounded-lg flex items-center justify-center gap-2 mt-2 group">
+                    <span class="font-pixel text-[10px] tracking-wider uppercase mt-1">Desbloquear regalo</span>
+                    <i class="ph-fill ph-game-controller text-lg group-hover:rotate-12 transition-transform"></i>
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <main id="view-transition" class="view-section flex-col items-center justify-center w-full max-w-sm mx-auto z-20 text-center py-20">
+        <i class="ph-duotone ph-paper-plane-tilt text-4xl text-zinc-400 mb-6 animate-pulse"></i>
+        <h2 class="text-xl font-medium text-white mb-8">Enviando mensaje...</h2>
+        
+        <div class="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
+            <div class="h-full bg-white w-0 transition-all duration-1000 ease-out" id="loading-bar"></div>
+        </div>
+    </main>
+
+    <main id="view-unlocked" class="view-section flex-col items-center justify-center w-full max-w-lg mx-auto z-20">
+        
+        <div class="text-center mb-8">
+            <div class="inline-block text-zinc-500 font-pixel text-[10px] tracking-widest uppercase mb-4">Nivel Secreto</div>
+            <h2 class="text-3xl font-semibold text-white">¡Desbloqueado! 🍄</h2>
+        </div>
+
+        <div class="card-ui p-8 text-center w-full group hover:border-zinc-700 transition-colors">
+            
+            <div class="w-12 h-12 mx-auto bg-zinc-900 border border-zinc-800 rounded-xl mb-6 flex items-center justify-center">
+                <i class="ph-fill ph-crosshair text-xl text-zinc-400 group-hover:text-white transition-colors"></i>
+            </div>
+
+            <h3 class="text-xl font-medium text-white mb-3">
+                7 Juegos para entrenar tu ojo
+            </h3>
+            
+            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
+                Kerning, colores, curvas bezier y más. ¿Te animás a sacar el puntaje perfecto?
+            </p>
+
+            <a href="https://necesitodisenos.notion.site/7-Juegos-Online-y-gratuitos-para-entrenar-tu-ojo-de-dise-ador-2dcf4bad0a5980748f17fe5e7a13c0be?pvs=143" target="_blank" rel="noopener noreferrer"
+               class="btn-ui inline-flex items-center justify-center w-full text-xs font-medium py-3.5 px-6 rounded-lg">
+                ACCEDER A LOS JUEGOS
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. SISTEMA DE NOTIFICACIONES RECIENTES ---
+        const names = ["María", "Santi", "Lucía", "Facu", "Caro", "Martín", "Flor", "Juani", "Valen"];
+        const actions = ["envió su apoyo", "mandó un abrazo", "dejó un mensaje", "desbloqueó el nivel"];
+        const toastContainer = document.getElementById('toast-container');
+
+        function showRandomToast() {
+            const name = names[Math.floor(Math.random() * names.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800">
+                    <i class="ph-fill ph-heart text-red-500 text-sm"></i>
+                </div>
+                <div class="text-sm">
+                    <span class="text-white font-medium">${name}</span> 
+                    <span class="text-zinc-400">${action} hace un momento</span>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                if(toastContainer.contains(toast)) toast.remove();
+            }, 4500);
+        }
+
+        setTimeout(showRandomToast, 1500);
+        setInterval(() => {
+            if(Math.random() > 0.3) showRandomToast();
+        }, 6000);
+
+        // --- 2. LÓGICA DE FORMULARIO Y ENVÍO REAL DE CORREO ---
+        const form = document.getElementById('support-form');
+        const viewHero = document.getElementById('view-hero');
+        const viewTransition = document.getElementById('view-transition');
+        const viewUnlocked = document.getElementById('view-unlocked');
+        const loadingBar = document.getElementById('loading-bar');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const message = document.getElementById('userMessage').value;
+            const btn = form.querySelector('button');
+            
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i><span class="font-pixel text-[10px] mt-1 uppercase">Enviando...</span>';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            try {
+                // ENVÍO REAL USANDO FORMSUBMIT (No requiere backend propio)
+                await fetch('https://formsubmit.co/ajax/necesitodisenos@gmail.com', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        Nombre: name, 
+                        Mensaje: message,
+                        _subject: `🍄 Nuevo mensaje de apoyo de: ${name}`,
+                        _template: 'box' // Le da un formato limpio al correo que recibes
+                    })
+                });
+
+                // Cambiar a vista de transición
+                viewHero.classList.remove('active');
+                setTimeout(() => {
+                    viewTransition.classList.add('active');
+                    setTimeout(() => { loadingBar.style.width = '100%'; }, 50);
+                }, 400);
+
+                // Cambiar a vista final
+                setTimeout(() => {
+                    viewTransition.classList.remove('active');
+                    setTimeout(() => {
+                        viewUnlocked.classList.add('active');
+                    }, 400);
+                }, 1600);
+
+            } catch (error) {
+                console.error("Error al enviar el correo:", error);
+                btn.innerHTML = '<span class="font-pixel text-[10px] tracking-wider uppercase mt-1">Error. Reintentar</span>';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo.");
+            }
+        });
+    </script>
+</body>
+</html>
