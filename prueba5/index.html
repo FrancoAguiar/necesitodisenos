@@ -150,13 +150,13 @@
             <div class="space-y-5">
                 <div>
                     <label for="userName" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Tu Nombre</label>
-                    <input type="text" id="userName" required placeholder="@usuario" 
+                    <input type="text" id="userName" name="name" required placeholder="@usuario" 
                            class="input-ui w-full px-4 py-3 rounded-lg text-sm">
                 </div>
                 
                 <div>
                     <label for="userMessage" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Mensaje</label>
-                    <textarea id="userMessage" required rows="3" placeholder="¡Fuerza equipo!"
+                    <textarea id="userMessage" name="message" required rows="3" placeholder="¡Fuerza equipo!"
                               class="input-ui w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
                 </div>
 
@@ -229,19 +229,17 @@
             
             toastContainer.appendChild(toast);
             
-            // Limpiar DOM después de la animación
             setTimeout(() => {
                 if(toastContainer.contains(toast)) toast.remove();
             }, 4500);
         }
 
-        // Mostrar un toast inicial rápido, luego intervalos aleatorios
         setTimeout(showRandomToast, 1500);
         setInterval(() => {
             if(Math.random() > 0.3) showRandomToast();
         }, 6000);
 
-        // --- 2. LÓGICA DE FORMULARIO Y TRANSICIONES ---
+        // --- 2. LÓGICA DE FORMULARIO Y ENVÍO REAL DE CORREO ---
         const form = document.getElementById('support-form');
         const viewHero = document.getElementById('view-hero');
         const viewTransition = document.getElementById('view-transition');
@@ -255,35 +253,48 @@
             const message = document.getElementById('userMessage').value;
             const btn = form.querySelector('button');
             
-            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i><span class="font-pixel text-[10px] mt-1 uppercase">Procesando...</span>';
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i><span class="font-pixel text-[10px] mt-1 uppercase">Enviando...</span>';
             btn.disabled = true;
             btn.style.opacity = '0.7';
 
             try {
-                const response = await fetch('http://localhost:3000/api/send-message', {
+                // ENVÍO REAL USANDO FORMSUBMIT (No requiere backend propio)
+                await fetch('https://formsubmit.co/ajax/necesitodisenos@gmail.com', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, message })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        Nombre: name, 
+                        Mensaje: message,
+                        _subject: `🍄 Nuevo mensaje de apoyo de: ${name}`,
+                        _template: 'box' // Le da un formato limpio al correo que recibes
+                    })
                 });
-            } catch (error) {
-                // Simulación suave si no hay backend
-                await new Promise(r => setTimeout(r, 800)); 
-            }
 
-            // Cambiar a vista de transición
-            viewHero.classList.remove('active');
-            setTimeout(() => {
-                viewTransition.classList.add('active');
-                setTimeout(() => { loadingBar.style.width = '100%'; }, 50);
-            }, 400);
-
-            // Cambiar a vista final
-            setTimeout(() => {
-                viewTransition.classList.remove('active');
+                // Cambiar a vista de transición
+                viewHero.classList.remove('active');
                 setTimeout(() => {
-                    viewUnlocked.classList.add('active');
+                    viewTransition.classList.add('active');
+                    setTimeout(() => { loadingBar.style.width = '100%'; }, 50);
                 }, 400);
-            }, 1600);
+
+                // Cambiar a vista final
+                setTimeout(() => {
+                    viewTransition.classList.remove('active');
+                    setTimeout(() => {
+                        viewUnlocked.classList.add('active');
+                    }, 400);
+                }, 1600);
+
+            } catch (error) {
+                console.error("Error al enviar el correo:", error);
+                btn.innerHTML = '<span class="font-pixel text-[10px] tracking-wider uppercase mt-1">Error. Reintentar</span>';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo.");
+            }
         });
     </script>
 </body>
