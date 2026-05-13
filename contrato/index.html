@@ -1,649 +1,299 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth overflow-x-hidden">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Plantilla de Contrato Freelance Argentina 🇦🇷 | @necesitodisenos</title>
-    <meta name="description" content="Documento legal listo para usar que te protege de cambios infinitos y asegura tus pagos.">
-    <meta property="og:image" content="https://i.ibb.co/0HqBSjr/3333.png">
-    <meta property="og:url" content="https://www.necesitodisenos.com/">
-    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Apoyá a ND! 🍄</title>
     
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://i.ibb.co/spPczB3P/12313.png">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- AOS CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            orange: '#FF4500', 
-                            hover: '#FF571A',
-                            bg: '#0A0A0A',
-                            surface: '#121212',
-                            border: '#262626'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Inter Tight', 'sans-serif'],
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'glow': '0 0 40px -10px rgba(34, 197, 94, 0.4)',
-                        'card': '0 0 0 1px rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.4)',
-                    },
-                    animation: {
-                        pulse: 'pulse 2.1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Iconos Phosphor -->
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Íconos -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
+    
     <style>
-        html, body {
-            overflow-x: hidden !important;
-            max-width: 100vw;
-            width: 100%;
-            background-color: #0A0A0A;
-            color: #E5E5E5;
+        :root {
+            --bg-base: #000000;
+            --surface: #0a0a0a;
+            --surface-hover: #141414;
+            --border: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #8a8a8a;
+            --accent: #E52521;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
             -webkit-font-smoothing: antialiased;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, transparent 70%);
+        }
+
+        .font-pixel {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .card-ui {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .input-ui {
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
         }
         
-        ::selection {
-            background: rgba(34, 197, 94, 0.3);
-            color: white;
+        .input-ui:focus {
+            outline: none;
+            border-color: #404040;
+            box-shadow: 0 0 0 1px #404040;
         }
 
-        .bg-grid-pattern {
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        .btn-ui {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
         }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0A0A0A; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-        details summary::-webkit-details-marker { display: none; }
         
-        /* Animaciones custom para el contador */
-        @keyframes pulse-soft {
-            0%   { transform: scale(1); }
-            50%  { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .btn-ui:hover {
+            background: #e5e5e5;
+            transform: scale(0.98);
         }
-        .animate-pulse-soft { animation: pulse-soft 2s infinite; }
+
+        .view-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .view-section.active {
+            display: flex;
+            opacity: 1;
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       fadeOutDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 4s;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOutDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(20px); opacity: 0; }
+        }
     </style>
 </head>
-<body class="pt-14 relative overflow-x-hidden">
+<body class="flex flex-col items-center justify-center min-h-screen px-4 py-12 md:py-20">
 
-    <!-- Fondo Técnico -->
-    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-green-500/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    <div id="toast-container" class="toast-container"></div>
 
-    <!-- Barra de Urgencia Sticky -->
-    <nav class="fixed top-0 left-0 w-full bg-red-600/95 backdrop-blur-xl border-b border-red-500 z-50 h-14 flex items-center shadow-[0_4px_20px_rgba(220,38,38,0.3)] transition-all">
-        <div class="container mx-auto px-4 flex justify-between items-center max-w-6xl">
-            <div class="flex items-center gap-2 md:gap-3 shrink-0">
-                <div class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                </div>
-                <span id="dynamic-day-offer" class="font-display font-bold text-[9px] md:text-xs uppercase tracking-widest text-white">SOLO HOY A $7.990 ARS 🇦🇷</span>
+    <main id="view-hero" class="view-section active flex-col w-full max-w-lg mx-auto z-10 relative">
+        
+        <header class="mb-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-pixel tracking-wider mb-6">
+                <i class="ph-fill ph-warning text-xs"></i>
+                ERROR 404
             </div>
             
-            <div class="flex items-center gap-2 md:gap-6 shrink-0">
-                <div class="flex items-center gap-2">
-                    <span class="hidden lg:inline text-[10px] font-bold text-white uppercase tracking-wider mr-2">LA OFERTA TERMINA EN:</span>
-                    <div class="flex items-start gap-1 md:gap-2 text-center">
-                        <div class="flex flex-col items-center justify-center bg-black/20 border border-black/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
-                            <span id="hours" class="font-mono text-white font-bold text-xs md:text-sm leading-none">08</span>
-                        </div>
-                        <span class="text-white/70 font-bold mt-0.5 md:mt-1">:</span>
-                        <div class="flex flex-col items-center justify-center bg-black/20 border border-black/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
-                            <span id="minutes" class="font-mono text-white font-bold text-xs md:text-sm leading-none">37</span>
-                        </div>
-                        <span class="text-white/70 font-bold mt-0.5 md:mt-1">:</span>
-                        <div class="flex flex-col items-center justify-center bg-black/20 border border-black/10 rounded px-1.5 py-1 min-w-[32px] md:min-w-[40px]">
-                            <span id="seconds" class="font-mono text-white font-bold text-xs md:text-sm leading-none">38</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION TIPO PRODUCTO -->
-    <section class="relative pt-10 pb-16 lg:pt-16 lg:pb-24 px-4 overflow-hidden z-10">
-        <div class="container mx-auto max-w-6xl">
+            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
+                Nos cerraron la cuenta <br> de Instagram 💔
+            </h1>
             
-            <!-- Breadcrumb / Microcopy -->
-            <div class="mb-6 flex items-center gap-2 text-[11px] text-zinc-500 font-medium tracking-wide uppercase" data-aos="fade-down">
-                <i class="ph-fill ph-file-doc text-zinc-400"></i>
-                <span>Plantilla Legal</span>
-                <span>/</span>
-                <span class="text-green-500">📄 +1.240 descargas verificadas</span>
-            </div>
+            <p class="text-zinc-400 text-sm md:text-base leading-relaxed">
+                Mientras intentamos recuperarla, necesitamos tu aguante. Dejanos un mensaje, leemos cada uno. 
+                <span class="text-zinc-200">A cambio, te dejamos un regalo.</span>
+            </p>
+        </header>
 
-            <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-                
-                <!-- Columna Izquierda: Imagen del Producto (Mockup) -->
-                <div class="lg:col-span-5 lg:sticky lg:top-24" data-aos="fade-right">
-                    <div class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_-15px_rgba(34,197,94,0.15)] group bg-zinc-900 flex items-center justify-center p-6">
-                        <!-- Reemplazar src con la imagen real de la plantilla -->
-                        <img src="https://images.unsplash.com/photo-1618044733300-9472054094ee?q=80&w=2071&auto=format&fit=crop" alt="Mockup Plantilla de Contrato" class="w-full h-full object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-500 shadow-2xl grayscale mix-blend-luminosity">
-                        
-                        <!-- Etiqueta sobre imagen -->
-                        <div class="absolute top-4 left-4 bg-green-500/20 backdrop-blur-md border border-green-500/30 text-green-400 text-xs px-3 py-1.5 rounded-full flex items-center gap-2 font-bold">
-                            <i class="ph-fill ph-check-circle"></i> 100% Editable (Word/Docs)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Columna Derecha: Información y Compra -->
-                <div class="lg:col-span-7 flex flex-col" data-aos="fade-left">
-                    
-                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.1] uppercase mb-4">
-                        Plantilla de Contrato Freelance <br class="hidden lg:block">
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Para Argentina 🇦🇷</span>
-                    </h1>
-                    
-                    <!-- Reseñas Estrellas -->
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="flex text-yellow-500 text-lg">
-                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star-half"></i>
-                        </div>
-                        <span class="text-zinc-400 text-sm font-medium">4.9/5 (130+ Reseñas)</span>
-                    </div>
-
-                    <p class="text-base text-zinc-400 leading-relaxed mb-8">
-                        Deja de trabajar gratis y evita clientes tóxicos. El documento legal listo para usar que te protege de cambios infinitos y asegura que cobres el 100% de tu trabajo. Modificas tus datos y envías.
-                    </p>
-
-                    <!-- Caja de Precio y Compra -->
-                    <div class="bg-brand-surface border border-white/5 rounded-2xl p-6 md:p-8 mb-6 shadow-card">
-                        
-                        <!-- Precios -->
-                        <div class="flex flex-col mb-6">
-                            <div class="flex items-center gap-3 mb-1">
-                                <span class="text-zinc-500 line-through text-lg font-medium">Valor Real: $150.000 ARS</span>
-                                <span class="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded border border-green-500/20 uppercase tracking-wide">Ahorrás 95%</span>
-                            </div>
-                            <div class="text-5xl md:text-6xl font-display font-black text-white text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400">
-                                $7.990 <span class="text-2xl font-bold text-zinc-500">ARS</span>
-                            </div>
-                        </div>
-
-                        <!-- Barra de Urgencia Interna -->
-                        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-6 flex items-center justify-center gap-2 text-red-400 text-sm font-medium">
-                            <span>🔥 50% OFF — Últimos <strong id="slots-count" class="text-white text-base">8</strong> cupos disponibles</span>
-                        </div>
-
-                        <!-- CTA Principal -->
-                        <a href="https://pay.hotmart.com/V104937357Y?off=l81h1l7l&checkoutMode=10" class="flex items-center justify-center gap-2 w-full py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-lg uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_50px_-10px_rgba(34,197,94,0.6)] hover:-translate-y-1">
-                            <i class="ph-bold ph-download-simple text-2xl"></i>
-                            <span>DESCARGAR DOCUMENTO AHORA</span>
-                        </a>
-
-                        <!-- Live Viewers -->
-                        <div class="mt-4 flex items-center justify-center gap-2 text-zinc-400 text-sm font-medium animate-pulse-soft">
-                            <i class="ph-fill ph-eye text-zinc-300"></i>
-                            <span id="viewerCount" class="font-bold text-white">72</span>
-                            <span>personas están viendo esto ahora.</span>
-                        </div>
-                    </div>
-
-                    <!-- Caja de Confianza -->
-                    <div class="bg-[#121212]/50 border border-white/5 rounded-xl p-5 md:p-6">
-                        <div class="flex items-center gap-3 mb-4 text-white font-bold text-sm md:text-base">
-                            <i class="ph-fill ph-shield-check text-green-500 text-xl"></i>
-                            Compra rápida, segura y sin complicaciones
-                        </div>
-                        <ul class="space-y-3 text-sm text-zinc-400">
-                            <li class="flex items-start gap-2">
-                                <i class="ph-bold ph-check text-green-500 mt-0.5"></i>
-                                <span><strong>Pago protegido</strong> mediante Hotmart (Mercado Pago, Tarjetas, Rapipago).</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i class="ph-bold ph-check text-green-500 mt-0.5"></i>
-                                <span><strong>Descarga inmediata</strong> a tu email apenas se acredita el pago.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i class="ph-bold ph-check text-green-500 mt-0.5"></i>
-                                <span><strong>Garantía de 7 días.</strong> Si no te sirve, te devolvemos el dinero.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- POR QUÉ LO NECESITAS (Derribando Objeciones) -->
-    <section class="py-12 bg-[#121212] border-y border-white/5 relative z-10">
-        <div class="container mx-auto px-4 max-w-6xl">
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Beneficio 1 -->
-                <div class="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 lg:p-8 flex flex-col items-center text-center shadow-lg" data-aos="fade-up">
-                    <div class="w-14 h-14 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center text-2xl mb-5">
-                        <i class="ph-fill ph-gavel"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-lg mb-3">¿Y si no sé de leyes?</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        No hace falta. El contrato está redactado en lenguaje claro. Es una plantilla de "rellenar huecos". Pones tu nombre, el del cliente, el precio y listo.
-                    </p>
-                </div>
-                <!-- Beneficio 2 -->
-                <div class="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 lg:p-8 flex flex-col items-center text-center shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-14 h-14 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center text-2xl mb-5">
-                        <i class="ph-fill ph-prohibit"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-lg mb-3">Frena los cambios infinitos</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        Incluye la famosa "Cláusula Anti-Cambios". Establece un límite claro de revisiones. Si quieren más, la plantilla estipula cuánto deben pagar extra.
-                    </p>
-                </div>
-                <!-- Beneficio 3 -->
-                <div class="bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 lg:p-8 flex flex-col items-center text-center shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-14 h-14 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center text-2xl mb-5">
-                        <i class="ph-fill ph-ghost"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-lg mb-3">Chau clientes fantasmas</h3>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        ¿El cliente desaparece semanas y vuelve exigiendo urgencia? La "Cláusula Anti-Ghosting" pausa el proyecto y cobra penalidad por retomarlo.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SNEAK PEEK (VIDEO) -->
-    <section class="py-16 lg:py-24 relative z-10 overflow-hidden">
-        <div class="container mx-auto px-4 max-w-4xl text-center">
-            
-            <h2 class="font-display text-2xl md:text-4xl font-bold mb-10 text-white" data-aos="fade-up">Así se ve tu escudo legal por dentro 👇</h2>
-
-            <!-- Video Player Formateado como Banner -->
-            <div class="relative bg-white rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.5)] border-4 border-zinc-800" data-aos="fade-up" data-aos-delay="100">
-                <!-- Barra superior tipo navegador -->
-                <div class="h-10 bg-zinc-100 flex items-center px-4 gap-2 border-b border-zinc-200">
-                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                    <div class="mx-auto bg-white px-3 py-1 rounded text-[10px] text-zinc-400 font-mono w-1/2 text-center border border-zinc-200">Contrato_Freelance_VFinal.pdf</div>
+        <!-- Formulario UI Premium -->
+        <form id="support-form" class="card-ui p-6 md:p-8">
+            <div class="space-y-5">
+                <div>
+                    <label for="userName" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Tu Nombre</label>
+                    <input type="text" id="userName" name="name" required placeholder="@usuario" 
+                           class="input-ui w-full px-4 py-3 rounded-lg text-sm">
                 </div>
                 
-                <div class="relative aspect-video bg-zinc-900">
-                    <video 
-                        src="contrato2/video.mp4" 
-                        class="w-full h-full object-cover"
-                        autoplay 
-                        loop 
-                        muted 
-                        playsinline>
-                    </video>
+                <div>
+                    <label for="userMessage" class="block text-xs font-medium text-zinc-500 mb-2 uppercase tracking-wider">Mensaje</label>
+                    <textarea id="userMessage" name="message" required rows="3" placeholder="¡Fuerza equipo!"
+                              class="input-ui w-full px-4 py-3 rounded-lg text-sm resize-none"></textarea>
                 </div>
+
+                <button type="submit" class="btn-ui w-full py-4 rounded-lg flex items-center justify-center gap-2 mt-2 group">
+                    <span class="font-pixel text-[10px] tracking-wider uppercase mt-1">Desbloquear regalo</span>
+                    <i class="ph-fill ph-game-controller text-lg group-hover:rotate-12 transition-transform"></i>
+                </button>
             </div>
+        </form>
+    </main>
 
+    <main id="view-transition" class="view-section flex-col items-center justify-center w-full max-w-sm mx-auto z-20 text-center py-20">
+        <i class="ph-duotone ph-paper-plane-tilt text-4xl text-zinc-400 mb-6 animate-pulse"></i>
+        <h2 class="text-xl font-medium text-white mb-8">Enviando mensaje...</h2>
+        
+        <div class="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
+            <div class="h-full bg-white w-0 transition-all duration-1000 ease-out" id="loading-bar"></div>
         </div>
-    </section>
+    </main>
 
-    <!-- SECCIÓN DE BONOS GRATIS (Valor Apilado) -->
-    <section class="py-16 lg:py-24 bg-gradient-to-b from-[#121212] to-[#0A0A0A] border-y border-white/5 relative z-10">
-        <div class="container mx-auto px-4 max-w-6xl">
+    <main id="view-unlocked" class="view-section flex-col items-center justify-center w-full max-w-lg mx-auto z-20">
+        
+        <div class="text-center mb-8">
+            <div class="inline-block text-zinc-500 font-pixel text-[10px] tracking-widest uppercase mb-4">Nivel Secreto</div>
+            <h2 class="text-3xl font-semibold text-white">¡Desbloqueado! 🍄</h2>
+        </div>
+
+        <div class="card-ui p-8 text-center w-full group hover:border-zinc-700 transition-colors">
             
-            <div class="text-center mb-12 lg:mb-16" data-aos="fade-up">
-                <span class="bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1.5 rounded-full border border-green-500/20 uppercase tracking-wide mb-4 inline-block">🎁 REGALOS EXCLUSIVOS</span>
-                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4">Te llevás 3 Bonos totalmente GRATIS</h2>
-                <p class="text-zinc-400 text-base max-w-2xl mx-auto">
-                    Recibís estos documentos dentro de tu archivo de descarga, para complementar tu contrato y profesionalizar todo tu flujo de trabajo.
-                </p>
-                <div class="mt-6 inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full shadow-lg">
-                    <span class="text-zinc-400 text-sm font-medium">Valor total: <span class="line-through">$45.000 ARS</span></span>
-                    <i class="ph-bold ph-arrow-right text-zinc-500"></i>
-                    <span class="text-green-400 font-bold text-sm uppercase">Hoy inclúidos GRATIS</span>
-                </div>
+            <div class="w-12 h-12 mx-auto bg-zinc-900 border border-zinc-800 rounded-xl mb-6 flex items-center justify-center">
+                <i class="ph-fill ph-crosshair text-xl text-zinc-400 group-hover:text-white transition-colors"></i>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
-                
-                <!-- Bono 1 -->
-                <div class="bg-[#121212] border border-white/5 rounded-2xl p-6 flex flex-col hover:border-green-500/30 transition-colors" data-aos="fade-up">
-                    <div class="text-[10px] font-black tracking-widest text-zinc-500 uppercase mb-4">BONO 01</div>
-                    <!-- Placeholder Imagen Bono -->
-                    <div class="w-full aspect-[4/3] bg-zinc-900 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                        <i class="ph-fill ph-clipboard-text text-5xl text-zinc-700"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Plantilla de Briefing</h3>
-                    <ul class="space-y-2 mb-6 text-sm text-zinc-400 flex-grow">
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Preguntas clave para entender al cliente antes de cotizar.</li>
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Evita malentendidos desde el día 1.</li>
-                    </ul>
-                    <div class="pt-4 border-t border-white/5 flex items-center justify-between text-sm">
-                        <span class="text-zinc-500 line-through">$15.000</span>
-                        <span class="text-green-400 font-bold uppercase text-xs">Gratis</span>
-                    </div>
-                </div>
-
-                <!-- Bono 2 -->
-                <div class="bg-[#121212] border border-white/5 rounded-2xl p-6 flex flex-col hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-[10px] font-black tracking-widest text-zinc-500 uppercase mb-4">BONO 02</div>
-                    <div class="w-full aspect-[4/3] bg-zinc-900 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                        <i class="ph-fill ph-envelope-simple text-5xl text-zinc-700"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Scripts de Emails</h3>
-                    <ul class="space-y-2 mb-6 text-sm text-zinc-400 flex-grow">
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Textos listos para copiar y pegar.</li>
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Cómo enviar el contrato, cobrar deudas o rechazar proyectos educadamente.</li>
-                    </ul>
-                    <div class="pt-4 border-t border-white/5 flex items-center justify-between text-sm">
-                        <span class="text-zinc-500 line-through">$15.000</span>
-                        <span class="text-green-400 font-bold uppercase text-xs">Gratis</span>
-                    </div>
-                </div>
-
-                <!-- Bono 3 -->
-                <div class="bg-[#121212] border border-white/5 rounded-2xl p-6 flex flex-col hover:border-green-500/30 transition-colors" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-[10px] font-black tracking-widest text-zinc-500 uppercase mb-4">BONO 03</div>
-                    <div class="w-full aspect-[4/3] bg-zinc-900 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                        <i class="ph-fill ph-calculator text-5xl text-zinc-700"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Plantilla de Presupuesto</h3>
-                    <ul class="space-y-2 mb-6 text-sm text-zinc-400 flex-grow">
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Formato profesional para enviar tus precios.</li>
-                        <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-500 mt-1"></i> Aumenta el valor percibido de tu trabajo al instante.</li>
-                    </ul>
-                    <div class="pt-4 border-t border-white/5 flex items-center justify-between text-sm">
-                        <span class="text-zinc-500 line-through">$15.000</span>
-                        <span class="text-green-400 font-bold uppercase text-xs">Gratis</span>
-                    </div>
-                </div>
-
-            </div>
+            <h3 class="text-xl font-medium text-white mb-3">
+                7 Juegos para entrenar tu ojo
+            </h3>
             
-            <div class="mt-12 text-center" data-aos="fade-up">
-                <a href="https://pay.hotmart.com/V104937357Y?off=l81h1l7l&checkoutMode=10" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 hover:bg-green-400 text-white rounded-xl font-extrabold text-sm md:text-base uppercase tracking-wide transition-all shadow-glow hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.5)] hover:-translate-y-1 text-center">
-                    <span>QUIERO EL CONTRATO + LOS 3 BONOS</span>
-                </a>
-            </div>
+            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
+                Kerning, colores, curvas bezier y más. ¿Te animás a sacar el puntaje perfecto?
+            </p>
+
+            <a href="https://necesitodisenos.notion.site/7-Juegos-Online-y-gratuitos-para-entrenar-tu-ojo-de-dise-ador-2dcf4bad0a5980748f17fe5e7a13c0be?pvs=143" target="_blank" rel="noopener noreferrer"
+               class="btn-ui inline-flex items-center justify-center w-full text-xs font-medium py-3.5 px-6 rounded-lg">
+                ACCEDER A LOS JUEGOS
+            </a>
         </div>
-    </section>
+    </main>
 
-    <!-- RESEÑAS GRID (Estilo Referencia adaptado) -->
-    <section class="py-16 lg:py-24 bg-[#0A0A0A] relative overflow-hidden z-10">
-        <div class="container mx-auto px-4 max-w-5xl">
-            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
-                <h2 class="font-display text-3xl md:text-4xl font-extrabold text-white mb-4">Lo que dicen los que ya no regalan su trabajo</h2>
-                <p class="text-zinc-400 text-sm md:text-base">Opiniones reales de diseñadores y freelancers que ya protegen sus proyectos.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                
-                <!-- Review 1 -->
-                <article class="bg-[#121212] border border-white/5 rounded-2xl p-5 md:p-6 shadow-lg flex flex-col gap-4" data-aos="fade-up">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg">P</div>
-                            <div class="flex flex-col">
-                                <span class="text-white font-bold text-sm">Pablo A.</span>
-                                <span class="text-[10px] text-green-400 uppercase tracking-wider flex items-center gap-1"><i class="ph-bold ph-check"></i> Compra Verificada</span>
-                            </div>
-                        </div>
-                        <div class="flex text-yellow-500 text-sm"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    </div>
-                    <p class="text-zinc-300 text-sm leading-relaxed">
-                        "Me salvó la vida con una marca de ropa que me pedía cambios todos los días. Les mostré la Cláusula 3 y al día siguiente me pagaron el saldo para cerrar. 🙏🔥"
-                    </p>
-                </article>
-
-                <!-- Review 2 -->
-                <article class="bg-[#121212] border border-white/5 rounded-2xl p-5 md:p-6 shadow-lg flex flex-col gap-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg">L</div>
-                            <div class="flex flex-col">
-                                <span class="text-white font-bold text-sm">Laura V.</span>
-                                <span class="text-[10px] text-green-400 uppercase tracking-wider flex items-center gap-1"><i class="ph-bold ph-check"></i> Compra Verificada</span>
-                            </div>
-                        </div>
-                        <div class="flex text-yellow-500 text-sm"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    </div>
-                    <p class="text-zinc-300 text-sm leading-relaxed">
-                        "Tener un documento en PDF con firmas hace que los clientes te perciban distinto. Ya nadie me regatea el anticipo del 50% 💅✨. Lo re contra recomiendo."
-                    </p>
-                </article>
-
-                <!-- Review 3 -->
-                <article class="bg-[#121212] border border-white/5 rounded-2xl p-5 md:p-6 shadow-lg flex flex-col gap-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">L</div>
-                            <div class="flex flex-col">
-                                <span class="text-white font-bold text-sm">Lucas D.</span>
-                                <span class="text-[10px] text-green-400 uppercase tracking-wider flex items-center gap-1"><i class="ph-bold ph-check"></i> Compra Verificada</span>
-                            </div>
-                        </div>
-                        <div class="flex text-yellow-500 text-sm"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                    </div>
-                    <p class="text-zinc-300 text-sm leading-relaxed">
-                        "Por $7990 pesos resolví un dolor de cabeza que me costaba fines de semana enteros de laburo gratis. La mejor inversión que hice para mi negocio este año 🚀"
-                    </p>
-                </article>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="py-16 lg:py-24 bg-[#121212] border-t border-white/5 relative z-10 overflow-hidden">
-        <div class="container mx-auto px-4 max-w-3xl relative z-10">
-            <div class="text-center mb-10" data-aos="fade-up">
-                <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Preguntas Frecuentes</h2>
-            </div>
-            
-            <div class="space-y-4">
-                <details class="group bg-black/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-green-500/30 open:border-green-500/30 open:bg-black" data-aos="fade-up">
-                    <summary class="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
-                        <div class="flex items-center gap-3">
-                            <i class="ph-fill ph-check-square text-green-500 text-xl"></i>
-                            <span class="text-white font-medium text-sm md:text-base">¿En qué formato se entrega la plantilla?</span>
-                        </div>
-                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-0 text-zinc-400 text-sm leading-relaxed ml-8">
-                        Se entrega en formatos editables (Word / Google Docs) listos para usar y modificar con tu propia información y la de tu cliente.
-                    </div>
-                </details>
-
-                <details class="group bg-black/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-green-500/30 open:border-green-500/30 open:bg-black" data-aos="fade-up" data-aos-delay="100">
-                    <summary class="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
-                        <div class="flex items-center gap-3">
-                            <i class="ph-fill ph-check-square text-green-500 text-xl"></i>
-                            <span class="text-white font-medium text-sm md:text-base">¿Tiene validez legal en Argentina?</span>
-                        </div>
-                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-0 text-zinc-400 text-sm leading-relaxed ml-8">
-                        Sí. Está redactado con términos comerciales aplicables para la prestación de servicios freelance en Argentina. Puedes usarlo sin problema para resguardar tus acuerdos comerciales por escrito.
-                    </div>
-                </details>
-
-                <details class="group bg-black/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-green-500/30 open:border-green-500/30 open:bg-black" data-aos="fade-up" data-aos-delay="150">
-                    <summary class="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
-                        <div class="flex items-center gap-3">
-                            <i class="ph-fill ph-check-square text-green-500 text-xl"></i>
-                            <span class="text-white font-medium text-sm md:text-base">¿Necesito pagarle a un abogado para poder usarlo?</span>
-                        </div>
-                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-0 text-zinc-400 text-sm leading-relaxed ml-8">
-                        ¡Para nada! El documento está diseñado con espacios marcados para rellenar. Solo debes colocar tus datos, los del cliente, los detalles del servicio y el precio. Lo exportas a PDF y listo.
-                    </div>
-                </details>
-
-                <details class="group bg-black/50 border border-white/5 rounded-xl overflow-hidden transition-all duration-300 hover:border-green-500/30 open:border-green-500/30 open:bg-black" data-aos="fade-up" data-aos-delay="200">
-                    <summary class="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
-                        <div class="flex items-center gap-3">
-                            <i class="ph-fill ph-check-square text-green-500 text-xl"></i>
-                            <span class="text-white font-medium text-sm md:text-base">¿Cómo recibo el acceso?</span>
-                        </div>
-                        <i class="ph-bold ph-caret-down text-zinc-500 group-open:rotate-180 transition-transform duration-300"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-0 text-zinc-400 text-sm leading-relaxed ml-8">
-                        Inmediatamente después de tu pago por Hotmart, recibirás un correo electrónico automático con el enlace directo para descargar la plantilla y los bonos a tu PC o celular.
-                    </div>
-                </details>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 bg-[#0A0A0A] border-t border-white/5 text-center">
-        <div class="container mx-auto px-4 max-w-4xl">
-            <div class="flex flex-col items-center gap-4 mb-8">
-                <div class="text-white font-display font-bold text-xl tracking-tight">@necesitodisenos</div>
-                <div class="flex gap-4 text-zinc-500">
-                    <a href="#" class="hover:text-white transition-colors"><i class="ph-fill ph-instagram-logo text-2xl"></i></a>
-                    <a href="#" class="hover:text-white transition-colors"><i class="ph-fill ph-tiktok-logo text-2xl"></i></a>
-                </div>
-            </div>
-            <p class="text-xs text-zinc-600 mb-2">© 2026 Necesito Diseños. Todos los derechos reservados.</p>
-            <p class="text-[10px] text-zinc-700 max-w-2xl mx-auto">Este sitio no es parte del sitio web de Facebook o Facebook Inc. Adicionalmente, este sitio NO está respaldado por Facebook de ninguna manera. FACEBOOK es una marca registrada de FACEBOOK, Inc.</p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Inicializar animaciones de scroll
-        AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic', offset: 50 });
+        // --- 1. SISTEMA DE NOTIFICACIONES RECIENTES ---
+        const names = ["María", "Santi", "Lucía", "Facu", "Caro", "Martín", "Flor", "Juani", "Valen"];
+        const actions = ["envió su apoyo", "mandó un abrazo", "dejó un mensaje", "desbloqueó el nivel"];
+        const toastContainer = document.getElementById('toast-container');
 
-        // Función del contador de la barra superior (urgencia)
-        function updateTimer() {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setHours(24, 0, 0, 0);
-            let diff = tomorrow - now;
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
+        function showRandomToast() {
+            const name = names[Math.floor(Math.random() * names.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
             
-            const hoursEl = document.getElementById('hours');
-            const minEl = document.getElementById('minutes');
-            const secEl = document.getElementById('seconds');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800">
+                    <i class="ph-fill ph-heart text-red-500 text-sm"></i>
+                </div>
+                <div class="text-sm">
+                    <span class="text-white font-medium">${name}</span> 
+                    <span class="text-zinc-400">${action} hace un momento</span>
+                </div>
+            `;
             
-            if (hoursEl && minEl && secEl) {
-                hoursEl.innerText = hours.toString().padStart(2, '0');
-                minEl.innerText = minutes.toString().padStart(2, '0');
-                secEl.innerText = seconds.toString().padStart(2, '0');
-            }
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        // Oferta de día dinámico
-        const diasSemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-        const diaActual = diasSemana[new Date().getDay()];
-        const dynamicOfferBadge = document.getElementById('dynamic-day-offer');
-        if (dynamicOfferBadge) {
-            dynamicOfferBadge.innerText = `SOLO HOY ${diaActual} A $7.990 ARS 🇦🇷`;
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                if(toastContainer.contains(toast)) toast.remove();
+            }, 4500);
         }
 
-        /* ===========================
-           CONTADOR PERSONAS VIENDO (Referencia)
-        =========================== */
-        document.addEventListener("DOMContentLoaded", function () {
-            const viewerElement = document.getElementById("viewerCount");
+        setTimeout(showRandomToast, 1500);
+        setInterval(() => {
+            if(Math.random() > 0.3) showRandomToast();
+        }, 6000);
 
-            if (viewerElement) {
-                const MIN_VIEWERS = 45;
-                const MAX_VIEWERS = 120;
-                let currentViewers = Math.floor(Math.random() * (80 - 55 + 1)) + 55;
+        // --- 2. LÓGICA DE FORMULARIO Y ENVÍO REAL DE CORREO ---
+        const form = document.getElementById('support-form');
+        const viewHero = document.getElementById('view-hero');
+        const viewTransition = document.getElementById('view-transition');
+        const viewUnlocked = document.getElementById('view-unlocked');
+        const loadingBar = document.getElementById('loading-bar');
 
-                function renderViewers() {
-                    viewerElement.textContent = currentViewers;
-                }
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const message = document.getElementById('userMessage').value;
+            const btn = form.querySelector('button');
+            
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i><span class="font-pixel text-[10px] mt-1 uppercase">Enviando...</span>';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
 
-                function updateViewers() {
-                    let delta = Math.floor(Math.random() * 7) - 3;
-                    if (delta === 0) delta = 1;
-                    currentViewers += delta;
-
-                    if (currentViewers < MIN_VIEWERS) currentViewers = MIN_VIEWERS + Math.floor(Math.random() * 3);
-                    if (currentViewers > MAX_VIEWERS) currentViewers = MAX_VIEWERS - Math.floor(Math.random() * 3);
-
-                    renderViewers();
-                    const nextDelay = Math.floor(Math.random() * (7000 - 4000 + 1)) + 4000;
-                    setTimeout(updateViewers, nextDelay);
-                }
-
-                renderViewers();
-                const firstDelay = Math.floor(Math.random() * (7000 - 4000 + 1)) + 4000;
-                setTimeout(updateViewers, firstDelay);
-            }
-
-            /* ===========================
-               CONTADOR CUPOS RESTANTES
-            =========================== */
-            const slotsEl = document.getElementById("slots-count");
-            if (slotsEl) {
-                let slots = 8;
-                const MIN_SLOTS = 2;
-                slotsEl.textContent = slots;
-
-                function rand(min, max) {
-                    return Math.floor(Math.random() * (max - min + 1)) + min;
-                }
-
-                function updateSlots() {
-                    if (slots <= MIN_SLOTS) return;
-                    slots--;
-                    slotsEl.textContent = slots;
-
-                    let delay;
-                    if (slots > 6) delay = rand(7000, 12000);
-                    else if (slots > 4) delay = rand(8000, 14000);
-                    else delay = rand(12000, 20000);
-
-                    setTimeout(updateSlots, delay);
-                }
-                setTimeout(updateSlots, rand(5000, 8000));
-            }
-        });
-
-        // Pasar parámetros UTM
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = window.location.search;
-            if (urlParams) {
-                const hotmartLinks = document.querySelectorAll('a[href*="pay.hotmart.com"]');
-                hotmartLinks.forEach(link => {
-                    const currentUrl = link.getAttribute('href');
-                    const separator = currentUrl.includes('?') ? '&' : '?';
-                    const cleanParams = urlParams.replace('?', '');
-                    link.setAttribute('href', currentUrl + separator + cleanParams);
+            try {
+                // ENVÍO REAL USANDO FORMSUBMIT (No requiere backend propio)
+                await fetch('https://formsubmit.co/ajax/necesitodisenos@gmail.com', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        Nombre: name, 
+                        Mensaje: message,
+                        _subject: `🍄 Nuevo mensaje de apoyo de: ${name}`,
+                        _template: 'box' // Le da un formato limpio al correo que recibes
+                    })
                 });
+
+                // Cambiar a vista de transición
+                viewHero.classList.remove('active');
+                setTimeout(() => {
+                    viewTransition.classList.add('active');
+                    setTimeout(() => { loadingBar.style.width = '100%'; }, 50);
+                }, 400);
+
+                // Cambiar a vista final
+                setTimeout(() => {
+                    viewTransition.classList.remove('active');
+                    setTimeout(() => {
+                        viewUnlocked.classList.add('active');
+                    }, 400);
+                }, 1600);
+
+            } catch (error) {
+                console.error("Error al enviar el correo:", error);
+                btn.innerHTML = '<span class="font-pixel text-[10px] tracking-wider uppercase mt-1">Error. Reintentar</span>';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                alert("Hubo un error al enviar el mensaje. Por favor intenta de nuevo.");
             }
         });
     </script>
