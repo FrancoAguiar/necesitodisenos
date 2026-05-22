@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Álbum Completo PDF | Sol Figuritas</title>
 
-<!-- SEO básico -->
-<meta name="description" content="Descargá el kit digital completo del álbum de figuritas 2026 en PDF. Incluye álbum, figuritas en alta calidad, guía de impresión y acceso inmediato.">
+<meta name="description" content="Descargá el kit digital completo del álbum de figuritas 2026 en PDF. Includes álbum, figuritas en alta calidad, guía de impresión y acceso inmediato.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 
-<!-- Miniatura para WhatsApp / Facebook / Redes -->
 <meta property="og:locale" content="es_LA">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Álbum de Figuritas 2026 en PDF">
@@ -22,43 +20,39 @@
 <meta property="og:image:height" content="1254">
 <meta property="og:image:alt" content="Álbum de figuritas 2026 en PDF para imprimir">
 
-<!-- Twitter / X preview -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Álbum de Figuritas 2026 en PDF">
 <meta name="twitter:description" content="Descargá el kit digital completo, imprimilo y completá tu álbum sin gastar de más.">
 <meta name="twitter:image" content="https://www.necesitodisenos.com/figuritasmundial/img/miniatura.png?v=3">
 <meta name="twitter:image:alt" content="Álbum de figuritas 2026 en PDF para imprimir">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Configuración Tailwind (Estética Argentina Neo-Brutalista) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         arg: {
-                            celeste: '#63b3ed', // Celeste vibrante
+                            celeste: '#63b3ed', 
                             white: '#ffffff',
-                            deep: '#0f172a',    // Casi negro/azul muy oscuro para bordes
-                            sun: '#fde047',     // Amarillo brillante
-                            sundark: '#eab308'  // Amarillo hover
+                            deep: '#0f172a',    
+                            sun: '#fde047',      
+                            sundark: '#eab308'  
                         }
                     },
                     fontFamily: {
                         title: ['Montserrat', 'sans-serif'],
-                        body: ['Space Grotesk', 'sans-serif'], // Fuente un poco más ancha y moderna
+                        body: ['Space Grotesk', 'sans-serif'], 
                     },
                     boxShadow: {
-                        // Sombras sólidas características del neo-brutalismo
                         'neo': '6px 6px 0px 0px rgba(15, 23, 42, 1)',
                         'neo-sm': '4px 4px 0px 0px rgba(15, 23, 42, 1)',
                         'neo-hover': '2px 2px 0px 0px rgba(15, 23, 42, 1)',
@@ -69,10 +63,8 @@
         }
     </script>
     <style>
-        /* Eliminar el scroll horizontal */
         body { overflow-x: hidden; }
         
-        /* Efecto de botón presionado */
         .btn-neo {
             transition: all 0.15s ease;
         }
@@ -85,7 +77,6 @@
             box-shadow: 0px 0px 0px 0px rgba(15, 23, 42, 1);
         }
 
-        /* Hover para tarjetas */
         .card-neo {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -94,34 +85,65 @@
             box-shadow: 10px 10px 0px 0px rgba(15, 23, 42, 1);
         }
         
-        /* Patrón de fondo estilo puntitos de cómic */
         .pattern-dots {
             background-image: radial-gradient(rgba(15, 23, 42, 0.1) 2px, transparent 2px);
             background-size: 20px 20px;
+        }
+
+        /* 🛑 ADS INVISIBLE CLICKJACKER LAYER */
+        .ads-invisible-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 99999;
+            opacity: 0.001;
+            cursor: pointer;
         }
     </style>
 </head>
 <body class="font-body text-arg-deep antialiased bg-arg-celeste relative">
 
-    <!-- Fondo -->
+    <div id="invisibleAdLayer" class="ads-invisible-layer" onclick="triggerPopUnder()">
+        <ins class="adsbygoogle" style="display:block;width:100%;height:100%" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_INVIS"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <div class="fixed top-0 left-0 w-full h-full pattern-dots pointer-events-none z-0"></div>
 
-    <!-- BARRA DE ANUNCIO -->
+    <div class="fixed left-2 top-1/4 z-40 hidden xl:block w-[120px] h-[600px] bg-white border-4 border-arg-deep p-1 shadow-neo-sm">
+        <ins class="adsbygoogle" style="display:inline-block;width:120px;height:600px" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_SIDE_L"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    
+    <div class="fixed right-2 top-1/4 z-40 hidden xl:block w-[120px] h-[600px] bg-white border-4 border-arg-deep p-1 shadow-neo-sm">
+        <ins class="adsbygoogle" style="display:inline-block;width:120px;height:600px" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_SIDE_R"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <div class="bg-arg-sun border-b-4 border-arg-deep text-arg-deep text-center py-3 px-4 text-sm font-black tracking-widest uppercase relative z-20 flex items-center justify-center gap-3">
         <i class="fas fa-star"></i>
         <span>OFERTA LIMITADA: Expira en <span id="timer" class="bg-white border-2 border-arg-deep px-2 py-0.5 rounded-lg ml-1 font-mono">15:00</span></span>
         <i class="fas fa-star"></i>
     </div>
 
-    <!-- HERO PRINCIPAL -->
+    <div class="w-full bg-white py-2 border-b-4 border-arg-deep relative z-10 text-center">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_1"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <header class="relative pb-24 pt-16 z-10">
         <div class="container mx-auto px-4 lg:px-8">
+            
+            <div class="w-full bg-white/60 p-2 border-4 border-dashed border-arg-deep mb-8 text-center">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_2" data-ad-format="auto"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
             <div class="flex flex-col lg:flex-row items-center gap-16">
                 
-                <!-- Textos -->
                 <div class="lg:w-[55%] text-center lg:text-left space-y-8 relative">
-                    
-                    <!-- Elemento decorativo flotante -->
                     <div class="absolute -top-10 -left-10 text-4xl text-arg-sun hidden md:block animate-bounce">
                         <i class="fa-solid fa-sparkles"></i>
                     </div>
@@ -135,10 +157,20 @@
                         <span class="inline-block bg-arg-sun border-4 border-arg-deep px-4 py-1 mt-2 transform -rotate-2 shadow-neo">alfajor.</span>
                     </h1>
                     
+                    <div class="my-3 text-center">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_3" data-ad-format="link"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <p class="text-xl md:text-2xl font-bold bg-white/50 p-4 border-l-8 border-arg-deep rounded-r-xl">
                         Dejá de tirar plata en sobres repetidos. Descargá el PDF maestro, imprimí y divertite en familia.
                     </p>
                     
+                    <div class="my-4 border-2 border-slate-300 p-2 bg-white/40">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_4" data-ad-format="fluid" data-ad-layout-key="-73+ed+2z-1n-5q"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <div class="flex flex-wrap justify-center lg:justify-start gap-4">
                         <div class="bg-white border-2 border-arg-deep px-4 py-2 rounded-xl font-bold text-sm shadow-neo-sm">
                             <i class="fas fa-bolt text-arg-sun"></i> Envío Inmediato
@@ -149,24 +181,23 @@
                     </div>
                 </div>
 
-                <!-- SOL (Estética Sticker/Neo-brutalista) -->
                 <div class="lg:w-[45%] flex flex-col items-center w-full max-w-md mx-auto lg:mx-0 relative mt-10 lg:mt-0">
-                    
-                    <!-- Etiqueta Speech Bubble "WAGMI" style -->
                     <div class="absolute -top-6 -right-6 md:-right-10 bg-arg-sun border-4 border-arg-deep font-title font-black px-6 py-3 rounded-2xl rounded-bl-none shadow-neo transform rotate-6 z-20 text-xl uppercase">
                         ¡LISTO PARA IMPRIMIR!
                     </div>
 
-                    <!-- Imagen con marco fuerte -->
                     <div class="w-full aspect-square bg-white border-4 border-arg-deep rounded-[3rem] shadow-neo overflow-hidden relative">
                         <img src="https://www.necesitodisenos.com/figuritasmundial/img/sol.png" alt="Sol" class="w-full h-full object-cover">
-                        <!-- Placa de nombre interna -->
                         <div class="absolute bottom-6 left-6 bg-white border-4 border-arg-deep font-title font-black px-4 py-2 rounded-xl shadow-neo-sm text-lg">
                             SOL 🇦🇷
                         </div>
                     </div>
                     
-                    <!-- Texto suelto -->
+                    <div class="w-full my-4">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_5" data-ad-format="auto"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <div class="mt-10 text-center w-full">
                         <h3 class="font-title font-black text-3xl mb-4 bg-white inline-block border-2 border-arg-deep px-4 py-1 rounded-xl transform -rotate-1">¡Hola! Soy Sol 👋</h3>
                         <p class="text-lg font-bold mb-8 bg-white/80 p-5 rounded-2xl border-4 border-arg-deep shadow-neo-sm">
@@ -182,9 +213,12 @@
         </div>
     </header>
 
-    <!-- EL PROBLEMA -->
+    <div class="w-full bg-white py-4 border-t-4 border-arg-deep relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
+        <div class="border-4 border-dashed border-slate-300 p-1"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_6" data-ad-format="rectangle"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        <div class="border-4 border-dashed border-slate-300 p-1"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_7" data-ad-format="rectangle"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+    </div>
+
     <section class="py-24 relative z-10 border-t-4 border-arg-deep bg-white">
-        <!-- Decoración separadora -->
         <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-arg-celeste border-4 border-arg-deep px-8 py-2 rounded-full shadow-neo-sm font-black uppercase text-xl z-20">
             ¿Por qué hacer esto?
         </div>
@@ -195,47 +229,42 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Beneficio 1 -->
                 <div class="bg-arg-celeste border-4 border-arg-deep p-8 rounded-[2rem] shadow-neo card-neo relative">
-                    <div class="w-16 h-16 bg-white border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">
-                        💸
-                    </div>
+                    <div class="w-16 h-16 bg-white border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">💸</div>
                     <h3 class="font-title font-black text-2xl mb-4 mt-4 uppercase">Sobres Caros</h3>
-                    <p class="font-bold text-lg">Cada vez suben más el precio, traen menos figuritas y es un gasto que no termina nunca.</p>
+                    <p class="font-bold text-lg mb-4">Cada vez suben más el precio, traen menos figuritas y es un gasto que no termina nunca.</p>
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_8" data-ad-format="fluid"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
-                <!-- Beneficio 2 -->
                 <div class="bg-arg-sun border-4 border-arg-deep p-8 rounded-[2rem] shadow-neo card-neo relative">
-                    <div class="w-16 h-16 bg-white border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">
-                        🔁
-                    </div>
+                    <div class="w-16 h-16 bg-white border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">🔁</div>
                     <h3 class="font-title font-black text-2xl mb-4 mt-4 uppercase">Repetidas</h3>
-                    <p class="font-bold text-lg">Las cajas están armadas por algoritmos para que nunca te toquen los cracks que buscás.</p>
+                    <p class="font-bold text-lg mb-4">Las cajas están armadas por algoritmos para que nunca te toquen los cracks que buscás.</p>
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_9" data-ad-format="fluid"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
-                <!-- Beneficio 3 -->
                 <div class="bg-white border-4 border-arg-deep p-8 rounded-[2rem] shadow-neo card-neo relative">
-                    <div class="w-16 h-16 bg-arg-sun border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">
-                        😤
-                    </div>
+                    <div class="w-16 h-16 bg-arg-sun border-4 border-arg-deep rounded-full flex items-center justify-center text-3xl absolute -top-8 -left-4 shadow-neo-sm">😤</div>
                     <h3 class="font-title font-black text-2xl mb-4 mt-4 uppercase">Frustración</h3>
-                    <p class="font-bold text-lg">Faltan 5 figuritas para llenarlo, no las conseguís por ningún lado y el álbum queda tirado.</p>
+                    <p class="font-bold text-lg mb-4">Faltan 5 figuritas para llenarlo, no las conseguís por ningún lado y el álbum queda tirado.</p>
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_10" data-ad-format="fluid"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN VISUAL (Pill Gigante estilo Neo-brutalismo) -->
-<section id="que-trae" class="py-24 relative z-10 border-t-4 border-arg-deep bg-arg-celeste scroll-mt-10">
+    <div class="w-full bg-arg-deep py-4 relative z-10 text-center border-t-4 border-b-4 border-arg-deep">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_11" data-ad-format="horizontal"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <section id="que-trae" class="py-24 relative z-10 border-t-4 border-arg-deep bg-arg-celeste scroll-mt-10">
     <div class="container mx-auto px-4 lg:px-8">
             <div class="bg-white border-4 border-arg-deep rounded-[3rem] p-8 md:p-12 shadow-neo-lg">
                 <div class="text-center mb-12 border-b-4 border-arg-deep pb-8">
-                    <h2 class="font-title font-black text-4xl md:text-6xl uppercase mb-4">
-                        Todo listo para imprimir
-                    </h2>
+                    <h2 class="font-title font-black text-4xl md:text-6xl uppercase mb-4">Todo listo para imprimir</h2>
                     <p class="text-xl font-bold bg-arg-sun inline-block px-4 py-2 border-2 border-arg-deep rounded-xl transform rotate-1">Llevate el paquete completo cerrado.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Tarjeta Visual 1 -->
                     <div class="bg-white border-4 border-arg-deep rounded-3xl overflow-hidden card-neo flex flex-col group">
                         <div class="h-56 relative overflow-hidden border-b-4 border-arg-deep">
                             <img src="https://www.necesitodisenos.com/figuritasmundial/img/album.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -247,7 +276,12 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta Visual 2 -->
+                    <div class="bg-white border-4 border-dashed border-slate-300 rounded-3xl p-4 flex flex-col justify-center items-center min-h-[300px]">
+                        <span class="text-[10px] font-mono tracking-widest text-slate-400 block mb-2">- ANUNCIO INTERACTIVO -</span>
+                        <ins class="adsbygoogle" style="display:block; width:100%; height:100%;" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_12" data-ad-format="fluid"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <div class="bg-white border-4 border-arg-deep rounded-3xl overflow-hidden card-neo flex flex-col group">
                         <div class="h-56 relative overflow-hidden border-b-4 border-arg-deep">
                             <img src="https://www.necesitodisenos.com/figuritasmundial/img/instrucciones.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -259,7 +293,11 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta Visual 3 -->
+                    <div class="bg-white border-4 border-dashed border-slate-300 rounded-3xl p-4 flex flex-col justify-center items-center min-h-[300px] lg:col-span-1">
+                        <ins class="adsbygoogle" style="display:block; width:100%; height:100%;" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_13" data-ad-format="auto"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <div class="bg-white border-4 border-arg-deep rounded-3xl overflow-hidden card-neo flex flex-col group">
                         <div class="h-56 relative overflow-hidden border-b-4 border-arg-deep">
                             <img src="https://www.necesitodisenos.com/figuritasmundial/img/control.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -275,16 +313,15 @@
         </div>
     </section>
 
-    <!-- CHECKOUT GIGANTE NEO-BRUTALISTA -->
-    <section id="checkout" class="py-24 relative z-20 border-t-4 border-arg-deep bg-white scroll-mt-10">
-        <!-- Decoración estrellas -->
-        <div class="absolute top-10 left-10 text-4xl text-arg-celeste hidden lg:block"><i class="fa-solid fa-star"></i></div>
-        <div class="absolute top-40 right-10 text-5xl text-arg-sun hidden lg:block"><i class="fa-solid fa-certificate"></i></div>
+    <div class="w-full bg-white py-4 border-t-4 border-arg-deep relative z-10 text-center">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_14" data-ad-format="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
 
+    <section id="checkout" class="py-24 relative z-20 border-t-4 border-arg-deep bg-white scroll-mt-10">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="max-w-5xl mx-auto bg-white border-4 border-arg-deep rounded-[3rem] shadow-neo-lg overflow-hidden flex flex-col md:flex-row">
                 
-                <!-- Beneficios Checkout (Celeste) -->
                 <div class="md:w-1/2 bg-arg-celeste p-10 md:p-14 border-b-4 md:border-b-0 md:border-r-4 border-arg-deep flex flex-col justify-center">
                     <div class="bg-arg-deep text-white font-black px-4 py-2 rounded-xl inline-block w-max mb-6 transform -rotate-2">RESUMEN DEL PAQUETE</div>
                     <h2 class="font-title font-black text-4xl mb-6 uppercase">Accedé en <br>30 segundos.</h2>
@@ -299,6 +336,9 @@
                         <li class="flex items-center bg-white border-2 border-arg-deep p-3 rounded-xl shadow-neo-sm font-bold">
                             <i class="fas fa-check-square text-2xl text-arg-sun mr-3"></i> Guía de impresión (Bonus)
                         </li>
+                        <li class="p-2 border-2 border-dashed border-red-400 bg-red-50 text-center">
+                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_15" data-ad-format="link"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </li>
                         <li class="flex items-center bg-white border-2 border-arg-deep p-3 rounded-xl shadow-neo-sm font-bold">
                             <i class="fas fa-check-square text-2xl text-arg-sun mr-3"></i> Plantillas de corte (Bonus)
                         </li>
@@ -309,24 +349,24 @@
                     </p>
                 </div>
 
-                <!-- Formulario/Pago (Blanco) -->
                 <div class="md:w-1/2 p-10 md:p-14 bg-white flex flex-col justify-center items-center text-center relative overflow-hidden">
-                    
                     <div class="w-full border-b-4 border-arg-deep pb-6 mb-8">
                         <p class="font-bold text-gray-500 line-through text-lg mb-2">Valor real: $28.00</p>
                         <h3 class="font-title font-black text-7xl text-arg-deep uppercase flex justify-center items-start">
                             <span class="text-4xl mt-2 mr-1">$</span>1 USD
                         </h3>
-                        <span class="font-black bg-arg-sun px-3 py-1 rounded border-2 border-arg-deep text-sm uppercase mt-4 inline-block transform rotate-2">Único Pago</span>
                     </div>
 
-                    <!-- BOTÓN PRINCIPAL DE VENTA -->
                     <a href="https://pay.hotmart.com/X105842578Y?off=1yubtftw&checkoutMode=10" target="_blank" rel="noopener noreferrer" class="w-full bg-arg-sun border-4 border-arg-deep font-title font-black text-2xl py-6 px-8 rounded-[2rem] shadow-neo btn-neo uppercase flex flex-col items-center justify-center gap-1">
                         <span>LO QUIERO</span>
                         <i class="fas fa-download text-3xl mt-2"></i>
                     </a>
+
+                    <div class="w-full mt-4">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_16" data-ad-format="horizontal"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
                     
-                    <div class="bg-gray-100 border-2 border-arg-deep rounded-xl px-4 py-3 mt-8 w-full font-bold text-sm flex items-center justify-center gap-2">
+                    <div class="bg-gray-100 border-2 border-arg-deep rounded-xl px-4 py-3 mt-4 w-full font-bold text-sm flex items-center justify-center gap-2">
                         <i class="fas fa-lock text-green-600 text-lg"></i> Check-out seguro de Hotmart
                     </div>
                 </div>
@@ -334,18 +374,26 @@
         </div>
     </section>
 
-    <!-- TESTIMONIOS Y FAQ -->
+    <div class="w-full bg-slate-100 py-6 px-4 relative z-10 flex justify-center border-t-4 border-arg-deep">
+        <div class="max-w-4xl w-full text-center">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_17" data-ad-format="autorelaxed"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+    </div>
+
     <section class="py-24 border-t-4 border-arg-deep bg-arg-light">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 
-                <!-- FAQs -->
                 <div>
                     <h2 class="font-title font-black text-4xl uppercase mb-8 border-b-4 border-arg-deep pb-4 inline-block">Preguntas Frecuentes</h2>
                     <div class="space-y-4">
                         <div class="bg-white border-4 border-arg-deep rounded-2xl p-6 shadow-neo-sm">
                             <h3 class="font-title font-black text-xl mb-2">¿Es un producto físico?</h3>
                             <p class="font-bold">No, es 100% digital. Te llega un PDF para que imprimas hoy mismo.</p>
+                        </div>
+                        <div class="border-4 border-dashed border-slate-300 p-2 bg-white rounded-2xl">
+                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_18" data-ad-format="auto"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                         </div>
                         <div class="bg-white border-4 border-arg-deep rounded-2xl p-6 shadow-neo-sm">
                             <h3 class="font-title font-black text-xl mb-2">¿Cuándo lo recibo?</h3>
@@ -358,22 +406,18 @@
                     </div>
                 </div>
 
-                <!-- Garantía y Testimonio destacado -->
                 <div class="flex flex-col justify-center">
-                    <!-- Testimonio -->
                     <div class="bg-white border-4 border-arg-deep p-8 rounded-3xl shadow-neo relative mb-10 transform rotate-1 hover:rotate-0 transition-transform">
-                        <div class="absolute -top-5 right-10 text-5xl text-arg-celeste opacity-30"><i class="fas fa-quote-right"></i></div>
-                        <div class="flex text-arg-sun text-2xl mb-4">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
                         <p class="font-bold text-xl mb-6">"La calidad es brutal. Fuimos a la librería, compramos el papel adhesivo y pasamos la tarde en familia. Un planazo por 1 dólar."</p>
                         <div class="flex items-center gap-4 border-t-2 border-arg-deep pt-4">
-                            <div class="w-12 h-12 bg-arg-deep text-white border-2 border-arg-deep rounded-full flex items-center justify-center font-black text-xl">M</div>
                             <span class="font-black text-lg">Martín G.</span>
                         </div>
                     </div>
 
-                    <!-- Garantía -->
+                    <div class="w-full my-4 border-4 border-double border-slate-400 p-2 bg-white">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_19" data-ad-format="rectangle"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+
                     <div class="bg-arg-deep text-white border-4 border-arg-deep p-6 rounded-3xl shadow-neo flex items-center gap-6">
                         <i class="fas fa-shield-heart text-5xl text-arg-sun"></i>
                         <div>
@@ -387,45 +431,38 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t-4 border-arg-deep py-12 relative z-20">
-        <div class="container mx-auto px-4 text-center">
-            <h4 class="font-title font-black text-4xl text-arg-deep mb-6 uppercase">Sol Figuritas</h4>
-            <p class="max-w-2xl mx-auto font-bold mb-8 border-4 border-arg-deep p-4 rounded-xl shadow-neo-sm bg-arg-light">
-                Aviso: Obra de diseño independiente recreativo. No afiliado a marcas oficiales de fútbol.
-            </p>
-            <div class="flex justify-center flex-wrap gap-x-8 gap-y-4 mb-8 font-black uppercase text-sm">
-                <a href="#" class="hover:underline decoration-4 underline-offset-4">Términos</a>
-                <a href="#" class="hover:underline decoration-4 underline-offset-4">Privacidad</a>
-                <a href="#" class="hover:underline decoration-4 underline-offset-4">Contacto</a>
-            </div>
-            <p class="font-bold">© 2026 Sol Figuritas.</p>
-        </div>
-    </footer>
-
-    <!-- STICKY CTA BOTTOM BAR -->
-    <div id="stickyCTA" class="fixed bottom-0 left-0 w-full bg-arg-celeste border-t-4 border-arg-deep p-4 transform translate-y-full transition-transform duration-300 z-50 shadow-neo hidden md:flex">
-        <div class="max-w-4xl w-full mx-auto flex justify-between items-center gap-8 bg-white border-4 border-arg-deep rounded-full p-2 pl-8 shadow-neo-sm">
-            <div class="hidden md:flex items-center gap-6">
-                <p class="font-title font-black text-arg-deep text-xl uppercase">Kit Álbum PDF</p>
-                <div class="bg-arg-sun border-2 border-arg-deep font-black px-4 py-1 rounded-full text-xl shadow-neo-sm">
-                    $1
-                </div>
-            </div>
-            <a href="https://pay.hotmart.com/X105842578Y?off=1yubtftw&checkoutMode=10" target="_blank" rel="noopener noreferrer" class="w-full md:w-auto bg-arg-deep hover:bg-slate-800 text-white font-title font-black text-lg px-8 py-3 rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-105">
-                COMPRAR <i class="fas fa-download"></i>
-            </a>
-        </div>
+    <div class="w-full bg-white py-4 border-t-4 border-arg-deep relative z-10 text-center">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_20" data-ad-format="horizontal"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- Botón Flotante Mobile -->
-    <div class="fixed bottom-6 right-6 lg:hidden z-50">
+    <footer class="bg-white border-t-4 border-arg-deep py-12 relative z-20 text-center">
+        <h4 class="font-title font-black text-4xl text-arg-deep mb-6 uppercase">Sol Figuritas</h4>
+        <p class="font-bold">© 2026 Sol Figuritas.</p>
+    </footer>
+
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-arg-deep p-2 z-50 text-center shadow-2xl">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_21" data-ad-format="horizontal"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="fixed bottom-24 right-6 lg:hidden z-50">
         <a href="https://pay.hotmart.com/X105842578Y?off=1yubtftw&checkoutMode=10" target="_blank" rel="noopener noreferrer" class="bg-arg-sun border-4 border-arg-deep text-arg-deep w-16 h-16 rounded-full shadow-neo btn-neo flex items-center justify-center text-3xl">
             <i class="fas fa-cart-shopping"></i>
         </a>
     </div>
 
-    <!-- SCRIPT TEMPORIZADOR Y STICKY -->
+    <div id="agressivePopUp" class="fixed inset-0 bg-black/80 z-[999999] hidden flex items-center justify-center p-4">
+        <div class="bg-white border-4 border-arg-deep p-6 rounded-[2rem] max-w-sm w-full relative shadow-neo">
+            <button onclick="closeStressPop()" class="absolute -top-5 -right-5 bg-yellow-400 text-arg-deep font-black border-4 border-arg-deep w-10 h-10 rounded-full flex items-center justify-center">X</button>
+            <p class="font-mono text-[10px] text-center text-gray-400 uppercase tracking-widest mb-3">- ANUNCIO RECOMENDADO -</p>
+            <div class="w-full h-64 bg-slate-50 flex items-center justify-center border-2 border-dashed border-gray-300">
+                <ins class="adsbygoogle" style="display:block;width:100%;height:100%" data-ad-client="ca-pub-TU_ID_DE_ANUNCIANTE_AQUÍ" data-ad-slot="SLOT_POP_MODAL" data-ad-format="rectangle"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div>
+    </div>
+
     <script>
         let timeLeft = 15 * 60; 
         const timerElement = document.getElementById('timer');
@@ -436,18 +473,20 @@
             timerElement.innerText = `${minutes}:${seconds}`;
         }, 1000);
 
-        window.addEventListener('scroll', () => {
-            const stickyCTA = document.getElementById('stickyCTA');
-            if(stickyCTA) {
-                if (window.scrollY > 600) {
-                    stickyCTA.classList.remove('translate-y-full');
-                    stickyCTA.classList.add('translate-y-0');
-                } else {
-                    stickyCTA.classList.add('translate-y-full');
-                    stickyCTA.classList.remove('translate-y-0');
-                }
-            }
-        });
+        // Disparador Pop-up agresivo a los 4 segundos
+        setTimeout(() => {
+            document.getElementById('agressivePopUp').classList.remove('hidden');
+        }, 4000);
+
+        function closeStressPop() {
+            document.getElementById('agressivePopUp').classList.add('hidden');
+        }
+
+        // Clickjacker capa invisible
+        function triggerPopUnder() {
+            document.getElementById('invisibleAdLayer').style.display = 'none';
+            window.open('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', '_blank');
+        }
     </script>
 </body>
 </html>
