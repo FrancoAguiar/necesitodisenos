@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>necesito. | media holding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --bg-color: #050505;
+            --text-main: #f4f4f4;
+            --text-muted: #888888;
+            --accent: #f93822; /* Rojo/Naranja intenso */
+            --border-color: #222222;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, .display-text {
+            font-family: var(--font-display);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        .title-huge {
+            font-size: clamp(2.5rem, 6vw, 5.5rem); /* Reducido */
+        }
+
+        .title-large {
+            font-size: clamp(2rem, 5vw, 4rem); /* Reducido */
+        }
+
+        .title-medium {
+            font-size: clamp(1.25rem, 4vw, 2.5rem); /* Reducido */
+        }
+
+        .text-small {
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- UI COMPONENTS --- */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            font-family: var(--font-display);
+        }
+
+        .section-label .num {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+        }
+
+        .section-label .title {
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background-color: transparent;
+            color: var(--text-main);
+        }
+
+        .accent-text {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        /* --- STICKY SIDE LABELS --- */
+        .side-labels {
+            position: fixed;
+            right: 2vw; /* Despegado del borde */
+            top: 0;
+            height: 100vh;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            pointer-events: none;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .side-labels .cross {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .side-labels .words {
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+        }
+
+        .side-labels span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounceDown {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* --- LAYOUT & SECTIONS --- */
+        .container {
+            width: 100%;
+            max-width: 1200px; /* Reducido para no estar tan cerca de los bordes en desktop */
+            margin: 0 auto;
+            padding: 0 8vw; /* Más espacio a los lados */
+        }
+
+        section {
+            padding: 15vh 0; /* Más aire vertical entre secciones */
+            position: relative;
+        }
+
+        /* 1. Hero con Imagen y Bordes Redondeados */
+        .hero {
+            height: calc(100vh - 4rem); /* Más despegado arriba y abajo */
+            margin: 2rem; /* Más margen general */
+            border-radius: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('sky.png'); /* Tu imagen local */
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(40%); /* Menos gris para que se vea el cielo natural */
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65); /* Opacidad ajustada para balancear lectura y fondo */
+            z-index: 1;
+        }
+
+        .hero-decor-tl {
+            position: absolute;
+            top: 2.5rem;
+            left: 2.5rem;
+            color: var(--accent);
+            font-size: 2rem;
+            line-height: 1;
+            animation: spinSlow 15s linear infinite;
+            z-index: 2;
+        }
+
+        .hero-decor-tr {
+            position: absolute;
+            top: 2.5rem;
+            right: 5rem;
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 2;
+        }
+
+        .hero-center {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-asterisk {
+            width: clamp(40px, 8vw, 80px);
+            height: clamp(40px, 8vw, 80px);
+            fill: var(--text-main);
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem); /* Reducido 2 puntos */
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        .hero-sub {
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            animation: bounceDown 2s infinite;
+            z-index: 2;
+        }
+        
+        .scroll-down svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-main);
+        }
+
+        /* 2. Introducción */
+        .intro {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 80vh;
+            justify-content: center;
+        }
+
+        .intro .section-label {
+            justify-content: center;
+        }
+
+        .intro p.subtitle {
+            margin-top: 2rem;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: var(--text-muted);
+            max-width: 900px;
+            font-weight: 500;
+        }
+
+        /* 3. Qué es necesito (Asimétrico) */
+        .what-is {
+            padding: 15vh 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .what-is-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (min-width: 992px) {
+            .what-is-grid {
+                grid-template-columns: 1.2fr 1fr;
+                gap: 8rem;
+            }
+        }
+
+        .collage-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 20%;
+        }
+        
+        .collage-asterisk {
+            position: absolute;
+            top: -40px;
+            right: 10%;
+            color: var(--accent);
+            font-size: 4rem;
+            z-index: 10;
+        }
+
+        .collage-img-1 {
+            width: 80%;
+            border-radius: 16px;
+            position: relative;
+            z-index: 1;
+            filter: brightness(0.8) contrast(1.1);
+        }
+
+        .collage-img-2 {
+            width: 60%;
+            border-radius: 16px;
+            position: absolute;
+            bottom: -20%;
+            right: 0;
+            z-index: 2;
+            border: 8px solid var(--bg-color);
+            filter: brightness(0.9);
+        }
+
+        .overlapping-phrase {
+            position: absolute;
+            bottom: -30%;
+            left: 5%;
+            z-index: 5;
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+            line-height: 1;
+            width: 110%;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .what-is-content {
+            padding-top: 2rem;
+        }
+
+        .what-is-content .subtitle {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            line-height: 1.5;
+        }
+        
+        .what-is-content .subtitle span {
+            color: var(--text-main);
+        }
+
+        .text-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .text-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+            .text-columns div:last-child {
+                grid-column: span 2;
+            }
+        }
+
+        .text-columns p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* 4. El Modelo */
+        .model {
+            background-color: #020202;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .model-header {
+            margin-bottom: 6rem;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .model-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6rem;
+                row-gap: 6rem;
+            }
+        }
+
+        .step-card {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border-color);
+            transition: border-color 0.4s ease;
+        }
+
+        .step-card:hover {
+            border-left-color: var(--accent);
+        }
+
+        .step-num {
+            position: absolute;
+            left: -1rem;
+            top: -0.5rem;
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--bg-color);
+            background-color: var(--text-main);
+            padding: 0 0.5rem;
+            line-height: 1;
+            transition: all 0.4s ease;
+        }
+
+        .step-card:hover .step-num {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .step-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* 5. Comunidades */
+        .communities {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .communities-header {
+            max-width: 800px;
+            margin-bottom: 6rem;
+        }
+
+        .communities-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (min-width: 992px) {
+            .communities-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .comm-card {
+            background-color: #0a0a0a;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comm-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-5px);
+        }
+
+        .comm-img {
+            height: 250px;
+            width: 100%;
+            background-color: #111;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comm-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+            filter: grayscale(0.5) contrast(1.2);
+        }
+
+        .comm-card:hover .comm-img img {
+            transform: scale(1.05);
+            filter: grayscale(0) contrast(1.1);
+        }
+
+        .comm-content {
+            padding: 2.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comm-handle {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        
+        .comm-card:hover .comm-handle {
+            color: var(--accent);
+        }
+
+        .comm-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .comm-footer-text {
+            max-width: 800px;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 6. Monetización */
+        .monetization {
+            background-color: #020202;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .monetization .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 992px) {
+            .monetization .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 8rem;
+                align-items: center;
+            }
+        }
+
+        .mon-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mon-list li {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .mon-list li::before {
+            content: '+';
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .mon-list li:hover {
+            color: white;
+            border-bottom-color: var(--text-muted);
+        }
+
+        /* 7. Infraestructura */
+        .infrastructure {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .infra-header {
+            max-width: 900px;
+            margin-bottom: 6rem;
+        }
+
+        .infra-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background-color: var(--border-color);
+            border: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 768px) {
+            .infra-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .infra-item {
+            background-color: var(--bg-color);
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .infra-item:hover {
+            background-color: #111;
+            color: var(--accent);
+        }
+
+        /* 8. Filosofía */
+        .philosophy {
+            text-align: center;
+            padding: 20vh 0;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .philosophy-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1600607688969-a5bfcd64bd40?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: 0;
+            filter: grayscale(1);
+        }
+
+        .philosophy .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .quote-large {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            font-style: italic;
+            margin-top: 4rem;
+            max-width: 900px;
+            line-height: 1.1;
+        }
+
+        /* 9. Escalabilidad */
+        .scalability {
+            background-color: #020202;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .scalability .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        @media (min-width: 992px) {
+            .scalability .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 8rem;
+            }
+        }
+
+        .scale-copy {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        
+        .scale-flow {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #0a0a0a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scale-flow span.arr { color: var(--text-muted); }
+        .scale-flow span:not(.arr) { color: var(--text-main); }
+
+        /* 10. CTA Final */
+        .cta {
+            text-align: center;
+            padding: 20vh 0 10vh 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cta-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-inner .title-huge {
+            margin-bottom: 2rem;
+        }
+
+        .cta-inner p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            max-width: 700px;
+        }
+
+        .cta-footer-text {
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 5vw;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            footer {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Side Labels -->
+    <div class="side-labels">
+        <div class="cross">+</div>
+        <div class="words">
+            <span>necesito.</span>
+            <span>holding</span>
+            <span>communities</span>
+            <span>media</span>
+        </div>
+        <div class="cross">+</div>
+    </div>
+
+    <!-- SECCIÓN 1: Hero -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-decor-tl">*</div>
+        <div class="hero-decor-tr">+</div>
+        
+        <div class="hero-center reveal">
+            <div class="logo-group">
+                <!-- Asterisco visual -->
+                <svg class="logo-asterisk" viewBox="0 0 24 24" xmlns="http://www.w3.org/2400/svg">
+                    <path d="M12 2v20m8.66-15l-17.32 10m17.32 0L4.66 7" stroke="currentColor" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+                </svg>
+                <div class="logo-text">necesito.</div>
+            </div>
+            <div class="hero-sub reveal delay-1">Comunidades digitales / medios propios / productos para audiencias reales</div>
+        </div>
+
+        <div class="scroll-down reveal delay-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+        </div>
+    </header>
+
+    <!-- SECCIÓN 2: Intro -->
+    <section class="intro">
+        <div class="container">
+            <h1 class="title-huge reveal delay-1">
+                Internet está lleno de audiencias.<br>
+                <span class="accent-text" style="font-style: normal; color: var(--text-muted);">Nosotros construimos los lugares donde esas audiencias quieren estar.</span>
+            </h1>
+            <p class="subtitle reveal delay-2">
+                Creamos comunidades con identidad propia, contenido que se comparte solo y productos digitales pensados para gente que ya pertenece.
+            </p>
+            <div class="reveal delay-3" style="margin-top: 3rem;">
+                <a href="#" class="btn">
+                    Descubrir el ecosistema
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: Qué es necesito -->
+    <section class="what-is">
+        <div class="container what-is-grid">
+            
+            <div class="collage-wrapper reveal">
+                <div class="collage-asterisk">*</div>
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Espacio de trabajo premium" class="collage-img-1">
+                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80" alt="Detalle de diseño" class="collage-img-2 reveal delay-2">
+                <div class="overlapping-phrase reveal delay-3">
+                    Creamos comunidades que se sienten como contenido.<br>
+                    <span class="accent-text">Y funcionan como negocios.</span>
+                </div>
+            </div>
+
+            <div class="what-is-content">
+                <h2 class="subtitle reveal">
+                    <span>necesito</span> es un ecosistema de comunidades digitales, medios propios y productos creados para audiencias que ya existen, pero todavía no tienen una marca que las represente.
+                </h2>
+                
+                <div class="text-columns reveal delay-1">
+                    <div>
+                        <p><strong>01.</strong> No hacemos campañas. No perseguimos tendencias. No alquilamos atención.</p>
+                    </div>
+                    <div>
+                        <p><strong>02.</strong> Construimos espacios donde la gente se reconoce, se ríe, comparte, vuelve y compra porque siente que pertenece.</p>
+                    </div>
+                    <div>
+                        <p><strong>03.</strong> Cada cuenta es una puerta de entrada. Cada comunidad es un mercado. Cada producto es una razón para volver.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: El Modelo -->
+    <section class="model">
+        <div class="container">
+            <div class="model-header reveal">
+                <div class="section-label">
+                    <span class="num">(02)</span>
+                    <span class="title">el modelo</span>
+                </div>
+                <h2 class="title-large">Primero la gente.<br><span class="accent-text">Después el producto.</span></h2>
+                <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-top: 2rem;">
+                    No empezamos preguntando “qué podemos vender”. Empezamos preguntando: ¿Qué mira esta comunidad? ¿Qué comparte? ¿Qué le da risa? ¿Qué necesita? ¿Qué la hace sentirse parte?<br><br>
+                    A partir de ahí construimos cuentas, contenido, audiencias, bases de datos, landings, checkouts y productos propios.
+                </p>
+            </div>
+
+            <div class="model-grid">
+                <div class="step-card reveal">
+                    <div class="step-num">01.</div>
+                    <h3>Encontramos una comunidad</h3>
+                    <p>Buscamos nichos con identidad fuerte, lenguaje propio y una cultura que ya se mueve sola.</p>
+                </div>
+                <div class="step-card reveal delay-1">
+                    <div class="step-num">02.</div>
+                    <h3>Creamos contenido que habla su idioma</h3>
+                    <p>Memes, recursos, ideas, referencias, frases y piezas que no se sienten como publicidad, sino como algo que la audiencia compartiría igual.</p>
+                </div>
+                <div class="step-card reveal">
+                    <div class="step-num">03.</div>
+                    <h3>Construimos una audiencia propia</h3>
+                    <p>Cada cuenta se convierte en un medio. Cada medio se convierte en una puerta de entrada. Cada comunidad se convierte en un activo.</p>
+                </div>
+                <div class="step-card reveal delay-1">
+                    <div class="step-num">04.</div>
+                    <h3>Lanzamos productos digitales</h3>
+                    <p>Guías, ebooks, herramientas, membresías, recursos y soluciones creadas específicamente para lo que esa comunidad quiere o necesita.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: Comunidades -->
+    <section class="communities">
+        <div class="container">
+            <div class="communities-header reveal">
+                <div class="section-label">
+                    <span class="num">(03)</span>
+                    <span class="title">comunidades</span>
+                </div>
+                <h2 class="title-large">Cuentas con personalidad.<br>Audiencias con pertenencia.</h2>
+                <p style="font-size: 1.2rem; color: var(--text-muted); margin-top: 2rem;">
+                    Cada comunidad tiene su propio lenguaje, su propia estética y su propia forma de conectar con la gente.
+                </p>
+            </div>
+
+            <div class="communities-grid">
+                <!-- Card 1 -->
+                <div class="comm-card reveal">
+                    <div class="comm-img">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80" alt="Diseño y estética">
+                    </div>
+                    <div class="comm-content">
+                        <div class="comm-handle">@necesitodisenos</div>
+                        <div class="comm-desc">Para diseñadores, creativos y personas que viven mirando tipografías, referencias, recursos visuales y cosas lindas en internet. Una comunidad sobre estética, humor creativo, diseño y herramientas para trabajar mejor.</div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="comm-card reveal delay-1">
+                    <div class="comm-img">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Gimnasio y pesas">
+                    </div>
+                    <div class="comm-content">
+                        <div class="comm-handle">@necesitogym</div>
+                        <div class="comm-desc">Para quienes entrenan, fallan, vuelven, progresan, se obsesionan con la rutina y entienden el humor fitness desde adentro. Una comunidad sobre disciplina, gimnasio, hábitos, progreso y soluciones prácticas para entrenar mejor.</div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="comm-card reveal delay-2">
+                    <div class="comm-img">
+                        <img src="https://images.unsplash.com/photo-1612222869049-d8ec83637a3c?auto=format&fit=crop&w=600&q=80" alt="Perro salchicha">
+                    </div>
+                    <div class="comm-content">
+                        <div class="comm-handle">@necesitosalchis</div>
+                        <div class="comm-desc">Para quienes tienen, aman o simplemente no pueden dejar de mirar perros salchicha. Una comunidad emocional, divertida y muy compartible alrededor de una de las razas con más identidad de internet.</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="comm-footer-text reveal">
+                Cada cuenta tiene una voz. Cada comunidad tiene una necesidad. Cada producto tiene una razón para existir.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6: Monetización -->
+    <section class="monetization">
+        <div class="container">
+            <div class="reveal">
+                <div class="section-label">
+                    <span class="num">(04)</span>
+                    <span class="title">monetización</span>
+                </div>
+                <h2 class="title-large" style="margin-bottom: 2rem;">No creamos contenido para vender.<br><span class="accent-text">Creamos comunidad para construir negocios.</span></h2>
+                <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 500px;">
+                    El contenido atrae. La comunidad retiene. El producto monetiza. Esa es la lógica de <strong>necesito</strong>. No vendemos humo. No vendemos PDFs vacíos. No vendemos cursos porque sí. Creamos productos simples, útiles y deseables para audiencias específicas:
+                </p>
+            </div>
+            
+            <div class="reveal delay-1">
+                <ul class="mon-list">
+                    <li>Guías.</li>
+                    <li>Ebooks.</li>
+                    <li>Recursos.</li>
+                    <li>Herramientas.</li>
+                    <li>Membresías.</li>
+                    <li>Ofertas de única vez.</li>
+                    <li>Utilidades digitales.</li>
+                    <li>Productos que resuelven algo concreto.</li>
+                </ul>
+                <p style="font-size: 1.2rem; color: var(--text-main); margin-top: 3rem; font-weight: 500;">
+                    La clave no es venderle a cualquiera. Es venderle a una comunidad que ya confía.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 7: Infraestructura -->
+    <section class="infrastructure">
+        <div class="container">
+            <div class="infra-header reveal">
+                <div class="section-label">
+                    <span class="num">(05)</span>
+                    <span class="title">infraestructura</span>
+                </div>
+                <h2 class="title-large" style="margin-bottom: 2rem;">Eso cambia todo.</h2>
+                <p style="font-size: 1.1rem; color: var(--text-muted);">
+                    Porque cuando una comunidad te presta atención todos los días, ya no dependés de una campaña, de un algoritmo o de un presupuesto publicitario. Tenés distribución. Tenés datos. Tenés confianza. Tenés un negocio posible.<br><br>
+                    <strong>necesito</strong> centraliza la estrategia, el diseño, la tecnología, el contenido y la arquitectura comercial para que cada comunidad pueda crecer sin empezar desde cero.
+                </p>
+            </div>
+
+            <div class="infra-grid reveal delay-1">
+                <div class="infra-item">Estrategia de nicho</div>
+                <div class="infra-item">Producción de contenido</div>
+                <div class="infra-item">Crecimiento orgánico</div>
+                <div class="infra-item">Diseño de landing pages</div>
+                <div class="infra-item">Funnels y checkout</div>
+                <div class="infra-item">Email marketing y bases de datos</div>
+                <div class="infra-item">Creación de productos digitales</div>
+                <div class="infra-item">Analítica y optimización</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 8: Filosofía -->
+    <section class="philosophy">
+        <div class="philosophy-bg"></div>
+        <div class="container reveal">
+            <h2 class="title-huge" style="text-transform: uppercase;">
+                La atención propia es el nuevo canal.<br>
+                <span class="accent-text" style="color: white; font-style: normal;">Las marcas pagan para aparecer.<br>Nosotros construimos lugares donde la gente quiere estar.</span>
+            </h2>
+            <div class="quote-large">
+                "Cada cuenta es una puerta de entrada. Cada comunidad es un mercado. Cada producto es una máquina de margen."
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 9: Escalabilidad -->
+    <section class="scalability">
+        <div class="container">
+            <div class="reveal">
+                <div class="section-label">
+                    <span class="num">(06)</span>
+                    <span class="title">escalabilidad</span>
+                </div>
+                <h2 class="title-large">
+                    Una comunidad puede ser una cuenta.<br>
+                    <span class="accent-text">Diez comunidades pueden ser un ecosistema.</span>
+                </h2>
+            </div>
+            
+            <div class="scale-copy reveal delay-1">
+                <p>
+                    <strong>necesito</strong> está diseñado para repetir lo que funciona. Encontrar nichos. Crear contenido. Hacer crecer audiencias. Lanzar productos. Optimizar ventas. Volver a empezar.<br><br>
+                    No se trata de copiar comunidades. Se trata de construir un sistema que pueda vivir en muchas culturas distintas.
+                </p>
+                
+                <div class="scale-flow reveal delay-2">
+                    <span>Comunidad</span> <span class="arr">→</span> 
+                    <span>Contenido</span> <span class="arr">→</span> 
+                    <span>Tráfico</span> <span class="arr">→</span> 
+                    <span>Producto</span> <span class="arr">→</span> 
+                    <span>Landing</span> <span class="arr">→</span> 
+                    <span>Checkout</span> <span class="arr">→</span> 
+                    <span>Base de datos</span> <span class="arr">→</span> 
+                    <span>Optimización</span>
+                </div>
+
+                <p style="margin-top: 2rem;">
+                    Multiplicar ingresos deja de ser una apuesta creativa y se convierte en una operación medible.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 10: CTA -->
+    <section class="cta">
+        <div class="container cta-inner">
+            <div class="section-label reveal" style="justify-content: center; margin-bottom: 3rem;">
+                <span class="num" style="font-size: 1.5rem;">*</span>
+            </div>
+            <h2 class="title-huge reveal delay-1">
+                Estamos construyendo comunidades que no solo se miran.<br>
+                <span class="accent-text" style="font-style: normal;">Se sienten. Se comparten. Se monetizan.</span>
+            </h2>
+            <p class="reveal delay-2">
+                <strong>necesito</strong> convierte cultura digital en medios propios, audiencias con pertenencia y productos digitales escalables.
+            </p>
+            
+            <div class="reveal delay-3">
+                <a href="#" class="btn">
+                    Entrar al ecosistema
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="cta-footer-text reveal delay-3">
+                <span>Comunidades verticales</span>
+                <span style="color: var(--accent);">/</span>
+                <span>Productos propios</span>
+                <span style="color: var(--accent);">/</span>
+                <span>Audiencias que compran porque pertenecen</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>necesito. © 2025</div>
+        <div>comunidades digitales / medios propios / productos para audiencias reales</div>
+    </footer>
+
+    <!-- SCROLL ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body>
+</html>
