@@ -4,17 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>necesito. | media holding</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@800&display=swap" rel="stylesheet">
     
+    <!-- GSAP & Lenis CDN (Para Smooth Scroll y Animaciones Premium) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <style>
         /* --- VARIABLES & RESET --- */
         :root {
             --bg-color: #050505;
             --text-main: #f4f4f4;
             --text-muted: #888888;
-            --accent: #f93822; /* Rojo/Naranja intenso */
+            --accent: #f93822;
             --border-color: #222222;
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
             --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
@@ -24,6 +31,48 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Ocultar el cursor por defecto para usar el custom */
+            cursor: none !important;
+        }
+
+        /* Lenis Smooth Scroll Fixes */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* --- TEXTURA DE RUIDO LIGERA --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.35; /* Incrementado para que el ruido se note más */
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAP////8AAAAAAAAAAAAAAAAAAAB7o4RCAAAABnRSTlMAAAAAAABupwuOAAAASFJREFUOMtjYMAOGBFEzIEBwgApMGAQxMoxMGAUQ4mBiVEMIwbBiF4MDBg5qHwGEQxM9mEYwTCKwWGYwDCAwQHGx2EwzIAhAACf+xsLG9Q7HQAAAABJRU5ErkJggg==");
+            background-repeat: repeat;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px; height: 12px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            will-change: width, height, background-color, transform;
+            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+        }
+
+        .custom-cursor.hovered {
+            width: 60px;
+            height: 60px;
+            background-color: var(--text-main);
         }
 
         body {
@@ -46,26 +95,26 @@
         h1, h2, h3, .display-text {
             font-family: var(--font-display);
             font-weight: 800;
-            line-height: 0.95;
-            letter-spacing: -0.04em;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
         }
 
-        .title-huge {
-            font-size: clamp(2.5rem, 6vw, 5.5rem); /* Reducido */
-        }
-
-        .title-large {
-            font-size: clamp(2rem, 5vw, 4rem); /* Reducido */
-        }
-
-        .title-medium {
-            font-size: clamp(1.25rem, 4vw, 2.5rem); /* Reducido */
-        }
+        .title-huge { font-size: clamp(3rem, 6vw, 5.5rem); }
+        .title-large { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+        .title-medium { font-size: clamp(1.5rem, 3.5vw, 3rem); }
 
         .text-small {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 500;
             letter-spacing: 0.05em;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            color: var(--text-muted);
+            max-width: 800px;
+            font-weight: 500;
+            line-height: 1.6;
         }
 
         /* --- UI COMPONENTS --- */
@@ -73,7 +122,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             font-family: var(--font-display);
         }
 
@@ -87,6 +136,13 @@
         .section-label .title {
             font-size: 1.1rem;
             color: var(--text-main);
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-wrapper {
+            display: inline-block;
+            padding: 20px;
         }
 
         .btn {
@@ -101,29 +157,16 @@
             font-weight: 800;
             font-size: 1.1rem;
             border-radius: 100px;
-            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            cursor: pointer;
             border: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
-
+        
         .btn:hover {
+            transform: scale(1.03);
             background-color: var(--accent);
             color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--text-main);
-            background-color: transparent;
-            color: var(--text-main);
         }
 
         .accent-text {
@@ -134,7 +177,7 @@
         /* --- STICKY SIDE LABELS --- */
         .side-labels {
             position: fixed;
-            right: 2vw; /* Despegado del borde */
+            right: 2vw; 
             top: 0;
             height: 100vh;
             width: 80px;
@@ -142,7 +185,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 2.5rem 0;
+            padding: 3rem 0;
             pointer-events: none;
             z-index: 100;
             mix-blend-mode: difference;
@@ -150,7 +193,7 @@
 
         .side-labels .cross {
             color: var(--accent);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 400;
             line-height: 1;
         }
@@ -166,26 +209,10 @@
             transform: rotate(180deg);
             font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.4);
         }
-
-        /* --- ANIMATIONS --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
 
         @keyframes spinSlow {
             from { transform: rotate(0deg); }
@@ -201,21 +228,24 @@
         /* --- LAYOUT & SECTIONS --- */
         .container {
             width: 100%;
-            max-width: 1200px; /* Reducido para no estar tan cerca de los bordes en desktop */
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 0 8vw; /* Más espacio a los lados */
+            padding: 0 5vw;
         }
 
         section {
-            padding: 15vh 0; /* Más aire vertical entre secciones */
+            padding: 22vh 0;
             position: relative;
         }
 
-        /* 1. Hero con Imagen y Bordes Redondeados */
+        /* Prevents Flash of Unstyled Content, let GSAP control it */
+        .gsap-fade-up { opacity: 0; }
+        
+        /* 1. Hero con Imagen, Parallax y Bordes Redondeados */
         .hero {
-            height: calc(100vh - 4rem); /* Más despegado arriba y abajo */
-            margin: 2rem; /* Más margen general */
-            border-radius: 2.5rem;
+            height: calc(100vh - 2rem); 
+            margin: 1rem; 
+            border-radius: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -225,17 +255,23 @@
             overflow: hidden;
         }
 
-        .hero-bg {
+        .hero-bg-wrapper {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: -15%;
+            left: -5%;
+            width: 110%;
+            height: 130%; 
+            z-index: 0;
+        }
+
+        .hero-bg {
             width: 100%;
             height: 100%;
-            background-image: url('/necesito/sky.png'); /* Tu imagen local */
+            background-image: url('sky.png'); 
             background-size: cover;
             background-position: center;
-            filter: grayscale(40%); /* Menos gris para que se vea el cielo natural */
-            z-index: 0;
+            filter: grayscale(20%) brightness(0.8); 
+            will-change: transform;
         }
 
         .hero-overlay {
@@ -244,25 +280,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.65); /* Opacidad ajustada para balancear lectura y fondo */
+            background-color: rgba(0, 0, 0, 0.65); 
             z-index: 1;
         }
 
         .hero-decor-tl {
             position: absolute;
-            top: 2.5rem;
-            left: 2.5rem;
+            top: 3rem;
+            left: 4rem;
             color: var(--accent);
             font-size: 2rem;
             line-height: 1;
-            animation: spinSlow 15s linear infinite;
+            animation: spinSlow 20s linear infinite;
             z-index: 2;
         }
 
         .hero-decor-tr {
             position: absolute;
-            top: 2.5rem;
-            right: 5rem;
+            top: 3.5rem;
+            right: 6rem;
             color: var(--accent);
             font-size: 1.5rem;
             line-height: 1;
@@ -274,7 +310,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
             z-index: 2;
         }
 
@@ -285,23 +321,24 @@
         }
 
         .logo-asterisk {
-            width: clamp(40px, 8vw, 80px);
-            height: clamp(40px, 8vw, 80px);
+            width: clamp(45px, 8vw, 85px);
+            height: clamp(45px, 8vw, 85px);
             fill: var(--text-main);
         }
 
         .logo-text {
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 4.5rem); /* Reducido 2 puntos */
+            font-size: clamp(3rem, 7vw, 5.5rem); 
             font-weight: 800;
             letter-spacing: -0.05em;
         }
 
         .hero-sub {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 0.15em;
             color: var(--text-muted);
             text-transform: uppercase;
+            line-height: 1.8;
         }
 
         .scroll-down {
@@ -312,9 +349,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 50%;
             animation: bounceDown 2s infinite;
             z-index: 2;
@@ -340,17 +377,19 @@
             justify-content: center;
         }
 
-        .intro p.subtitle {
-            margin-top: 2rem;
-            font-size: clamp(1.2rem, 3vw, 1.6rem);
-            color: var(--text-muted);
-            max-width: 900px;
-            font-weight: 500;
+        /* Text Blur Reveal Trick */
+        .reveal-mask {
+            display: inline-block;
+            vertical-align: top;
+        }
+        
+        .reveal-mask span {
+            display: inline-block;
+            will-change: transform, filter, opacity;
         }
 
-        /* 3. Qué es necesito (Asimétrico) */
+        /* 3. Qué es necesito */
         .what-is {
-            padding: 15vh 0;
             border-top: 1px solid var(--border-color);
         }
 
@@ -364,28 +403,40 @@
         @media (min-width: 992px) {
             .what-is-grid {
                 grid-template-columns: 1.2fr 1fr;
-                gap: 8rem;
+                gap: 6rem;
             }
         }
 
         .collage-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 20%;
+            padding-bottom: 10%;
         }
         
         .collage-asterisk {
             position: absolute;
             top: -40px;
-            right: 10%;
+            right: 15%;
             color: var(--accent);
             font-size: 4rem;
             z-index: 10;
         }
 
+        .gsap-img-reveal {
+            overflow: hidden;
+            border-radius: 20px;
+            will-change: clip-path;
+        }
+        
+        .gsap-img-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            will-change: transform;
+        }
+
         .collage-img-1 {
             width: 80%;
-            border-radius: 16px;
             position: relative;
             z-index: 1;
             filter: brightness(0.8) contrast(1.1);
@@ -393,9 +444,8 @@
 
         .collage-img-2 {
             width: 60%;
-            border-radius: 16px;
             position: absolute;
-            bottom: -20%;
+            bottom: -15%;
             right: 0;
             z-index: 2;
             border: 8px solid var(--bg-color);
@@ -404,12 +454,12 @@
 
         .overlapping-phrase {
             position: absolute;
-            bottom: -30%;
+            bottom: -25%;
             left: 5%;
             z-index: 5;
             font-family: var(--font-display);
-            font-size: clamp(1.8rem, 4.5vw, 3.5rem);
-            line-height: 1;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.1;
             width: 110%;
             text-shadow: 0 4px 20px rgba(0,0,0,0.8);
         }
@@ -418,21 +468,10 @@
             padding-top: 2rem;
         }
 
-        .what-is-content .subtitle {
-            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-            color: var(--text-muted);
-            margin-bottom: 4rem;
-            line-height: 1.5;
-        }
-        
-        .what-is-content .subtitle span {
-            color: var(--text-main);
-        }
-
         .text-columns {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         @media (min-width: 768px) {
@@ -447,7 +486,7 @@
         .text-columns p {
             font-size: 1rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         /* 4. El Modelo */
@@ -470,13 +509,13 @@
             .model-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 6rem;
-                row-gap: 6rem;
+                row-gap: 8rem;
             }
         }
 
         .step-card {
             position: relative;
-            padding-left: 2rem;
+            padding-left: 2.5rem;
             border-left: 1px solid var(--border-color);
             transition: border-color 0.4s ease;
         }
@@ -487,21 +526,22 @@
 
         .step-num {
             position: absolute;
-            left: -1rem;
-            top: -0.5rem;
+            left: -1.2rem;
+            top: -0.8rem;
             font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 800;
             color: var(--bg-color);
             background-color: var(--text-main);
-            padding: 0 0.5rem;
-            line-height: 1;
-            transition: all 0.4s ease;
+            padding: 0 0.8rem;
+            line-height: 1.1;
+            transition: all 0.3s ease;
         }
 
         .step-card:hover .step-num {
             background-color: var(--accent);
             color: white;
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .step-card h3 {
@@ -512,6 +552,7 @@
         .step-card p {
             color: var(--text-muted);
             font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         /* 5. Comunidades */
@@ -527,8 +568,8 @@
         .communities-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 4rem;
+            gap: 3rem;
+            margin-bottom: 5rem;
         }
 
         @media (min-width: 992px) {
@@ -540,16 +581,20 @@
         .comm-card {
             background-color: #0a0a0a;
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+        }
+
+        .hover-target {
+            cursor: none;
         }
 
         .comm-card:hover {
-            border-color: var(--text-muted);
-            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-8px);
         }
 
         .comm-img {
@@ -564,13 +609,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s ease;
-            filter: grayscale(0.5) contrast(1.2);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+            filter: grayscale(0.8) contrast(1.1);
         }
 
         .comm-card:hover .comm-img img {
-            transform: scale(1.05);
-            filter: grayscale(0) contrast(1.1);
+            transform: scale(1.1);
+            filter: grayscale(0) contrast(1.05);
         }
 
         .comm-content {
@@ -585,6 +630,7 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--text-main);
+            transition: color 0.3s ease;
         }
         
         .comm-card:hover .comm-handle {
@@ -593,7 +639,7 @@
 
         .comm-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1rem;
             line-height: 1.6;
         }
 
@@ -638,8 +684,8 @@
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            transition: color 0.3s ease;
+            gap: 1.2rem;
+            transition: color 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .mon-list li::before {
@@ -653,6 +699,7 @@
         .mon-list li:hover {
             color: white;
             border-bottom-color: var(--text-muted);
+            transform: translateX(8px);
         }
 
         /* 7. Infraestructura */
@@ -661,7 +708,7 @@
         }
 
         .infra-header {
-            max-width: 900px;
+            max-width: 800px;
             margin-bottom: 6rem;
         }
 
@@ -681,14 +728,14 @@
 
         .infra-item {
             background-color: var(--bg-color);
-            padding: 3rem 2rem;
+            padding: 3.5rem 2rem;
             text-align: center;
             font-size: 0.95rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .infra-item:hover {
@@ -696,10 +743,10 @@
             color: var(--accent);
         }
 
-        /* 8. Filosofía */
+        /* 8. Filosofía (Scale en Parallax) */
         .philosophy {
             text-align: center;
-            padding: 20vh 0;
+            padding: 30vh 0;
             border-top: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
@@ -707,11 +754,10 @@
         
         .philosophy-bg {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100vw;
-            height: 100%;
+            top: -20%;
+            left: -10%;
+            width: 120%;
+            height: 140%;
             background-image: url('https://images.unsplash.com/photo-1600607688969-a5bfcd64bd40?auto=format&fit=crop&w=2000&q=80');
             background-size: cover;
             background-position: center;
@@ -729,12 +775,12 @@
         }
 
         .quote-large {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
             font-weight: 800;
             font-style: italic;
             margin-top: 4rem;
-            max-width: 900px;
-            line-height: 1.1;
+            max-width: 1000px;
+            line-height: 1.15;
         }
 
         /* 9. Escalabilidad */
@@ -755,39 +801,39 @@
                 gap: 8rem;
             }
         }
-
-        .scale-copy {
-            font-size: clamp(1.1rem, 2vw, 1.3rem);
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
         
         .scale-flow {
-            margin-top: 3rem;
-            padding: 2rem;
+            margin-top: 4rem;
+            padding: 2.5rem;
             background: #0a0a0a;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 16px;
             font-family: var(--font-display);
             font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--accent);
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 1.2rem;
             align-items: center;
             justify-content: center;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .scale-flow:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
         }
         
         .scale-flow span.arr { color: var(--text-muted); }
         .scale-flow span:not(.arr) { color: var(--text-main); }
 
-        /* 10. CTA Final */
+        /* 10. CTA Final & Marquee */
         .cta {
             text-align: center;
-            padding: 20vh 0 10vh 0;
+            padding: 25vh 0 10vh 0;
             border-top: 1px solid var(--border-color);
+            overflow: hidden;
         }
 
         .cta-inner {
@@ -803,32 +849,58 @@
         }
 
         .cta-inner p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
             margin-bottom: 4rem;
-            max-width: 700px;
         }
 
-        .cta-footer-text {
-            margin-top: 4rem;
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
+        /* CSS Marquee */
+        .marquee-wrapper {
+            margin-top: 8rem;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            overflow: hidden;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            background-color: var(--bg-color);
+        }
+
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-content span {
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-muted);
+            padding: 0 3rem;
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
+            gap: 5rem;
+        }
+        
+        .marquee-content span i {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         /* Footer */
         footer {
-            padding: 2rem 5vw;
-            border-top: 1px solid var(--border-color);
+            padding: 3rem 5vw;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -846,8 +918,11 @@
 </head>
 <body>
 
+    <!-- CUSTOM CURSOR -->
+    <div class="custom-cursor"></div>
+
     <!-- Sticky Side Labels -->
-    <div class="side-labels">
+    <div class="side-labels gsap-fade-up">
         <div class="cross">+</div>
         <div class="words">
             <span>necesito.</span>
@@ -860,24 +935,30 @@
 
     <!-- SECCIÓN 1: Hero -->
     <header class="hero">
-        <div class="hero-bg"></div>
+        <div class="hero-bg-wrapper">
+            <div class="hero-bg"></div>
+        </div>
         <div class="hero-overlay"></div>
         
-        <div class="hero-decor-tl">*</div>
-        <div class="hero-decor-tr">+</div>
+        <div class="hero-decor-tl gsap-fade-up">*</div>
+        <div class="hero-decor-tr gsap-fade-up">+</div>
         
-        <div class="hero-center reveal">
-            <div class="logo-group">
-                <!-- Asterisco visual -->
+        <div class="hero-center gsap-fade-up">
+            <div class="logo-group hover-target">
                 <svg class="logo-asterisk" viewBox="0 0 24 24" xmlns="http://www.w3.org/2400/svg">
                     <path d="M12 2v20m8.66-15l-17.32 10m17.32 0L4.66 7" stroke="currentColor" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
                 </svg>
                 <div class="logo-text">necesito.</div>
             </div>
-            <div class="hero-sub reveal delay-1">Comunidades digitales / medios propios / productos para audiencias reales</div>
+            
+            <div class="hero-sub gsap-fade-up">
+                Comunidades digitales <br class="hidden md:block">
+                medios propios <br class="hidden md:block">
+                productos para audiencias reales
+            </div>
         </div>
 
-        <div class="scroll-down reveal delay-2">
+        <div class="scroll-down gsap-fade-up hover-target">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <polyline points="19 12 12 19 5 12"></polyline>
@@ -888,21 +969,26 @@
     <!-- SECCIÓN 2: Intro -->
     <section class="intro">
         <div class="container">
-            <h1 class="title-huge reveal delay-1">
+            <h1 class="title-huge gsap-reveal-text">
                 Internet está lleno de audiencias.<br>
-                <span class="accent-text" style="font-style: normal; color: var(--text-muted);">Nosotros construimos los lugares donde esas audiencias quieren estar.</span>
+                <span class="accent-text" style="font-style: normal; color: var(--text-muted);">
+                    Nosotros construimos los lugares<br>
+                    donde esas audiencias quieren estar.
+                </span>
             </h1>
-            <p class="subtitle reveal delay-2">
+            <p class="subtitle gsap-fade-up" style="margin-top: 3rem;">
                 Creamos comunidades con identidad propia, contenido que se comparte solo y productos digitales pensados para gente que ya pertenece.
             </p>
-            <div class="reveal delay-3" style="margin-top: 3rem;">
-                <a href="#" class="btn">
-                    Descubrir el ecosistema
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </a>
+            <div class="gsap-fade-up" style="margin-top: 4rem;">
+                <div class="btn-wrapper hover-target">
+                    <a href="#" class="btn">
+                        Descubrir el ecosistema
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -911,29 +997,36 @@
     <section class="what-is">
         <div class="container what-is-grid">
             
-            <div class="collage-wrapper reveal">
-                <div class="collage-asterisk">*</div>
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Espacio de trabajo premium" class="collage-img-1">
-                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80" alt="Detalle de diseño" class="collage-img-2 reveal delay-2">
-                <div class="overlapping-phrase reveal delay-3">
-                    Creamos comunidades que se sienten como contenido.<br>
+            <div class="collage-wrapper">
+                <div class="collage-asterisk gsap-fade-up">*</div>
+                
+                <div class="collage-img-1 gsap-img-reveal hover-target">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="[Imagen de espacio de trabajo creativo]">
+                </div>
+                
+                <div class="collage-img-2 gsap-img-reveal hover-target">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80" alt="[Imagen de diseño interior]">
+                </div>
+                
+                <div class="overlapping-phrase gsap-reveal-text">
+                    Creamos comunidades<br>que se sienten como contenido.<br>
                     <span class="accent-text">Y funcionan como negocios.</span>
                 </div>
             </div>
 
             <div class="what-is-content">
-                <h2 class="subtitle reveal">
-                    <span>necesito</span> es un ecosistema de comunidades digitales, medios propios y productos creados para audiencias que ya existen, pero todavía no tienen una marca que las represente.
+                <h2 class="subtitle gsap-fade-up">
+                    <span style="color: white">necesito</span> es un ecosistema de comunidades digitales, medios propios y productos creados para audiencias que ya existen, pero todavía no tienen una marca que las represente.
                 </h2>
                 
-                <div class="text-columns reveal delay-1">
-                    <div>
+                <div class="text-columns">
+                    <div class="gsap-fade-up">
                         <p><strong>01.</strong> No hacemos campañas. No perseguimos tendencias. No alquilamos atención.</p>
                     </div>
-                    <div>
+                    <div class="gsap-fade-up">
                         <p><strong>02.</strong> Construimos espacios donde la gente se reconoce, se ríe, comparte, vuelve y compra porque siente que pertenece.</p>
                     </div>
-                    <div>
+                    <div class="gsap-fade-up">
                         <p><strong>03.</strong> Cada cuenta es una puerta de entrada. Cada comunidad es un mercado. Cada producto es una razón para volver.</p>
                     </div>
                 </div>
@@ -945,37 +1038,37 @@
     <!-- SECCIÓN 4: El Modelo -->
     <section class="model">
         <div class="container">
-            <div class="model-header reveal">
+            <div class="model-header gsap-fade-up">
                 <div class="section-label">
                     <span class="num">(02)</span>
                     <span class="title">el modelo</span>
                 </div>
-                <h2 class="title-large">Primero la gente.<br><span class="accent-text">Después el producto.</span></h2>
-                <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-top: 2rem;">
+                <h2 class="title-large gsap-reveal-text">Primero la gente.<br><span class="accent-text">Después el producto.</span></h2>
+                <p class="subtitle" style="margin-top: 2rem;">
                     No empezamos preguntando “qué podemos vender”. Empezamos preguntando: ¿Qué mira esta comunidad? ¿Qué comparte? ¿Qué le da risa? ¿Qué necesita? ¿Qué la hace sentirse parte?<br><br>
                     A partir de ahí construimos cuentas, contenido, audiencias, bases de datos, landings, checkouts y productos propios.
                 </p>
             </div>
 
             <div class="model-grid">
-                <div class="step-card reveal">
+                <div class="step-card gsap-fade-up">
                     <div class="step-num">01.</div>
                     <h3>Encontramos una comunidad</h3>
                     <p>Buscamos nichos con identidad fuerte, lenguaje propio y una cultura que ya se mueve sola.</p>
                 </div>
-                <div class="step-card reveal delay-1">
+                <div class="step-card gsap-fade-up">
                     <div class="step-num">02.</div>
-                    <h3>Creamos contenido que habla su idioma</h3>
+                    <h3>Creamos contenido<br>que habla su idioma</h3>
                     <p>Memes, recursos, ideas, referencias, frases y piezas que no se sienten como publicidad, sino como algo que la audiencia compartiría igual.</p>
                 </div>
-                <div class="step-card reveal">
+                <div class="step-card gsap-fade-up">
                     <div class="step-num">03.</div>
-                    <h3>Construimos una audiencia propia</h3>
+                    <h3>Construimos una<br>audiencia propia</h3>
                     <p>Cada cuenta se convierte en un medio. Cada medio se convierte en una puerta de entrada. Cada comunidad se convierte en un activo.</p>
                 </div>
-                <div class="step-card reveal delay-1">
+                <div class="step-card gsap-fade-up">
                     <div class="step-num">04.</div>
-                    <h3>Lanzamos productos digitales</h3>
+                    <h3>Lanzamos productos<br>digitales</h3>
                     <p>Guías, ebooks, herramientas, membresías, recursos y soluciones creadas específicamente para lo que esa comunidad quiere o necesita.</p>
                 </div>
             </div>
@@ -985,22 +1078,22 @@
     <!-- SECCIÓN 5: Comunidades -->
     <section class="communities">
         <div class="container">
-            <div class="communities-header reveal">
+            <div class="communities-header gsap-fade-up">
                 <div class="section-label">
                     <span class="num">(03)</span>
                     <span class="title">comunidades</span>
                 </div>
-                <h2 class="title-large">Cuentas con personalidad.<br>Audiencias con pertenencia.</h2>
-                <p style="font-size: 1.2rem; color: var(--text-muted); margin-top: 2rem;">
+                <h2 class="title-large gsap-reveal-text">Cuentas con personalidad.<br>Audiencias con pertenencia.</h2>
+                <p class="subtitle" style="margin-top: 2rem;">
                     Cada comunidad tiene su propio lenguaje, su propia estética y su propia forma de conectar con la gente.
                 </p>
             </div>
 
             <div class="communities-grid">
                 <!-- Card 1 -->
-                <div class="comm-card reveal">
+                <div class="comm-card gsap-fade-up hover-target">
                     <div class="comm-img">
-                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80" alt="Diseño y estética">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80" alt="[Imagen de diseño y estética]">
                     </div>
                     <div class="comm-content">
                         <div class="comm-handle">@necesitodisenos</div>
@@ -1009,9 +1102,9 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="comm-card reveal delay-1">
+                <div class="comm-card gsap-fade-up hover-target">
                     <div class="comm-img">
-                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Gimnasio y pesas">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="[Imagen de gimnasio y pesas]">
                     </div>
                     <div class="comm-content">
                         <div class="comm-handle">@necesitogym</div>
@@ -1020,9 +1113,9 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="comm-card reveal delay-2">
+                <div class="comm-card gsap-fade-up hover-target">
                     <div class="comm-img">
-                        <img src="https://images.unsplash.com/photo-1612222869049-d8ec83637a3c?auto=format&fit=crop&w=600&q=80" alt="Perro salchicha">
+                        <img src="https://images.unsplash.com/photo-1612222869049-d8ec83637a3c?auto=format&fit=crop&w=600&q=80" alt="[Imagen de perro salchicha]">
                     </div>
                     <div class="comm-content">
                         <div class="comm-handle">@necesitosalchis</div>
@@ -1031,7 +1124,7 @@
                 </div>
             </div>
 
-            <p class="comm-footer-text reveal">
+            <p class="comm-footer-text gsap-fade-up">
                 Cada cuenta tiene una voz. Cada comunidad tiene una necesidad. Cada producto tiene una razón para existir.
             </p>
         </div>
@@ -1040,18 +1133,18 @@
     <!-- SECCIÓN 6: Monetización -->
     <section class="monetization">
         <div class="container">
-            <div class="reveal">
+            <div class="gsap-fade-up">
                 <div class="section-label">
                     <span class="num">(04)</span>
                     <span class="title">monetización</span>
                 </div>
-                <h2 class="title-large" style="margin-bottom: 2rem;">No creamos contenido para vender.<br><span class="accent-text">Creamos comunidad para construir negocios.</span></h2>
-                <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 500px;">
+                <h2 class="title-large gsap-reveal-text" style="margin-bottom: 2rem;">No creamos contenido para vender.<br><span class="accent-text">Creamos comunidad para construir negocios.</span></h2>
+                <p class="subtitle" style="max-width: 600px;">
                     El contenido atrae. La comunidad retiene. El producto monetiza. Esa es la lógica de <strong>necesito</strong>. No vendemos humo. No vendemos PDFs vacíos. No vendemos cursos porque sí. Creamos productos simples, útiles y deseables para audiencias específicas:
                 </p>
             </div>
             
-            <div class="reveal delay-1">
+            <div class="gsap-fade-up">
                 <ul class="mon-list">
                     <li>Guías.</li>
                     <li>Ebooks.</li>
@@ -1072,36 +1165,36 @@
     <!-- SECCIÓN 7: Infraestructura -->
     <section class="infrastructure">
         <div class="container">
-            <div class="infra-header reveal">
+            <div class="infra-header gsap-fade-up">
                 <div class="section-label">
                     <span class="num">(05)</span>
                     <span class="title">infraestructura</span>
                 </div>
-                <h2 class="title-large" style="margin-bottom: 2rem;">Eso cambia todo.</h2>
-                <p style="font-size: 1.1rem; color: var(--text-muted);">
+                <h2 class="title-large gsap-reveal-text" style="margin-bottom: 2rem;">Eso cambia todo.</h2>
+                <p class="subtitle">
                     Porque cuando una comunidad te presta atención todos los días, ya no dependés de una campaña, de un algoritmo o de un presupuesto publicitario. Tenés distribución. Tenés datos. Tenés confianza. Tenés un negocio posible.<br><br>
                     <strong>necesito</strong> centraliza la estrategia, el diseño, la tecnología, el contenido y la arquitectura comercial para que cada comunidad pueda crecer sin empezar desde cero.
                 </p>
             </div>
 
-            <div class="infra-grid reveal delay-1">
-                <div class="infra-item">Estrategia de nicho</div>
-                <div class="infra-item">Producción de contenido</div>
-                <div class="infra-item">Crecimiento orgánico</div>
-                <div class="infra-item">Diseño de landing pages</div>
-                <div class="infra-item">Funnels y checkout</div>
-                <div class="infra-item">Email marketing y bases de datos</div>
-                <div class="infra-item">Creación de productos digitales</div>
-                <div class="infra-item">Analítica y optimización</div>
+            <div class="infra-grid gsap-fade-up">
+                <div class="infra-item hover-target">Estrategia de nicho</div>
+                <div class="infra-item hover-target">Producción de contenido</div>
+                <div class="infra-item hover-target">Crecimiento orgánico</div>
+                <div class="infra-item hover-target">Diseño de landing pages</div>
+                <div class="infra-item hover-target">Funnels y checkout</div>
+                <div class="infra-item hover-target">Email marketing y bases de datos</div>
+                <div class="infra-item hover-target">Creación de productos digitales</div>
+                <div class="infra-item hover-target">Analítica y optimización</div>
             </div>
         </div>
     </section>
 
     <!-- SECCIÓN 8: Filosofía -->
     <section class="philosophy">
-        <div class="philosophy-bg"></div>
-        <div class="container reveal">
-            <h2 class="title-huge" style="text-transform: uppercase;">
+        <div class="philosophy-bg gsap-parallax-bg"></div>
+        <div class="container gsap-fade-up">
+            <h2 class="title-huge gsap-reveal-text" style="text-transform: uppercase;">
                 La atención propia es el nuevo canal.<br>
                 <span class="accent-text" style="color: white; font-style: normal;">Las marcas pagan para aparecer.<br>Nosotros construimos lugares donde la gente quiere estar.</span>
             </h2>
@@ -1114,24 +1207,24 @@
     <!-- SECCIÓN 9: Escalabilidad -->
     <section class="scalability">
         <div class="container">
-            <div class="reveal">
+            <div class="gsap-fade-up">
                 <div class="section-label">
                     <span class="num">(06)</span>
                     <span class="title">escalabilidad</span>
                 </div>
-                <h2 class="title-large">
+                <h2 class="title-large gsap-reveal-text">
                     Una comunidad puede ser una cuenta.<br>
                     <span class="accent-text">Diez comunidades pueden ser un ecosistema.</span>
                 </h2>
             </div>
             
-            <div class="scale-copy reveal delay-1">
-                <p>
+            <div class="gsap-fade-up">
+                <p class="subtitle">
                     <strong>necesito</strong> está diseñado para repetir lo que funciona. Encontrar nichos. Crear contenido. Hacer crecer audiencias. Lanzar productos. Optimizar ventas. Volver a empezar.<br><br>
                     No se trata de copiar comunidades. Se trata de construir un sistema que pueda vivir en muchas culturas distintas.
                 </p>
                 
-                <div class="scale-flow reveal delay-2">
+                <div class="scale-flow hover-target">
                     <span>Comunidad</span> <span class="arr">→</span> 
                     <span>Contenido</span> <span class="arr">→</span> 
                     <span>Tráfico</span> <span class="arr">→</span> 
@@ -1142,7 +1235,7 @@
                     <span>Optimización</span>
                 </div>
 
-                <p style="margin-top: 2rem;">
+                <p class="subtitle" style="margin-top: 3rem;">
                     Multiplicar ingresos deja de ser una apuesta creativa y se convierte en una operación medible.
                 </p>
             </div>
@@ -1152,33 +1245,36 @@
     <!-- SECCIÓN 10: CTA -->
     <section class="cta">
         <div class="container cta-inner">
-            <div class="section-label reveal" style="justify-content: center; margin-bottom: 3rem;">
+            <div class="section-label gsap-fade-up" style="justify-content: center; margin-bottom: 3rem;">
                 <span class="num" style="font-size: 1.5rem;">*</span>
             </div>
-            <h2 class="title-huge reveal delay-1">
+            <h2 class="title-huge gsap-reveal-text">
                 Estamos construyendo comunidades que no solo se miran.<br>
                 <span class="accent-text" style="font-style: normal;">Se sienten. Se comparten. Se monetizan.</span>
             </h2>
-            <p class="reveal delay-2">
+            <p class="subtitle gsap-fade-up">
                 <strong>necesito</strong> convierte cultura digital en medios propios, audiencias con pertenencia y productos digitales escalables.
             </p>
             
-            <div class="reveal delay-3">
-                <a href="#" class="btn">
-                    Entrar al ecosistema
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </a>
+            <div class="gsap-fade-up" style="margin-bottom: 2rem;">
+                <div class="btn-wrapper hover-target">
+                    <a href="#" class="btn">
+                        Entrar al ecosistema
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
             </div>
+        </div>
 
-            <div class="cta-footer-text reveal delay-3">
-                <span>Comunidades verticales</span>
-                <span style="color: var(--accent);">/</span>
-                <span>Productos propios</span>
-                <span style="color: var(--accent);">/</span>
-                <span>Audiencias que compran porque pertenecen</span>
+        <!-- MARQUEE INFINITO (Cinta Editorial) -->
+        <div class="marquee-wrapper gsap-fade-up">
+            <div class="marquee-content">
+                <!-- Se repiten dos veces para el loop perfecto -->
+                <span>Comunidades verticales <i>/</i> Productos propios <i>/</i> Audiencias que compran porque pertenecen <i>/</i></span>
+                <span>Comunidades verticales <i>/</i> Productos propios <i>/</i> Audiencias que compran porque pertenecen <i>/</i></span>
             </div>
         </div>
     </section>
@@ -1189,29 +1285,161 @@
         <div>comunidades digitales / medios propios / productos para audiencias reales</div>
     </footer>
 
-    <!-- SCROLL ANIMATION SCRIPT -->
+    <!-- LÓGICA DE ANIMACIONES Y SCROLL -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const reveals = document.querySelectorAll('.reveal');
+        // 1. CUSTOM CURSOR (Optimizado con quickTo para cero lag)
+        const cursor = document.querySelector('.custom-cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button');
 
-            const revealOptions = {
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            };
+        const xTo = gsap.quickTo(cursor, "x", {duration: 0.1, ease: "power3"});
+        const yTo = gsap.quickTo(cursor, "y", {duration: 0.1, ease: "power3"});
 
-            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        return;
-                    } else {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
+        document.addEventListener('mousemove', (e) => {
+            xTo(e.clientX);
+            yTo(e.clientY);
+        });
+
+        // Hover Effect
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // 2. Iniciar Lenis (Smooth Scroll - Duración reducida para agilidad)
+        const lenis = new Lenis({
+            duration: 0.75, // Mucho más ágil que 1.2
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical', 
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+
+        // 3. ANIMACIONES GSAP
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // A) Helper Text Reveal con desenfoque (Blur Effect)
+            const splitTexts = document.querySelectorAll('.gsap-reveal-text');
+            splitTexts.forEach(textEl => {
+                const content = textEl.innerHTML;
+                // Regex ajustada para atrapar todos los saltos de línea sin romper clases HTML
+                const lines = content.split(/<br[^>]*>/i); 
+                
+                textEl.innerHTML = '';
+                lines.forEach((line, index) => {
+                    const mask = document.createElement('span');
+                    mask.className = 'reveal-mask';
+                    
+                    const inner = document.createElement('span');
+                    inner.innerHTML = line; 
+                    
+                    mask.appendChild(inner);
+                    textEl.appendChild(mask);
+                    
+                    if (index < lines.length - 1) {
+                        textEl.appendChild(document.createElement('br'));
                     }
                 });
-            }, revealOptions);
 
-            reveals.forEach(reveal => {
-                revealOnScroll.observe(reveal);
+                const inners = textEl.querySelectorAll('.reveal-mask span');
+                gsap.fromTo(inners, 
+                    { 
+                        y: "60%", 
+                        opacity: 0,
+                        filter: "blur(12px)"
+                    },
+                    {
+                        scrollTrigger: {
+                            trigger: textEl,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        },
+                        y: "0%",
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        duration: 1, 
+                        stagger: 0.08,
+                        ease: "power3.out"
+                    }
+                );
+            });
+
+            // B) Parallax Avanzado en Background Hero
+            gsap.to(".hero-bg", {
+                yPercent: 15, // Menos desplazamiento para evitar peso
+                scale: 1.05,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                } 
+            });
+
+            // C) Parallax en Sección Filosofía
+            gsap.to(".gsap-parallax-bg", {
+                yPercent: 15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".philosophy",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                } 
+            });
+
+            // D) Fade Up General (Con sutil blur)
+            gsap.utils.toArray('.gsap-fade-up').forEach((element) => {
+                gsap.fromTo(element, 
+                    { 
+                        y: 35, 
+                        opacity: 0,
+                        filter: "blur(8px)" 
+                    },
+                    {
+                        scrollTrigger: {
+                            trigger: element,
+                            start: "top 90%",
+                            toggleActions: "play none none reverse"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        duration: 0.9,
+                        ease: "power3.out"
+                    }
+                );
+            });
+
+            // E) Cinematic Image Reveals
+            gsap.utils.toArray('.gsap-img-reveal').forEach((wrapper) => {
+                const img = wrapper.querySelector('img');
+                let tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: wrapper,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+                
+                tl.fromTo(wrapper, 
+                    { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" },
+                    { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: 1.1, ease: "power3.inOut" }
+                )
+                .fromTo(img,
+                    { scale: 1.25 }, // Escala reducida para verse más natural
+                    { scale: 1, duration: 1.1, ease: "power3.out" },
+                    "-=1.1"
+                );
             });
         });
     </script>
