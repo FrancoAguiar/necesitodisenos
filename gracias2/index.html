@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Listo! Tu Regalo está aquí | @necesitodisenos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0066FF', 
+                            hover: '#0052CC',
+                            bg: '#0A0A0A',
+                            surface: '#121212',
+                            border: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Inter Tight', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                        archivo: ['Archivo Black', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(0, 102, 255, 0.4)',
+                        'button': '0 0 20px rgba(0, 102, 255, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+            background-color: #0A0A0A !important;
+            color: #E5E5E5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        ::selection {
+            background: rgba(0, 102, 255, 0.3);
+            color: white;
+        }
+
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Ocultamiento del Badge de Systeme */
+        a[href*="systeme.io/?sa="], img[src*="affiliate-badge"], .sc-aXZVf {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            z-index: -9999 !important;
+        }
+
+        /* Efectos para tarjetas de Upsell */
+        .img-gradient {
+            background: linear-gradient(to bottom, transparent 20%, #121212 100%);
+        }
+        .card-upsell:hover .img-gradient {
+            background: linear-gradient(to bottom, transparent 20%, #171717 100%);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col items-center overflow-x-hidden">
+
+    <!-- Fondo y Efectos -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full sm:w-[800px] h-[500px] bg-brand-blue/15 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+    <main class="relative z-10 w-full max-w-5xl mx-auto px-4 pt-12 pb-24 flex flex-col items-center">
+        
+        <!-- Icono de Éxito -->
+        <div class="w-20 h-20 mb-8 rounded-full bg-brand-blue/10 border border-brand-blue/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,102,255,0.2)]" data-aos="zoom-in">
+            <i class="ph-fill ph-check-circle text-4xl text-brand-blue"></i>
+        </div>
+
+        <!-- Titulares -->
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-10" data-aos="fade-up" data-aos-delay="100">
+            <h1 class="font-display text-[32px] sm:text-[44px] md:text-[52px] font-black tracking-tight text-white leading-[1.05] uppercase">
+                ¡TODO LISTO! TU ACCESO <br class="hidden md:block"> ESTÁ HABILITADO
+            </h1>
+            <p class="text-lg text-zinc-400 font-light max-w-xl mx-auto leading-relaxed">
+                🎉 ¡Acá tenés tu regalo de <strong class="text-white">@necesitodisenos</strong>! Ya tenés todo para dejar de perder tiempo con clientes indecisos. Hacé clic abajo y empezá a usar tu Brief Editable.
+            </p>
+        </div>
+
+        <!-- Imagen del Regalo -->
+        <div class="relative w-full max-w-sm mx-auto mb-10" data-aos="fade-up" data-aos-delay="150">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-brand-blue/20 blur-[80px] rounded-full pointer-events-none z-[-1]"></div>
+            
+            <div class="relative rounded-2xl border border-white/10 shadow-2xl bg-[#121212] p-2 md:p-3 overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-40 z-10 pointer-events-none"></div>
+                <img src="https://i.ibb.co/nMGRysmH/img.png" alt="Regalo de @necesitodisenos" class="w-full h-auto rounded-xl object-cover relative z-0 transition-transform duration-700 group-hover:scale-[1.02]">
+            </div>
+        </div>
+
+        <!-- Caja de Acción Principal (El Regalo) -->
+        <div class="w-full max-w-md mx-auto bg-[#121212] p-8 rounded-2xl border border-white/10 shadow-2xl relative z-20 text-center flex flex-col items-center mb-16" data-aos="fade-up" data-aos-delay="200">
+            
+            <div class="w-16 h-16 rounded-full bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center mb-4">
+                <i class="ph-duotone ph-gift text-3xl text-brand-blue"></i>
+            </div>
+            
+            <h3 class="text-white font-bold text-lg mb-2">Un pequeño favor antes de entrar... 👇</h3>
+            
+            <div class="flex flex-col gap-4 mb-8 w-full text-left mt-2">
+                <p class="text-sm text-zinc-400 text-center">
+                    Te súper recomendamos <strong class="text-white">guardar el enlace en tus favoritos ⭐️</strong> para que no se te pierda y lo tengas siempre a mano.
+                </p>
+                
+                <div class="flex items-start gap-3 bg-brand-blue/10 border border-brand-blue/20 rounded-xl p-4 mt-2">
+                    <i class="ph-fill ph-desktop text-2xl text-brand-blue shrink-0 mt-0.5"></i>
+                    <p class="text-xs text-zinc-300 leading-relaxed">
+                        <strong class="text-white block mb-0.5 text-[13px]">Usalo en la Compu 💻</strong>
+                        Esta herramienta está diseñada para que le saques el máximo provecho desde una PC o Mac. 
+                    </p>
+                </div>
+            </div>
+
+            <a href="https://briefnd.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full group relative inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-white transition-all duration-300 bg-brand-blue rounded-xl hover:bg-brand-hover shadow-button hover:shadow-[0_0_30px_rgba(0,102,255,0.6)] overflow-hidden">
+                <span class="relative z-10 flex items-center gap-2">
+                    VER BRIEF EDITABLE <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+                <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+            </a>
+        </div>
+
+        <!-- Botón para scrollear a Recomendados -->
+        <a href="#recomendados" class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-zinc-500 hover:text-white hover:border-brand-blue/50 hover:bg-brand-blue/10 transition-all mt-4 mb-16" data-aos="fade-in" data-aos-delay="400">
+            <i class="ph-bold ph-arrow-down text-xl animate-bounce"></i>
+        </a>
+
+        <!-- Separador -->
+        <div class="w-full max-w-lg h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-16"></div>
+
+        <!-- SECCIÓN UPSELLS -->
+        <section id="recomendados" class="w-full scroll-mt-20">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-800/50 text-zinc-300 text-xs font-bold tracking-widest uppercase mb-4 border border-white/5">
+                    <i class="ph-fill ph-rocket"></i> Siguiente nivel
+                </div>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight font-display uppercase">Potenciá tus próximos proyectos</h2>
+                <p class="text-zinc-400 text-base max-w-xl mx-auto leading-relaxed">
+                    Aprovechá estas herramientas que diseñé para que tu proceso de trabajo sea mucho más fluido, profesional y rentable.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                
+                <!-- Upsell 1: Calculadora Freelance (NUEVO) -->
+                <div class="bg-[#121212] border border-brand-blue/30 rounded-2xl overflow-hidden transition-all duration-300 hover:border-brand-blue flex flex-col group card-upsell relative shadow-[0_0_20px_rgba(0,102,255,0.1)] hover:shadow-[0_0_30px_rgba(0,102,255,0.2)]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute top-4 right-4 z-20 bg-brand-blue text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg border border-white/20">
+                        <i class="ph-fill ph-star"></i> Más vendido
+                    </div>
+                    
+                    <div class="w-full aspect-[4/5] relative bg-[#1A1A1A] overflow-hidden">
+                        <!-- IMPORTANTE: Cambiar el src por tu imagen de la calculadora -->
+                        <img src="https://placehold.co/1080x1350/1a1a1a/444?text=Calculadora+Freelance" alt="Calculadora Freelance" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-300 z-10"></div>
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow relative z-20 -mt-16">
+                        <h3 class="font-bold text-xl text-white mb-2">Calculadora Freelance</h3>
+                        <p class="text-sm text-zinc-400 mb-6 flex-grow leading-relaxed">
+                            Descubrí exactamente cuánto cobrar por tus servicios de diseño. Dejá de adivinar precios y empezá a ser rentable.
+                        </p>
+                        <a href="https://pay.hotmart.com/L102512625W?off=8yg2jmki&checkoutMode=10&bid=1780505519206" class="checkout-link w-full py-3.5 rounded-xl bg-brand-blue text-white hover:bg-brand-hover text-sm font-bold transition-all flex justify-between items-center px-5 shadow-button">
+                            <span>Obtener acceso</span>
+                            <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Upsell 2: Plantilla de Retículas -->
+                <div class="bg-[#121212] border border-[#262626] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#404040] hover:bg-[#171717] flex flex-col group card-upsell" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-full aspect-[4/5] relative bg-[#1A1A1A] overflow-hidden">
+                        <!-- IMPORTANTE: Cambiar el src por tu imagen -->
+                        <img src="https://placehold.co/1080x1350/1a1a1a/444?text=Reticulas" alt="Plantilla de Retículas" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-300 z-10"></div>
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow relative z-20 -mt-16">
+                        <h3 class="font-bold text-xl text-white mb-2">Plantillas de Retículas</h3>
+                        <p class="text-sm text-zinc-400 mb-6 flex-grow leading-relaxed">
+                            Estructuras prearmadas para organizar el espacio y acelerar drásticamente la maquetación de tus composiciones visuales.
+                        </p>
+                        <a href="https://pay.hotmart.com/N105368051E?off=h0f64rcp&checkoutMode=10" class="checkout-link w-full py-3.5 rounded-xl bg-white text-black hover:bg-gray-200 text-sm font-bold transition-all flex justify-between items-center px-5">
+                            <span>Obtener acceso</span>
+                            <span class="opacity-70">$1.99</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Upsell 3: Checklist de Cotización -->
+                <div class="bg-[#121212] border border-[#262626] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#404040] hover:bg-[#171717] flex flex-col group card-upsell" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-full aspect-[4/5] relative bg-[#1A1A1A] overflow-hidden">
+                        <!-- IMPORTANTE: Cambiar el src por tu imagen -->
+                        <img src="https://placehold.co/1080x1350/1a1a1a/444?text=Checklist" alt="Checklist Cotización" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700">
+                        <div class="absolute inset-0 img-gradient transition-colors duration-300 z-10"></div>
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow relative z-20 -mt-16">
+                        <h3 class="font-bold text-xl text-white mb-2">Checklist Cotización</h3>
+                        <p class="text-sm text-zinc-400 mb-6 flex-grow leading-relaxed">
+                            Una lista rápida para verificar que no te olvidaste de cobrar ningún adicional importante antes de enviar tu número final.
+                        </p>
+                        <a href="https://pay.hotmart.com/K105394184W?off=i85g5s9c&checkoutMode=10" class="checkout-link w-full py-3.5 rounded-xl bg-white text-black hover:bg-gray-200 text-sm font-bold transition-all flex justify-between items-center px-5">
+                            <span>Obtener acceso</span>
+                            <span class="opacity-70">$1.99</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Simple -->
+    <footer class="relative z-10 w-full py-8 mt-auto border-t border-white/5 text-center">
+        <p class="text-xs text-zinc-600 mb-2">© 2026 @necesitodisenos</p>
+        <div class="flex items-center justify-center gap-2 text-[10px] text-zinc-700">
+            <i class="ph-fill ph-lock-key"></i> Transacciones encriptadas de forma segura
+        </div>
+    </footer>
+
+    <!-- Script de Animaciones, Limpieza y Botones -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar AOS
+            AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
+
+            // Eliminar enlaces de Systeme
+            const systemeLinks = document.querySelectorAll('a[href*="systeme.io/?sa="]');
+            systemeLinks.forEach(link => link.remove());
+
+            const systemeImages = document.querySelectorAll('img[src*="affiliate-badge"]');
+            systemeImages.forEach(img => {
+                const parentAnchor = img.closest('a');
+                if (parentAnchor) {
+                    parentAnchor.remove();
+                } else {
+                    img.remove();
+                }
+            });
+
+            // Script de redirección suave a Hotmart (Upsells)
+            document.querySelectorAll('.checkout-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    
+                    const targetUrl = this.getAttribute('href');
+                    const originalWidth = this.offsetWidth; // Mantiene el ancho para que no salte el diseño
+                    
+                    this.style.width = originalWidth + 'px';
+                    this.innerHTML = '<span class="flex items-center justify-center w-full gap-2"><i class="ph-bold ph-spinner animate-spin text-lg"></i> Procesando...</span>';
+                    
+                    // Redirigir después de una breve animación
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 600);
+                });
+            });
+
+            // Scroll suave para la flecha
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
