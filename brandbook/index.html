@@ -1,0 +1,239 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Necesito Diseños | Recuperando la cuenta</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes (Outfit para los bolds estilo Mundial 2026, Inter para lectura) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@900&display=swap" rel="stylesheet">
+    
+    <!-- Íconos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --bg-base: #000000;
+            --surface: #0a0a0a;
+            --surface-hover: #141414;
+            --border: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #8a8a8a;
+            --accent: #E52521;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            /* Fondo con gradiente sutil para darle profundidad */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+        }
+
+        /* Clase para emular la estética ultra bold del Mundial 2026 */
+        .font-wc26 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .card-ui {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-ui {
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        
+        .input-ui:focus {
+            outline: none;
+            border-color: #404040;
+            box-shadow: 0 0 0 1px #404040;
+        }
+
+        .btn-ui {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+        }
+        
+        .btn-ui:hover {
+            background: #e5e5e5;
+            transform: scale(0.98);
+        }
+
+        /* Animación suave al cargar */
+        .fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen px-4 py-12 md:py-16">
+
+    <div class="w-full max-w-xl mx-auto space-y-6 z-10 relative">
+        
+        <!-- CARD 1: Mensaje Principal y Brandbook -->
+        <main class="card-ui p-6 md:p-10 fade-up">
+            <div class="text-center mb-8">
+                <!-- Imagen del Mundial 2026 -->
+                <img src="https://cms-assets.unrealengine.com/cmkr1i7c9047e07n0es5291ez/output=format:webp/cmppqh4v20aee07n7whcez6ft" alt="Logo Mundial 2026" class="w-32 md:w-40 mx-auto rounded-xl shadow-2xl mb-6 object-cover border border-zinc-800">
+
+                <!-- Título súper Bold estilo WC2026 -->
+                <h1 class="font-wc26 text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-neutral-500 mb-6 uppercase">
+                    BRAND BOOK<br>MUNDIAL FIFA<br>2026
+                </h1>
+                
+                <p class="text-zinc-300 text-base md:text-lg leading-relaxed font-medium">
+                    Zuckerberg nos soltó la mano, pero nosotros a vos no.<br> 
+                    <span class="text-zinc-500">Seguimos peleando con robots y rezándole a varios santos para recuperar la cuenta original...</span>
+                </p>
+                <div class="mt-4 p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                    <p class="text-sm text-zinc-300">
+                        Si nos querés seguir en la nueva cuenta mientras tanto, 
+                        <a href="https://instagram.com/necesitodisenos.ok" target="_blank" class="text-white font-semibold underline decoration-zinc-500 hover:decoration-white transition-colors">¡bienvenido/a!</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <a href="https://drive.google.com/file/d/1I9d-GHmvhORD9LtFIi_VM4mQjzVAp9Fz/view?usp=drive_link" target="_blank" rel="noopener noreferrer"
+                   class="btn-ui w-full py-4 px-6 rounded-xl flex items-center justify-center gap-3 group text-lg font-bold tracking-tight">
+                    <span>VER BRANDBOOK</span>
+                    <i class="ph-bold ph-arrow-up-right text-xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                </a>
+                <p class="text-center text-xs text-zinc-500 flex items-center justify-center gap-1.5">
+                    <i class="ph-fill ph-google-drive-logo text-zinc-400"></i>
+                    Tranqui, es a Drive. Ya somos los menos interesados en links sospechosos 🥲
+                </p>
+            </div>
+        </main>
+
+        <!-- CARD 2: Formulario de Contacto -->
+        <section class="card-ui p-6 md:p-8 fade-up delay-1">
+            <div class="mb-6">
+                <h2 class="font-wc26 text-2xl text-white uppercase tracking-tight">Terapia de grupo / Dudas</h2>
+                <p class="text-zinc-400 text-sm mt-1">Dejanos un mensaje de aliento, una duda, o tips para infiltrarnos en las oficinas de Meta.</p>
+            </div>
+
+            <!-- El formulario usa FormSubmit para enviar directo a tu correo -->
+            <form id="support-form" class="space-y-4">
+                <div>
+                    <input type="text" id="userName" name="name" required placeholder="Tu Nombre (o presumí tu IG que no fue baneado)" 
+                           class="input-ui w-full px-4 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                
+                <div>
+                    <textarea id="userMessage" name="message" required rows="3" placeholder="Mandá fuerzas, las necesitamos..."
+                              class="input-ui w-full px-4 py-3.5 rounded-xl text-sm resize-none font-medium"></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                    <span>Enviar Mensaje</span>
+                    <i class="ph-bold ph-paper-plane-tilt"></i>
+                </button>
+            </form>
+            
+            <!-- Mensaje de éxito oculto inicialmente -->
+            <div id="success-msg" class="hidden text-center py-6">
+                <div class="w-12 h-12 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center mx-auto mb-3">
+                    <i class="ph-bold ph-check text-2xl"></i>
+                </div>
+                <h3 class="text-white font-semibold text-lg">¡Mensaje capturado!</h3>
+                <p class="text-zinc-400 text-sm mt-1">Lo vamos a imprimir y pegar en la heladera para no llorar. ¡Gracias!</p>
+            </div>
+        </section>
+
+        <!-- CARD 3: Disclaimer Fran -->
+        <section class="card-ui p-6 fade-up delay-2 bg-gradient-to-br from-surface to-zinc-900 border-dashed border-zinc-700">
+            <div class="flex gap-4 items-start">
+                <div class="mt-1 flex-shrink-0">
+                    <i class="ph-duotone ph-warning-circle text-2xl text-yellow-500"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-1">Disclaimer Importante</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Si entrás a nuestro Instagram nuevo <a href="https://instagram.com/necesitodisenos.ok" target="_blank" class="text-white font-medium hover:underline">@necesitodisenos.ok</a> y ves un nombre raro y la foto de una cara, <strong>tranquilidad, soy yo, Fran</strong>. No nos hackearon la cuenta de repuesto (espero). Pasa que Meta me obligó a poner mi cara real para demostrar que soy un humano y así dignarse a activar el soporte. Ignoren mi cara de estrés. 
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Lógica del formulario para enviar el correo y mostrar el estado de éxito
+        const form = document.getElementById('support-form');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('success-msg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const message = document.getElementById('userMessage').value;
+            
+            // Estado de carga
+            submitBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i><span>Enviando...</span>';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70');
+
+            try {
+                // Envío real a tu correo
+                await fetch('https://formsubmit.co/ajax/necesitodisenos@gmail.com', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        Nombre: name, 
+                        Mensaje: message,
+                        _subject: `Nuevo mensaje en la Web de: ${name}`,
+                        _template: 'box' 
+                    })
+                });
+
+                // Ocultar formulario y mostrar éxito
+                form.style.display = 'none';
+                successMsg.classList.remove('hidden');
+                successMsg.classList.add('fade-up');
+
+            } catch (error) {
+                console.error("Error:", error);
+                submitBtn.innerHTML = '<span>Error. Intentar de nuevo</span>';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70');
+                submitBtn.classList.replace('bg-zinc-800', 'bg-red-500/20');
+                submitBtn.classList.replace('text-white', 'text-red-500');
+            }
+        });
+    </script>
+</body>
+</html>
